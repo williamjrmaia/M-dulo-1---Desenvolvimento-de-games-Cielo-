@@ -70,17 +70,21 @@
 
 ## 1.2. Requisitos do Projeto (sprints 1 e 2)
 
-*Posicione aqui a lista de requisitos levantados para o projeto, sejam pedidos do parceiro ou invenções do grupo. Descreva-os de forma objetiva, de modo que seja possível entender claramente como implementá-los tecnicamente.*
+Os requisitos do projeto são as peças identitárias, tanto fundamentais para o funcionamento do jogo quanto aspectos mais específicos de jogabilidade. Estes incluem mecânicas básicas de movimentação e interação, até partes mais detalhadas do combate de cartas e o design geral do jogo. Além disso, definem os limites e o escopo geral esperado do projeto final.
 
-*ATUALIZE ESTA SEÇÃO SEMPRE QUE ALGUM REQUISITO MUDAR EM SEU PROJETO*
+Abaixo estão os requisitos trabalhados na sprint 1:
 
-*Exemplo de tabela de requisitos*
-\# | Requisito  
---- | ---
-1 | O controle do personagem será realizado usando as teclas WASD para navegação pelas fases
-2 | O personagem perde uma vida toda vez que tocar em um inimigo ou em algum projétil inimigo
-3 | O jogo deve possuir uma tela de abertura para o jogador selecionar se quer jogar sozinho ou em dupla
-4 | ...
+\# | Requisito | Explicação 
+--- | --- | ---
+1 | Introdução narrativa | O jogo deve apresentar uma introdução narrativa que contextualiza o universo do jogo e apresenta suas regras básicas. 
+2 | Escolha de avatar | O jogo deve permitir que o jogador escolha seu avatar.
+3 | Mapa geral | O jogo deve conter um mapa geral com as quatro regiões principais: Negociação, Produto, Benefícios e a cidade principal
+4 | Mapa da cidade | O jogo deve conter um mapa principal ambientado em uma cidade central, no qual o jogador poderá circular e negociar com os clientes.
+5 | Joystick | O personagem do jogador deve ser controlado por meio de um joystick virtual localizado no lado esquerdo da tela, permitindo movimentação em qualquer direção.
+6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface e de variações visuais nos sprites dos personagens.
+7 | Cartas | O jogo deve disponibilizar ao jogador as cartas disponíveis para uso durante a gameplay.
+8 | Combate | O sistema de jogo deve implementar combates baseados no uso de cartas.
+9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento do sistema de combate.
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
 
