@@ -1,14 +1,15 @@
-class MundoCasa extends Phaser.Scene {
+import { criarAnimacoesJogador, atualizarMovimentoJogador } from './funcoes.js';
+
+export default class MundoCasa extends Phaser.Scene {
             constructor() {super('MundoCasa'); }
 
             preload() {
-                this.load.image('MundoCasa', 'Assets/CenarioCasa/Scene1.png');
-                this.load.image('MenuFundo', 'Assets/Menu/menu_fundo.png');
-                this.load.spritesheet('Andando', 'Assets/Animações/andarfrente.png', { frameWidth: 64, frameHeight: 64 });
-                this.load.spritesheet('IdleFrente', 'Assets/Animações/idlefrente.png', { frameWidth: 64, frameHeight: 64 });
-                this.load.spritesheet('Lado', 'Assets/Animações/andarlado.png', { frameWidth: 64, frameHeight: 64 });
-                this.load.spritesheet('Costa', 'Assets/Animações/andarcosta.png', { frameWidth: 64, frameHeight: 64 });
-    
+                this.load.image('MundoCasa', '../assets/CenarioCasa/Scene1.png');
+                this.load.image('MenuFundo', '../assets/menu/menu_fundo.png');
+                this.load.spritesheet('Andando', '../assets/animacoes/andarfrente.png', { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png', { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('Lado', '../assets/animacoes/andarlado.png', { frameWidth: 64, frameHeight: 64 });
+                this.load.spritesheet('Costa', '../assets/animacoes/andarcosta.png', { frameWidth: 64, frameHeight: 64 });
             }
 
             create() {
@@ -83,4 +84,4 @@ class MundoCasa extends Phaser.Scene {
                 atualizarMovimentoJogador(this.personagem, this.teclas);
             
         }
-    }
+}

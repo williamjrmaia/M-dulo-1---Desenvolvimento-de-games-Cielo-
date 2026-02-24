@@ -3,7 +3,7 @@
 // Esqueleto para a criação de SCENES do phaser. 
 
 
-class Customizacao extends Phaser.scene {
+export default class Customizacao extends Phaser.Scene {
             constructor() { super('Customizacao'); }
             preload() {
 

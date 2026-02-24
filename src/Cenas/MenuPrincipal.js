@@ -1,0 +1,45 @@
+export default class MenuPrincipal extends Phaser.Scene {
+            constructor() { super('MenuPrincipal'); }
+            preload() {
+             this.load.image('menu_jogo', '../assets/Menu/menu_fundo.png');
+             this.load.image('botao_iniciar', '../assets/Menu/iniciar.png');
+             this.load.image('botao_sair', '../assets/Menu/sair.png');
+             this.load.image('botao_config', '../assets/Menu/configuracao.png');
+            }
+
+            create() {
+                let tela = this.add.image(750, 400, 'menu_jogo')
+                let botaoInicio = this.add.image(748, 340, 'botao_iniciar').setScale(1.1)
+                let botaoConfig = this.add.image(750, 396, 'botao_config').setScale(1.1)
+                let botaoSair = this.add.image(750, 454, 'botao_sair').setScale(1.1)
+            
+
+                //deixar o botao interativo
+                botaoInicio.setInteractive();
+                botaoConfig.setInteractive();
+                botaoSair.setInteractive();
+
+                //Clicar no botão, começar a animação de FADE e trocar para a CenaJogo
+                botaoInicio.on('pointerdown', () => {
+                    this.cameras.main.fadeOut(2000, 0, 0, 0);
+                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('MundoCasa');
+                  
+                })
+                });
+
+                //Botão para entrar nas configs do jogo
+                botaoConfig.on('pointerdown', () => {
+                    this.scene.start('CenaConfig');
+                });
+                
+                //Botão de sair fecha todas as abas
+                botaoSair.on('pointerdown', () => {
+                    window.close();
+                });
+            }
+               
+        }
+
+
+        
