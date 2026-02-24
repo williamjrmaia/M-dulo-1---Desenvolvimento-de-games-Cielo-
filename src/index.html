@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cielo's World</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
+    <style> 
+    
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #070505;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+</html>
+
+<script> 
+    // Criação de cada CENA que mudará com um click [ Menu, Customização, Configurações e Jogar]
+         
+        //Cena do Menu Principal - Aqui adicionamos um retângulo interagível (botaoInicio + botaoInicio.setInteractive) para poder iniciar o jogo quando clicar
+        class MenuPrincipal extends Phaser.Scene {
+            constructor() { super('MenuPrincipal'); }
+            preload() {
+
+            }
+            create() {
+                let tela = this.add.rectangle(750, 400, 500, 700, 0x0000ff)
+                let botaoInicio = this.add.rectangle(750, 500, 200, 100, 0x000000)
+                this.add.text(725, 492, "Jogar");
+                
+
+                botaoInicio.setInteractive();
+
+                this.cameras.main.fadeIn(2000, 0, 0, 0);
+
+                //Clicar no botão, começar a animação de FADE e trocar para a CenaJogo
+                botaoInicio.on('pointerdown', () => {
+                    this.cameras.main.fadeOut(2000, 0, 0, 0);
+                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('CenaJogo');
+                })
+                });
+                
+
+             
+            }
+        }
+
+        //Começamos a cena do jogo principal onde o personagem se move com ordens do jogador
+        class CenaJogo extends Phaser.Scene {
+            constructor() { super('CenaJogo'); }
+            preload() {
+                 // Carregando spritesheets com animações
+            this.load.spritesheet('Andando', 'Assets/Animações/andarfrente.png', { frameWidth: 64, frameHeight: 64 });
+            this.load.spritesheet('IdleFrente', 'Assets/Animações/idlefrente.png', { frameWidth: 64, frameHeight: 64 });
+            this.load.spritesheet('Lado', 'Assets/Animações/andarlado.png', { frameWidth: 64, frameHeight: 64 });
+            this.load.spritesheet('Costa', 'Assets/Animações/andarcosta.png', { frameWidth: 64, frameHeight: 64 });
+            //this.load.spritesheet('DiagUR', 'Assets/Animações/diagonalcimadireita.png', { frameWidth: 64, frameHeight: 64 });
+            //this.load.spritesheet('DiagUL', 'Assets/Animações/diagonalcimaesquerda.png', { frameWidth: 64, frameHeight: 64 });
+            //this.load.spritesheet('DiagDR', 'Assets/Animações/diagonalbaixodireita.png', { frameWidth: 64, frameHeight: 64 });
+            //this.load.spritesheet('DiagDL', 'Assets/Animações/diagonalbaixoesquerda.png', { frameWidth: 64, frameHeight: 64 });
+            // COLOCAR NOMES DAS ANIMS IGUAIS ESSES AQUI         ˆˆˆˆˆˆˆˆˆˆˆˆ
+
+        // Criando os assets no PRELOAD (Não aparece no jogo ainda, só quando colocar no create)
+            this.load.image('coco', 'Assets/coco.jpeg');
+            this.load.image('casa', 'Assets/casa.png');
+            this.load.image('fundo', 'Assets/mapa_exportado.png');
+            this.load.image('Arvore1', 'Assets/arvore1.png');
+            this.load.image('Arvore2', 'Assets/arvore2.png');
+            this.load.image('Arvore3', 'Assets/arvore3.png');
+            this.load.image('Arvore4', 'Assets/arvore4.png');
+
+      }
+            create() {
+                
+        //Quando apertamos o botão do MENU jogar, ele transita para o jogo normal, e esse fadeIn abaixo coloca um gradiente para não ser uma transição dura
+        this.cameras.main.fadeIn(1000, 0, 0, 0);
+
+                // Criação do ícone do Coco para teste. Futuramente se tornará um cadeado para simbolizar zonas trancadas que o player não tem acesso ainda
+        this.coco = this.add.image(400, 670, 'coco').setScale(0.1).setDepth(1);
+        this.coco.setVisible(false); // Torna o item invisível
+
+
+        // Objetos do mapa + mapa
+        //this.obstaculos = this.physics.add.staticGroup(); FISICA
+
+        this.add.image(742, 400, 'fundo').setScale(0.589).setDepth(0); 
+        // Define a profundidade do fundo para que fique atrás de todos os outros objetos
+
+        //Obstáculos
+        this.obstaculos = this.physics.add.staticGroup();
+
+        // Funções dos obstáculos, para não precisar ficar repetindo código, apenas chamar o nome da função "criarCasa(), x, y" <- coloca uma casa
+        function criarCasa(cena, x, y) {
+            var casa = cena.obstaculos.create(x, y, 'casa').setScale(0.589);
+            casa.body.setSize(50, 50); 
+            casa.body.setOffset(40, 40);
+        }
+
+       function criarArvore(cena, x, y) {
+            var arvore = cena.obstaculos.create(x, y, 'Arvore1').setScale(1.0);
+            arvore.body.setSize(10, 10); 
+            arvore.body.setOffset(20, 50);
+            arvore.setDepth(5000); // Define a profundidade da árvore para que fique atrás do personagem
+        }
+        function criarArvore2(cena, x, y) {
+            var arvore = cena.obstaculos.create(x, y, 'Arvore2').setScale(1.0);
+            arvore.body.setSize(10, 10); 
+            arvore.body.setOffset(20, 50);
+            arvore.setDepth(5000);
+        }
+        function criarArvore3(cena, x, y) {
+            var arvore = cena.obstaculos.create(x, y, 'Arvore3').setScale(1.0);
+            arvore.body.setSize(10, 10); 
+            arvore.body.setOffset(20, 50);
+            arvore.setDepth(5000);
+        }
+        function criarArvore4(cena, x, y) {
+            var arvore = cena.obstaculos.create(x, y, 'Arvore4').setScale(1.0);
+            arvore.body.setSize(10, 10); 
+            arvore.body.setOffset(20, 50);
+            arvore.setDepth(5000);
+        }
+
+
+        
+       
+
+        criarCasa(this, 200, 200);
+        
+      
+        // COLOCAR LAYERS AQUI
+        //Arvores 1
+        criarArvore(this, 400, 300);
+        //Arvores 2
+        criarArvore2(this, 500, 300);
+        //Arvores 3
+
+        //Arvores 4
+
+        //Casas
+         criarCasa(this, 195, 712);
+
+        //personagem (ícone, animação e hitbox)
+        //Física do personagem
+        this.personagem = this.physics.add.sprite(750, 480, 'IdleFrente').setScale(1.0);
+        this.personagem.setCollideWorldBounds(true);
+        this.personagem.body.setSize(10, 15);
+        this.personagem.setOffset(27, 30);
+
+        //Chamando as teclas para fazer a movimentação
+        this.physics.add.collider(this.personagem, this.obstaculos); // Colisão entre personagem e obstáculos
+        this.teclas = this.input.keyboard.addKeys({
+            up: Phaser.Input.Keyboard.KeyCodes.W,
+            down: Phaser.Input.Keyboard.KeyCodes.S,
+            left: Phaser.Input.Keyboard.KeyCodes.A,
+            right: Phaser.Input.Keyboard.KeyCodes.D,
+            //DiagUR: Phaser.Input.Keyboard.KeyCodes.W&&D,
+            //DiagUL: Phaser.Input.Keyboard.KeyCodes.W&&A,
+            //DiagDR: Phaser.Input.Keyboard.KeyCodes.S&&D,
+            //DiagDL: Phaser.Input.Keyboard.KeyCodes.S&&A
+        });
+        //ANDAR RETO
+        this.anims.create({
+            key: 'andar',
+            frames: this.anims.generateFrameNumbers('Andando', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        //PARADO DE FRENTE
+        this.anims.create({
+            key: 'idleFrente',
+            frames: this.anims.generateFrameNumbers('IdleFrente', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+            
+        });
+        //ANDAR DE LADO (Só tem 1 animação, então usei a mesma para os dois lados, flipando a imagem para o lado direito com o .setFlipX(true))
+        this.anims.create({
+            key: 'lado',
+            frames: this.anims.generateFrameNumbers('Lado', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+            
+        });
+        //ANDAR DE COSTAS
+        this.anims.create({ 
+            key: 'costa',
+            frames: this.anims.generateFrameNumbers('Costa', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+            
+        });
+        //Andar diagonal UR
+        this.anims.create({
+            key: 'diagUR',
+            frames: this.anims.generateFrameNumbers('DiagUR', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+           
+        })
+        //Andar diagonal UL
+        this.anims.create({
+            key: 'diagUL',
+            frames: this.anims.generateFrameNumbers('DiagUL', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        })
+        //Andar diagonal DR
+        this.anims.create({
+            key: 'diagDR',
+            frames: this.anims.generateFrameNumbers('DiagDR', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        })
+        //Andar diagonal DL
+        this.anims.create({
+            key: 'diagDL',
+            frames: this.anims.generateFrameNumbers('DiagDL', { start: 0, end: 11 }),
+            frameRate: 10,
+            repeat: -1
+        })
+
+        // Criação da CÂMERA que segue o personagem | Zoom | Limites da câmera para não mostrar áreas fora do mapa
+        this.cameras.main.startFollow(this.personagem);
+        this.cameras.main.setZoom(2.7);
+        this.cameras.main.setBounds(0, 0, 1500, 800)
+            }
+            
+        
+        
+            update() {
+        let vel = 100;
+        this.personagem.setVelocity(0);
+
+            
+
+
+        var nenhumaTeclaPrecionada = !this.teclas.left.isDown && !this.teclas.right.isDown && !this.teclas.up.isDown && !this.teclas.down.isDown;
+
+        // Se nenhuma tecla foi pressionada, tocar animação idle
+        if (nenhumaTeclaPrecionada) {
+            if (!this.personagem.anims.isPlaying || this.personagem.anims.currentAnim.key !== 'idleFrente') {
+                this.personagem.play('idleFrente');
+            }
+        } else {
+            // LOGICA HORIZONTAL ( tecla + animação + Setflip)
+            // ESQUERDA
+            if (this.teclas.left.isDown) {
+                this.personagem.setVelocityX(-vel);
+                this.personagem.play('lado', true);
+                this.personagem.setFlipX(false);
+            }
+
+            // DIREITA
+            if (this.teclas.right.isDown) {
+                this.personagem.setVelocityX(vel);
+                this.personagem.play('lado', true);
+                this.personagem.setFlipX(true);
+            }
+
+            // LOGICA VERTICAL 
+            // CIMA
+            if (this.teclas.up.isDown) {
+                this.personagem.setVelocityY(-vel);
+                this.personagem.play('costa', true);
+            }
+
+            // BAIXO
+            if (this.teclas.down.isDown) {
+                this.personagem.setVelocityY(vel);
+                this.personagem.play('andar', true);
+            }
+        }
+
+
+
+        //Geração de ícones quando se aproxima de um certo local
+        //Coco teste
+        let distancia = (Phaser.Math.Distance.Between(
+            this.personagem.x, this.personagem.y, 
+            this.coco.x, this.coco.y));
+
+        if (distancia < 75) {
+            this.coco.setVisible(true);
+        } else {
+            this.coco.setVisible(false);
+        }
+
+      }
+    }
+
+    //Configurações do tipo de tela, cenário e framework. Phaser, Tamanho, Física, Gravidade, etc.
+    var config = {
+        type: Phaser.AUTO,
+        width: 1500,
+        height: 800,
+        backgroundColor: '#000000',
+       
+
+        physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 0 }, // Jogo top-down não tem gravidade
+            debug: false // false tira a hitbox, true mostra a hitbox
+        }
+     },
+        scene: [MenuPrincipal, CenaJogo]
+        
+    };
+
+
+        var game = new Phaser.Game(config);
+
+  
+    
+</script> 

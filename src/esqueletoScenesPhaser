@@ -1,0 +1,26 @@
+
+
+// Esqueleto para a criação de SCENES do phaser. 
+
+
+class Customizacao extends Phaser.scene {
+            constructor() { super('Customizacao'); }
+            preload() {
+
+            }
+
+            create() {
+
+            }
+        }
+        //Cena da configuração
+         class Configuracao extends Phaser.scene {
+            constructor() { super('Configuracao'); }
+            preload() {
+
+            }
+
+            create() {
+                
+            }
+        }
