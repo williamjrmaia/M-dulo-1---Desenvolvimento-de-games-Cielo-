@@ -1,4 +1,4 @@
-class MenuPrincipal extends Phaser.Scene {
+export default class MenuPrincipal extends Phaser.Scene {
             constructor() { super('MenuPrincipal'); }
             preload() {
              this.load.image('menu_jogo', 'Assets/Menu/menu_fundo.png');
