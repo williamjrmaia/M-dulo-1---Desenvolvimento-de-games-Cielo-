@@ -1,4 +1,4 @@
-<img src="../assets/logointeli.png">
+<img src="../assets/GDD/logointeli.png">
 
 
 # GDD - Game Design Document - Módulo 1 - Inteli
@@ -190,8 +190,8 @@ Figura 1: detalhe da cena da partida do herói para a missão, usando sua nave
 *Exemplo de tabela*
 \# | item |  | como obter | função | efeito sonoro
 --- | --- | --- | --- | --- | ---
-1 | moeda | <img src="../assets/coin.png"> | há muitas espalhadas em todas as fases | acumula dinheiro para comprar outros itens | som de moeda
-2 | madeira | <img src="../assets/wood.png"> | há muitas espalhadas em todas as fases | acumula madeira para construir casas | som de madeiras
+1 | moeda | <img src="../assets/GDD/coin.png"> | há muitas espalhadas em todas as fases | acumula dinheiro para comprar outros itens | som de moeda
+2 | madeira | <img src="../assets/GDD/wood.png"> | há muitas espalhadas em todas as fases | acumula madeira para construir casas | som de madeiras
 3 | ... 
 
 ### 3.4.2. Bestiário
@@ -201,8 +201,8 @@ Figura 1: detalhe da cena da partida do herói para a missão, usando sua nave
 *Exemplo de tabela*
 \# | inimigo |  | ocorrências | função | impacto | efeito sonoro
 --- | --- | --- | --- | --- | --- | ---
-1 | robô terrestre | <img src="../assets/inimigo2.PNG"> |  a partir da fase 1 | ataca o personagem vindo pelo chão em sua direção, com velocidade constante, atirando parafusos | se encostar no inimigo ou no parafuso arremessado, o personagem perde 1 ponto de vida | sons de tiros e engrenagens girando
-2 | robô voador | <img src="../assets/inimigo1.PNG"> | a partir da fase 2 | ataca o personagem vindo pelo ar, fazendo movimento em 'V' quando se aproxima | se encostar, o personagem perde 3 pontos de vida | som de hélice
+1 | robô terrestre | <img src="../assets/GDD/inimigo2.PNG"> |  a partir da fase 1 | ataca o personagem vindo pelo chão em sua direção, com velocidade constante, atirando parafusos | se encostar no inimigo ou no parafuso arremessado, o personagem perde 1 ponto de vida | sons de tiros e engrenagens girando
+2 | robô voador | <img src="../assets/GDD/inimigo1.PNG"> | a partir da fase 2 | ataca o personagem vindo pelo ar, fazendo movimento em 'V' quando se aproxima | se encostar, o personagem perde 3 pontos de vida | som de hélice
 3 | ... 
 
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
@@ -242,11 +242,11 @@ A câmera foi configurada com zoom dinâmico e programada para acompanhar o pers
 
 
 ###Ilustrações e prints de tela
-<img src="../assets/sprite1principal.jpeg">
-<img src="../assets/sprite2principal.jpeg">
-<img src="../assets/direitaCastelo.jpeg">
-<img src="../assets/noroeste.jpeg">
-<img src="../assets/frenteCastelo.jpeg">
+<img src="../assets/GDD/sprite1principal.jpeg">
+<img src="../assets/GDD/sprite2principal.jpeg">
+<img src="../assets/GDD/direitaCastelo.jpeg">
+<img src="../assets/GDD/noroeste.jpeg">
+<img src="../assets/GDD/frenteCastelo.jpeg">
 
 ###Dificuldades encontradas e próximos passos
 Durante o desenvolvimento inicial, foram identificadas dificuldades relacionadas principalmente à definição e segmentação do processo de negociação, de modo que ele pudesse ser estruturado e aplicado ao formato de cartas dentro da mecânica do jogo. Transformar situações reais de negociação em elementos sistematizados exigiu equilíbrio entre clareza conceitual, jogabilidade e coerência com os objetivos do projeto. 
