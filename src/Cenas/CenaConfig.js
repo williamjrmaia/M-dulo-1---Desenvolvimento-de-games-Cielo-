@@ -25,7 +25,3 @@ export default class CenaConfig extends Phaser.Scene {
             }
 
         }
-
-        //Função da movimentação
-
-        

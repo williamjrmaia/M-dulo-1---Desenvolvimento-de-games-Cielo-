@@ -1,3 +1,5 @@
+import { atualizarMovimentoJogador, configurarTeclas, criarAnimacoesJogador } from "./funcoes.js";
+
 export default class CenaCasa extends Phaser.Scene {
 
     constructor() {
@@ -12,13 +14,14 @@ export default class CenaCasa extends Phaser.Scene {
         this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('Lado', '../assets/animacoes/andarlado.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('Costa', '../assets/animacoes/andarcosta.png', { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('cielitapa', '../assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
+        this.load.spritesheet('cielitaparada', '../assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
     }
 
     create() {
-        // Cenário e NPC
-        this.add.image(750, 400, 'DentroCasa').setScale(2.3);
-        this.cielita = this.physics.add.sprite(750, 400, 'cielitapa').setScale(2.3);
+        // Cria uma variável chamada background para ser chamada nos limites do mundo
+        var background = this.add.image(750, 400, 'DentroCasa').setScale(2.3);
+        // NPC
+        this.cielita = this.physics.add.sprite(750, 400, 'cielitaparada').setScale(2.3);
         this.cielita.setImmovable(true);
 
         // Personagem principal
@@ -26,103 +29,53 @@ export default class CenaCasa extends Phaser.Scene {
         this.personagem.setCollideWorldBounds(true);
         this.personagem.body.setSize(10, 15);
         this.personagem.setOffset(27, 30);
-     
+
+        // Limites máximos do mapa
+        let larguraMapa = background.displayWidth;
+        let alturaMapa = background.displayHeight;
+        // Limites mínimos do mapa
+        let limiteX = background.x - (larguraMapa / 2);
+        let limiteY = background.y - (alturaMapa / 2);
+        this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
 
         // Controles
-        this.teclas = this.input.keyboard.addKeys({
-            up: Phaser.Input.Keyboard.KeyCodes.W,
-            down: Phaser.Input.Keyboard.KeyCodes.S,
-            left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D,
-        });
+        this.teclas = configurarTeclas(this);
 
-        // --- CRIANDO AS ANIMAÇÕES ---
-        // OBS: Você pode precisar ajustar o "end" dependendo de quantos frames tem sua imagem.
-        this.anims.create({
-            key: 'idleFrente',
-            frames: this.anims.generateFrameNumbers('IdleFrente', { start: 0, end: 0 }), 
-            frameRate: 5,
-            repeat: -1
-        });
+        // CRIANDO AS ANIMAÇÕES
+        criarAnimacoesJogador(this,this.teclas);
 
-        this.anims.create({
-            key: 'andar',
-            frames: this.anims.generateFrameNumbers('Andando', { start: 0, end: 3 }), 
-            frameRate: 8,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'lado',
-            frames: this.anims.generateFrameNumbers('Lado', { start: 0, end: 3 }), 
-            frameRate: 8,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'costa',
-            frames: this.anims.generateFrameNumbers('Costa', { start: 0, end: 3 }), 
-            frameRate: 8,
-            repeat: -1
-        });
-
-        //cielita
-        this.anims.create({
-            key: 'cielitaIdle',
-            frames: this.anims.generateFrameNumbers('cielitapa', { start: 0, end: 3 }), 
-            frameRate: 5,
-            repeat: -1
-        });
-       
-        this.cielita.play('cielitaIdle', true);
+        this.cielita.play('cielitaparada', true);
         
         this.physics.add.collider(this.personagem, this.cielita);
+
+        this.gatilhoPorta = this.add.zone(limiteX + larguraMapa/2,limiteY + alturaMapa - 20, 40, 40);
+        this.physics.add.existing(this.gatilhoPorta);
+        this.gatilhoPorta.body.setAllowGravity(false);
+        this.gatilhoPorta.body.setImmovable(true);
      
+        this.naPorta = false
+        this.physics.add.overlap(this.personagem, this.gatilhoPorta, () => {
+            this.naPorta = true;
+        }, null, this )
     }
+    
+
 
     update() {
-        let vel = 100;
-        this.personagem.setVelocity(0);
+        
+        atualizarMovimentoJogador(this.personagem, this.teclas);
 
+        if (!this.physics.overlap(this.personagem, this.gatilhoPorta)) {
+        this.naPorta = false;
+    }
 
-        // Usando this.teclas e verificando se nenhuma está pressionada
-        var nenhumaTeclaPressionada = !this.teclas.left.isDown && !this.teclas.right.isDown && !this.teclas.up.isDown && !this.teclas.down.isDown;
-        if (nenhumaTeclaPressionada) {
-            // O true garante que a animação não recomece se já estiver rodando
-            this.personagem.play('idleFrente', true);
-            
+        if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
 
-        } else {
-            // ESQUERDA
-            if (this.teclas.left.isDown) {
-                this.personagem.setVelocityX(-vel);
-                this.personagem.play('lado', true);
-                this.personagem.setFlipX(false);
-            }
-            // DIREITA
-            else if (this.teclas.right.isDown) { 
-                this.personagem.setVelocityX(vel);
-                this.personagem.play('lado', true);
-                this.personagem.setFlipX(true);
-            }
-
-            // CIMA
-            if (this.teclas.up.isDown) {
-                this.personagem.setVelocityY(-vel);
-                // Só troca a animação para "costa" se não estiver andando de lado
-                if (!this.teclas.left.isDown && !this.teclas.right.isDown) {
-                    this.personagem.play('costa', true);
-                }
-            }
-            // BAIXO
-            else if (this.teclas.down.isDown) {
-                this.personagem.setVelocityY(vel);
-                // Só troca a animação para "frente" se não estiver andando de lado
-                if (!this.teclas.left.isDown && !this.teclas.right.isDown) {
-                    this.personagem.play('andar', true);
-                }
-            }
-        }
+                    this.cameras.main.fadeOut(500, 0, 0, 0);
+                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                        this.scene.start('MundoCasa');
+                    });
+    }
           
     }
-}
+    }

@@ -2,7 +2,8 @@ export default class MenuPrincipal extends Phaser.Scene {
             constructor() { super('MenuPrincipal'); }
             preload() {
              this.load.image('menu_jogo', '../assets/Menu/menu_fundo.png');
-             this.load.image('botao_iniciar', '../assets/Menu/iniciar.png');
+             this.load.image('botao_iniciar', '../assets/Menu/iniciar_02.png');
+             this.load.image('botao_iniciar_hover', '../assets/Menu/iniciar_01.png');
              this.load.image('botao_sair', '../assets/Menu/sair.png');
              this.load.image('botao_config', '../assets/Menu/configuracao.png');
             }
@@ -20,8 +21,14 @@ export default class MenuPrincipal extends Phaser.Scene {
                 botaoSair.setInteractive();
 
                 //Clicar no botão, começar a animação de FADE e trocar para a CenaJogo
+                botaoInicio.on('pointerover', () => {
+                    botaoInicio.setTexture('botao_iniciar_hover');
+                })
+                botaoInicio.on('pointerout', () => {
+                    botaoInicio.setTexture('botao_iniciar');
+                })
                 botaoInicio.on('pointerdown', () => {
-                    this.cameras.main.fadeOut(2000, 0, 0, 0);
+                    this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                     this.scene.start('MundoCasa');
                   

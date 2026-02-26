@@ -1,38 +1,52 @@
 export function atualizarMovimentoJogador(personagem, teclas) {
+
+    if (!personagem || !teclas) return;
+
     let vel = 100;
     personagem.setVelocity(0);
 
-    var nenhumaTeclaPrecionada = !teclas.left.isDown && !teclas.right.isDown && !teclas.up.isDown && !teclas.down.isDown;
+    const nenhumaTeclaPressionada =
+        !teclas.left.isDown &&
+        !teclas.right.isDown &&
+        !teclas.up.isDown &&
+        !teclas.down.isDown;
 
-    if (nenhumaTeclaPrecionada) {
-        if (!personagem.anims.isPlaying || personagem.anims.currentAnim.key !== 'idleFrente') {
-            personagem.play('idleFrente');
-        }
-    } else {
-        // ESQUERDA
-        if (teclas.left.isDown) {
-            personagem.setVelocityX(-vel);
-            personagem.play('lado', true);
-            personagem.setFlipX(false);
-        }
-        // DIREITA
-        else if (teclas.right.isDown) { // Usando 'else if' para evitar conflito se apertar duas teclas
-            personagem.setVelocityX(vel);
-            personagem.play('lado', true);
-            personagem.setFlipX(true);
-        }
-
-        // CIMA
-        if (teclas.up.isDown) {
-            personagem.setVelocityY(-vel);
-            personagem.play('costa', true);
-        }
-        // BAIXO
-        else if (teclas.down.isDown) {
-            personagem.setVelocityY(vel);
-            personagem.play('andar', true);
-        }
+    if (nenhumaTeclaPressionada) {
+        personagem.play('idleFrente', true);
+        return;
     }
+
+    if (teclas.left.isDown) {
+        personagem.setVelocityX(-vel);
+        personagem.play('lado', true);
+        personagem.setFlipX(false);
+    }
+    else if (teclas.right.isDown) {
+        personagem.setVelocityX(vel);
+        personagem.play('lado', true);
+        personagem.setFlipX(true);
+    }
+
+    if (teclas.up.isDown) {
+        personagem.setVelocityY(-vel);
+        if (!teclas.left.isDown && !teclas.right.isDown)
+            personagem.play('costa', true);
+    }
+    else if (teclas.down.isDown) {
+        personagem.setVelocityY(vel);
+        if (!teclas.left.isDown && !teclas.right.isDown)
+            personagem.play('andar', true);
+    }
+}
+
+export function configurarTeclas(cena) {
+    return cena.input.keyboard.addKeys({
+        up: Phaser.Input.Keyboard.KeyCodes.W,
+        down: Phaser.Input.Keyboard.KeyCodes.S,
+        left: Phaser.Input.Keyboard.KeyCodes.A,
+        right: Phaser.Input.Keyboard.KeyCodes.D,
+        interagir: Phaser.Input.Keyboard.KeyCodes.E
+    });
 }
 
 export function criarAnimacoesJogador(cena) {

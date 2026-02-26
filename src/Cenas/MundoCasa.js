@@ -1,4 +1,4 @@
-import { criarAnimacoesJogador, atualizarMovimentoJogador } from './funcoes.js';
+import { criarAnimacoesJogador, atualizarMovimentoJogador, configurarTeclas} from './funcoes.js';
 
 export default class MundoCasa extends Phaser.Scene {
             constructor() {super('MundoCasa'); }
@@ -13,7 +13,11 @@ export default class MundoCasa extends Phaser.Scene {
             }
 
             create() {
-               
+
+                this.teclas = configurarTeclas(this); 
+                
+                
+
                 this.add.image(750, 400, 'MenuFundo');
                 this.add.image(750, 400, 'MundoCasa');
                 
@@ -27,8 +31,10 @@ export default class MundoCasa extends Phaser.Scene {
             this.personagem = this.physics.add.sprite(750, 480, 'IdleFrente').setScale(1.0);
             this.personagem.setCollideWorldBounds(true); // Impede ele de sair da tela
             this.personagem.body.setSize(15, 20); // Deixa a hitbox pequena, apenas nos pés
+
+            atualizarMovimentoJogador(this.personagem, this.teclas); 
                
-                //Hitbox da casa + porta
+            //Hitbox da casa + porta
             this.gatilhoCasa = this.add.zone(875, 337, 73, 58);
             this.physics.add.existing(this.gatilhoCasa);
             this.gatilhoCasa.body.setImmovable(true);
@@ -44,36 +50,21 @@ export default class MundoCasa extends Phaser.Scene {
                 this.naPorta = true;
             }, null, this )
 
+            criarAnimacoesJogador(this,this.teclas); 
+        }
 
-                // 2. Criar os controles (teclas)
-            this.teclas = this.input.keyboard.addKeys({
-            up: Phaser.Input.Keyboard.KeyCodes.W,
-            down: Phaser.Input.Keyboard.KeyCodes.S,
-            left: Phaser.Input.Keyboard.KeyCodes.A,
-            right: Phaser.Input.Keyboard.KeyCodes.D,
-            interagir: Phaser.Input.Keyboard.KeyCodes.E
-            });
-
-            
-
-             criarAnimacoesJogador(this);  
-             }
-            update() {
+    update() {
 
                 if (!this.physics.overlap(this.personagem, this.gatilhoPorta)) {
                 this.naPorta = false;
                 }
 
                 if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-        console.log("Entrando na casa...");
-        
-        // Desativa o input para evitar múltiplos cliques durante o fade
-        this.input.keyboard.enabled = false;
 
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start('CenaCasa');
-        });
+                    this.cameras.main.fadeOut(500, 0, 0, 0);
+                    this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                        this.scene.start('CenaCasa');
+                    });
     }
 
               
