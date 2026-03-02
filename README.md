@@ -6,9 +6,9 @@
 
 <br>
 
-# Nome do projeto
+# Cielo Verso
 
-## Nome do grupo
+## O Octeto Fantástico
 
 ## 👨‍🎓 Integrantes: 
 - <a href="https://www.linkedin.com/in/victorbarq/">Nome do integrante 1</a>
