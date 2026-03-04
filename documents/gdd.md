@@ -39,7 +39,9 @@
 ### 1.1.1. Contexto da indústria (sprint 2)
 
 A Cielo atua no setor de serviços financeiros, mais especificamente no segmento de meios eletrônicos de pagamento e adquirência. Sua atividade principal consiste em credenciar estabelecimentos comerciais para aceitar pagamentos com cartões de crédito, débito e vouchers, realizando a captura, o processamento e a liquidação das transações financeiras. Essa operação conecta três pontas do ecossistema: os estabelecimentos comerciais, as instituições financeiras emissoras (bancos) e as bandeiras de cartão, como Visa e Mastercard. A empresa fornece terminais de ponto de venda (POS), soluções de e-commerce, links de pagamento, antecipação de recebíveis, gestão de vendas e serviços integrados de tecnologia financeira, operando como intermediadora tecnológica e financeira nesse fluxo (Cielo, 2024).
+
 O mercado brasileiro de adquirência tornou-se mais competitivo após a quebra da exclusividade entre bandeiras e credenciadoras em 2010, ampliando a entrada de novos players como Stone e PagSeguro (InvestNews, 2024). Além disso, a implementação do Pix pelo Banco Central do Brasil em 2020 intensificou a transformação digital dos meios de pagamento, oferecendo transferências instantâneas com menor custo para lojistas e consumidores. Esse cenário reduziu margens no setor de terminais físicos e impactou a liderança histórica da Cielo em participação de mercado, exigindo reposicionamento estratégico diante da digitalização acelerada e da maior sensibilidade a preços (Banco Central do Brasil, 2024; Cielo, 2024).
+
 Atualmente, a Cielo adota uma estratégia focada em eficiência operacional, ampliação de soluções digitais e diversificação de serviços financeiros, buscando ir além da captura de transações. A empresa investe em tecnologia, análise de dados e integração com plataformas digitais para oferecer soluções completas de gestão financeira aos lojistas. Sua atuação possui abrangência nacional, atendendo micro, pequenas, médias e grandes empresas em todo o território brasileiro, com forte capilaridade comercial e relacionamento com grandes bancos acionistas (Cielo, 2024). Esse reposicionamento visa fortalecer a competitividade em um ambiente de pagamentos cada vez mais digital, instantâneo e orientado por inovação.
 
 
@@ -105,18 +107,15 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 
 \# | Requisito | Explicação
 --- | --- | ---
-1 | Introdução narrativa | O jogo deve apresentar uma introdução narrativa que contextualiza o universo do jogo e apresenta suas regras básicas.
-2 | Escolha de avatar | O jogo deve permitir que o jogador escolha seu avatar.
-3 | Mapa geral | O jogo deve conter um mapa geral com as quatro regiões principais: Negociação, Produto, Benefícios e a cidade principal
-4 | Mapa da cidade | O jogo deve conter um mapa principal ambientado em uma cidade central, no qual o jogador poderá circular e negociar com os clientes.
-5 | Joystick | O personagem do jogador deve ser controlado por meio de um joystick virtual localizado no lado esquerdo da tela, permitindo movimentação em qualquer direção.
+1 | Introdução narrativa | O jogo deve apresentar uma introdução narrativa na Casa da Cielita, na qual a NPC Cielita contextualiza o universo do jogo e apresenta suas regras básicas por meio de caixas de diálogo.
+2 | Configuração Inicial do Avatar | O jogo deverá disponibilizar quatro (4) opções de avatares jogáveis para seleção do jogador em uma tela específica no início da partida. Após a escolha do avatar, o jogador deverá definir o nome do personagem, que será utilizado para sua identificação ao longo da experiência. A seleção do avatar e do nome poderá ser alterada posteriormente por meio das configurações do jogo.
+3 | Mapa geral | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielta, Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
+4 | Regiões principais | O jogo deve conter a primeira região, Quebra-Gelo, que abordará proposta de valor, conceitos fundamentais e superação de objeções; a segunda, Vila do Varejo, que deverá contemplar a aplicação prática de produtos e soluções conforme o perfil do cliente; a terceira, Floresta dos Proveitos, que deverá tratar da identificação e argumentação de benefícios e diferenciais competitivos; e a quarta e última, Cidade da Negociação, que deverá consolidar os conhecimentos adquiridos nas regiões anteriores por meio de desafios de estratégia, negociação e fechamento.
+5 | Movimentação e interação do jogador | A movimentação do personagem será realizada por meio das teclas W, A, S e D do teclado, responsáveis pelo deslocamento direcional. A tecla E será destinada à interação do jogador com NPCs e objetos presentes no mapa.
 6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface e de variações visuais nos sprites dos personagens.
-7 | Cartas | O jogo deve disponibilizar ao jogador as cartas disponíveis para uso durante a gameplay.
+7 | Cartas | O jogo deve disponibilizar inicialmente ao jogador cartas para combate.
 8 | Combate | O sistema de jogo deve implementar combates baseados no uso de cartas.
 9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento do sistema de combate.
-10 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento do sistema de combate.
-11 | Música de fundo | O jogo deve ter uma música de fundo.
-12 | Barulho de fala | Durante as falas de texto dos NPCs, deve haver um som que toca enquanto a mensagem aparece.
 
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
@@ -372,8 +371,7 @@ Figura 3: Menu Inicial
 
 ## 4.1. Desenvolvimento preliminar do jogo (sprint 1)
 
-A primeira versão do jogo foi desenvolvida com foco na implementação das mecânicas essenciais, garantindo que a estrutura básica estivesse funcional. Durante essa fase inicial, foram trabalhados o design do personagem principal, a criação de suas animações de movimentação e a construção de seu storytelling, estabelecendo a identidade visual e narrativa do projeto.
- Paralelamente, foi elaborada uma versão inicial do mapa, dividido em regiões temáticas: Vila do Varejo (área dos produtos), Floresta dos Proveitos (mapa dos benefícios), Terras Glaciais (mapa dos conceitos) e a área de Negociação.
+A primeira versão do jogo foi desenvolvida com foco na implementação das mecânicas essenciais, garantindo que a estrutura básica estivesse funcional. Durante essa fase inicial, foram trabalhados o design do personagem principal, a criação de suas animações de movimentação e a construção de seu storytelling, estabelecendo a identidade visual e narrativa do projeto. Paralelamente, foi elaborada uma versão inicial do mapa, dividido em regiões temáticas: Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
 
 Em termos de código, foi implementado um sistema de movimentação utilizando as teclas WASD, permitindo que o jogador explore o ambiente. O personagem é inserido no mundo do jogo com um corpo físico (hitbox), garantindo a colisão com os limites do mapa e impedindo que ultrapasse as áreas definidas ou saia da tela. Além disso, foi desenvolvido o sistema responsável por carregar a imagem de fundo do mapa e posicionar os objetos estáticos na tela, compondo o cenário inicial do jogo.
 
@@ -387,7 +385,7 @@ A câmera foi configurada com zoom dinâmico e programada para acompanhar o pers
 <img src="../assets/GDD/noroeste.jpeg">
 <img src="../assets/GDD/frenteCastelo.jpeg">
 
-###Dificuldades encontradas e próximos passos
+## Dificuldades encontradas e próximos passos
 Durante o desenvolvimento inicial, foram identificadas dificuldades relacionadas principalmente à definição e segmentação do processo de negociação, de modo que ele pudesse ser estruturado e aplicado ao formato de cartas dentro da mecânica do jogo. Transformar situações reais de negociação em elementos sistematizados exigiu equilíbrio entre clareza conceitual, jogabilidade e coerência com os objetivos do projeto. 
 
 Além disso, o design do personagem principal representou um desafio, pois foi necessário alinhar identidade visual, proposta narrativa e viabilidade técnica para animações e implementação.
