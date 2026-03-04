@@ -3,9 +3,16 @@ import Jogador from './classes.js';
 export default class MundoCasa extends Phaser.Scene {
     constructor() { super('MundoCasa'); }
 
+
+
+    init(data) {
+        this.origem = data.vindoDe; 
+    }
+
     preload() {
         this.load.image('MundoCasa', '../assets/CenarioCasa/Scene1.png');
         this.load.image('MenuFundo', '../assets/menu/menu_fundo.png');
+       
 
         this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
@@ -15,13 +22,14 @@ export default class MundoCasa extends Phaser.Scene {
 
     create() {
         this.add.image(750, 400, 'MenuFundo');
+        
         //usa a variavel background apenas na parte que o player deve andar
         var background = this.add.image(750, 400, 'MundoCasa');
 
         // limites da cena
         let larguraMapa = background.displayWidth ;
         let alturaMapa  = background.displayHeight ;
-        let limiteX     = (background.x - larguraMapa / 2) - 25;
+        let limiteX     = (background.x - larguraMapa / 2) -25;
         let limiteY     = (background.y - alturaMapa  / 2) - 40;
         this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
 
@@ -35,6 +43,24 @@ export default class MundoCasa extends Phaser.Scene {
         this.gatilhoCasa.body.setImmovable(true);
         this.gatilhoCasa.body.setAllowGravity(false);
 
+        //Zonas de hitbox
+        this.pontebraco1 = this.add.zone(930, 390, 40, 15);
+        this.physics.add.existing(this.pontebraco1);
+        this.pontebraco1.body.setImmovable(true);
+        this.pontebraco1.body.setAllowGravity(false);
+        this.personagem.adicionarColisao(this.pontebraco1);
+        
+        this.pontebraco2 = this.add.zone(930, 430, 40, 15);
+        this.physics.add.existing(this.pontebraco2);
+        this.pontebraco2.body.setImmovable(true);
+        this.pontebraco2.body.setAllowGravity(false);
+        this.personagem.adicionarColisao(this.pontebraco2);
+
+        //Portal para transicionar entre MundoCasa e ZonaGelo 
+        this.portalGelo = this.add.zone(925, 410, 10, 13);
+        this.physics.add.existing(this.portalGelo);
+
+
         this.personagem.adicionarColisao(this.gatilhoCasa);
 
         // Door trigger zone (separate from the house collider)
@@ -47,6 +73,21 @@ export default class MundoCasa extends Phaser.Scene {
         this.personagem.adicionarOverlap(this.gatilhoPorta, () => {
             this.naPorta = true;
         });
+
+        
+       
+
+        //Sistema de trava para o FadeOut do Portal (porque ele usa o Overlap no update, então fica sempre iniciando a animação quando o boneco está por cima)
+        this.fazendoTransicao = false
+
+        //Sistema para spawnar na ponte se estiver voltando do MapaGelo
+   
+        if (this.origem === 'MapaGelo') {
+            this.personagem.sprite.setPosition(900, 400)
+        }
+
+        
+
     }
 
     update() {
@@ -60,6 +101,21 @@ export default class MundoCasa extends Phaser.Scene {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('CenaCasa');
+            });
+        }
+
+        //Transição do Portal para o MundoGelo
+
+         if (!this.personagem.temOverlap(this.portalGelo)) {
+            this.noPortal = false;
+        }
+
+         if (this.personagem.temOverlap(this.portalGelo) && !this.fazendoTransicao) {
+            this.fazendoTransicao = true
+
+            this.cameras.main.fadeOut(500, 0, 0, 0);
+            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.start('MapaGelo');
             });
         }
 
