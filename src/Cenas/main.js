@@ -1,5 +1,4 @@
 import MenuPrincipal from './MenuPrincipal.js';
-import CenaJogo from './CenaJogo.js';
 import CenaConfig from './CenaConfig.js';
 import CenaCasa from './CenaCasa.js';
 import MundoCasa from './MundoCasa.js';
@@ -16,7 +15,7 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuPrincipal, CenaJogo, CenaConfig, CenaCasa, MundoCasa]
+    scene: [MenuPrincipal, CenaConfig, CenaCasa, MundoCasa]
 };
 
 const game = new Phaser.Game(config);
