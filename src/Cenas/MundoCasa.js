@@ -25,10 +25,14 @@ export default class MundoCasa extends Phaser.Scene {
         let limiteY     = (background.y - alturaMapa  / 2) - 40;
         this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
 
+        this.cameras.main.setZoom(2.6);
+        this.cameras.main.setBounds(0, 0, 1500, 800);
+        this.cameras.main.startFollow(this.personagem.sprite);
+
         // Player
         this.personagem = new Jogador(this, 750, 480, 1.0);
         this.teclas = this.personagem.configurarTeclas();
-
+        console.log()
         // House hitbox (blocks the player)
         this.gatilhoCasa = this.add.zone(875, 337, 73, 55);
         this.physics.add.existing(this.gatilhoCasa);
@@ -63,8 +67,6 @@ export default class MundoCasa extends Phaser.Scene {
             });
         }
 
-        this.cameras.main.setZoom(2.6);
-        this.cameras.main.setBounds(0, 0, 1500, 800);
-        this.cameras.main.startFollow(this.personagem.sprite);
+        ;
     }
 }

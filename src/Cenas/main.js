@@ -1,4 +1,5 @@
 import MenuPrincipal from './MenuPrincipal.js';
+import CenaPersonagem from './CenaPersonagem.js';
 import CenaConfig from './CenaConfig.js';
 import CenaCasa from './CenaCasa.js';
 import MundoCasa from './MundoCasa.js';
@@ -8,6 +9,7 @@ const config = {
     width: 1500,
     height: 800,
     backgroundColor: '#000000',
+    dom: {createContainer: true},
     physics: {
         default: 'arcade',
         arcade: {
@@ -15,7 +17,8 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuPrincipal, CenaConfig, CenaCasa, MundoCasa]
+    
+    scene: [MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa]
 };
 
 const game = new Phaser.Game(config);

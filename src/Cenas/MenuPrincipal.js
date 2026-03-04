@@ -30,7 +30,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                 botaoInicio.on('pointerdown', () => {
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                    this.scene.start('MundoCasa');
+                    this.scene.start('CenaPersonagem');
                   
                 })
                 });
