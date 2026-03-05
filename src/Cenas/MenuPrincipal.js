@@ -4,8 +4,10 @@ export default class MenuPrincipal extends Phaser.Scene {
              this.load.image('menu_jogo', '../assets/Menu/menu_fundo.png');
              this.load.image('botao_iniciar', '../assets/Menu/iniciar_02.png');
              this.load.image('botao_iniciar_hover', '../assets/Menu/iniciar_01.png');
-             this.load.image('botao_sair', '../assets/Menu/sair.png');
-             this.load.image('botao_config', '../assets/Menu/configuracao.png');
+             this.load.image('botao_sair_hover', '../assets/Menu/sair_02.png');
+             this.load.image('botao_sair', '../assets/Menu/sair_01.png');
+             this.load.image('botao_config', '../assets/Menu/configuracao_02.png');
+             this.load.image('botao_config_hover', '../assets/Menu/configuracao_01.png')
             }
 
             create() {
@@ -36,11 +38,23 @@ export default class MenuPrincipal extends Phaser.Scene {
                 });
 
                 //Botão para entrar nas configs do jogo
+                botaoConfig.on('pointerover',() => {
+                    botaoConfig.setTexture('botao_config_hover');
+                })
+                botaoConfig.on('pointerout', () => {
+                    botaoConfig.setTexture('botao_config');
+                })
                 botaoConfig.on('pointerdown', () => {
                     this.scene.start('CenaConfig');
                 });
                 
                 //Botão de sair fecha todas as abas
+                botaoSair.on('pointerover', () => {
+                    botaoSair.setTexture('botao_sair_hover');
+                })
+                botaoSair.on('pointerout', () => {
+                    botaoSair.setTexture('botao_sair');
+                })
                 botaoSair.on('pointerdown', () => {
                     window.close();
                 });
