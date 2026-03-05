@@ -18,7 +18,9 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     create() {
-        
+
+        this.fazendoTransicao = false;
+
         this.add.image(750, 400, 'MapaGelo');
         this.add.image(165, 108, 'Ponte');
         this.personagem = new Jogador(this, 120, 90, 1.0);
@@ -57,23 +59,27 @@ export default class MapaGelo extends Phaser.Scene {
         // Efeito de entrada suave
         this.cameras.main.fadeIn(500, 0, 0, 0);
     }
-
-    update() {
         
-        this.personagem.atualizar();
+       update() {
+    this.personagem.atualizar();
 
-        //ESquema para voltar à cena anterior
-           if (!this.personagem.temOverlap(this.portalGelo)) {
-            this.noPortal = false;
-        }
-
-         if (this.personagem.temOverlap(this.portalGelo) && !this.fazendoTransicao) {
-            this.fazendoTransicao = true
+    // Verifica se está no portal E se não está ocorrendo uma transição agora
+    if (this.personagem.temOverlap(this.portalGelo)) {
+        if (!this.fazendoTransicao) {
+            this.fazendoTransicao = true;
 
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                // Certifique-se de que a cena 'MundoCasa' também reseta as variáveis dela!
                 this.scene.start('MundoCasa', { vindoDe: 'MapaGelo' });
             });
         }
-    }
+    } else {
+        // Opcional: Se o jogador sair do portal, garante que pode transitar de novo
+        // Mas o reset no create() costuma ser o suficiente para o seu caso.
+        this.fazendoTransicao = false;
+         }
+}       
 }
+
+    
