@@ -47,6 +47,9 @@ Atualmente, a Cielo adota uma estratégia focada em eficiência operacional, amp
 
 #### 1.1.1.1. Modelo de 5 Forças de Porter (sprint 2)
 
+**Introdução**
+O modelo das Cinco Forças de Porter, desenvolvido por Michael Porter, é uma ferramenta estratégica amplamente utilizada para analisar o nível de competitividade de um setor e compreender os fatores que influenciam a lucratividade das empresas. A partir dessa abordagem, é possível identificar as principais pressões competitivas do mercado, bem como oportunidades e desafios que impactam o posicionamento estratégico das organizações. No contexto do mercado de adquirência no Brasil, onde atua a Cielo, essa análise permite compreender como mudanças tecnológicas, regulações e novos modelos de negócio vêm transformando o setor de pagamentos (Porter, 2008).
+
 **Análise da Ameaça de Novos Entrantes**
 A análise da ameaça de novos entrantes para a Cielo revela um cenário de profunda transição, em que barreiras tradicionais, como a necessidade de elevados investimentos em redes físicas de terminais e infraestrutura de processamento, vêm sendo substituídas por exigências regulatórias rigorosas. O arcabouço do Banco Central do Brasil, especialmente por meio de normativas como a Resolução BCB nº 80/2021, alterou significativamente o rito de entrada, exigindo autorização prévia e estrita adequação de capital para o funcionamento de novas Instituições de Pagamento (IPs), atuando como um pesado filtro prudencial e de governança.
 Apesar da barreira regulatória, o impacto potencial de novos entrantes continua disruptivo devido à drástica redução das barreiras tecnológicas. De acordo com o Relatório de Economia Bancária do Banco Central do Brasil (2021), o avanço de modelos como Banking as a Service (BaaS) e a implementação do Open Finance permitem que empresas de tecnologia, varejistas e marketplaces passem a oferecer produtos financeiros (como a "adquirência white label") sem precisar construir a infraestrutura do zero. Assim, a ameaça de novos entrantes pode ser classificada como moderada a alta, sendo contida pelas exigências do regulador, mas fortemente impulsionada pela facilidade tecnológica de implementação e escalabilidade.
@@ -67,20 +70,28 @@ Uma das estratégias centrais que elevam o poder do cliente é a adoção da mul
 A rivalidade no mercado brasileiro de adquirência, frequentemente referida pelo mercado financeiro como "a guerra das maquininhas", é intensa, agressiva e baseada em forte compressão de margens. A Cielo, que historicamente operava em um mercado duopolista, enfrenta hoje a pulverização de market share disputando contra incumbentes (Rede, Getnet) e fintechs listadas em bolsa que adotam táticas predatórias de preço (Stone, PagSeguro, Mercado Pago)(Estadão Conteúdo, 2024).
 O serviço básico de captura de transações tornou-se uma commodity. De acordo com informações prestadas pela própria companhia ao mercado (Cielo S.A., 2024), a estratégia de retenção deixou de ser o terminal físico e passou a exigir a oferta de serviços de valor agregado (SVA), como crédito integrado, conta digital, conciliação e softwares de gestão varejista. A fragmentação dos players, o alto custo de aquisição de clientes (CAC) na base da pirâmide (microempreendedores) e a necessidade de altíssimo investimento em tecnologia comprovam que a rivalidade entre os concorrentes existentes é muito alta.
 
-
+**Conclusão**
+A análise das Cinco Forças de Porter indica que o mercado de adquirência no Brasil é altamente competitivo e está em constante transformação. Fatores como avanços tecnológicos, surgimento de novos concorrentes e o crescimento de soluções como o Pix aumentam a pressão sobre os modelos tradicionais de pagamento. Nesse cenário, empresas como a Cielo precisam investir em inovação e serviços de valor agregado para manter sua competitividade no setor.
 
 
 ### 1.1.2. Análise SWOT (sprint 2)
 
-A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). Forças são vantagens internas, e, no caso da Cielo, destacam-se a marca consolidada e a alta capilaridade de mercado, sustentadas por uma vantagem competitiva robusta junto ao sistema bancário (Cielo, 2023). Sua presença institucionalizada no setor varejista reforça seu posicionamento como player de referência no ecossistema de pagamentos (Abecs, 2023), evidenciando solidez estrutural e reconhecimento no mercado.
+A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). 
+
+Forças são vantagens internas, e, no caso da Cielo, destacam-se a marca consolidada e a alta capilaridade de mercado, sustentadas por uma vantagem competitiva robusta junto ao sistema bancário (Cielo, 2023). Sua presença institucionalizada no setor varejista reforça seu posicionamento como player de referência no ecossistema de pagamentos (Abecs, 2023), evidenciando solidez estrutural e reconhecimento no mercado.
+
 Por outro lado, as fraquezas correspondem a limitações internas que reduzem a capacidade competitiva da organização (Fernandes et al., 2015). No caso da Cielo, destaca-se a elevada concentração de suas operações no mercado brasileiro, o que amplia sua exposição a oscilações econômicas e regulatórias (Cielo, 2023). Além disso, a perda de participação de mercado e a redução de margens observadas nos últimos anos refletem dificuldades internas de adaptação frente ao aumento da concorrência, impactando seu desempenho financeiro e estratégico.
-Já as oportunidades referem-se a fatores externos favoráveis, como a digitalização progressiva de pequenos negócios e a expansão do e-commerce, que ampliam a adesão aos meios de pagamento digitais e criam novos fluxos de receita e possibilidades de diversificação do portfólio de serviços (Vial, 2019). Em contrapartida, as ameaças envolvem riscos regulatórios que podem comprimir margens financeiras (Banco Central do Brasil, 2023), além da saturação competitiva e da ascensão do Pix como método de pagamento substituto, reduzindo a dependência de cartões físicos e terminais de captura (Banco Central do Brasil, 2023).
+
+Já as oportunidades referem-se a fatores externos favoráveis, como a digitalização progressiva de pequenos negócios e a expansão do e-commerce, que ampliam a adesão aos meios de pagamento digitais e criam novos fluxos de receita e possibilidades de diversificação do portfólio de serviços (Vial, 2019). 
+
+Em contrapartida, as ameaças envolvem riscos regulatórios que podem comprimir margens financeiras (Banco Central do Brasil, 2023), além da saturação competitiva e da ascensão do Pix como método de pagamento substituto, reduzindo a dependência de cartões físicos e terminais de captura (Banco Central do Brasil, 2023).
+
 Assim, conclui-se que a Cielo atua em um mercado competitivo e em constante transformação, no qual possui pontos fortes relevantes, mas também enfrenta desafios internos e externos que exigem adaptação contínua. De modo geral, a análise SWOT demonstra que a empresa apresenta base sólida para crescimento, embora precise acompanhar as mudanças do setor para manter sua posição no mercado.
 
 
 ### 1.1.3. Missão / Visão / Valores (sprint 2)
 
-A missão deste projeto é promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva, na qual os jogadores percorrem as Terras Glaciais dos Conceitos, a Vila do Varejo dos Produtos e a Floresta dos Proveitos dos Benefícios para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil. Sua visão é consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas. Sustentado pelos valores de equidade, empatia, inovação e colaboração, o projeto vai além do entretenimento, posicionando-se como uma ferramenta de transformação profissional e fortalecimento do desempenho nacional.
+A missão deste projeto é promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva, na qual os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Floresta dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil. Sua visão é consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas. Sustentado pelos valores de equidade, empatia, inovação e colaboração, o projeto vai além do entretenimento, posicionando-se como uma ferramenta de transformação profissional e fortalecimento do desempenho nacional.
 
 
 ### 1.1.4. Proposta de Valor (sprint 4)
@@ -120,7 +131,7 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
 
-O público-alvo do projeto é composto pelos Gerentes de Negócios da Cielo, com média de idade de 44 anos, distribuídos por todas as regiões do país e inseridos em diferentes realidades demográficas e socioeconômicas. A maioria possui ensino médio completo, sendo que 35% conta com ensino superior completo. Esses profissionais atuam diretamente no relacionamento com clientes e na comercialização de soluções de pagamento, enfrentando desafios regionais distintos que impactam sua rotina, metas e desempenho comercial.
+O público-alvo do projeto é composto pelos Gerentes de Negócios da Cielo, com média de idade estimada de 44 anos, distribuídos por todas as regiões do Brasil e inseridos em diferentes contextos demográficos e socioeconômicos. A maioria possui ensino médio completo, sendo que cerca de 35% conta com ensino superior completo. Esses profissionais atuam diretamente na prospecção de clientes, gestão de carteira e comercialização de soluções de pagamento para estabelecimentos comerciais. Devido à atuação em diferentes regiões do país, esses gerentes enfrentam desafios regionais distintos que impactam sua rotina, metas e desempenho comercial (Cielo, 2024).
 
 # <a name="c2"></a>2. Visão Geral do Jogo (sprint 2)
 
@@ -471,6 +482,11 @@ SOBRENOME, Nome. Título do livro: subtítulo do livro. Edição. Cidade de publ
 
 INTELI. Adalove. Disponível em: https://adalove.inteli.edu.br/feed. Acesso em: 1 out. 2023 <br>
 SOBRENOME, Nome. Título do site. Disponível em: link do site. Acesso em: Dia Mês Ano
+
+Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review.
+https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy
+
+
 
 # <a name="c8"></a>Anexos
 
