@@ -9,14 +9,7 @@ export default class CenaCasa extends Phaser.Scene {
     preload() {
         this.load.image('DentroCasa', '../assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
 
-        // Personagem
-        this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       '../assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      '../assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
-
-        // NPC
-        this.load.spritesheet('cielitaparada', '../assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
+        this.load.spritesheet('cielitaparada', 'assets/NPC/cielita/spr_cielita_front_idl.png', { frameWidth: 64, frameHeight: 64 })
     }
 
     create() {

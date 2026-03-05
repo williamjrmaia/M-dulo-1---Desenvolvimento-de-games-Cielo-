@@ -1,3 +1,4 @@
+import Preloader from './Preloader.js';
 import MenuPrincipal from './MenuPrincipal.js';
 import CenaPersonagem from './CenaPersonagem.js';
 import CenaConfig from './CenaConfig.js';
@@ -18,7 +19,7 @@ const config = {
         }
     },
     
-    scene: [MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa]
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa]
 };
 
 const game = new Phaser.Game(config);

@@ -6,11 +6,6 @@ export default class MundoCasa extends Phaser.Scene {
     preload() {
         this.load.image('MundoCasa', '../assets/CenarioCasa/Scene1.png');
         this.load.image('MenuFundo', '../assets/menu/menu_fundo.png');
-
-        this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       '../assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      '../assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {
@@ -25,9 +20,7 @@ export default class MundoCasa extends Phaser.Scene {
         let limiteY     = (background.y - alturaMapa  / 2) - 40;
         this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
 
-        this.cameras.main.setZoom(2.6);
-        this.cameras.main.setBounds(0, 0, 1500, 800);
-        this.cameras.main.startFollow(this.personagem.sprite);
+        
 
         // Player
         this.personagem = new Jogador(this, 750, 480, 1.0);
@@ -51,6 +44,10 @@ export default class MundoCasa extends Phaser.Scene {
         this.personagem.adicionarOverlap(this.gatilhoPorta, () => {
             this.naPorta = true;
         });
+
+        this.cameras.main.setZoom(2.6);
+        this.cameras.main.setBounds(0, 0, 1500, 800);
+        this.cameras.main.startFollow(this.personagem.sprite);
     }
 
     update() {

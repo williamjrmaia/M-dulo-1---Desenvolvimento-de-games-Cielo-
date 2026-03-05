@@ -1,17 +1,16 @@
 export default class CenaPersonagem extends Phaser.Scene {
     constructor() {
         super('CenaPersonagem');
-        this.spriteSelecionado = 'IdleFrente'; // default
+        this.spriteSelecionado = 'man_whi'; // default
         this.indexSelecionado  = 0;
     }
 
     preload() {
         // Load all 4 character spritesheets
-        // Replace these keys/paths with your actual character assets
-        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
-        //this.load.spritesheet('Personagem2', '../assets/animacoes/personagem2.png', { frameWidth: 64, frameHeight: 64 });
-        //this.load.spritesheet('Personagem3', '../assets/animacoes/personagem3.png', { frameWidth: 64, frameHeight: 64 });
-        //this.load.spritesheet('Personagem4', '../assets/animacoes/personagem4.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('man_whi', 'assets/PLAYER/MAN/WHITE/spr_player_man_front_idl_whi.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('man_bla', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('woman_whi', 'assets/PLAYER/WOMAN/WHITE/spr_player_woman_front_idl_whi.png', { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('woman_bla', 'assets/PLAYER/WOMAN/BLACK/spr_player_woman_front_idl_bla.png', { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {
@@ -25,9 +24,9 @@ export default class CenaPersonagem extends Phaser.Scene {
         this.add.text(W / 2, 80, 'ESCOLHA SEU PERSONAGEM', {
             fontFamily: '"Courier New", monospace',
             fontSize: '36px',
-            color: '#e0d0ff',
+            color: '#d0f6ff',
             letterSpacing: 8,
-            stroke: '#6644cc',
+            stroke: '#44cccc',
             strokeThickness: 4,
         }).setOrigin(0.5);
 
@@ -41,11 +40,12 @@ export default class CenaPersonagem extends Phaser.Scene {
         // ── Opção de personagem ─────────────────────────────────────────────────
         // Each entry: { key, label, frameEnd }
         this.opcoes = [
-            { key: 'IdleFrente',  label: '1', frameEnd: 11 },
-            //{ key: 'Personagem2', label: 'Mago',         frameEnd: 11 },
-            //{ key: 'Personagem3', label: 'Arqueiro',     frameEnd: 11 },
-            //{ key: 'Personagem4', label: 'Guerreiro',    frameEnd: 11 },
+            { key: 'man_whi',   label: 'Opção 1',  frameEnd: 11 },
+            { key: 'man_bla',   label: 'Opção 2',   frameEnd: 11 },
+            { key: 'woman_whi', label: 'Opção 3', frameEnd: 11 },
+            { key: 'woman_bla', label: 'Opção 4',  frameEnd: 11 },
         ];
+
 
         this.cards      = [];   // background rectangles
         this.previews   = [];   // animated sprites
@@ -148,7 +148,7 @@ export default class CenaPersonagem extends Phaser.Scene {
 
             // Update display
             this.inputText.setText(this.nomeDigitado || 'Digite seu nome...');
-            this.inputText.setColor(this.nomeDigitado ? '#e0d0ff' : '#554466');
+            this.inputText.setColor(this.nomeDigitado ? '#e0d0ff' : '#445f66');
 });
 
         // ── Confirm button ────────────────────────────────────────────────────
