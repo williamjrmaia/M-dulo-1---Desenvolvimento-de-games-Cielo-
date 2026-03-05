@@ -1,12 +1,11 @@
 export default class CenaPersonagem extends Phaser.Scene {
     constructor() {
         super('CenaPersonagem');
-        this.spriteSelecionado = 'man_whi'; // default
         this.indexSelecionado  = 0;
     }
 
     preload() {
-        // Load all 4 character spritesheets
+        // Carrega as animações idle das 4 skins
         this.load.spritesheet('man_whi', 'assets/PLAYER/MAN/WHITE/spr_player_man_front_idl_whi.png',   { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('man_bla', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png', { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('woman_whi', 'assets/PLAYER/WOMAN/WHITE/spr_player_woman_front_idl_whi.png', { frameWidth: 64, frameHeight: 64 });
@@ -17,10 +16,10 @@ export default class CenaPersonagem extends Phaser.Scene {
         const W = this.scale.width;   // 1500
         const H = this.scale.height;  // 800
 
-        // ── Background ───────────────────────────────────────────────────────
+        // Background
         this.add.rectangle(0, 0, W, H, 0x0a0a1a).setOrigin(0, 0);
 
-        // ── Title ─────────────────────────────────────────────────────────────
+        // Título "ESCOLHA SEU PERSONAGEM"
         this.add.text(W / 2, 80, 'ESCOLHA SEU PERSONAGEM', {
             fontFamily: '"Courier New", monospace',
             fontSize: '36px',
@@ -30,31 +29,31 @@ export default class CenaPersonagem extends Phaser.Scene {
             strokeThickness: 4,
         }).setOrigin(0.5);
 
-        // Decorative line under title
+        // Linha embaixo do título
         const line = this.add.graphics();
         line.lineStyle(2, 0x6644cc, 1);
         line.lineBetween(W / 2 - 280, 110, W / 2 + 280, 110);
         line.lineStyle(1, 0x6644cc, 0.3);
         line.lineBetween(W / 2 - 380, 115, W / 2 + 380, 115);
 
-        // ── Opção de personagem ─────────────────────────────────────────────────
-        // Each entry: { key, label, frameEnd }
+        // Opção de personagem
         this.opcoes = [
-            { key: 'man_whi',   label: 'Opção 1',  frameEnd: 11 },
-            { key: 'man_bla',   label: 'Opção 2',   frameEnd: 11 },
-            { key: 'woman_whi', label: 'Opção 3', frameEnd: 11 },
-            { key: 'woman_bla', label: 'Opção 4',  frameEnd: 11 },
+            { key: 'man_whi',  frameEnd: 11 },
+            { key: 'man_bla',   frameEnd: 11 },
+            { key: 'woman_whi', frameEnd: 11 },
+            { key: 'woman_bla',  frameEnd: 11 },
         ];
 
 
-        this.cards      = [];   // background rectangles
-        this.previews   = [];   // animated sprites
+        this.cards      = [];   // retângulos atrás dos sprites
+        this.previews   = [];   // sprites animados
         this.selecionar = this._selecionar.bind(this);
 
-        const totalCards  = this.opcoes.length;
+        const totalCards  = this.opcoes.length; //deixa modular a quantidade de opções
         const cardWidth   = 200;
         const cardHeight  = 260;
         const spacing     = 60;
+        //Espaça automaticamente as opções
         const totalWidth  = totalCards * cardWidth + (totalCards - 1) * spacing;
         const startX      = (W - totalWidth) / 2;
         const cardY       = 320;
@@ -63,12 +62,12 @@ export default class CenaPersonagem extends Phaser.Scene {
             const cx = startX + i * (cardWidth + spacing) + cardWidth / 2;
             const cy = cardY;
 
-            // Card background
+            // Background carta
             const card = this.add.rectangle(cx, cy, cardWidth, cardHeight, 0x111133)
                 .setStrokeStyle(2, 0x3333aa)
                 .setInteractive({ useHandCursor: true });
 
-            // Animated character preview
+            // Preview do personagem usa já sprites para ser mais bonito
             const animKey = `preview_${opcao.key}`;
             if (!this.anims.exists(animKey)) {
                 this.anims.create({
@@ -79,31 +78,24 @@ export default class CenaPersonagem extends Phaser.Scene {
                 });
             }
 
-            const sprite = this.add.sprite(cx, cy - 20, opcao.key)
-                .setScale(3.5)
+            const sprite = this.add.sprite(cx, cy - 20, opcao.key)//colocar scale certa nos sprites
+                .setScale(4.5)
                 .play(animKey, true);
 
-            // Character name label
-            this.add.text(cx, cy + cardHeight / 2 - 30, opcao.label, {
-                fontFamily: '"Courier New", monospace',
-                fontSize: '18px',
-                color: '#aaaadd',
-            }).setOrigin(0.5);
-
-            // Click handler
+            // Checa o click
             card.on('pointerdown', () => this.selecionar(i));
 
-            // Hover effects
+            // aumenta o persongaem escolhido e muda a cor do bloco dele
             card.on('pointerover', () => {
                 if (i !== this.indexSelecionado) {
                     card.setFillStyle(0x1a1a44);
-                    this.tweens.add({ targets: sprite, scaleY: 3.8, scaleX: 3.8, duration: 120 });
+                    this.tweens.add({ targets: sprite, scaleY: 4.8, scaleX: 4.8, duration: 120 });
                 }
             });
-            card.on('pointerout', () => {
+            card.on('pointerout', () => {//caso mude de ideia, faz o oposto do acima
                 if (i !== this.indexSelecionado) {
                     card.setFillStyle(0x111133);
-                    this.tweens.add({ targets: sprite, scaleY: 3.5, scaleX: 3.5, duration: 120 });
+                    this.tweens.add({ targets: sprite, scaleY: 4.5, scaleX: 4.5, duration: 120 });
                 }
             });
 
@@ -111,10 +103,9 @@ export default class CenaPersonagem extends Phaser.Scene {
             this.previews.push(sprite);
         });
 
-        // Select default card
-        this._selecionar(0);
 
-        // ── Name input ────────────────────────────────────────────────────────
+
+        // Input de nome
         this.add.text(W / 2, 530, 'SEU NOME:', {
             fontFamily: '"Courier New", monospace',
             fontSize: '20px',
@@ -122,7 +113,7 @@ export default class CenaPersonagem extends Phaser.Scene {
             letterSpacing: 4,
         }).setOrigin(0.5);
 
-        // Styled HTML input
+        // input estilizado em HTML
         this.nomeDigitado = '';
 
         const inputBg = this.add.rectangle(W / 2, 580, 340, 50, 0x0d0d22)
@@ -134,7 +125,7 @@ export default class CenaPersonagem extends Phaser.Scene {
             color: '#554466',
         }).setOrigin(0.5);
 
-// Type using keyboard
+// Código para escrita no Phaser
         this.input.keyboard.on('keydown', (event) => {
             if (event.keyCode === 8) {
                 // Backspace
@@ -146,12 +137,12 @@ export default class CenaPersonagem extends Phaser.Scene {
                 this.nomeDigitado += event.key;
             }
 
-            // Update display
+            // atualiza com o nome do GN
             this.inputText.setText(this.nomeDigitado || 'Digite seu nome...');
             this.inputText.setColor(this.nomeDigitado ? '#e0d0ff' : '#445f66');
 });
 
-        // ── Confirm button ────────────────────────────────────────────────────
+        // botão confirm (WIP)
         const btnBg = this.add.rectangle(W / 2, 680, 260, 55, 0x2a1a66)
             .setStrokeStyle(2, 0x7755ee)
             .setInteractive({ useHandCursor: true });
@@ -175,7 +166,7 @@ export default class CenaPersonagem extends Phaser.Scene {
         });
         btnBg.on('pointerdown', () => this._confirmar());
 
-        // ── Fade in ───────────────────────────────────────────────────────────
+        // Fade in 
         this.cameras.main.fadeIn(600, 0, 0, 0);
     }
 
@@ -199,17 +190,18 @@ export default class CenaPersonagem extends Phaser.Scene {
     }
 
     _confirmar() {
-    const nome = this.nomeDigitado.trim() || 'Jogador';  // ← changed this line
-        // Save to registry (runtime) and localStorage (persistence)
-        this.game.registry.set('nomeJogador',          nome);
-        this.game.registry.set('spriteJogador',        this.spriteSelecionado);
+    const nome = this.nomeDigitado.trim() || 'Jogador';
+        // registry garante que a opção persista durante o jogo
+        this.game.registry.set('nomeJogador', nome);
+        this.game.registry.set('spriteJogador', this.spriteSelecionado);
         this.game.registry.set('personagemConfigurado', true);
 
+        //garante que persista entre sessões de jogatina
         localStorage.setItem('personagemConfigurado', 'true');
-        localStorage.setItem('nomeJogador',           nome);
-        localStorage.setItem('spriteJogador',         this.spriteSelecionado);
+        localStorage.setItem('nomeJogador', nome);
+        localStorage.setItem('spriteJogador', this.spriteSelecionado);
 
-        // Transition
+        // transição para a primeira cena
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             this.scene.start('MundoCasa');

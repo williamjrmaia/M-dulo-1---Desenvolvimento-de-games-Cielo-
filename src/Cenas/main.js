@@ -19,7 +19,8 @@ const config = {
         }
     },
     
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa]
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa]//Preloader carrega as sprites antes do jogo começar 
+                                                                                      //para evitar redundância
 };
 
 const game = new Phaser.Game(config);

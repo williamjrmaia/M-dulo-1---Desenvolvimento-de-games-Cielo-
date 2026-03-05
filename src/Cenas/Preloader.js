@@ -4,16 +4,11 @@ export default class Preloader extends Phaser.Scene {
     }
 
     preload() {
-        const W = this.scale.width;
-        const H = this.scale.height;
+        const W = this.scale.width; //1500
+        const H = this.scale.height; //800
 
-        // Loading bar
-        this.add.rectangle(W / 2, H / 2, 400, 6, 0x222244);
-        const barra = this.add.rectangle(W / 2 - 200, H / 2, 0, 6, 0x9966ff).setOrigin(0, 0.5);
-        this.load.on('progress', (p) => { barra.width = 400 * p; });
-
-        // Estrutura: { skin_key, pasta_genero, pasta_cor, sufixo_cor }
-        const personagens = [
+        //Em inglês pois foi o padrao usado durante a criação dos sprites
+        const personagens = [//cria uma biblioteca das skins oferecidas
             { skin: 'man_whi',   pasta: 'MAN/WHITE',   cor: 'whi' },
             { skin: 'man_bla',   pasta: 'MAN/BLACK',   cor: 'bla' },
             { skin: 'woman_whi', pasta: 'WOMAN/WHITE', cor: 'whi' },
@@ -24,7 +19,8 @@ export default class Preloader extends Phaser.Scene {
 
         const anims = ['front_idl', 'front_walk', 'back_idl', 'back_walk', 'side_walk'];
 
-        personagens.forEach(({ skin, pasta, cor }) => {
+        personagens.forEach(({ skin, pasta, cor }) => {//transforma o comando de loadar spritesheet
+                                                       //em um comando modular, garantindo que seja carregado o personagem certo
             const gen = genero[skin];
             anims.forEach(anim => {
                 this.load.spritesheet(
@@ -37,6 +33,6 @@ export default class Preloader extends Phaser.Scene {
     }
 
     create() {
-        this.scene.start('MenuPrincipal');
+        this.scene.start('MenuPrincipal');//começa o jogo
     }
 }
