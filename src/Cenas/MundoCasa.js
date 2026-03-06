@@ -12,12 +12,6 @@ export default class MundoCasa extends Phaser.Scene {
     preload() {
         this.load.image('MundoCasa', '../assets/CenarioCasa/Scene1.png');
         this.load.image('MenuFundo', '../assets/menu/menu_fundo.png');
-       
-
-        this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       '../assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      '../assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {
@@ -33,10 +27,12 @@ export default class MundoCasa extends Phaser.Scene {
         let limiteY     = (background.y - alturaMapa  / 2) - 40;
         this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
 
+        
+
         // Player
         this.personagem = new Jogador(this, 750, 480, 1.0);
         this.teclas = this.personagem.configurarTeclas();
-
+        console.log()
         // House hitbox (blocks the player)
         this.gatilhoCasa = this.add.zone(875, 337, 73, 55);
         this.physics.add.existing(this.gatilhoCasa);
@@ -73,10 +69,7 @@ export default class MundoCasa extends Phaser.Scene {
         this.personagem.adicionarOverlap(this.gatilhoPorta, () => {
             this.naPorta = true;
         });
-
         
-       
-
         //Sistema de trava para o FadeOut do Portal (porque ele usa o Overlap no update, então fica sempre iniciando a animação quando o boneco está por cima)
         this.fazendoTransicao = false
 
@@ -88,6 +81,9 @@ export default class MundoCasa extends Phaser.Scene {
 
         
 
+        this.cameras.main.setZoom(2.6);
+        this.cameras.main.setBounds(0, 0, 1500, 800);
+        this.cameras.main.startFollow(this.personagem.sprite);
     }
 
     update() {
@@ -103,8 +99,6 @@ export default class MundoCasa extends Phaser.Scene {
                 this.scene.start('CenaCasa');
             });
         }
-
-        //Transição do Portal para o MundoGelo
 
          if (!this.personagem.temOverlap(this.portalGelo)) {
             this.noPortal = false;

@@ -4,8 +4,12 @@ export default class Jogador {
         this.cena = cena;
         this.velocidade = 100;
 
-        // Create physics sprite
-        this.sprite = cena.physics.add.sprite(x, y, 'IdleFrente').setScale(scale);
+        // Lê o personagem escolhido — fallback para man_whi
+        const skin = cena.game.registry.get('spriteJogador') || 'man_whi';
+        this.skin = skin;
+
+        // Usa a chave correta do Preloader
+        this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
         this.sprite.setCollideWorldBounds(true);
         this.sprite.body.setSize(10, 15);
         this.sprite.setOffset(27, 30);
@@ -15,20 +19,29 @@ export default class Jogador {
 
     _criarAnimacoes() {
         const cena = this.cena;
-        if (cena.anims.exists('andar')) return;
+        const s = this.skin;
 
-        cena.anims.create({ key: 'andar',     frames: cena.anims.generateFrameNumbers('Andando',   { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
-        cena.anims.create({ key: 'idleFrente',frames: cena.anims.generateFrameNumbers('IdleFrente', { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
-        cena.anims.create({ key: 'lado',      frames: cena.anims.generateFrameNumbers('Lado',       { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
-        cena.anims.create({ key: 'costa',     frames: cena.anims.generateFrameNumbers('Costa',      { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
+    console.log('skin:', s);
+    console.log('front_idl existe?', cena.textures.exists(`${s}_front_idl`));
+    console.log('front_walk existe?', cena.textures.exists(`${s}_front_walk`));
+    console.log('side_walk existe?',  cena.textures.exists(`${s}_side_walk`));
+
+    if (cena.anims.exists(`${s}_idle`)) return;
+
+        if (cena.anims.exists(`${s}_idle`)) return;
+
+        cena.anims.create({ key: `${s}_idle`,  frames: cena.anims.generateFrameNumbers(`${s}_front_idl`,  { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_andar`, frames: cena.anims.generateFrameNumbers(`${s}_front_walk`, { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_costa`, frames: cena.anims.generateFrameNumbers(`${s}_back_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_lado`,  frames: cena.anims.generateFrameNumbers(`${s}_side_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
     }
 
     configurarTeclas() {
         this.teclas = this.cena.input.keyboard.addKeys({
-            up:       Phaser.Input.Keyboard.KeyCodes.W,
-            down:     Phaser.Input.Keyboard.KeyCodes.S,
-            left:     Phaser.Input.Keyboard.KeyCodes.A,
-            right:    Phaser.Input.Keyboard.KeyCodes.D,
+            up:        Phaser.Input.Keyboard.KeyCodes.W,
+            down:      Phaser.Input.Keyboard.KeyCodes.S,
+            left:      Phaser.Input.Keyboard.KeyCodes.A,
+            right:     Phaser.Input.Keyboard.KeyCodes.D,
             interagir: Phaser.Input.Keyboard.KeyCodes.E
         });
         return this.teclas;
@@ -36,55 +49,49 @@ export default class Jogador {
 
     atualizar() {
         const { sprite, teclas, velocidade } = this;
+        const s = this.skin;
         if (!sprite || !teclas) return;
 
         sprite.setVelocity(0);
 
         const nenhumaTecla =
-            !teclas.left.isDown &&
-            !teclas.right.isDown &&
-            !teclas.up.isDown &&
-            !teclas.down.isDown;
+            !teclas.left.isDown && !teclas.right.isDown &&
+            !teclas.up.isDown   && !teclas.down.isDown;
 
         if (nenhumaTecla) {
-            sprite.play('idleFrente', true);
+            sprite.play(`${s}_idle`, true);
             return;
         }
 
         if (teclas.left.isDown) {
             sprite.setVelocityX(-velocidade);
-            sprite.play('lado', true);
+            sprite.play(`${s}_lado`, true);
             sprite.setFlipX(false);
         } else if (teclas.right.isDown) {
             sprite.setVelocityX(velocidade);
-            sprite.play('lado', true);
+            sprite.play(`${s}_lado`, true);
             sprite.setFlipX(true);
         }
 
         if (teclas.up.isDown) {
             sprite.setVelocityY(-velocidade);
             if (!teclas.left.isDown && !teclas.right.isDown)
-                sprite.play('costa', true);
+                sprite.play(`${s}_costa`, true);
         } else if (teclas.down.isDown) {
             sprite.setVelocityY(velocidade);
             if (!teclas.left.isDown && !teclas.right.isDown)
-                sprite.play('andar', true);
+                sprite.play(`${s}_andar`, true);
         }
     }
 
-    // --- Convenience passthrough helpers ---
-
-    /** Add a collider between this player and another object. */
     adicionarColisao(objeto) {
         return this.cena.physics.add.collider(this.sprite, objeto);
     }
 
-    /** Add an overlap between this player and another object. */
     adicionarOverlap(objeto, callback) {
         return this.cena.physics.add.overlap(this.sprite, objeto, callback, null, this.cena);
     }
 
-    /** Check overlap this frame (for polling in update). */
     temOverlap(objeto) {
         return this.cena.physics.overlap(this.sprite, objeto);
     }
