@@ -39,11 +39,16 @@
 ### 1.1.1. Contexto da indústria (sprint 2)
 
 A Cielo atua no setor de serviços financeiros, mais especificamente no segmento de meios eletrônicos de pagamento e adquirência. Sua atividade principal consiste em credenciar estabelecimentos comerciais para aceitar pagamentos com cartões de crédito, débito e vouchers, realizando a captura, o processamento e a liquidação das transações financeiras. Essa operação conecta três pontas do ecossistema: os estabelecimentos comerciais, as instituições financeiras emissoras (bancos) e as bandeiras de cartão, como Visa e Mastercard. A empresa fornece terminais de ponto de venda (POS), soluções de e-commerce, links de pagamento, antecipação de recebíveis, gestão de vendas e serviços integrados de tecnologia financeira, operando como intermediadora tecnológica e financeira nesse fluxo (Cielo, 2024).
+
 O mercado brasileiro de adquirência tornou-se mais competitivo após a quebra da exclusividade entre bandeiras e credenciadoras em 2010, ampliando a entrada de novos players como Stone e PagSeguro (InvestNews, 2024). Além disso, a implementação do Pix pelo Banco Central do Brasil em 2020 intensificou a transformação digital dos meios de pagamento, oferecendo transferências instantâneas com menor custo para lojistas e consumidores. Esse cenário reduziu margens no setor de terminais físicos e impactou a liderança histórica da Cielo em participação de mercado, exigindo reposicionamento estratégico diante da digitalização acelerada e da maior sensibilidade a preços (Banco Central do Brasil, 2024; Cielo, 2024).
+
 Atualmente, a Cielo adota uma estratégia focada em eficiência operacional, ampliação de soluções digitais e diversificação de serviços financeiros, buscando ir além da captura de transações. A empresa investe em tecnologia, análise de dados e integração com plataformas digitais para oferecer soluções completas de gestão financeira aos lojistas. Sua atuação possui abrangência nacional, atendendo micro, pequenas, médias e grandes empresas em todo o território brasileiro, com forte capilaridade comercial e relacionamento com grandes bancos acionistas (Cielo, 2024). Esse reposicionamento visa fortalecer a competitividade em um ambiente de pagamentos cada vez mais digital, instantâneo e orientado por inovação.
 
 
 #### 1.1.1.1. Modelo de 5 Forças de Porter (sprint 2)
+
+**Introdução**
+O modelo das Cinco Forças de Porter, desenvolvido por Michael Porter, é uma ferramenta estratégica amplamente utilizada para analisar o nível de competitividade de um setor e compreender os fatores que influenciam a lucratividade das empresas. A partir dessa abordagem, é possível identificar as principais pressões competitivas do mercado, bem como oportunidades e desafios que impactam o posicionamento estratégico das organizações. No contexto do mercado de adquirência no Brasil, onde atua a Cielo, essa análise permite compreender como mudanças tecnológicas, regulações e novos modelos de negócio vêm transformando o setor de pagamentos (Porter, 2008).
 
 **Análise da Ameaça de Novos Entrantes**
 A análise da ameaça de novos entrantes para a Cielo revela um cenário de profunda transição, em que barreiras tradicionais, como a necessidade de elevados investimentos em redes físicas de terminais e infraestrutura de processamento, vêm sendo substituídas por exigências regulatórias rigorosas. O arcabouço do Banco Central do Brasil, especialmente por meio de normativas como a Resolução BCB nº 80/2021, alterou significativamente o rito de entrada, exigindo autorização prévia e estrita adequação de capital para o funcionamento de novas Instituições de Pagamento (IPs), atuando como um pesado filtro prudencial e de governança.
@@ -65,20 +70,28 @@ Uma das estratégias centrais que elevam o poder do cliente é a adoção da mul
 A rivalidade no mercado brasileiro de adquirência, frequentemente referida pelo mercado financeiro como "a guerra das maquininhas", é intensa, agressiva e baseada em forte compressão de margens. A Cielo, que historicamente operava em um mercado duopolista, enfrenta hoje a pulverização de market share disputando contra incumbentes (Rede, Getnet) e fintechs listadas em bolsa que adotam táticas predatórias de preço (Stone, PagSeguro, Mercado Pago)(Estadão Conteúdo, 2024).
 O serviço básico de captura de transações tornou-se uma commodity. De acordo com informações prestadas pela própria companhia ao mercado (Cielo S.A., 2024), a estratégia de retenção deixou de ser o terminal físico e passou a exigir a oferta de serviços de valor agregado (SVA), como crédito integrado, conta digital, conciliação e softwares de gestão varejista. A fragmentação dos players, o alto custo de aquisição de clientes (CAC) na base da pirâmide (microempreendedores) e a necessidade de altíssimo investimento em tecnologia comprovam que a rivalidade entre os concorrentes existentes é muito alta.
 
-
+**Conclusão**
+A análise das Cinco Forças de Porter indica que o mercado de adquirência no Brasil é altamente competitivo e está em constante transformação. Fatores como avanços tecnológicos, surgimento de novos concorrentes e o crescimento de soluções como o Pix aumentam a pressão sobre os modelos tradicionais de pagamento. Nesse cenário, empresas como a Cielo precisam investir em inovação e serviços de valor agregado para manter sua competitividade no setor.
 
 
 ### 1.1.2. Análise SWOT (sprint 2)
 
-A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). Forças são vantagens internas, e, no caso da Cielo, destacam-se a marca consolidada e a alta capilaridade de mercado, sustentadas por uma vantagem competitiva robusta junto ao sistema bancário (Cielo, 2023). Sua presença institucionalizada no setor varejista reforça seu posicionamento como player de referência no ecossistema de pagamentos (Abecs, 2023), evidenciando solidez estrutural e reconhecimento no mercado.
+A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). 
+
+Forças são vantagens internas, e, no caso da Cielo, destacam-se a marca consolidada e a alta capilaridade de mercado, sustentadas por uma vantagem competitiva robusta junto ao sistema bancário (Cielo, 2023). Sua presença institucionalizada no setor varejista reforça seu posicionamento como player de referência no ecossistema de pagamentos (Abecs, 2023), evidenciando solidez estrutural e reconhecimento no mercado.
+
 Por outro lado, as fraquezas correspondem a limitações internas que reduzem a capacidade competitiva da organização (Fernandes et al., 2015). No caso da Cielo, destaca-se a elevada concentração de suas operações no mercado brasileiro, o que amplia sua exposição a oscilações econômicas e regulatórias (Cielo, 2023). Além disso, a perda de participação de mercado e a redução de margens observadas nos últimos anos refletem dificuldades internas de adaptação frente ao aumento da concorrência, impactando seu desempenho financeiro e estratégico.
-Já as oportunidades referem-se a fatores externos favoráveis, como a digitalização progressiva de pequenos negócios e a expansão do e-commerce, que ampliam a adesão aos meios de pagamento digitais e criam novos fluxos de receita e possibilidades de diversificação do portfólio de serviços (Vial, 2019). Em contrapartida, as ameaças envolvem riscos regulatórios que podem comprimir margens financeiras (Banco Central do Brasil, 2023), além da saturação competitiva e da ascensão do Pix como método de pagamento substituto, reduzindo a dependência de cartões físicos e terminais de captura (Banco Central do Brasil, 2023).
+
+Já as oportunidades referem-se a fatores externos favoráveis, como a digitalização progressiva de pequenos negócios e a expansão do e-commerce, que ampliam a adesão aos meios de pagamento digitais e criam novos fluxos de receita e possibilidades de diversificação do portfólio de serviços (Vial, 2019). 
+
+Em contrapartida, as ameaças envolvem riscos regulatórios que podem comprimir margens financeiras (Banco Central do Brasil, 2023), além da saturação competitiva e da ascensão do Pix como método de pagamento substituto, reduzindo a dependência de cartões físicos e terminais de captura (Banco Central do Brasil, 2023).
+
 Assim, conclui-se que a Cielo atua em um mercado competitivo e em constante transformação, no qual possui pontos fortes relevantes, mas também enfrenta desafios internos e externos que exigem adaptação contínua. De modo geral, a análise SWOT demonstra que a empresa apresenta base sólida para crescimento, embora precise acompanhar as mudanças do setor para manter sua posição no mercado.
 
 
 ### 1.1.3. Missão / Visão / Valores (sprint 2)
 
-A missão deste projeto é promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva, na qual os jogadores percorrem as Terras Glaciais dos Conceitos, a Vila do Varejo dos Produtos e a Floresta dos Proveitos dos Benefícios para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil. Sua visão é consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas. Sustentado pelos valores de equidade, empatia, inovação e colaboração, o projeto vai além do entretenimento, posicionando-se como uma ferramenta de transformação profissional e fortalecimento do desempenho nacional.
+A missão deste projeto é promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva, na qual os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Floresta dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil. Sua visão é consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas. Sustentado pelos valores de equidade, empatia, inovação e colaboração, o projeto vai além do entretenimento, posicionando-se como uma ferramenta de transformação profissional e fortalecimento do desempenho nacional.
 
 
 ### 1.1.4. Proposta de Valor (sprint 4)
@@ -105,23 +118,20 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 
 \# | Requisito | Explicação
 --- | --- | ---
-1 | Introdução narrativa | O jogo deve apresentar uma introdução narrativa que contextualiza o universo do jogo e apresenta suas regras básicas.
-2 | Escolha de avatar | O jogo deve permitir que o jogador escolha seu avatar.
-3 | Mapa geral | O jogo deve conter um mapa geral com as quatro regiões principais: Negociação, Produto, Benefícios e a cidade principal
-4 | Mapa da cidade | O jogo deve conter um mapa principal ambientado em uma cidade central, no qual o jogador poderá circular e negociar com os clientes.
-5 | Joystick | O personagem do jogador deve ser controlado por meio de um joystick virtual localizado no lado esquerdo da tela, permitindo movimentação em qualquer direção.
+1 | Introdução narrativa | O jogo deve apresentar uma introdução narrativa na Casa da Cielita, na qual a NPC Cielita contextualiza o universo do jogo e apresenta suas regras básicas por meio de caixas de diálogo.
+2 | Configuração Inicial do Avatar | O jogo deverá disponibilizar quatro (4) opções de avatares jogáveis para seleção do jogador em uma tela específica no início da partida. Após a escolha do avatar, o jogador deverá definir o nome do personagem, que será utilizado para sua identificação ao longo da experiência. A seleção do avatar e do nome poderá ser alterada posteriormente por meio das configurações do jogo.
+3 | Mapa geral | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielta, Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
+4 | Regiões principais | O jogo deve conter a primeira região, Quebra-Gelo, que abordará proposta de valor, conceitos fundamentais e superação de objeções; a segunda, Vila do Varejo, que deverá contemplar a aplicação prática de produtos e soluções conforme o perfil do cliente; a terceira, Floresta dos Proveitos, que deverá tratar da identificação e argumentação de benefícios e diferenciais competitivos; e a quarta e última, Cidade da Negociação, que deverá consolidar os conhecimentos adquiridos nas regiões anteriores por meio de desafios de estratégia, negociação e fechamento.
+5 | Movimentação e interação do jogador | A movimentação do personagem será realizada por meio das teclas W, A, S e D do teclado, responsáveis pelo deslocamento direcional. A tecla E será destinada à interação do jogador com NPCs e objetos presentes no mapa.
 6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface e de variações visuais nos sprites dos personagens.
-7 | Cartas | O jogo deve disponibilizar ao jogador as cartas disponíveis para uso durante a gameplay.
+7 | Cartas | O jogo deve disponibilizar inicialmente ao jogador cartas para combate.
 8 | Combate | O sistema de jogo deve implementar combates baseados no uso de cartas.
 9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento do sistema de combate.
-10 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento do sistema de combate.
-11 | Música de fundo | O jogo deve ter uma música de fundo.
-12 | Barulho de fala | Durante as falas de texto dos NPCs, deve haver um som que toca enquanto a mensagem aparece.
 
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
 
-O público-alvo do projeto é composto pelos Gerentes de Negócios da Cielo, com média de idade de 44 anos, distribuídos por todas as regiões do país e inseridos em diferentes realidades demográficas e socioeconômicas. A maioria possui ensino médio completo, sendo que 35% conta com ensino superior completo. Esses profissionais atuam diretamente no relacionamento com clientes e na comercialização de soluções de pagamento, enfrentando desafios regionais distintos que impactam sua rotina, metas e desempenho comercial.
+O público-alvo do projeto é composto pelos Gerentes de Negócios da Cielo, com média de idade estimada de 44 anos, distribuídos por todas as regiões do Brasil e inseridos em diferentes contextos demográficos e socioeconômicos. A maioria possui ensino médio completo, sendo que cerca de 35% conta com ensino superior completo. Esses profissionais atuam diretamente na prospecção de clientes, gestão de carteira e comercialização de soluções de pagamento para estabelecimentos comerciais. Devido à atuação em diferentes regiões do país, esses gerentes enfrentam desafios regionais distintos que impactam sua rotina, metas e desempenho comercial (Cielo, 2024).
 
 # <a name="c2"></a>2. Visão Geral do Jogo (sprint 2)
 
@@ -372,8 +382,7 @@ Figura 3: Menu Inicial
 
 ## 4.1. Desenvolvimento preliminar do jogo (sprint 1)
 
-A primeira versão do jogo foi desenvolvida com foco na implementação das mecânicas essenciais, garantindo que a estrutura básica estivesse funcional. Durante essa fase inicial, foram trabalhados o design do personagem principal, a criação de suas animações de movimentação e a construção de seu storytelling, estabelecendo a identidade visual e narrativa do projeto.
- Paralelamente, foi elaborada uma versão inicial do mapa, dividido em regiões temáticas: Vila do Varejo (área dos produtos), Floresta dos Proveitos (mapa dos benefícios), Terras Glaciais (mapa dos conceitos) e a área de Negociação.
+A primeira versão do jogo foi desenvolvida com foco na implementação das mecânicas essenciais, garantindo que a estrutura básica estivesse funcional. Durante essa fase inicial, foram trabalhados o design do personagem principal, a criação de suas animações de movimentação e a construção de seu storytelling, estabelecendo a identidade visual e narrativa do projeto. Paralelamente, foi elaborada uma versão inicial do mapa, dividido em regiões temáticas: Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
 
 Em termos de código, foi implementado um sistema de movimentação utilizando as teclas WASD, permitindo que o jogador explore o ambiente. O personagem é inserido no mundo do jogo com um corpo físico (hitbox), garantindo a colisão com os limites do mapa e impedindo que ultrapasse as áreas definidas ou saia da tela. Além disso, foi desenvolvido o sistema responsável por carregar a imagem de fundo do mapa e posicionar os objetos estáticos na tela, compondo o cenário inicial do jogo.
 
@@ -387,7 +396,7 @@ A câmera foi configurada com zoom dinâmico e programada para acompanhar o pers
 <img src="../assets/GDD/noroeste.jpeg">
 <img src="../assets/GDD/frenteCastelo.jpeg">
 
-###Dificuldades encontradas e próximos passos
+## Dificuldades encontradas e próximos passos
 Durante o desenvolvimento inicial, foram identificadas dificuldades relacionadas principalmente à definição e segmentação do processo de negociação, de modo que ele pudesse ser estruturado e aplicado ao formato de cartas dentro da mecânica do jogo. Transformar situações reais de negociação em elementos sistematizados exigiu equilíbrio entre clareza conceitual, jogabilidade e coerência com os objetivos do projeto. 
 
 Além disso, o design do personagem principal representou um desafio, pois foi necessário alinhar identidade visual, proposta narrativa e viabilidade técnica para animações e implementação.
@@ -473,6 +482,11 @@ SOBRENOME, Nome. Título do livro: subtítulo do livro. Edição. Cidade de publ
 
 INTELI. Adalove. Disponível em: https://adalove.inteli.edu.br/feed. Acesso em: 1 out. 2023 <br>
 SOBRENOME, Nome. Título do site. Disponível em: link do site. Acesso em: Dia Mês Ano
+
+Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review.
+https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy
+
+
 
 # <a name="c8"></a>Anexos
 
