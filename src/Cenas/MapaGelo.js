@@ -9,6 +9,7 @@ export default class MapaGelo extends Phaser.Scene {
         // Carregamento de imagens
         this.load.image('Ponte', '../assets/CenarioCasa/ponte.png');
         this.load.image('MapaGelo', '../assets/MapaGelo/MapaGelo.png');
+        this.load.tilemapTiledJSON('mapa_dados', '../assets/MapaGelo/MapaGeloHitbox.tmj');
             
         // Carregamento do personagem
         this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
@@ -18,68 +19,72 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     create() {
-
+        // 1. Configurações Iniciais
         this.fazendoTransicao = false;
+        const larguraMapa = 1500;
+        const alturaMapa = 1200; 
 
-        this.add.image(750, 400, 'MapaGelo');
-        this.add.image(165, 108, 'Ponte');
-        this.personagem = new Jogador(this, 120, 90, 1.0);
+        // Limites do mundo e câmera
+        this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
+        this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
+
+        // 2. Adição do Cenário e Personagem (APENAS UMA VEZ)
+        const mapa = this.make.tilemap({ key: 'mapa_dados' });
+        this.add.image(0, 0, 'MapaGelo').setOrigin(0, 0);
+      
         
-        //Hitbox das Pontes
-        this.pontebraco1 = this.add.zone(220, 80, 260, 15);
-        this.physics.add.existing(this.pontebraco1);
-        this.pontebraco1.body.setImmovable(true);
-        this.pontebraco1.body.setAllowGravity(false);
-        this.personagem.adicionarColisao(this.pontebraco1);
+        this.personagem = new Jogador(this, 25, 212, 1.0);
+        this.personagem.sprite.setCollideWorldBounds(true);
+        
 
-        this.pontebraco2 = this.add.zone(220, 120, 260, 15);
-        this.physics.add.existing(this.pontebraco2);
-        this.pontebraco2.body.setImmovable(true);
-        this.pontebraco2.body.setAllowGravity(false);
-        this.personagem.adicionarColisao(this.pontebraco2);
+        // 3. HITBOXES DO TILED (Camada roxa 'Object Layer 1')
+        const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
 
-        this.portalGelo = this.add.zone(100, 100, 10, 15);
+        if (camadaObjetos) {
+            camadaObjetos.objects.forEach(obj => {
+                if (obj.polygon) {
+                    // Se for polígono (curvas da terra)
+                    const poly = this.add.polygon(obj.x, obj.y, obj.polygon, 0x0000ff, 0);
+                    this.physics.add.existing(poly, true);
+                    this.personagem.adicionarColisao(poly);
+                } else {
+                    // Se for retângulo (caixas/muros desenhados no Tiled)
+                    let zonaTiled = this.add.zone(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height);
+                    this.physics.add.existing(zonaTiled, true);
+                    this.personagem.adicionarColisao(zonaTiled);
+                }
+            });
+        }
+
+        // 4. SUAS HITBOXES MANUAIS (Mantidas como solicitado)
+        
+        // Portal (Física própria do Phaser)
+        this.portalGelo = this.add.zone(10, 215, 10, 15);
         this.physics.add.existing(this.portalGelo);
         this.portalGelo.body.setImmovable(true);
         this.portalGelo.body.setAllowGravity(false);
-     
-        this.pontebraco3 = this.add.zone(90, 100, 10, 15);
-        this.physics.add.existing(this.pontebraco3);
-        this.pontebraco3.body.setImmovable(true);
-        this.pontebraco3.body.setAllowGravity(false);
-        this.personagem.adicionarColisao(this.pontebraco3);
 
-
-
-        // 4. Configure as teclas e a câmera
+        
+        // 5. Configuração de Câmera e Controles
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.6);
-
-        // Efeito de entrada suave
         this.cameras.main.fadeIn(500, 0, 0, 0);
     }
         
-       update() {
-    this.personagem.atualizar();
+    update() {
+        this.personagem.atualizar();
 
-    // Verifica se está no portal E se não está ocorrendo uma transição agora
-    if (this.personagem.temOverlap(this.portalGelo)) {
-        if (!this.fazendoTransicao) {
-            this.fazendoTransicao = true;
-
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                // Certifique-se de que a cena 'MundoCasa' também reseta as variáveis dela!
-                this.scene.start('MundoCasa', { vindoDe: 'MapaGelo' });
-            });
+        if (this.personagem.temOverlap(this.portalGelo)) {
+            if (!this.fazendoTransicao) {
+                this.fazendoTransicao = true;
+                this.cameras.main.fadeOut(500, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('MundoCasa', { vindoDe: 'MapaGelo' });
+                });
+            }
+        } else {
+            this.fazendoTransicao = false;
         }
-    } else {
-        // Opcional: Se o jogador sair do portal, garante que pode transitar de novo
-        // Mas o reset no create() costuma ser o suficiente para o seu caso.
-        this.fazendoTransicao = false;
-         }
-}       
+    }       
 }
-
-    
