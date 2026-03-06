@@ -61,9 +61,10 @@ export default class CenaCasa extends Phaser.Scene {
         // Sistema de Dialogo
 
         this.dialogos = [
-            { texto: "Olá, seja bem-vindo à minha casa!", personagem: 'Cielita' },
+            { texto: "Eu sou Celita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.", personagem: 'Cielita' },
             { texto: "Sinta-se à vontade para explorar e conversar comigo.", personagem: 'Cielita' },
-            { texto: "Se precisar de algo, é só me chamar!", personagem: 'Cielita' }
+            { texto: "Se precisar de algo, é só me chamar!", personagem: 'Cielita' },
+            { texto: "Obrigado! Vou desbravar por todo o cielo verso", personagem: 'Jogador' }
         ];
 
         this.indiceDialogo = 0;
@@ -71,57 +72,56 @@ export default class CenaCasa extends Phaser.Scene {
         this.digitando = false;
         this.DISTANCIA_INTERACAO = 80;
 
-        const larguraTela = this.scale.width;
-        const alturaTela = this.scale.height;
-        const caixaY = alturaTela - 100;
-
-        // Caixa de diálogo fixa na tela
-        const textura = this.textures.get('balao').getSourceImage();
-        const caixaLargura = textura.width;
-        const caixaAltura = textura.height;  
-
+        const larguraTela = 810;
+        const alturaTela = 760;
+        const caixaLargura = larguraTela;
+        const caixaAltura = alturaTela * 0.15;
+        const caixaX = larguraTela / 2;
+        const caixaY = alturaTela - caixaAltura / 2;  // ✅ agora caixaAltura já existe
+       
+        
 
         this.caixaImagem = this.add.image(this.scale.width / 2, caixaY, 'balao')
         .setScrollFactor(0)
         .setDepth(20)
         .setVisible(false) 
-        .setDisplaySize(larguraTela, caixaAltura);
+        .setDisplaySize(caixaLargura, caixaAltura);
 
-        // Nome do personagem
-        this.textoNome = this.add.text(
-            larguraTela / 2 - this.caixaImagem.displayWidth / 2 + 30,
-            caixaY - this.caixaImagem.displayHeight / 2 + 14,
-            '', {
-                fontFamily: 'Arial',
-                fontSize: '18px',
-                color: '#ffdd57',
-                fontStyle: 'bold'
-            }
-        ).setScrollFactor(0).setDepth(21).setVisible(false);
+        
+    // Nome do personagem — canto superior esquerdo do balão
+this.textoNome = this.add.text(
+    this.scale.width / 2 - caixaLargura / 2 + 20,
+    caixaY - caixaAltura / 2 + 10,
+    '', {
+        fontFamily: 'Arial',
+        fontSize: '18px',
+        color: '#ffdd57',
+        fontStyle: 'bold'
+    }
+).setScrollFactor(0).setDepth(21).setVisible(false).setOrigin(0, 0);
 
-         // Texto da fala
-        this.textoFala = this.add.text(
-            larguraTela / 2 - this.caixaImagem.displayWidth / 2 + 30,
-            caixaY - this.caixaImagem.displayHeight / 2 + 36,
-            '', {
-                fontFamily: 'Arial',
-                fontSize: '17px',
-                color: '#ffffff',
-                wordWrap: { width: larguraTela - 60 }
-            }
-        ).setScrollFactor(0).setDepth(21).setVisible(false);
+// Texto da fala — dentro do balão, abaixo do nome
+this.textoFala = this.add.text(
+    this.scale.width / 2 - caixaLargura / 2 + 20,
+    caixaY - caixaAltura / 2 + 35,
+    '', {
+        fontFamily: 'Arial',
+        fontSize: '17px',
+        color: '#ffffff',
+        wordWrap: { width: caixaLargura - 40 }
+    }
+).setScrollFactor(0).setDepth(21).setVisible(false).setOrigin(0, 0);
 
-        // Indicador ▼ piscando
-        this.indicadorAvancar = this.add.text(
-            larguraTela / 2 + this.caixaImagem.displayWidth / 2 - 30,
-            caixaY + this.caixaImagem.displayHeight / 2 - 18,
-            '▼', {
-                fontFamily: 'Arial',
-                fontSize: '13px',
-                color: '#ffffff'
-            }
-        ).setScrollFactor(0).setDepth(21).setVisible(false);
-
+// Indicador ▼ — canto inferior direito do balão
+this.indicadorAvancar = this.add.text(
+    this.scale.width / 2 + caixaLargura / 2 - 25,
+    caixaY + caixaAltura / 2 - 15,
+    '▼', {
+        fontFamily: 'Arial',
+        fontSize: '13px',
+        color: '#ffffff'
+    }
+).setScrollFactor(0).setDepth(21).setVisible(false).setOrigin(0, 0);
         this.tweens.add({
             targets: this.indicadorAvancar,
             alpha: 0,
