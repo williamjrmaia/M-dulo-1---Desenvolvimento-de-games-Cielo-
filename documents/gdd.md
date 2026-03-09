@@ -360,6 +360,11 @@ Figura 3: Menu Inicial
 
 ## 3.6. Regras do jogo (sprint 3)
 
+# Progressão no Jogo
+A progressão do jogador ocorre por meio da conversão de NPCs em clientes da empresa. Cada região do jogo possui um conjunto de personagens que podem ser abordados e convencidos durante as negociações.
+Ao converter um número suficiente de NPCs em uma determinada região, o jogador recebe uma insígnia daquela área. Essa insígnia representa o sucesso comercial do jogador naquele local.
+Após conquistar a insígnia, o jogador pode avançar para a próxima fase ou área do jogo, desbloqueando novos ambientes, NPCs e desafios.
+
 *Descreva aqui as regras do seu jogo: objetivos/desafios, meios para se conseguir alcançar*
 
 *Ex. O jogador deve pilotar o carro e conseguir terminar a corrida dentro de um minuto sem bater em nenhum obstáculo.*
@@ -368,11 +373,65 @@ Figura 3: Menu Inicial
 
 ## 3.7. Mecânicas do jogo (sprint 3)
 
-*Descreva aqui as formas de controle e interação que o jogador tem sobre o jogo: quais os comandos disponíveis, quais combinações de comandos, e quais as ações consequentes desses comandos. Utilize listas ou tabelas para organizar esta seção.*
+# Interface e Menu Inicial (HUD)
+O jogo possui um menu inicial que apresenta as principais opções para o jogador antes de iniciar a partida.
+Opção do Menu | Função
+--- | ---
+Iniciar | Inicia a partida
+Configurações | Permite ajustar opções do jogo
+Sair | Encerra o jogo
 
-*Ex. Em um jogo de plataforma 2D para desktop, o jogador pode usar as teclas WASD para mecânicas de andar, mirar para cima, agachar, e as teclas JKL para atacar, correr, arremesar etc.*
+A interface foi projetada para ser clara e simples, permitindo que o jogador compreenda rapidamente as opções disponíveis e inicie a experiência de forma intuitiva.
 
-*Ex. Em um jogo de puzzle para celular, o jogador pode tocar e arrastar sobre uma peça para movê-la sobre o tabuleiro, ou fazer um toque simples para rotacioná-la*
+# Seleção de Personagem
+O jogador pode escolher entre quatro personagens jogáveis, buscando representar diversidade entre os avatares disponíveis. As opções incluem:
+
+- Homem branco
+- Homem negro
+- Mulher branca
+- Mulher negra
+
+Essa escolha permite que o jogador selecione o personagem com o qual mais se identifica, contribuindo para uma experiência mais personalizada.
+
+# Personalização do Nome
+Após escolher o personagem, o jogador pode definir o nome do seu avatar. Esse nome será utilizado durante o jogo, especialmente em interações com NPCs e em elementos da interface.
+
+O nome do personagem não é permanente, podendo ser alterado posteriormente através do menu de Configurações, garantindo maior flexibilidade ao jogador.
+
+# Alteração de Personagem
+Além da escolha inicial, o jogador também pode alterar o personagem selecionado posteriormente através do menu de Configurações. Essa funcionalidade permite que o jogador experimente diferentes avatares ao longo do jogo sem a necessidade de reiniciar o progresso.
+
+# Controles e Interações do Jogador
+O jogo foi desenvolvido para a plataforma web/PC, sendo controlado principalmente por teclado e mouse. O teclado é utilizado para a movimentação do personagem e interação com o ambiente, enquanto o mouse é utilizado durante o sistema de combate baseado em cartas.
+
+# Movimentação e Interação
+A movimentação do personagem utiliza o padrão WASD, amplamente adotado em jogos para computador por ser intuitivo para os jogadores. Além disso, o jogador pode interagir com elementos do cenário, como NPCs e portas, utilizando uma tecla específica de interação.
+Comando | Ação
+--- | ---
+W | Movimentar o personagem para cima
+A | Movimentar o personagem para a esquerda
+S | Movimentar o personagem para baixo
+D | Movimentar o personagem para a direita
+E | Interagir com NPCs ou portas
+H | Exibir o tutorial de movimentação e interação
+
+# Interação com o Ambiente
+Durante a exploração, o jogador pode interagir com diferentes elementos do cenário. As principais interações incluem:
+Conversar com NPCs, iniciando diálogos ou negociações.
+Entrar em ambientes internos ao interagir com portas.
+Acessar instruções de controle pressionando a tecla de ajuda.
+
+Essas interações permitem que o jogador explore o mapa e avance nas atividades do jogo.
+
+# Sistema de Combate
+O sistema de combate não é baseado em ataques físicos, mas sim em negociações comerciais bem-sucedidas. Nesse sistema, os NPCs representam clientes potenciais, e o jogador precisa convencê-los utilizando um sistema de cartas.
+
+Cada carta representa uma estratégia de vendas ou abordagem comercial. O jogador seleciona as cartas utilizando o mouse, e o resultado da negociação segue a lógica de um funil de vendas, simulando etapas de abordagem, apresentação e fechamento.
+Comando | Ação
+--- | ---
+Clique do mouse | Selecionar cartas durante a negociação
+Clique do mouse | Confirmar ações ou escolhas
+
 
 ## 3.8. Implementação Matemática de Animação/Movimento (sprint 4)
 
