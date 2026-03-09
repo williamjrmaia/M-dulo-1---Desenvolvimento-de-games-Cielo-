@@ -99,3 +99,4 @@ export default class Jogador {
     get x() { return this.sprite.x; }
     get y() { return this.sprite.y; }
 }
+
