@@ -10,6 +10,7 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.image('Ponte', '../assets/CenarioCasa/ponte.png');
         this.load.image('MapaGelo', '../assets/MapaGelo/MapaGelo.png');
         this.load.tilemapTiledJSON('mapa_dados', '../assets/MapaGelo/MapaGeloHitbox.tmj');
+       
             
         // Carregamento do personagem
         this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });

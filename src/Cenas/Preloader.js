@@ -6,6 +6,7 @@ export default class Preloader extends Phaser.Scene {
     preload() {
         const W = this.scale.width; //1500
         const H = this.scale.height; //800
+       this.load.image('Tutorial', 'assets/CenarioCasa/tutorial_andar.png');
 
         //Em inglês pois foi o padrao usado durante a criação dos sprites
         const personagens = [//cria uma biblioteca das skins oferecidas
