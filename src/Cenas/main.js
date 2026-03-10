@@ -5,12 +5,13 @@ import CenaConfig from './CenaConfig.js';
 import CenaCasa from './CenaCasa.js';
 import MundoCasa from './MundoCasa.js';
 import NegociacaoPedro from './NegociacaoPedro.js';
+import MapaGelo from './MapaGelo.js';
 
 const config = {
     type: Phaser.AUTO,
     width: 1500,
     height: 800,
-    backgroundColor: '#000000',
+    backgroundColor: '#ffffff',
     dom: {createContainer: true},
     physics: {
         default: 'arcade',
@@ -19,9 +20,10 @@ const config = {
             debug: false
         }
     },
-    
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, NegociacaoPedro]//Preloader carrega as sprites antes do jogo começar 
+
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro]//Preloader carrega as sprites antes do jogo começar 
                                                                                       //para evitar redundância
+
 };
 
 const game = new Phaser.Game(config);
