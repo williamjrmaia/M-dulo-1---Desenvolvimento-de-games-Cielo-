@@ -424,9 +424,9 @@ Acessar instruções de controle pressionando a tecla de ajuda.
 Essas interações permitem que o jogador explore o mapa e avance nas atividades do jogo.
 
 # Sistema de Combate
-O sistema de combate não é baseado em ataques físicos, mas sim em negociações comerciais bem-sucedidas. Nesse sistema, os NPCs representam clientes potenciais, e o jogador precisa convencê-los utilizando um sistema de cartas.
+O sistema de combate substitui o combate físico por negociações comerciais estratégicas, onde os NPCs atuam como clientes potenciais que o jogador deve conquistar. Através de um baralho de cartas selecionadas via mouse, o jogador executa táticas de vendas que simulam as etapas reais de um funil de vendas, desde o contato inicial e apresentação de propostas até o estágio final de fechamento do negócio.
 
-Cada carta representa uma estratégia de vendas ou abordagem comercial. O jogador seleciona as cartas utilizando o mouse, e o resultado da negociação segue a lógica de um funil de vendas, simulando etapas de abordagem, apresentação e fechamento.
+O sucesso de cada interação é mensurado pelo parâmetro de convencimento, visualizado através de uma barra de satisfação que flutua em tempo real. Cada carta jogada impacta diretamente esse medidor: abordagens precisas preenchem a barra, aproximando o jogador da conversão, enquanto escolhas equivocadas podem reduzir a satisfação do cliente, exigindo novas estratégias para recuperar a confiança e evitar que a negociação seja cancelada.
 Comando | Ação
 --- | ---
 Clique do mouse | Selecionar cartas durante a negociação
