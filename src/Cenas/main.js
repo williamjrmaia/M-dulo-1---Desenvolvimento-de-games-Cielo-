@@ -9,8 +9,13 @@ import MapaGelo from './MapaGelo.js';
 
 const config = {
     type: Phaser.AUTO,
-    width: 1500,
-    height: 800,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        parent: 'game',
+        width: 1500,
+        height: 800,
+    },
     backgroundColor: '#ffffff',
     dom: {createContainer: true},
     physics: {
