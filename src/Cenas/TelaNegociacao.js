@@ -1,0 +1,1 @@
+//puxar a classe do combate com as cartas

@@ -21,10 +21,10 @@ export default class Jogador {
         const cena = this.cena;
         const s = this.skin;
 
-    console.log('skin:', s);
-    console.log('front_idl existe?', cena.textures.exists(`${s}_front_idl`));
-    console.log('front_walk existe?', cena.textures.exists(`${s}_front_walk`));
-    console.log('side_walk existe?',  cena.textures.exists(`${s}_side_walk`));
+        console.log('skin:', s);
+        console.log('front_idl existe?', cena.textures.exists(`${s}_front_idl`));
+        console.log('front_walk existe?', cena.textures.exists(`${s}_front_walk`));
+        console.log('side_walk existe?',  cena.textures.exists(`${s}_side_walk`));
 
     if (cena.anims.exists(`${s}_idle`)) return;
 
@@ -132,3 +132,4 @@ if (this.cena.scene.isActive('TutorialOverlay')) {
     get x() { return this.sprite.x; }
     get y() { return this.sprite.y; }
 }
+
