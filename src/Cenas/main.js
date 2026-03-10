@@ -10,12 +10,8 @@ const config = {
     type: Phaser.AUTO,
     width: 1500,
     height: 800,
-<<<<<<< src/Cenas/main.js
     backgroundColor: '#ffffff',
-=======
-    backgroundColor: '#000000',
     dom: {createContainer: true},
->>>>>>> src/Cenas/main.js
     physics: {
         default: 'arcade',
         arcade: {
