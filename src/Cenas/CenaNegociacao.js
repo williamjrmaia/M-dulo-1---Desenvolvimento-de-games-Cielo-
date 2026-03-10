@@ -85,10 +85,10 @@ export default class CenaNegociacao extends Phaser.Scene {
             cartasExigidas:    {},
             cartasPorFase: {
                 abordagem:    5,
-                sondagem:     4,
-                demonstracao: 3,
-                negociacao:   3,
-                fechamento:   3,
+                sondagem:     6,
+                produtos:     4,
+                negociacao:   3, 
+                fechamento:   5,
             },
         }, clienteConfig);
 
@@ -110,6 +110,11 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.load.image(`${nome}_satisfeito`, `assets/CLIENTES/${nome}/satisfeito.png`);
         this.load.image(`${nome}_neutro`,     `assets/CLIENTES/${nome}/neutro.png`);
         this.load.image(`${nome}_bravo`,      `assets/CLIENTES/${nome}/bravo.png`);
+        this.load.image('AntiPitch', 'assets/Cartas/Aboradagem/AntiPitch.png'); 
+        this.load.image('ComparacaoInteligente', 'assets/Cartas/Aboradagem/ComparacaoInteligente.png'); 
+        this.load.image('DesarmeElegante', 'assets/Cartas/Aboradagem/DesarmeElegante.png'); 
+        this.load.image('DiretoAoPonto', 'assets/Cartas/Aboradagem/DiretoAoPonto.png'); 
+        this.load.image('GanchoSocial', 'assets/Cartas/Aboradagem/GanchoSocial.png'); 
 
         // Assets de UI compartilhados — descomente quando tiver os arquivos
         // this.load.image('carta_fundo', 'assets/UI/CARTAS/carta_fundo.png');
