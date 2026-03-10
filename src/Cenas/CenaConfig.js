@@ -3,6 +3,7 @@ export default class CenaConfig extends Phaser.Scene {
 
             preload() {
                 this.load.image('menu_jogo', '../assets/menu/menu_fundo.png');
+                
             }
             create() {
             
