@@ -6,6 +6,7 @@ import CenaCasa from './CenaCasa.js';
 import MundoCasa from './MundoCasa.js';
 import NegociacaoPedro from './NegociacaoPedro.js';
 import MapaGelo from './MapaGelo.js';
+import TutorialOverlay from './TutorialOverlay.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -21,7 +22,7 @@ const config = {
         }
     },
 
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro]//Preloader carrega as sprites antes do jogo começar 
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, TutorialOverlay]//Preloader carrega as sprites antes do jogo começar 
                                                                                       //para evitar redundância
 
 };

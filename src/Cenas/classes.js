@@ -42,16 +42,49 @@ export default class Jogador {
             down:      Phaser.Input.Keyboard.KeyCodes.S,
             left:      Phaser.Input.Keyboard.KeyCodes.A,
             right:     Phaser.Input.Keyboard.KeyCodes.D,
-            interagir: Phaser.Input.Keyboard.KeyCodes.E
+            interagir: Phaser.Input.Keyboard.KeyCodes.E,
+            tutorial:  Phaser.Input.Keyboard.KeyCodes.H,
         });
+        const largura = this.cena.cameras.main.width;
+    this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
+        fontSize: '11px',
+        fill: '#FFD700',
+        backgroundColor: '#000000',
+        padding: { x: 6, y: 3 }
+    }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
         return this.teclas;
     }
+   
 
     atualizar() {
         const { sprite, teclas, velocidade } = this;
         const s = this.skin;
         if (!sprite || !teclas) return;
+        
+        if (Phaser.Input.Keyboard.JustDown(teclas.tutorial)) {
+    if (this.cena.scene.isActive('TutorialOverlay')) {
+        this.cena.scene.stop('TutorialOverlay');
+        this.cena.input.keyboard.enabled = true;
+    } else {
+        this.sprite.setVelocity(0); 
+        this.cena.scene.launch('TutorialOverlay');
+        this.cena.scene.bringToTop('TutorialOverlay');
+        this.cena.input.keyboard.enabled = false;
+    }
+}
 
+
+if (this.cena.scene.isActive('TutorialOverlay')) {
+    this.sprite.setVelocity(0);
+    return; // impede qualquer movimentação
+}
+   
+
+
+
+       
+    
+       
         sprite.setVelocity(0);
 
         const nenhumaTecla =
