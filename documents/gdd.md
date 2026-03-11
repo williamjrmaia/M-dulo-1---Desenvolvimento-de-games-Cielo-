@@ -47,7 +47,6 @@ Atualmente, a Cielo adota uma estratégia focada em eficiência operacional, amp
 
 #### 1.1.1.1. Modelo de 5 Forças de Porter (sprint 2)
 
-**Introdução**
 O modelo das Cinco Forças de Porter, desenvolvido por Michael Porter, é uma ferramenta estratégica amplamente utilizada para analisar o nível de competitividade de um setor e compreender os fatores que influenciam a lucratividade das empresas. A partir dessa abordagem, é possível identificar as principais pressões competitivas do mercado, bem como oportunidades e desafios que impactam o posicionamento estratégico das organizações. No contexto do mercado de adquirência no Brasil, onde atua a Cielo, essa análise permite compreender como mudanças tecnológicas, regulações e novos modelos de negócio vêm transformando o setor de pagamentos (Porter, 2008).
 
 **Análise da Ameaça de Novos Entrantes**
@@ -70,7 +69,6 @@ Uma das estratégias centrais que elevam o poder do cliente é a adoção da mul
 A rivalidade no mercado brasileiro de adquirência, frequentemente referida pelo mercado financeiro como "a guerra das maquininhas", é intensa, agressiva e baseada em forte compressão de margens. A Cielo, que historicamente operava em um mercado duopolista, enfrenta hoje a pulverização de market share disputando contra incumbentes (Rede, Getnet) e fintechs listadas em bolsa que adotam táticas predatórias de preço (Stone, PagSeguro, Mercado Pago)(Estadão Conteúdo, 2024).
 O serviço básico de captura de transações tornou-se uma commodity. De acordo com informações prestadas pela própria companhia ao mercado (Cielo S.A., 2024), a estratégia de retenção deixou de ser o terminal físico e passou a exigir a oferta de serviços de valor agregado (SVA), como crédito integrado, conta digital, conciliação e softwares de gestão varejista. A fragmentação dos players, o alto custo de aquisição de clientes (CAC) na base da pirâmide (microempreendedores) e a necessidade de altíssimo investimento em tecnologia comprovam que a rivalidade entre os concorrentes existentes é muito alta.
 
-**Conclusão**
 A análise das Cinco Forças de Porter indica que o mercado de adquirência no Brasil é altamente competitivo e está em constante transformação. Fatores como avanços tecnológicos, surgimento de novos concorrentes e o crescimento de soluções como o Pix aumentam a pressão sobre os modelos tradicionais de pagamento. Nesse cenário, empresas como a Cielo precisam investir em inovação e serviços de valor agregado para manter sua competitividade no setor.
 
 
@@ -123,10 +121,10 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 3 | Mapa geral | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielta, Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
 4 | Regiões principais | O jogo deve conter a primeira região, Quebra-Gelo, que abordará proposta de valor, conceitos fundamentais e superação de objeções; a segunda, Vila do Varejo, que deverá contemplar a aplicação prática de produtos e soluções conforme o perfil do cliente; a terceira, Floresta dos Proveitos, que deverá tratar da identificação e argumentação de benefícios e diferenciais competitivos; e a quarta e última, Cidade da Negociação, que deverá consolidar os conhecimentos adquiridos nas regiões anteriores por meio de desafios de estratégia, negociação e fechamento.
 5 | Movimentação e interação do jogador | A movimentação do personagem será realizada por meio das teclas W, A, S e D do teclado, responsáveis pelo deslocamento direcional. A tecla E será destinada à interação do jogador com NPCs e objetos presentes no mapa.
-6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface e de variações visuais nos sprites dos personagens.
-7 | Cartas | O jogo deve disponibilizar inicialmente ao jogador cartas para combate.
-8 | Combate | O sistema de jogo deve implementar combates baseados no uso de cartas.
-9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento do sistema de combate.
+6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface que, durante a negociação com o vendedor, aumenta ou diminui de acordo com a resposta do GN. Os sprites do cliente mudarão de acordo com a negociação (por exemplo: nervoso ou feliz).
+7 | Cartas | O jogo irá implementar um sistema de respostas à base de cartas aconselhadoras de fundamentos típicos em negociações, como: abordagem, sondagem, negociação, demonstração e fechamento.
+8 | Combate | O nosso sistema de combate consistirá nas negociações entre os GNs e os comerciantes durante as missões nos mapas, alinhado com o nosso sistema de cartas.
+9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento das mecânicas gerais e das mecânicas de combate.
 
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
