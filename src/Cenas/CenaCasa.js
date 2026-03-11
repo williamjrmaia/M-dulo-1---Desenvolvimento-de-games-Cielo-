@@ -7,10 +7,10 @@ export default class CenaCasa extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('DentroCasa', '../assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
+        this.load.image('DentroCasa', 'assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
 
         // NPC
-        this.load.spritesheet('cielitaparada', '../assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
+        this.load.spritesheet('cielitaparada', 'assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
 
         // Objetos
         this.load.image('balao', 'assets/objetos/balao dialogo.png');
@@ -36,6 +36,7 @@ export default class CenaCasa extends Phaser.Scene {
         // Player — sprite creation, animations and input all in one place
         this.jogador = new Jogador(this, 750, 480);
         this.teclas  = this.jogador.configurarTeclas();
+        
 
         // Collisions
         this.jogador.adicionarColisao(this.cielita);
@@ -87,6 +88,7 @@ this.textoNome = this.add.text(
     caixaY - caixaAltura / 2 + 10,
     '', {
         fontFamily: 'Arial',
+        
         fontSize: '18px',
         color: '#ffdd57',
         fontStyle: 'bold'

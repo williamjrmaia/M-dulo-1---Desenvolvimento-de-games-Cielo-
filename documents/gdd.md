@@ -360,16 +360,16 @@ Figura 3: Menu Inicial
 
 ## 3.6. Regras do jogo (sprint 3)
 
-# Progressão no Jogo
-A progressão do jogador ocorre por meio da conversão de NPCs em clientes da empresa. Cada região do jogo possui um conjunto de personagens que podem ser abordados e convencidos durante as negociações.
-Ao converter um número suficiente de NPCs em uma determinada região, o jogador recebe uma insígnia daquela área. Essa insígnia representa o sucesso comercial do jogador naquele local.
-Após conquistar a insígnia, o jogador pode avançar para a próxima fase ou área do jogo, desbloqueando novos ambientes, NPCs e desafios.
-
-*Descreva aqui as regras do seu jogo: objetivos/desafios, meios para se conseguir alcançar*
-
-*Ex. O jogador deve pilotar o carro e conseguir terminar a corrida dentro de um minuto sem bater em nenhum obstáculo.*
-
-*Ex. O jogador deve concluir a fase dentro do tempo, para obter uma estrela. Se além disso ele coletar todas as moedas, ganha mais uma estrela. E se além disso ele coletar os três medalhões espalhados, ganha mais uma estrela, totalizando três. Ao final do jogo, obtendo três estrelas em todas as fases, desbloqueia o mundo secreto.*  
+# Objetivo do jogo
+O principal objetivo do jogador é interagir com os NPCs presentes em cada região do jogo até achar o CPC (Contato com pessoa certa) e convencê-lo a se tornarem clientes da empresa. Para isso, o jogador deverá utilizar estratégias de abordagem, compreender as necessidades do personagem e apresentar soluções adequadas durante a interação.
+# Desafios e decisões 
+Durante o jogo, o jogador enfrentará situações de negociação com um NPC específico em cada região. Ao iniciar a interação, serão apresentadas opções de diálogo e escolhas que representam diferentes formas de abordagem e argumentação. O jogador deverá analisar cada situação e selecionar as respostas mais adequadas para convencer o personagem.
+Essas decisões influenciam diretamente o resultado da negociação, podendo aumentar ou diminuir as chances de o NPC aceitar a proposta apresentada.
+# Progressão no jogo
+A progressão do jogador ocorre por meio da conversão de um NPC principal em cada região do jogo. Cada área possui um personagem que representa o desafio daquela fase. O jogador deverá interagir com esse NPC e conduzir a negociação de forma adequada para convencê-lo a se tornar cliente da empresa.
+Ao conseguir converter o NPC daquela região, o jogador conquista a insígnia da área, que representa o sucesso da negociação. Após obter essa insígnia, o jogador desbloqueia a próxima região do jogo, podendo avançar para novos ambientes e desafios.
+# Consequências das escolhas
+As decisões tomadas durante a interação com o NPC podem influenciar o resultado da negociação. Escolhas adequadas aumentam as chances de sucesso, enquanto decisões inadequadas podem fazer com que o personagem fique irritado ou descrente com o jogador e acabe recusando a proposta. Nesse caso, o jogador deverá tentar novamente até conseguir concluir a negociação e avançar para a próxima área do jogo.
 
 ## 3.7. Mecânicas do jogo (sprint 3)
 
@@ -424,9 +424,9 @@ Acessar instruções de controle pressionando a tecla de ajuda.
 Essas interações permitem que o jogador explore o mapa e avance nas atividades do jogo.
 
 # Sistema de Combate
-O sistema de combate não é baseado em ataques físicos, mas sim em negociações comerciais bem-sucedidas. Nesse sistema, os NPCs representam clientes potenciais, e o jogador precisa convencê-los utilizando um sistema de cartas.
+O sistema de combate substitui o combate físico por negociações comerciais estratégicas, onde os NPCs atuam como clientes potenciais que o jogador deve conquistar. Através de um baralho de cartas selecionadas via mouse, o jogador executa táticas de vendas que simulam as etapas reais de um funil de vendas, desde o contato inicial e apresentação de propostas até o estágio final de fechamento do negócio.
 
-Cada carta representa uma estratégia de vendas ou abordagem comercial. O jogador seleciona as cartas utilizando o mouse, e o resultado da negociação segue a lógica de um funil de vendas, simulando etapas de abordagem, apresentação e fechamento.
+O sucesso de cada interação é mensurado pelo parâmetro de convencimento, visualizado através de uma barra de satisfação que flutua em tempo real. Cada carta jogada impacta diretamente esse medidor: abordagens precisas preenchem a barra, aproximando o jogador da conversão, enquanto escolhas equivocadas podem reduzir a satisfação do cliente, exigindo novas estratégias para recuperar a confiança e evitar que a negociação seja cancelada.
 Comando | Ação
 --- | ---
 Clique do mouse | Selecionar cartas durante a negociação

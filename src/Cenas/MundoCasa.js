@@ -10,8 +10,8 @@ export default class MundoCasa extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('MundoCasa', '../assets/CenarioCasa/Scene1.png');
-        this.load.image('MenuFundo', '../assets/menu/menu_fundo.png');
+        this.load.image('MundoCasa', 'assets/CenarioCasa/Scene1.png');
+        this.load.image('MenuFundo', 'assets/menu/menu_fundo.png');
     }
 
     create() {
@@ -89,6 +89,7 @@ export default class MundoCasa extends Phaser.Scene {
     update() {
         this.personagem.atualizar();
 
+
         if (!this.personagem.temOverlap(this.gatilhoPorta)) {
             this.naPorta = false;
         }
@@ -96,7 +97,7 @@ export default class MundoCasa extends Phaser.Scene {
         if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('CenaCasa');
+            this.scene.start('CenaCasa');
             });
         }
 
@@ -112,6 +113,15 @@ export default class MundoCasa extends Phaser.Scene {
                 this.scene.start('MapaGelo');
             });
         }
+        const jaViuTutorial = this.game.registry.get('jaViuTutorial');
+if (!jaViuTutorial) {
+    this.game.registry.set('jaViuTutorial', true);
+    this.time.delayedCall(500, () => { // delay para a cena carregar antes de abrir
+        this.scene.launch('TutorialOverlay');
+        this.scene.bringToTop('TutorialOverlay');
+        this.input.keyboard.enabled = false;
+    });
+}
 
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
