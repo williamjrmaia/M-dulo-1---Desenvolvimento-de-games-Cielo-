@@ -5,6 +5,10 @@ export default class MapaGelo extends Phaser.Scene {
         super('MapaGelo'); 
     }
 
+     init(data) {
+        this.origem = data.vindoDe; 
+    }
+
     preload() {
         this.load.image('Ponte', '../assets/CenarioCasa/ponte.png');
         this.load.image('MapaGelo', '../assets/MapaGelo/MapaGelo.png');
@@ -61,6 +65,11 @@ export default class MapaGelo extends Phaser.Scene {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.6);
         this.cameras.main.fadeIn(500, 0, 0, 0);
+
+        if (this.origem === 'CenaCasaGelo') {
+            this.personagem.sprite.setPosition(655, 210)
+        }
+
     }
         
     update() {
