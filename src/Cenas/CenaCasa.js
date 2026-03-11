@@ -7,10 +7,10 @@ export default class CenaCasa extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('DentroCasa', 'assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
+        this.load.image('DentroCasa', '../assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
 
         // NPC
-        this.load.spritesheet('cielitaparada', 'assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
+        this.load.spritesheet('cielitaparada', '../assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
 
         // Objetos
         this.load.image('balao', 'assets/objetos/balao dialogo.png');
@@ -36,10 +36,47 @@ export default class CenaCasa extends Phaser.Scene {
         // Player — sprite creation, animations and input all in one place
         this.jogador = new Jogador(this, 750, 480);
         this.teclas  = this.jogador.configurarTeclas();
-        
 
         // Collisions
         this.jogador.adicionarColisao(this.cielita);
+
+        // =================================================================
+        // HITBOXES DO TILED
+        // =================================================================
+        const escala = 2.3; // A mesma escala usada no seu background
+        const mapa = this.make.tilemap({ key: 'mapa_casa' });
+        
+        // IMPORTANTE: O nome aqui precisa ser idêntico ao nome da Camada de Objetos lá no Tiled
+        const camadaObjetos = mapa.getObjectLayer('hitboxes');
+
+        if (camadaObjetos) {
+            camadaObjetos.objects.forEach(obj => {
+                if (obj.polygon) {
+                    // Cria colisões poligonais (se você desenhou polígonos no Tiled)
+                    const poly = this.add.polygon(
+                        limiteX + obj.x * escala,
+                        limiteY + obj.y * escala,
+                        obj.polygon.map(p => ({ x: p.x * escala, y: p.y * escala })),
+                        0xff0000, 0 // O "0" no final deixa invisível. Mude para 0.5 para ver a hitbox se precisar debugar.
+                    );
+                    this.physics.add.existing(poly, true);
+                    this.jogador.adicionarColisao(poly);
+                } else {
+                    // Cria zonas de colisão retangulares (se desenhou quadrados no Tiled)
+                    const zona = this.add.zone(
+                        limiteX + obj.x * escala + (obj.width  * escala) / 2,
+                        limiteY + obj.y * escala + (obj.height * escala) / 2,
+                        obj.width  * escala,
+                        obj.height * escala
+                    );
+                    this.physics.add.existing(zona, true);
+                    zona.body.setImmovable(true);
+                    zona.body.setAllowGravity(false);
+                    this.jogador.adicionarColisao(zona);
+                }
+            });
+        }
+        // =================================================================
 
         // Door trigger
         this.gatilhoPorta = this.add.zone(limiteX + larguraMapa / 2, limiteY + alturaMapa - 20, 40, 40);
@@ -88,7 +125,6 @@ this.textoNome = this.add.text(
     caixaY - caixaAltura / 2 + 10,
     '', {
         fontFamily: 'Arial',
-        
         fontSize: '18px',
         color: '#ffdd57',
         fontStyle: 'bold'
