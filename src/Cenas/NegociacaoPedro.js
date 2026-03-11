@@ -1,4 +1,4 @@
-import CenaNegociacao from './CenaNegociacao.js';
+import CenaNegociacao from '../Classes/CenaNegociacao.js';
 
 export default class NegociacaoJoao extends CenaNegociacao {
     constructor() {

@@ -1,9 +1,7 @@
-import Jogador from './classes.js';
+import Jogador from '../Classes/Jogador.js';
 
 export default class MundoCasa extends Phaser.Scene {
     constructor() { super('MundoCasa'); }
-
-
 
     init(data) {
         this.origem = data.vindoDe; 
@@ -80,7 +78,13 @@ export default class MundoCasa extends Phaser.Scene {
             this.personagem.sprite.setPosition(900, 400)
         }
 
-        
+                const jaViuTutorial = this.game.registry.get('jaViuTutorial');
+        if (!jaViuTutorial) {
+            this.game.registry.set('jaViuTutorial', true);
+            this.time.delayedCall(200, () => { // delay para a cena carregar antes de abrir
+                this.scene.launch('TutorialOverlay');
+                this.scene.bringToTop('TutorialOverlay');
+                this.input.keyboard.enabled = false; });}
 
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
@@ -114,18 +118,5 @@ export default class MundoCasa extends Phaser.Scene {
                 this.scene.start('MapaGelo');
             });
         }
-        const jaViuTutorial = this.game.registry.get('jaViuTutorial');
-if (!jaViuTutorial) {
-    this.game.registry.set('jaViuTutorial', true);
-    this.time.delayedCall(500, () => { // delay para a cena carregar antes de abrir
-        this.scene.launch('TutorialOverlay');
-        this.scene.bringToTop('TutorialOverlay');
-        this.input.keyboard.enabled = false;
-    });
-}
-
-        this.cameras.main.setZoom(2.6);
-        this.cameras.main.setBounds(0, 0, 1500, 800);
-        this.cameras.main.startFollow(this.personagem.sprite);
     }
-}
+    }
