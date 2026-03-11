@@ -10,9 +10,8 @@ export default class MundoCasa extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('MundoCasa', '../assets/CenarioCasa/Scene1.png');
-        this.load.image('MenuFundo', '../assets/menu/menu_fundo.png');
-        
+        this.load.image('MundoCasa', 'assets/CenarioCasa/Scene1.png');
+        this.load.image('MenuFundo', 'assets/menu/menu_fundo.png');
     }
 
     create() {

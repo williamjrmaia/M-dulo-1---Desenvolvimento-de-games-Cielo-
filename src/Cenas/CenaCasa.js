@@ -7,11 +7,10 @@ export default class CenaCasa extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('DentroCasa', '../assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
-        
+        this.load.image('DentroCasa', 'assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
 
         // NPC
-        this.load.spritesheet('cielitaparada', '../assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
+        this.load.spritesheet('cielitaparada', 'assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
 
         // Objetos
         this.load.image('balao', 'assets/objetos/balao dialogo.png');
