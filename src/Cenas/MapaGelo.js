@@ -16,10 +16,10 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.tilemapTiledJSON('mapa_dados', 'assets/MapaGelo/MapaGeloHitbox.tmj');
             
         // Carregamento do personagem
-        this.load.spritesheet('Andando',    'assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', 'assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       'assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      'assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Lado',       'assets/PLAYER/MAN/BLACK/spr_player_man_side_walk_bla.png',    { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Costa',      'assets/PLAYER/MAN/BLACK/spr_player_man_back_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {

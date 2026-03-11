@@ -14,10 +14,10 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.load.image('CasaPedro', '../assets/MapaGelo/CasaPedro.png');
         this.load.tilemapTiledJSON('mapa_casa', '../assets/MapaGelo/CasaPedroHitbox.tmj');
 
-        this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       '../assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      '../assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Lado',       'assets/PLAYER/MAN/BLACK/spr_player_man_side_walk_bla.png',    { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Costa',      'assets/PLAYER/MAN/BLACK/spr_player_man_back_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {
@@ -81,6 +81,20 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
     
 
+        // ✅ ZONA DE INTERAÇÃO COM PEDRO
+        this.zonaInteracaoPedro = this.add.zone(750, 300, 200, 200);
+        this.physics.world.enable(this.zonaInteracaoPedro);
+        this.zonaInteracaoPedro.body.setImmovable(true);
+        this.zonaInteracaoPedro.body.setAllowGravity(false);
+        
+        // Configurar overlap para disparar a negociação
+        this.physics.add.overlap(
+            this.personagem.sprite, 
+            this.zonaInteracaoPedro, 
+            this.irParaNegociacao, 
+            null, 
+            this
+        );
     }
 
 
