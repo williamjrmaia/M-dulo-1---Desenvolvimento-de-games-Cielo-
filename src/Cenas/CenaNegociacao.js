@@ -106,10 +106,10 @@ export default class CenaNegociacao extends Phaser.Scene {
     preload() {
         const nome = this.clienteConfig.nomeCliente;
 
-        this.load.image(`${nome}_fundo`,      `assets/CLIENTES/${nome}/fundo.png`);
-        this.load.image(`${nome}_satisfeito`, `assets/CLIENTES/${nome}/satisfeito.png`);
-        this.load.image(`${nome}_neutro`,     `assets/CLIENTES/${nome}/neutro.png`);
-        this.load.image(`${nome}_bravo`,      `assets/CLIENTES/${nome}/bravo.png`);
+       // this.load.image(`${nome}_fundo`,      `assets/CLIENTES/${nome}/fundo.png`);
+      //  this.load.image(`${nome}_satisfeito`, `assets/CLIENTES/${nome}/satisfeito.png`);
+      //  this.load.image(`${nome}_neutro`,     `assets/CLIENTES/${nome}/neutro.png`);
+       // this.load.image(`${nome}_bravo`,      `assets/CLIENTES/${nome}/bravo.png`);
         this.load.image('AntiPitch', 'assets/Cartas/Aboradagem/AntiPitch.png'); 
         this.load.image('ComparacaoInteligente', 'assets/Cartas/Aboradagem/ComparacaoInteligente.png'); 
         this.load.image('DesarmeElegante', 'assets/Cartas/Aboradagem/DesarmeElegante.png'); 
