@@ -11,8 +11,8 @@ export default class Jogador {
         // Usa a chave correta do Preloader
         this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
         this.sprite.setCollideWorldBounds(true);
-        this.sprite.body.setSize(10, 15);
-        this.sprite.setOffset(27, 30);
+        this.sprite.body.setSize(10, 5);
+        this.sprite.setOffset(27, 40);
 
         this._criarAnimacoes();
     }

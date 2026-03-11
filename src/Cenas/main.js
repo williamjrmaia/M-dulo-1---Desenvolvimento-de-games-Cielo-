@@ -6,6 +6,7 @@ import CenaCasa from './CenaCasa.js';
 import MundoCasa from './MundoCasa.js';
 import NegociacaoPedro from './NegociacaoPedro.js';
 import MapaGelo from './MapaGelo.js';
+import CenaCasaGelo from './CenaCasaGelo.js';
 import TutorialOverlay from './TutorialOverlay.js';
 
 const config = {
@@ -18,7 +19,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
 

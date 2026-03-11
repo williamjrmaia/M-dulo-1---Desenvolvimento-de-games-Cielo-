@@ -1,11 +1,11 @@
 export default class MenuPrincipal extends Phaser.Scene {
             constructor() { super('MenuPrincipal'); }
             preload() {
-             this.load.image('menu_jogo', '../assets/Menu/menu_fundo.png');
-             this.load.image('botao_iniciar', '../assets/Menu/iniciar_02.png');
-             this.load.image('botao_iniciar_hover', '../assets/Menu/iniciar_01.png');
-             this.load.image('botao_sair', '../assets/Menu/sair.png');
-             this.load.image('botao_config', '../assets/Menu/configuracao.png');
+             this.load.image('menu_jogo', 'assets/Menu/menu_fundo.png');
+             this.load.image('botao_iniciar', 'assets/Menu/iniciar_02.png');
+             this.load.image('botao_iniciar_hover', 'assets/Menu/iniciar_01.png');
+             this.load.image('botao_sair', 'assets/Menu/sair.png');
+             this.load.image('botao_config', 'assets/Menu/configuracao.png');
             }
 
             create() {
