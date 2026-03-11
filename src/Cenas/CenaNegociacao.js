@@ -54,13 +54,8 @@ export default class CenaNegociacao extends Phaser.Scene {
     static FASES = ['abordagem', 'sondagem', 'demonstracao', 'negociacao', 'fechamento'];
 
     static LABELS_FASE = {
-        abordagem:    'Abordagem',
-        sondagem:     'Sondagem',
-        demonstracao: 'Demonstração',
-        negociacao:   'Negociação',
-        fechamento:   'Fechamento',
+        
     };
-
     // Faixas de satisfação — definem qual sprite do cliente mostrar
     // 0–33: bravo | 34–66: neutro | 67–100: satisfeito
     static SATISFACAO_ESTADOS = [
@@ -106,15 +101,25 @@ export default class CenaNegociacao extends Phaser.Scene {
     preload() {
         const nome = this.clienteConfig.nomeCliente;
 
-        this.load.image(`${nome}_fundo`,      `assets/CLIENTES/${nome}/fundo.png`);
-        this.load.image(`${nome}_satisfeito`, `assets/CLIENTES/${nome}/satisfeito.png`);
-        this.load.image(`${nome}_neutro`,     `assets/CLIENTES/${nome}/neutro.png`);
-        this.load.image(`${nome}_bravo`,      `assets/CLIENTES/${nome}/bravo.png`);
-        this.load.image('AntiPitch', 'assets/Cartas/Aboradagem/AntiPitch.png'); 
-        this.load.image('ComparacaoInteligente', 'assets/Cartas/Aboradagem/ComparacaoInteligente.png'); 
-        this.load.image('DesarmeElegante', 'assets/Cartas/Aboradagem/DesarmeElegante.png'); 
-        this.load.image('DiretoAoPonto', 'assets/Cartas/Aboradagem/DiretoAoPonto.png'); 
-        this.load.image('GanchoSocial', 'assets/Cartas/Aboradagem/GanchoSocial.png'); 
+       // this.load.image(`${nome}_fundo`,      `assets/CLIENTES/${nome}/fundo.png`);
+       // this.load.image(`${nome}_satisfeito`, `assets/CLIENTES/${nome}/satisfeito.png`);
+      //  this.load.image(`${nome}_neutro`,     `assets/CLIENTES/${nome}/neutro.png`);
+       // this.load.image(`${nome}_bravo`,      `assets/CLIENTES/${nome}/bravo.png`);
+        
+        // Carrega as imagens das cartas base de Abordagem
+        this.load.image('AntiPitch', 'assets/Cartas/Abordagem/AntiPitch.png');
+        this.load.image('ComparacaoInteligente', 'assets/Cartas/Abordagem/ComparacaoInteligente.png');
+        this.load.image('DesarmeElegante', 'assets/Cartas/Abordagem/DesarmeElegante.png');
+        this.load.image('DiretoAoPonto', 'assets/Cartas/Abordagem/DiretoAoPonto.png');
+        this.load.image('GanchoSocial', 'assets/Cartas/Abordagem/GanchoSocial.png');
+        
+        // Carrega as imagens das cartas de Sondagem
+        this.load.image('AutoridadeImplicita', 'assets/Cartas/Sondagem/AutoridadeImplicita.png');
+        this.load.image('ChaveDeExclusividade', 'assets/Cartas/Sondagem/ChaveDeExclusividade.png');
+        this.load.image('Cliffhanger', 'assets/Cartas/Sondagem/Cliffhanger.png');
+        this.load.image('GanchoDaDor', 'assets/Cartas/Sondagem/GanchoDaDor.png');
+        this.load.image('LoboCurioso', 'assets/Cartas/Sondagem/LoboCurioso.png');
+        this.load.image('PerguntaDeImpacto', 'assets/Cartas/Sondagem/PerguntaDeImpacto.png');
 
         // Assets de UI compartilhados — descomente quando tiver os arquivos
         // this.load.image('carta_fundo', 'assets/UI/CARTAS/carta_fundo.png');
