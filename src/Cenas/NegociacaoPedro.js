@@ -1,4 +1,4 @@
-import CenaNegociacao from './CenaNegociacao.js';
+import CenaNegociacao from '../Classes/CenaNegociacao.js';
 
 // ─── Constantes de layout e tempo ────────────────────────────────────────────
 const CARD_WIDTH         = 270;

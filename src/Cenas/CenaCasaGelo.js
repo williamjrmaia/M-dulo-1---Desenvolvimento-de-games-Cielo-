@@ -1,5 +1,4 @@
-import Jogador from './classes.js';
-
+import Jogador from '../Classes/Jogador.js';
 
 export default class CenaCasaGelo extends Phaser.Scene {
     constructor() { 
@@ -13,11 +12,6 @@ export default class CenaCasaGelo extends Phaser.Scene {
     preload() {
         this.load.image('CasaPedro', './assets/MapaGelo/CasaPedro.png');
         this.load.tilemapTiledJSON('mapa_casa', './assets/MapaGelo/CasaPedroHitbox.tmj');
-
-        this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       'assets/PLAYER/MAN/BLACK/spr_player_man_side_walk_bla.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      'assets/PLAYER/MAN/BLACK/spr_player_man_back_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {
