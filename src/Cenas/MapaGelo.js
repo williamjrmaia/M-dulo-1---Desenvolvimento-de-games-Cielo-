@@ -58,6 +58,7 @@ export default class MapaGelo extends Phaser.Scene {
         this.physics.add.existing(this.geloPorta2, true);
         
         this.teclas = this.personagem.configurarTeclas();
+        
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.6);
         this.cameras.main.fadeIn(500, 0, 0, 0);
