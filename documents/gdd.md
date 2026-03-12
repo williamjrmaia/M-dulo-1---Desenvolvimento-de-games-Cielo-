@@ -74,23 +74,68 @@ A análise das Cinco Forças de Porter indica que o mercado de adquirência no B
 
 ### 1.1.2. Análise SWOT (sprint 2)
 
-A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). 
+A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). Essa metodologia permite avaliar fatores internos e externos que influenciam o desempenho organizacional, contribuindo para a formulação de estratégias mais alinhadas ao ambiente competitivo.
 
-Forças são vantagens internas, e, no caso da Cielo, destacam-se a marca consolidada e a alta capilaridade de mercado, sustentadas por uma vantagem competitiva robusta junto ao sistema bancário (Cielo, 2023). Sua presença institucionalizada no setor varejista reforça seu posicionamento como player de referência no ecossistema de pagamentos (Abecs, 2023), evidenciando solidez estrutural e reconhecimento no mercado.
+No caso da Cielo, a análise dos fatores internos e externos evidencia os seguintes elementos estratégicos:
 
-Por outro lado, as fraquezas correspondem a limitações internas que reduzem a capacidade competitiva da organização (Fernandes et al., 2015). No caso da Cielo, destaca-se a elevada concentração de suas operações no mercado brasileiro, o que amplia sua exposição a oscilações econômicas e regulatórias (Cielo, 2023). Além disso, a perda de participação de mercado e a redução de margens observadas nos últimos anos refletem dificuldades internas de adaptação frente ao aumento da concorrência, impactando seu desempenho financeiro e estratégico.
-
-Já as oportunidades referem-se a fatores externos favoráveis, como a digitalização progressiva de pequenos negócios e a expansão do e-commerce, que ampliam a adesão aos meios de pagamento digitais e criam novos fluxos de receita e possibilidades de diversificação do portfólio de serviços (Vial, 2019). 
-
-Em contrapartida, as ameaças envolvem riscos regulatórios que podem comprimir margens financeiras (Banco Central do Brasil, 2023), além da saturação competitiva e da ascensão do Pix como método de pagamento substituto, reduzindo a dependência de cartões físicos e terminais de captura (Banco Central do Brasil, 2023).
-
-Assim, conclui-se que a Cielo atua em um mercado competitivo e em constante transformação, no qual possui pontos fortes relevantes, mas também enfrenta desafios internos e externos que exigem adaptação contínua. De modo geral, a análise SWOT demonstra que a empresa apresenta base sólida para crescimento, embora precise acompanhar as mudanças do setor para manter sua posição no mercado.
+### Forças (Strengths)
+ 
+- Marca consolidada com alta capilaridade — presente em mais de 1 milhão de estabelecimentos comerciais no Brasil (Cielo, 2023).
+- Relacionamento preferencial com os maiores bancos emissores do país, criando barreiras de entrada para novos concorrentes.
+- Infraestrutura própria de captura e processamento de transações, com expertise regulatória acumulada.
+- Reconhecimento institucional no ecossistema de pagamentos digitais (Abecs, 2023).
+ 
+### Fraquezas (Weaknesses)
+ 
+- Elevada concentração das operações no mercado brasileiro, ampliando exposição a oscilações econômicas e regulatórias locais.
+- Perda contínua de participação de mercado para concorrentes como Stone e PagSeguro desde 2018 (Cielo, 2023).
+- Estrutura de custos elevada frente a fintechs nativas digitais, pressionando margens financeiras.
+- Dependência significativa do modelo tradicional de adquirência, com baixa agilidade de desenvolvimento de novos produtos.
+ 
+### Oportunidades (Opportunities)
+ 
+- Digitalização de micro e pequenos negócios — segmento ainda sub-penetrado em soluções de gestão financeira (Vial, 2019).
+- Expansão do comércio eletrônico e dos pagamentos recorrentes como novos fluxos de receita.
+- Potencial de cross-sell de serviços financeiros (crédito, antecipação de recebíveis) via base instalada.
+- Open Finance como canal de dados para personalização de ofertas e ampliação do portfólio.
+ 
+### Ameaças (Threats)
+ 
+- Crescimento do Pix como substituto de pagamentos no varejo físico, reduzindo a dependência de terminais de captura (Banco Central do Brasil, 2023).
+- Compressão regulatória das taxas de intercâmbio, impactando margens financeiras.
+- Entrada de BigTechs (Mercado Pago, Google Pay) com modelos de negócio de margem zero em adquirência.
+- Saturação competitiva com fintechs de baixo custo no mercado de adquirência (Banco Central do Brasil, 2023).
+ 
+---
+ 
+### SWOT Cruzada
+ 
+A partir da identificação desses fatores, é possível elaborar estratégias combinando elementos internos e externos, transformando o diagnóstico em direcionamento estratégico.
+ 
+| | **Oportunidades (O)** | **Ameaças (T)** |
+|---|---|---|
+| **Forças (S)** | **SO — Alavancagem:** Usar capilaridade e vínculo bancário para escalar oferta de crédito e serviços financeiros a PMEs digitais; posicionar-se como hub de gestão financeira para o varejo omnichannel via Open Finance. | **ST — Defesa:** Integrar o Pix ao portfólio como funcionalidade complementar; usar vantagem regulatória para criar produtos que BigTechs não conseguem oferecer; diferenciar por confiabilidade e SLA frente a novos entrantes. |
+| **Fraquezas (W)** | **WO — Desenvolvimento:** Reduzir time-to-market com squads ágeis para capturar demanda de e-commerce; modernizar stack tecnológica para competir em custo com fintechs nativas digitais. | **WT — Contenção:** Priorizar segmentos de maior margem onde o Pix não substitui o cartão (ex.: crédito parcelado); avaliar parcerias ou aquisições de fintechs para reduzir gap de custo operacional. |
 
 
 ### 1.1.3. Missão / Visão / Valores (sprint 2)
 
-A missão deste projeto é promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva, na qual os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Floresta dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil. Sua visão é consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas. Sustentado pelos valores de equidade, empatia, inovação e colaboração, o projeto vai além do entretenimento, posicionando-se como uma ferramenta de transformação profissional e fortalecimento do desempenho nacional.
+### Missão
+ 
+Promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva. Os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Floresta dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil.
 
+### Visão
+ 
+Consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas da Cielo.
+
+### Valores
+ 
+| Valor | Descrição |
+|---|---|
+| **Equidade** | Garantir acesso igualitário ao aprendizado independentemente da região ou perfil do colaborador. |
+| **Empatia** | Considerar as necessidades e realidades dos Gerentes de Negócios na construção da experiência. |
+| **Inovação** | Transformar o treinamento corporativo por meio de mecânicas de jogo e tecnologia educacional. |
+| **Colaboração** | Estimular a troca de conhecimento e o desenvolvimento coletivo da força de vendas. |
 
 ### 1.1.4. Proposta de Valor (sprint 4)
 
@@ -554,6 +599,12 @@ SOBRENOME, Nome. Título do site. Disponível em: link do site. Acesso em: Dia M
 
 Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review.
 https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy
+
+> - ABECS. *Associação Brasileira das Empresas de Cartões de Crédito e Serviços*. 2023.
+> - BANCO CENTRAL DO BRASIL. *Relatório de Estabilidade Financeira*. 2023.
+> - CIELO. *Relatório Anual*. 2023.
+> - FERNANDES, A. et al. *Planejamento estratégico*. 2015.
+> - VIAL, G. Understanding digital transformation. *Journal of Strategic Information Systems*, 2019.
 
 
 
