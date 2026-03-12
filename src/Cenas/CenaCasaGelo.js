@@ -1,5 +1,4 @@
-import Jogador from './classes.js';
-
+import Jogador from '../Classes/Jogador.js';
 
 export default class CenaCasaGelo extends Phaser.Scene {
     constructor() { 
@@ -11,13 +10,8 @@ export default class CenaCasaGelo extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('CasaPedro', '../assets/MapaGelo/CasaPedro.png');
-        this.load.tilemapTiledJSON('mapa_casa', '../assets/MapaGelo/CasaPedroHitbox.tmj');
-
-        this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       '../assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      '../assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.image('CasaPedro', './assets/MapaGelo/CasaPedro.png');
+        this.load.tilemapTiledJSON('mapa_casa', './assets/MapaGelo/CasaPedroHitbox.tmj');
     }
 
     create() {
@@ -81,9 +75,30 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
     
 
+        // ✅ ZONA DE INTERAÇÃO COM PEDRO
+        this.zonaInteracaoPedro = this.add.zone(750, 300, 200, 200);
+        this.physics.world.enable(this.zonaInteracaoPedro);
+        this.zonaInteracaoPedro.body.setImmovable(true);
+        this.zonaInteracaoPedro.body.setAllowGravity(false);
+        
+        // Configurar overlap para disparar a negociação
+        this.physics.add.overlap(
+            this.personagem.sprite, 
+            this.zonaInteracaoPedro, 
+            this.irParaNegociacao, 
+            null, 
+            this
+        );
     }
 
-
+    irParaNegociacao() {
+        console.log("Iniciando negociação com Pedro...");
+        this.cameras.main.fadeOut(500, 0, 0, 0);
+        
+        this.cameras.main.once('camerafadeoutcomplete', () => {
+            this.scene.start('NegociacaoPedro');
+        });
+    }
 
     update() {
   

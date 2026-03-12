@@ -1,4 +1,4 @@
-import Jogador from './classes.js';
+import Jogador from '../Classes/Jogador.js';
 
 export default class MapaGelo extends Phaser.Scene {
     constructor() { 
@@ -73,7 +73,6 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'CenaCasaGelo') {
             this.personagem.sprite.setPosition(655, 210)
         }
-
     }
         
     update() {

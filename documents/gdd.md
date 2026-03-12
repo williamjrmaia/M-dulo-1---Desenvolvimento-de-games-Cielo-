@@ -47,7 +47,6 @@ Atualmente, a Cielo adota uma estratégia focada em eficiência operacional, amp
 
 #### 1.1.1.1. Modelo de 5 Forças de Porter (sprint 2)
 
-**Introdução**
 O modelo das Cinco Forças de Porter, desenvolvido por Michael Porter, é uma ferramenta estratégica amplamente utilizada para analisar o nível de competitividade de um setor e compreender os fatores que influenciam a lucratividade das empresas. A partir dessa abordagem, é possível identificar as principais pressões competitivas do mercado, bem como oportunidades e desafios que impactam o posicionamento estratégico das organizações. No contexto do mercado de adquirência no Brasil, onde atua a Cielo, essa análise permite compreender como mudanças tecnológicas, regulações e novos modelos de negócio vêm transformando o setor de pagamentos (Porter, 2008).
 
 **Análise da Ameaça de Novos Entrantes**
@@ -70,7 +69,6 @@ Uma das estratégias centrais que elevam o poder do cliente é a adoção da mul
 A rivalidade no mercado brasileiro de adquirência, frequentemente referida pelo mercado financeiro como "a guerra das maquininhas", é intensa, agressiva e baseada em forte compressão de margens. A Cielo, que historicamente operava em um mercado duopolista, enfrenta hoje a pulverização de market share disputando contra incumbentes (Rede, Getnet) e fintechs listadas em bolsa que adotam táticas predatórias de preço (Stone, PagSeguro, Mercado Pago)(Estadão Conteúdo, 2024).
 O serviço básico de captura de transações tornou-se uma commodity. De acordo com informações prestadas pela própria companhia ao mercado (Cielo S.A., 2024), a estratégia de retenção deixou de ser o terminal físico e passou a exigir a oferta de serviços de valor agregado (SVA), como crédito integrado, conta digital, conciliação e softwares de gestão varejista. A fragmentação dos players, o alto custo de aquisição de clientes (CAC) na base da pirâmide (microempreendedores) e a necessidade de altíssimo investimento em tecnologia comprovam que a rivalidade entre os concorrentes existentes é muito alta.
 
-**Conclusão**
 A análise das Cinco Forças de Porter indica que o mercado de adquirência no Brasil é altamente competitivo e está em constante transformação. Fatores como avanços tecnológicos, surgimento de novos concorrentes e o crescimento de soluções como o Pix aumentam a pressão sobre os modelos tradicionais de pagamento. Nesse cenário, empresas como a Cielo precisam investir em inovação e serviços de valor agregado para manter sua competitividade no setor.
 
 
@@ -123,10 +121,10 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 3 | Mapa geral | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielta, Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
 4 | Regiões principais | O jogo deve conter a primeira região, Quebra-Gelo, que abordará proposta de valor, conceitos fundamentais e superação de objeções; a segunda, Vila do Varejo, que deverá contemplar a aplicação prática de produtos e soluções conforme o perfil do cliente; a terceira, Floresta dos Proveitos, que deverá tratar da identificação e argumentação de benefícios e diferenciais competitivos; e a quarta e última, Cidade da Negociação, que deverá consolidar os conhecimentos adquiridos nas regiões anteriores por meio de desafios de estratégia, negociação e fechamento.
 5 | Movimentação e interação do jogador | A movimentação do personagem será realizada por meio das teclas W, A, S e D do teclado, responsáveis pelo deslocamento direcional. A tecla E será destinada à interação do jogador com NPCs e objetos presentes no mapa.
-6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface e de variações visuais nos sprites dos personagens.
-7 | Cartas | O jogo deve disponibilizar inicialmente ao jogador cartas para combate.
-8 | Combate | O sistema de jogo deve implementar combates baseados no uso de cartas.
-9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento do sistema de combate.
+6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface que, durante a negociação com o vendedor, aumenta ou diminui de acordo com a resposta do GN. Os sprites do cliente mudarão de acordo com a negociação (por exemplo: nervoso ou feliz).
+7 | Cartas | O jogo irá implementar um sistema de respostas à base de cartas aconselhadoras de fundamentos típicos em negociações, como: abordagem, sondagem, negociação, demonstração e fechamento.
+8 | Combate | O nosso sistema de combate consistirá nas negociações entre os GNs e os comerciantes durante as missões nos mapas, alinhado com o nosso sistema de cartas.
+9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento das mecânicas gerais e das mecânicas de combate.
 
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
@@ -360,19 +358,79 @@ Figura 3: Menu Inicial
 
 ## 3.6. Regras do jogo (sprint 3)
 
-*Descreva aqui as regras do seu jogo: objetivos/desafios, meios para se conseguir alcançar*
-
-*Ex. O jogador deve pilotar o carro e conseguir terminar a corrida dentro de um minuto sem bater em nenhum obstáculo.*
-
-*Ex. O jogador deve concluir a fase dentro do tempo, para obter uma estrela. Se além disso ele coletar todas as moedas, ganha mais uma estrela. E se além disso ele coletar os três medalhões espalhados, ganha mais uma estrela, totalizando três. Ao final do jogo, obtendo três estrelas em todas as fases, desbloqueia o mundo secreto.*  
+# Objetivo do jogo
+O principal objetivo do jogador é interagir com os NPCs presentes em cada região do jogo até achar o CPC (Contato com pessoa certa) e convencê-lo a se tornarem clientes da empresa. Para isso, o jogador deverá utilizar estratégias de abordagem, compreender as necessidades do personagem e apresentar soluções adequadas durante a interação.
+# Desafios e decisões 
+Durante o jogo, o jogador enfrentará situações de negociação com um NPC específico em cada região. Ao iniciar a interação, serão apresentadas opções de diálogo e escolhas que representam diferentes formas de abordagem e argumentação. O jogador deverá analisar cada situação e selecionar as respostas mais adequadas para convencer o personagem.
+Essas decisões influenciam diretamente o resultado da negociação, podendo aumentar ou diminuir as chances de o NPC aceitar a proposta apresentada.
+# Progressão no jogo
+A progressão do jogador ocorre por meio da conversão de um NPC principal em cada região do jogo. Cada área possui um personagem que representa o desafio daquela fase. O jogador deverá interagir com esse NPC e conduzir a negociação de forma adequada para convencê-lo a se tornar cliente da empresa.
+Ao conseguir converter o NPC daquela região, o jogador conquista a insígnia da área, que representa o sucesso da negociação. Após obter essa insígnia, o jogador desbloqueia a próxima região do jogo, podendo avançar para novos ambientes e desafios.
+# Consequências das escolhas
+As decisões tomadas durante a interação com o NPC podem influenciar o resultado da negociação. Escolhas adequadas aumentam as chances de sucesso, enquanto decisões inadequadas podem fazer com que o personagem fique irritado ou descrente com o jogador e acabe recusando a proposta. Nesse caso, o jogador deverá tentar novamente até conseguir concluir a negociação e avançar para a próxima área do jogo.
 
 ## 3.7. Mecânicas do jogo (sprint 3)
 
-*Descreva aqui as formas de controle e interação que o jogador tem sobre o jogo: quais os comandos disponíveis, quais combinações de comandos, e quais as ações consequentes desses comandos. Utilize listas ou tabelas para organizar esta seção.*
+# Interface e Menu Inicial (HUD)
+O jogo possui um menu inicial que apresenta as principais opções para o jogador antes de iniciar a partida.
+Opção do Menu | Função
+--- | ---
+Iniciar | Inicia a partida
+Configurações | Permite ajustar opções do jogo
+Sair | Encerra o jogo
 
-*Ex. Em um jogo de plataforma 2D para desktop, o jogador pode usar as teclas WASD para mecânicas de andar, mirar para cima, agachar, e as teclas JKL para atacar, correr, arremesar etc.*
+A interface foi projetada para ser clara e simples, permitindo que o jogador compreenda rapidamente as opções disponíveis e inicie a experiência de forma intuitiva.
 
-*Ex. Em um jogo de puzzle para celular, o jogador pode tocar e arrastar sobre uma peça para movê-la sobre o tabuleiro, ou fazer um toque simples para rotacioná-la*
+# Seleção de Personagem
+O jogador pode escolher entre quatro personagens jogáveis, buscando representar diversidade entre os avatares disponíveis. As opções incluem:
+
+- Homem branco
+- Homem negro
+- Mulher branca
+- Mulher negra
+
+Essa escolha permite que o jogador selecione o personagem com o qual mais se identifica, contribuindo para uma experiência mais personalizada.
+
+# Personalização do Nome
+Após escolher o personagem, o jogador pode definir o nome do seu avatar. Esse nome será utilizado durante o jogo, especialmente em interações com NPCs e em elementos da interface.
+
+O nome do personagem não é permanente, podendo ser alterado posteriormente através do menu de Configurações, garantindo maior flexibilidade ao jogador.
+
+# Alteração de Personagem
+Além da escolha inicial, o jogador também pode alterar o personagem selecionado posteriormente através do menu de Configurações. Essa funcionalidade permite que o jogador experimente diferentes avatares ao longo do jogo sem a necessidade de reiniciar o progresso.
+
+# Controles e Interações do Jogador
+O jogo foi desenvolvido para a plataforma web/PC, sendo controlado principalmente por teclado e mouse. O teclado é utilizado para a movimentação do personagem e interação com o ambiente, enquanto o mouse é utilizado durante o sistema de combate baseado em cartas.
+
+# Movimentação e Interação
+A movimentação do personagem utiliza o padrão WASD, amplamente adotado em jogos para computador por ser intuitivo para os jogadores. Além disso, o jogador pode interagir com elementos do cenário, como NPCs e portas, utilizando uma tecla específica de interação.
+Comando | Ação
+--- | ---
+W | Movimentar o personagem para cima
+A | Movimentar o personagem para a esquerda
+S | Movimentar o personagem para baixo
+D | Movimentar o personagem para a direita
+E | Interagir com NPCs ou portas
+H | Exibir o tutorial de movimentação e interação
+
+# Interação com o Ambiente
+Durante a exploração, o jogador pode interagir com diferentes elementos do cenário. As principais interações incluem:
+Conversar com NPCs, iniciando diálogos ou negociações.
+Entrar em ambientes internos ao interagir com portas.
+Acessar instruções de controle pressionando a tecla de ajuda.
+
+Essas interações permitem que o jogador explore o mapa e avance nas atividades do jogo.
+
+# Sistema de Combate
+O sistema de combate substitui o combate físico por negociações comerciais estratégicas, onde os NPCs atuam como clientes potenciais que o jogador deve conquistar. Através de um baralho de cartas selecionadas via mouse, o jogador executa táticas de vendas que simulam as etapas reais de um funil de vendas, desde o contato inicial e apresentação de propostas até o estágio final de fechamento do negócio.
+
+O sucesso de cada interação é mensurado pelo parâmetro de convencimento, visualizado através de uma barra de satisfação que flutua em tempo real. Cada carta jogada impacta diretamente esse medidor: abordagens precisas preenchem a barra, aproximando o jogador da conversão, enquanto escolhas equivocadas podem reduzir a satisfação do cliente, exigindo novas estratégias para recuperar a confiança e evitar que a negociação seja cancelada.
+
+Comando | Ação
+--- | ---
+Clique do mouse | Selecionar cartas durante a negociação
+Clique do mouse | Confirmar ações ou escolhas
+
 
 ## 3.8. Implementação Matemática de Animação/Movimento (sprint 4)
 
@@ -434,11 +492,22 @@ A fase final ocorre no Mundo de Negociação, onde o jogo transita para um siste
 ## 5.1. Casos de Teste (sprints 2 a 4)
 
 Esta seção detalha os procedimentos de teste fundamentais para garantir a integridade técnica e a fluidez da experiência do jogador em Cielo. O foco aqui é validar o "Caminho Crítico": a transição entre a interface inicial, a navegação pelo ambiente e a funcionalidade dos gatilhos de interação. Esses testes devem ser executados de forma cíclica a cada nova implementação para assegurar que as partes do sistema (menus, mapas e eventos) 
-continuem integradas corretamente.| # | Pré-condição | Descrição do Teste | Pós-condição |
+continuem integradas corretamente.
+| # | Pré-condição | Descrição do Teste | Pós-condição |
 | :--- | :--- | :--- | :--- |
-| **1** | Tela de abertura ativa | Clicar no botão INICIAR | O jogo deve carregar o Mapa Introdutório** da ilha. |
-| **2** | Personagem no Mapa Introdutório | Caminhar em direção à porta da casa com telhado azul | O sistema deve teletransportar o personagem para o interior da Casa da Celita. |
-| **3** | Personagem no interior (Casa da Celita) | Posicionar o personagem em frente à Celita e pressionar o botão de interação | Deve iniciar o diálogo ou evento programado com a personagem Celita. |
+| **1** | Tela de abertura ativa | Clicar no botão INICIAR | O jogo deve carregar o Mapa Introdutório e exibir automaticamente a imagem de Tutorial. |
+| **2** | Imagem de Tutorial ativa na tela | Pressionar a tecla **H** | A imagem de tutorial deve fechar, liberando a movimentação do personagem. |
+| **3** | Personagem em qualquer mapa | Pressionar a tecla **H** durante a exploração | A imagem de tutorial deve abrir (se fechada) ou fechar (se aberta) a qualquer momento. |
+| **4** | Personagem no Mapa Introdutório | Caminhar em direção à porta da Casa da Cielita e pressionar a tecla **E** | O sistema deve teletransportar o personagem para o interior da casa. |
+| **5** | Personagem no interior da Casa da Cielita | Caminhar em direção à porta de saída e pressionar a tecla **E** | O personagem deve retornar ao Mapa Introdutório, posicionado do lado de fora da casa. |
+| **6** | Personagem no Mapa Introdutório | Atravessar a ponte de conexão entre os mapas | O sistema deve carregar o Mapa "Quebra-Gelo" e posicionar o jogador na nova área (funciona para ida e volta). |
+| **7** | Personagem no Mapa Quebra-Gelo | Caminhar contra as Casas de Gelo, Pedras e limites do cenário | O sistema de colisão deve impedir o personagem de atravessar os objetos ou sair do mapa. |
+| **8** | Personagem no Mapa Quebra-Gelo | Aproximar-se da porta da Casa das Carnes Congeladas e pressionar a tecla **E** | O sistema deve carregar o interior da casa das carnes; o mesmo deve ocorrer ao pressionar **E** para sair. |
+| **9** | Personagem próximo à NPC Cielita | Entrar no raio de distância de interação | Um indicador visual (Botão **E**) deve aparecer flutuando sobre a NPC. |
+| **10** | Diálogo com Cielita ativo | Afastar-se da NPC para fora do raio de interação | A caixa de texto e o ícone de interação devem desaparecer e o diálogo deve ser encerrado. |
+| **11** | Diálogo iniciado (Texto em movimento) | Pressionar a tecla **E** enquanto o texto aparece letra por letra | O efeito "máquina de escrever" deve ser ignorado e o texto atual deve aparecer completo na tela. |
+| **12** | Texto da fala atual completo na tela | Pressionar a tecla **E** após a conclusão do texto | O sistema deve avançar para a próxima fala da Cielita ou encerrar o diálogo caso seja a última fala. |
+
 A execução consistente dos casos de teste listados acima garante que o núcleo fundamental de CIELO permaneça estável durante todo o processo de desenvolvimento. Ao validar a transição bem-sucedida entre o Mapa Introdutório e a Casa da Celita, asseguramos que os sistemas de colisão, gatilhos de cena e interações com NPCs estejam operando em harmonia. 
 
 
