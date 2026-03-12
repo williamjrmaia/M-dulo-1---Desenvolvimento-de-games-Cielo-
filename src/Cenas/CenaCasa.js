@@ -37,49 +37,9 @@ export default class CenaCasa extends Phaser.Scene {
         // Jogador
         this.jogador = new Jogador(this, W / 2, H / 2 + 80);
         this.teclas  = this.jogador.configurarTeclas();
-
-        // Collisions
         this.jogador.adicionarColisao(this.cielita);
 
-        // =================================================================
-        // HITBOXES DO TILED
-        // =================================================================
-        const escala = 2.3; // A mesma escala usada no seu background
-        const mapa = this.make.tilemap({ key: 'mapa_casa' });
-        
-        // IMPORTANTE: O nome aqui precisa ser idêntico ao nome da Camada de Objetos lá no Tiled
-        const camadaObjetos = mapa.getObjectLayer('hitboxes');
-
-        if (camadaObjetos) {
-            camadaObjetos.objects.forEach(obj => {
-                if (obj.polygon) {
-                    // Cria colisões poligonais (se você desenhou polígonos no Tiled)
-                    const poly = this.add.polygon(
-                        limiteX + obj.x * escala,
-                        limiteY + obj.y * escala,
-                        obj.polygon.map(p => ({ x: p.x * escala, y: p.y * escala })),
-                        0xff0000, 0 // O "0" no final deixa invisível. Mude para 0.5 para ver a hitbox se precisar debugar.
-                    );
-                    this.physics.add.existing(poly, true);
-                    this.jogador.adicionarColisao(poly);
-                } else {
-                    // Cria zonas de colisão retangulares (se desenhou quadrados no Tiled)
-                    const zona = this.add.zone(
-                        limiteX + obj.x * escala + (obj.width  * escala) / 2,
-                        limiteY + obj.y * escala + (obj.height * escala) / 2,
-                        obj.width  * escala,
-                        obj.height * escala
-                    );
-                    this.physics.add.existing(zona, true);
-                    zona.body.setImmovable(true);
-                    zona.body.setAllowGravity(false);
-                    this.jogador.adicionarColisao(zona);
-                }
-            });
-        }
-        // =================================================================
-
-        // Door trigger
+        // Porta
         this.gatilhoPorta = this.add.zone(limiteX + larguraMapa / 2, limiteY + alturaMapa - 20, 40, 40);
         this.physics.add.existing(this.gatilhoPorta);
         this.gatilhoPorta.body.setAllowGravity(false);

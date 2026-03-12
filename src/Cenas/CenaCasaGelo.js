@@ -1,6 +1,5 @@
 import Jogador from '../Classes/Jogador.js';
 
-
 export default class CenaCasaGelo extends Phaser.Scene {
     constructor() { 
         super('CenaCasaGelo'); 
