@@ -1,4 +1,4 @@
-import Jogador from './classes.js';
+import Jogador from '../Classes/Jogador.js';
 import DialogoPedro from '../Classes/DialogoPedro.js';
 
 
@@ -16,15 +16,10 @@ export default class CenaCasaGelo extends Phaser.Scene {
     this.load.image('CasaPedro', 'assets/MapaGelo/CasaPedro.png');
     this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
 
-    this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('Lado',       'assets/PLAYER/MAN/BLACK/spr_player_man_side_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
-    this.load.spritesheet('Costa',      'assets/PLAYER/MAN/BLACK/spr_player_man_back_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
-
     // ← ADICIONE ESTAS LINHAS:
-    this.load.image('IndicadorE', 'assets/objetos/Botão E.png');
-this.load.image('balao',      'assets/objetos/balao dialogo.png');
-this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
+    this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
+    this.load.image('balao',      'assets/objetos/balao dialogo.png');
+    this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
 }
 
     create() {
@@ -76,11 +71,11 @@ this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.pn
     this.physics.add.collider(this.personagem.sprite, paredes);
 
     // NPC Seu Pedro
-this.seupedro = this.physics.add.sprite(750, 390, 'seupedro_idl');
-this.seupedro.setImmovable(true);
-this.seupedro.body.setAllowGravity(false);
-this.seupedro.setScale(2.5);
-this.seupedro.setDepth(5);
+    this.seupedro = this.physics.add.sprite(710, 390, 'seupedro_idl');
+    this.seupedro.setImmovable(true);
+    this.seupedro.body.setAllowGravity(false);
+    this.seupedro.setScale(1.5);
+    this.seupedro.setDepth(5);
 
 this.physics.add.collider(this.personagem.sprite, this.seupedro);
 

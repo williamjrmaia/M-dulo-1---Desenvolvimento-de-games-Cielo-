@@ -30,7 +30,7 @@ const config = {
     },
 
     scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, CenaCasaGelo, NegociacaoPedro, 
-        TutorialOverlay]//Preloader carrega as sprites antes do jogo começar 
+        TutorialOverlay, BootScene]//Preloader carrega as sprites antes do jogo começar 
                                                                                       //para evitar redundância
 
 };
