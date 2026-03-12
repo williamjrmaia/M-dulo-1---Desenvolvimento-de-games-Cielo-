@@ -11,8 +11,8 @@ export default class CenaCasaGelo extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('CasaPedro', '../assets/MapaGelo/CasaPedro.png');
-        this.load.tilemapTiledJSON('mapa_casa', '../assets/MapaGelo/CasaPedroHitbox.tmj');
+        this.load.image('CasaPedro', './assets/MapaGelo/CasaPedro.png');
+        this.load.tilemapTiledJSON('mapa_casa', './assets/MapaGelo/CasaPedroHitbox.tmj');
 
         this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
         this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
@@ -97,7 +97,14 @@ export default class CenaCasaGelo extends Phaser.Scene {
         );
     }
 
-
+    irParaNegociacao() {
+        console.log("Iniciando negociação com Pedro...");
+        this.cameras.main.fadeOut(500, 0, 0, 0);
+        
+        this.cameras.main.once('camerafadeoutcomplete', () => {
+            this.scene.start('NegociacaoPedro');
+        });
+    }
 
     update() {
   

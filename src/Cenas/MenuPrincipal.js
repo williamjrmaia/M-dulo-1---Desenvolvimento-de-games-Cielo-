@@ -1,13 +1,13 @@
 export default class MenuPrincipal extends Phaser.Scene {
             constructor() { super('MenuPrincipal'); }
             preload() {
-             this.load.image('menu_jogo', '../assets/Menu/menu_fundo.png');
-             this.load.image('botao_iniciar', '../assets/Menu/botoes/iniciar_02.png');
-             this.load.image('botao_iniciar_hover', '../assets/Menu//botoes/iniciar_01.png');
-             this.load.image('botao_sair', '../assets/Menu/botoes/sair_02.png');
-             this.load.image('botao_sair_hover', '../assets/Menu/botoes/sair_01.png');
-             this.load.image('botao_config', '../assets/Menu/botoes/configuracao_02.png');
-             this.load.image('botao_config_hover', '../assets/Menu/botoes/configuracao_01.png');
+             this.load.image('menu_jogo', 'assets/Menu/menu_fundo.png');
+             this.load.image('botao_iniciar', 'assets/Menu/botoes/iniciar_02.png');
+             this.load.image('botao_iniciar_hover', 'assets/Menu//botoes/iniciar_01.png');
+             this.load.image('botao_sair', 'assets/Menu/botoes/sair_02.png');
+             this.load.image('botao_sair_hover', 'assets/Menu/botoes/sair_01.png');
+             this.load.image('botao_config', 'assets/Menu/botoes/configuracao_02.png');
+             this.load.image('botao_config_hover', 'assets/Menu/botoes/configuracao_01.png');
             }
 
             create() {
