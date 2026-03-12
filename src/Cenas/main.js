@@ -8,6 +8,7 @@ import NegociacaoPedro from './NegociacaoPedro.js';
 import MapaGelo from './MapaGelo.js';
 import CenaCasaGelo from './CenaCasaGelo.js';
 import TutorialOverlay from './TutorialOverlay.js';
+import BootScene from './BootScene.js';
 
 const config = {
     type: Phaser.AUTO,

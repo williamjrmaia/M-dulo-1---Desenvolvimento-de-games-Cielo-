@@ -50,39 +50,8 @@ export default class NegociacaoPedro extends CenaNegociacao {
         this.cartaEmDetalhes = null;
     }
 
-    preload() {
-    super.preload();
-
-    this.load.on('loaderror', (file) => {
-        console.warn(`[NegociacaoPedro] Asset não encontrado: "${file.key}" → ${file.url}`);
-    });
-
-    const carregar = (key, path) => {
-        if (!this.textures.exists(key)) {
-            this.load.image(key, path);
-        }
-    };
-
-    // Cartas de Abordagem
-    carregar('AntiPitch',            'assets/Cartas/Abordagem/AntiPitch.png');
-    carregar('ComparacaoInteligente', 'assets/Cartas/Abordagem/ComparacaoInteligente.png');
-    carregar('DesarmeElegante',       'assets/Cartas/Abordagem/DesarmeElegante.png');
-    carregar('DiretoAoPonto',         'assets/Cartas/Abordagem/DiretoAoPonto.png');
-    carregar('GanchoSocial',          'assets/Cartas/Abordagem/GanchoSocial.png');
-
-    // Cartas de Sondagem
-    carregar('AutoridadeImplicita',   'assets/Cartas/Sondagem/AutoridadeImplicita.png');
-    carregar('ChaveDeExclusividade',  'assets/Cartas/Sondagem/ChaveDeExclusividade.png');
-    carregar('Cliffhanger',           'assets/Cartas/Sondagem/Cliffhanger.png');
-    carregar('GanchoDaDor',           'assets/Cartas/Sondagem/GanchoDaDor.png');
-    carregar('LoboCurioso',           'assets/Cartas/Sondagem/LoboCurioso.png');
-    carregar('PerguntaDeImpacto',     'assets/Cartas/Sondagem/PerguntaDeImpacto.png');
-
-    // Cartas de Demonstração / Produtos
-    carregar('CieloLioOn',  'assets/Cartas/Produtos/LIOON.png');
-    carregar('CieloFlash',  'assets/Cartas/Produtos/FLASH.png');
-    carregar('CVBA',        'assets/Cartas/Produtos/CVBA.png');
-    carregar('CieloFlash2', 'assets/Cartas/Produtos/FLASH2.png');
+   create() {
+    super.create();
 }
 
     _falaInicioFase(fase) {
@@ -114,21 +83,26 @@ export default class NegociacaoPedro extends CenaNegociacao {
     }
 
     _acertarFase(fase) {
-        if (fase !== 'demonstracao') {
-            super._acertarFase(fase);
-            return;
-        }
-
-        const soma = this.cartasSelecionadas.reduce(
-            (total, carta) => total + (PONTUACAO_PRODUTO[carta.key] ?? 0),
-            0
-        );
-
-        this._mostrarDialogo(this._falaAcertoFase(fase));
-        this._alterarSatisfacao(soma);
-
-        this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
+    if (fase !== 'demonstracao') {
+        super._acertarFase(fase);
+        return;
     }
+
+    console.log('Cartas selecionadas:', this.cartasSelecionadas.map(c => c.key));
+    console.log('PONTUACAO_PRODUTO:', PONTUACAO_PRODUTO);
+
+    const soma = this.cartasSelecionadas.reduce(
+        (total, carta) => total + (PONTUACAO_PRODUTO[carta.key] ?? 0),
+        0
+    );
+
+    console.log('Soma calculada:', soma);
+
+    this._mostrarDialogo(this._falaAcertoFase(fase));
+    this._alterarSatisfacao(soma);
+
+    this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
+}
 
     _avancarOuVencer() {
         if (this.faseAtual < CenaNegociacao.FASES.length - 1) {

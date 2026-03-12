@@ -439,13 +439,12 @@ export default class CenaNegociacao extends Phaser.Scene {
         }
     }
 
-    _confirmarJogada() {
-        if (!this.negociacaoAtiva) return;
+   _confirmarJogada() {
+    if (!this.negociacaoAtiva) return;
 
-        const fase    = CenaNegociacao.FASES[this.faseAtual];
-        const exigidas = this.clienteConfig.cartasExigidas[fase] ?? [];
-        const jogadas  = this.cartasSelecionadas.map(c => c.key);
-
+    const fase = CenaNegociacao.FASES[this.faseAtual];
+    console.log('Fase atual:', fase);
+    console.log('Cartas selecionadas:', this.cartasSelecionadas.map(c => c.key));
         // Demonstração: exige ao menos 1 produto selecionado
         if (fase === 'demonstracao') {
             if (this.cartasSelecionadas.length === 0) {
@@ -471,10 +470,15 @@ export default class CenaNegociacao extends Phaser.Scene {
         }
     }
 
-    _acertarFase(fase) {
-        this._mostrarDialogo(this._falaAcertoFase(fase));
-        this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
+   _acertarFase(fase) {
+    if (fase !== 'demonstracao') {
+        super._acertarFase(fase);
+        return;
+    }
 
+    this.cartasSelecionadas.forEach(c => {
+        console.log('key:', c.key, '| pontuação:', PONTUACAO_PRODUTO[c.key]);
+    });
         this.time.delayedCall(1800, () => {
             if (this.faseAtual < CenaNegociacao.FASES.length - 1) {
                 this.faseAtual++;
