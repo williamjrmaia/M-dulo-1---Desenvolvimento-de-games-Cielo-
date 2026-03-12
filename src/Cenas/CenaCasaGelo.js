@@ -1,4 +1,5 @@
 import Jogador from './classes.js';
+import DialogoPedro from '../Classes/DialogoPedro.js';
 
 
 export default class CenaCasaGelo extends Phaser.Scene {
@@ -10,15 +11,21 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.origem = data.vindoDe; 
     }
 
-    preload() {
-        this.load.image('CasaPedro', '../assets/MapaGelo/CasaPedro.png');
-        this.load.tilemapTiledJSON('mapa_casa', '../assets/MapaGelo/CasaPedroHitbox.tmj');
+   
+      preload() {
+    this.load.image('CasaPedro', 'assets/MapaGelo/CasaPedro.png');
+    this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
 
-        this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       'assets/PLAYER/MAN/BLACK/spr_player_man_side_walk_bla.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      'assets/PLAYER/MAN/BLACK/spr_player_man_back_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
-    }
+    this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('Lado',       'assets/PLAYER/MAN/BLACK/spr_player_man_side_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
+    this.load.spritesheet('Costa',      'assets/PLAYER/MAN/BLACK/spr_player_man_back_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
+
+    // ← ADICIONE ESTAS LINHAS:
+    this.load.image('IndicadorE', 'assets/objetos/Botão E.png');
+this.load.image('balao',      'assets/objetos/balao dialogo.png');
+this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
+}
 
     create() {
     // 1. Configurações de Posicionamento
@@ -27,6 +34,8 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
     // 2. Adicionar a imagem de fundo
     const bg = this.add.image(centerX, centerY, 'CasaPedro');
+    console.log('bg tamanho:', bg.displayWidth, bg.displayHeight);
+    console.log('bg visivel:', bg.visible);
     
     // 3. Carregar o Mapa para ler os dados do Tiled
     const map = this.make.tilemap({ key: 'mapa_casa' });
@@ -66,6 +75,34 @@ export default class CenaCasaGelo extends Phaser.Scene {
     // 6. Ativar Colisão entre o sprite e o grupo de paredes
     this.physics.add.collider(this.personagem.sprite, paredes);
 
+    // NPC Seu Pedro
+this.seupedro = this.physics.add.sprite(750, 390, 'seupedro_idl');
+this.seupedro.setImmovable(true);
+this.seupedro.body.setAllowGravity(false);
+this.seupedro.setScale(2.5);
+this.seupedro.setDepth(5);
+
+this.physics.add.collider(this.personagem.sprite, this.seupedro);
+
+
+
+// Botão E acima da cabeça
+this.indicadorE = this.add.image(0, 0, 'IndicadorE')
+    .setDepth(15)
+    .setVisible(false)
+    .setScale(1.1);
+
+// Distância de interação
+this.DISTANCIA_INTERACAO = 80;
+
+// Diálogo
+this.dialogoPedro = new DialogoPedro(this, {
+    caixaX:       this.cameras.main.width / 2,
+    caixaY:       this.cameras.main.height - 80,
+    caixaLargura: this.cameras.main.width,
+    caixaAltura:  160,
+});
+
     // 7. Câmera
     this.cameras.main.startFollow(this.personagem.sprite);
     this.cameras.main.setZoom(2.4);
@@ -97,29 +134,52 @@ export default class CenaCasaGelo extends Phaser.Scene {
         );
     }
 
-
-
-    update() {
-  
+     update() {
     this.personagem.atualizar();
 
-    // 1. CORREÇÃO: O nome deve ser 'portaPedro', o mesmo que você criou lá em cima
-    // Usamos o retorno da física diretamente
-    const estaNoPortal = this.physics.overlap(this.personagem.sprite, this.portaPedro);
-    
-    // 2. Pegar o input de interagir
+    // ── Interação com Seu Pedro ───────────────────────────────
+    const dist = Phaser.Math.Distance.Between(
+        this.personagem.sprite.x, this.personagem.sprite.y,
+        this.seupedro.x,          this.seupedro.y
+    );
+    const perto = dist <= this.DISTANCIA_INTERACAO;
+
+    this.indicadorE.setVisible(perto && !this.dialogoPedro.aberto);
+    if (perto) {
+        this.indicadorE.setPosition(
+            this.seupedro.x,
+            this.seupedro.y - (this.seupedro.displayHeight / 2) - 12
+        );
+    }
+
+    if (!perto && this.dialogoPedro.aberto) {
+        this.dialogoPedro.fechar();
+    }
+
+    // ── Portal de saída ───────────────────────────────────────
+    const estaNoPortal     = this.physics.overlap(this.personagem.sprite, this.portaPedro);
     const apertouInteragir = Phaser.Input.Keyboard.JustDown(this.teclas.interagir);
 
-    if (estaNoPortal && apertouInteragir) {
-        console.log("Saindo para o mapa...");
-        this.cameras.main.fadeOut(500, 0, 0, 0); 
-        
+    if (estaNoPortal && apertouInteragir && !this.dialogoPedro.aberto) {
+        this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
             this.scene.start('MapaGelo', { vindoDe: 'CenaCasaGelo' });
         });
+        return;
     }
-}
 
-
+    // ── Tecla E ───────────────────────────────────────────────
+    if (apertouInteragir) {
+        if (perto && !this.dialogoPedro.aberto) {
+            this.dialogoPedro.abrir(() => {
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.start('NegociacaoPedro');
+    });
+});
+            return;
+        }
+        this.dialogoPedro.avancar();
+    }
+ }
 }
-    

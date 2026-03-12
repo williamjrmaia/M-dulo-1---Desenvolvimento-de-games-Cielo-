@@ -1,3 +1,5 @@
+
+import DialogoManager from '../Classes/DialogoManager.js';
 import Jogador from "./classes.js";
 
 export default class CenaCasa extends Phaser.Scene {
