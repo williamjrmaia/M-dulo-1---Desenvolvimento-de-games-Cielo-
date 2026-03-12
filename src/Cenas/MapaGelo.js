@@ -1,4 +1,4 @@
-import Jogador from './classes.js';
+import Jogador from '../Classes/Jogador.js';
 
 export default class MapaGelo extends Phaser.Scene {
     constructor() { 
