@@ -35,26 +35,21 @@ export default class DialogoManager {
 
     // Cores padrão por tipo de personagem — adicione quantos quiser
     static CORES_PERSONAGEM = {
-        'Cielita': '#ffdd57',
-        'Jogador':  '#88eeff',
-        _default:   '#ffffff',
+        'Cielita':   '#ffdd57',
+        'Jogador':   '#88eeff',
+        'Seu Pedro': '#ff9900',
+        _default:    '#ffffff',
     };
 
-    // -------------------------------------------------------------------------
-    // Constructor
-    // cena      : Phaser.Scene que hospeda o diálogo
-    // opcoes    : objeto opcional para sobrescrever posição/tamanho da caixa
-    // -------------------------------------------------------------------------
     constructor(cena, opcoes = {}) {
-        this._cena    = cena;
-        this._aberto  = false;
+        this._cena      = cena;
+        this._aberto    = false;
         this._digitando = false;
-        this._indice  = 0;
-        this._falas   = [];
-        this._onFim   = null;
-        this._timer   = null;
+        this._indice    = 0;
+        this._falas     = [];
+        this._onFim     = null;
+        this._timer     = null;
 
-        // Dimensões padrão — sobrescrevíveis via opcoes
         const W = cena.scale.width;
         const H = cena.scale.height;
 
@@ -64,8 +59,7 @@ export default class DialogoManager {
             caixaX:       W / 2,
             caixaY:       H - (H * 0.15) / 2,
             depth:        20,
-            fundoKey:     'balao',          // chave da imagem de fundo da caixa
-                                            // se não existir, usa retângulo
+            fundoKey:     'balao',
         }, opcoes);
 
         this._criarUI();
@@ -75,28 +69,17 @@ export default class DialogoManager {
     // API pública
     // -------------------------------------------------------------------------
 
-    /** Abre o diálogo com o array de falas fornecido.
-     *  @param {Array<{personagem: string, texto: string}>} falas
-     *  @param {Function} [onFim] - callback chamado ao fechar o último diálogo
-     */
     abrir(falas, onFim = null) {
         if (!falas || falas.length === 0) return;
-
-        this._falas   = falas;
-        this._indice  = 0;
-        this._onFim   = onFim;
-        this._aberto  = true;
-
+        this._falas  = falas;
+        this._indice = 0;
+        this._onFim  = onFim;
+        this._aberto = true;
         this._mostrarFala(0);
     }
 
-    /** Avança para a próxima fala, ou completa o typewriter se ainda digitando.
-     *  Chame no update() quando o jogador apertar a tecla de interação.
-     */
     avancar() {
         if (!this._aberto) return;
-
-        // Se ainda está digitando, completa o texto imediatamente
         if (this._digitando) {
             this._completarTypewriter();
             return;
@@ -144,7 +127,6 @@ export default class DialogoManager {
         const cena = this._cena;
         const { caixaX, caixaY, caixaLargura, caixaAltura, depth, fundoKey } = this._cfg;
 
-        // Fundo da caixa — usa imagem se existir, senão retângulo escuro
         if (cena.textures.exists(fundoKey)) {
             this._fundo = cena.add.image(caixaX, caixaY, fundoKey)
                 .setDisplaySize(caixaLargura, caixaAltura)
@@ -158,10 +140,9 @@ export default class DialogoManager {
                 .setVisible(false);
         }
 
-        const esqX = caixaX - caixaLargura / 2 + 20;
-        const topoY = caixaY - caixaAltura / 2;
+        const esqX  = caixaX - caixaLargura / 2 + 20;
+        const topoY = caixaY - caixaAltura  / 2;
 
-        // Nome do personagem
         this._textoNome = cena.add.text(esqX, topoY + 10, '', {
             fontFamily: 'Arial',
             fontSize:   '18px',
@@ -173,7 +154,6 @@ export default class DialogoManager {
         .setVisible(false)
         .setOrigin(0, 0);
 
-        // Texto da fala
         this._textoFala = cena.add.text(esqX, topoY + 35, '', {
             fontFamily: 'Arial',
             fontSize:   '17px',
@@ -185,10 +165,9 @@ export default class DialogoManager {
         .setVisible(false)
         .setOrigin(0, 0);
 
-        // Indicador ▼ — pisca quando pode avançar
         this._indicador = cena.add.text(
             caixaX + caixaLargura / 2 - 25,
-            caixaY + caixaAltura / 2 - 15,
+            caixaY + caixaAltura  / 2 - 15,
             '▼', {
                 fontFamily: 'Arial',
                 fontSize:   '13px',
@@ -200,7 +179,6 @@ export default class DialogoManager {
         .setVisible(false)
         .setOrigin(0, 0);
 
-        // Tween de piscar no indicador (roda sempre, visibilidade controla a exibição)
         cena.tweens.add({
             targets:  this._indicador,
             alpha:    0,
@@ -221,19 +199,16 @@ export default class DialogoManager {
         this._indicador.setVisible(false);
         this._digitando = true;
 
-        // Substitui 'Jogador' pelo nome real do registry
         const nomeExibido = fala.personagem === 'Jogador'
             ? (this._cena.game.registry.get('nomeJogador') || 'Jogador')
             : fala.personagem;
 
         const cor = DialogoManager.CORES_PERSONAGEM[fala.personagem]
-                ?? DialogoManager.CORES_PERSONAGEM._default;
+                 ?? DialogoManager.CORES_PERSONAGEM._default;
 
         this._textoNome.setText(nomeExibido).setColor(cor);
-
         this._textoFala.setText('');
 
-        // Typewriter
         let i = 0;
         const textoCompleto = fala.texto;
 
