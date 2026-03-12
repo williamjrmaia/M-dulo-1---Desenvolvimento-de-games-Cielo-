@@ -1,13 +1,13 @@
-import Preloader from './Preloader.js';
-import MenuPrincipal from './MenuPrincipal.js';
-import CenaPersonagem from './CenaPersonagem.js';
-import CenaConfig from './CenaConfig.js';
-import CenaCasa from './CenaCasa.js';
-import MundoCasa from './MundoCasa.js';
-import NegociacaoPedro from './NegociacaoPedro.js';
-import MapaGelo from './MapaGelo.js';
-import CenaCasaGelo from './CenaCasaGelo.js';
-import TutorialOverlay from './TutorialOverlay.js';
+import Preloader from './Cenas/Preloader.js';
+import MenuPrincipal from './Cenas/MenuPrincipal.js';
+import CenaPersonagem from './Cenas/CenaPersonagem.js';
+import CenaConfig from './Cenas/CenaConfig.js';
+import CenaCasa from './Cenas/CenaCasa.js';
+import MundoCasa from './Cenas/MundoCasa.js';
+import NegociacaoPedro from './Cenas/NegociacaoPedro.js';
+import MapaGelo from './Cenas/MapaGelo.js';
+import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
+import TutorialOverlay from './Cenas/TutorialOverlay.js';
 
 const config = {
     type: Phaser.AUTO,
