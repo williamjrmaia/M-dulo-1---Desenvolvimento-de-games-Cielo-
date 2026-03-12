@@ -1,4 +1,4 @@
-import Jogador from './classes.js';
+import Jogador from '../Classes/Jogador.js';
 
 export default class MapaGelo extends Phaser.Scene {
     constructor() { 
@@ -10,16 +10,10 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     preload() {
-        // Carregamento de imagens
-        this.load.image('Ponte', 'assets/CenarioCasa/ponte.png');
-        this.load.image('MapaGelo', 'assets/MapaGelo/MapaGelo.png');
-        this.load.tilemapTiledJSON('mapa_dados', 'assets/MapaGelo/MapaGeloHitbox.tmj');
-            
-        // Carregamento do personagem
-        this.load.spritesheet('Andando',    'assets/PLAYER/MAN/BLACK/spr_player_man_front_walk_bla.png',  { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('IdleFrente', 'assets/PLAYER/MAN/BLACK/spr_player_man_front_idl_bla.png',   { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Lado',       'assets/PLAYER/MAN/BLACK/spr_player_man_side_walk_bla.png',    { frameWidth: 64, frameHeight: 64 });
-        this.load.spritesheet('Costa',      'assets/PLAYER/MAN/BLACK/spr_player_man_back_walk_bla.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.image('Ponte', '../assets/CenarioCasa/ponte.png');
+        this.load.image('MapaGelo', '../assets/MapaGelo/MapaGelo.png');
+        this.load.tilemapTiledJSON('mapa_dados', '../assets/MapaGelo/MapaGeloHitbox.tmj');
+
     }
 
     create() {
