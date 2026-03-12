@@ -1,4 +1,4 @@
-import Jogador from '../Classes/Jogador.js';
+import Jogador from './classes.js';
 
 export default class MapaGelo extends Phaser.Scene {
     constructor() { 
@@ -10,10 +10,10 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('Ponte', '../assets/CenarioCasa/ponte.png');
-        this.load.image('MapaGelo', '../assets/MapaGelo/MapaGelo.png');
-        this.load.tilemapTiledJSON('mapa_dados', '../assets/MapaGelo/MapaGeloHitbox.tmj');
-
+        // Carregamento de imagens
+        this.load.image('Ponte', 'assets/CenarioCasa/ponte.png');
+        this.load.image('MapaGelo', 'assets/MapaGelo/MapaGelo.png');
+        this.load.tilemapTiledJSON('mapa_dados', 'assets/MapaGelo/MapaGeloHitbox.tmj');
     }
 
     create() {
@@ -58,7 +58,6 @@ export default class MapaGelo extends Phaser.Scene {
         this.physics.add.existing(this.geloPorta2, true);
         
         this.teclas = this.personagem.configurarTeclas();
-        
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.6);
         this.cameras.main.fadeIn(500, 0, 0, 0);
@@ -66,7 +65,6 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'CenaCasaGelo') {
             this.personagem.sprite.setPosition(655, 210)
         }
-
     }
         
     update() {
