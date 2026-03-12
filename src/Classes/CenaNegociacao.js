@@ -164,7 +164,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         }).setOrigin(0.5);
 
         if (this.textures.exists(chaveInicial)) {
-            this.spriteCliente = this.add.image(W / 2, H * 0.28, chaveInicial).setScale(2.5);
+            this.spriteCliente = this.add.image(W / 2, H * 0.28, chaveInicial).setDisplaySize(150, 200);
         } else {
             this.spriteCliente = this.add.rectangle(W / 2, H * 0.28, 100, 150, 0x1a3a5a)
                 .setStrokeStyle(2, 0x2a6a9a);

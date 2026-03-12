@@ -114,7 +114,7 @@ this.dialogoPedro = new DialogoPedro(this, {
     
 
         // ✅ ZONA DE INTERAÇÃO COM PEDRO
-        this.zonaInteracaoPedro = this.add.zone(750, 300, 200, 200);
+        this.zonaInteracaoPedro = this.add.zone(750, 430, 300, 30);
         this.physics.world.enable(this.zonaInteracaoPedro);
         this.zonaInteracaoPedro.body.setImmovable(true);
         this.zonaInteracaoPedro.body.setAllowGravity(false);
@@ -127,6 +127,9 @@ this.dialogoPedro = new DialogoPedro(this, {
             null, 
             this
         );
+        this.add.image(780, 400, 'Pedro').setScale(1.5).setDepth(1);
+        // e na criação do personagem:
+        this.personagem.sprite.setDepth(2);
     }
 
      update() {
