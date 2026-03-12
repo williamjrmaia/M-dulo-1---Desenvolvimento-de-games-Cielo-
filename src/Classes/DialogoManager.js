@@ -84,6 +84,8 @@ export default class DialogoManager {
             this._completarTypewriter();
             return;
         }
+
+        // Avança para a próxima fala ou fecha
         this._indice++;
         if (this._indice < this._falas.length) {
             this._mostrarFala(this._indice);
@@ -92,6 +94,7 @@ export default class DialogoManager {
         }
     }
 
+    /** Fecha o diálogo imediatamente, sem esperar o fim das falas. */
     fechar() {
         this._aberto    = false;
         this._digitando = false;
@@ -110,7 +113,10 @@ export default class DialogoManager {
         }
     }
 
-    get aberto()    { return this._aberto;    }
+    /** Retorna true se o diálogo estiver aberto. */
+    get aberto() { return this._aberto; }
+
+    /** Retorna true se o typewriter ainda está em andamento. */
     get digitando() { return this._digitando; }
 
     // -------------------------------------------------------------------------
