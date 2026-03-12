@@ -10,10 +10,15 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     preload() {
-        // Carregamento de imagens
-        this.load.image('Ponte', 'assets/CenarioCasa/ponte.png');
-        this.load.image('MapaGelo', 'assets/MapaGelo/MapaGelo.png');
-        this.load.tilemapTiledJSON('mapa_dados', 'assets/MapaGelo/MapaGeloHitbox.tmj');
+        this.load.image('Ponte', '../assets/CenarioCasa/ponte.png');
+        this.load.image('MapaGelo', '../assets/MapaGelo/MapaGelo.png');
+        this.load.image('Placa', '../assets/MapaGelo/PlacaCasaPedro.png');
+        this.load.tilemapTiledJSON('mapa_dados', '../assets/MapaGelo/MapaGeloHitbox.tmj');
+            
+        this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Lado',       '../assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Costa',      '../assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {
@@ -29,6 +34,9 @@ export default class MapaGelo extends Phaser.Scene {
       
         this.personagem = new Jogador(this, 25, 212, 1.0);
         this.personagem.sprite.setCollideWorldBounds(true);
+
+        //Placa Casa do Pedro
+        this.add.image(655, 155, 'Placa').setScale(0.4);
 
         // HITBOXES DO TILED
         const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
