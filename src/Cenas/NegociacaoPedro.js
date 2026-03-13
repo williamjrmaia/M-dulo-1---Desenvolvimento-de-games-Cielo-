@@ -6,7 +6,7 @@ const CARD_HEIGHT        = 330;
 const CARD_SPACING       = 25;
 const CARD_ZOOM_WIDTH    = 400;
 const CARD_ZOOM_HEIGHT   = 550;
-const DELAY_PROXIMA_FASE = 1800;
+const DELAY_PROXIMA_FASE = 4000;
 const ANIM_FADE_DURATION = 300;
 const ANIM_HOVER_OFFSET  = 8;
 
@@ -82,28 +82,40 @@ export default class NegociacaoPedro extends CenaNegociacao {
         return falas[fase] ?? 'Não entendi sua estratégia';
     }
 
-    _acertarFase(fase) {
+    _confirmarJogada() {
+    if (!this.negociacaoAtiva) return;
+
+    const fase = CenaNegociacao.FASES[this.faseAtual];
+
+    if (fase === 'demonstracao') {
+        if (this.cartasSelecionadas.length === 0) {
+            this._mostrarDialogo('Selecione um produto para apresentar ao cliente.');
+            return;
+        }
+        this._acertarFase(fase);
+        return;
+    }
+
+    super._confirmarJogada();
+}
+
+_acertarFase(fase) {
     if (fase !== 'demonstracao') {
         super._acertarFase(fase);
         return;
     }
 
-    console.log('Cartas selecionadas:', this.cartasSelecionadas.map(c => c.key));
-    console.log('PONTUACAO_PRODUTO:', PONTUACAO_PRODUTO);
-
+    // soma os pontos de cada produto selecionado; produtos sem pontuação valem 0
     const soma = this.cartasSelecionadas.reduce(
         (total, carta) => total + (PONTUACAO_PRODUTO[carta.key] ?? 0),
         0
     );
 
-    console.log('Soma calculada:', soma);
-
     this._mostrarDialogo(this._falaAcertoFase(fase));
-    this._alterarSatisfacao(soma);
+    this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
 
     this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
 }
-
     _avancarOuVencer() {
         if (this.faseAtual < CenaNegociacao.FASES.length - 1) {
             this.faseAtual++;
@@ -117,7 +129,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
         const todasCartas = {
             abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch', 'ComparacaoInteligente', 'DesarmeElegante'],
             sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor', 'AutoridadeImplicita', 'ChaveDeExclusividade', 'Cliffhanger', 'LoboCurioso'],
-            demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'],
+            demonstracao: ['CieloLioOn', 'CieloFlash', 'CieloFlash2', 'CVBA'],
             negociacao:   ['carta_desconto'],
             fechamento:   ['carta_contrato'],
         };
@@ -224,42 +236,54 @@ export default class NegociacaoPedro extends CenaNegociacao {
     }
 
     _alternarSelecaoCarta(carta, textoSelecionar, btnSelecionar, fecharModal) {
-        const jaEstaSelecionada = this.cartasSelecionadas.includes(carta);
-        const fase              = CenaNegociacao.FASES[this.faseAtual];
+    const jaEstaSelecionada = this.cartasSelecionadas.includes(carta);
+    const fase              = CenaNegociacao.FASES[this.faseAtual];
 
-        if (jaEstaSelecionada) {
-            this.cartasSelecionadas = this.cartasSelecionadas.filter(c => c !== carta);
-            carta._selecionada      = false;
-            textoSelecionar.setText('SELECIONAR ✓');
-            btnSelecionar.setFillStyle(0x1a4a2a);
-            return;
-        }
-
-        // Demonstração: apenas 1 produto por vez
-        if (fase === 'demonstracao') {
-            this.cartasSelecionadas = [];
-            this.cartasNaMao.forEach(c => { c._selecionada = false; });
-        }
-
-        this.cartasSelecionadas.push(carta);
-        carta._selecionada = true;
-        textoSelecionar.setText('SELECIONADO ✓');
-        btnSelecionar.setFillStyle(0x2a6a3a);
-
-        const cartasExigidas = this.clienteConfig.cartasExigidas[fase] ?? [];
-        const ehObrigatoria  = cartasExigidas.includes(carta.key);
-        const faseComAvanco  = fase === 'abordagem' || fase === 'sondagem';
-
-        if (faseComAvanco && ehObrigatoria) {
-            this.time.delayedCall(ANIM_FADE_DURATION, () => {
-                fecharModal();
-                this._mostrarDialogo(this._falaAcertoFase(fase));
-                this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
-                this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
-            });
-        }
+    if (jaEstaSelecionada) {
+        this.cartasSelecionadas = this.cartasSelecionadas.filter(c => c !== carta);
+        carta._selecionada      = false;
+        textoSelecionar.setText('SELECIONAR ✓');
+        btnSelecionar.setFillStyle(0x1a4a2a);
+        return;
     }
 
+    if (fase === 'demonstracao') {
+        this.cartasSelecionadas = [];
+        this.cartasNaMao.forEach(c => { c._selecionada = false; });
+    }
+
+    this.cartasSelecionadas.push(carta);
+    carta._selecionada = true;
+    textoSelecionar.setText('SELECIONADO ✓');
+    btnSelecionar.setFillStyle(0x2a6a3a);
+
+    // Demonstração: fecha modal e aciona pontuação direto, sem precisar do CONFIRMAR
+    if (fase === 'demonstracao') {
+        this.time.delayedCall(ANIM_FADE_DURATION, () => {
+            fecharModal();
+
+            const soma = PONTUACAO_PRODUTO[carta.key] ?? 0;
+            this._mostrarDialogo(this._falaAcertoFase(fase));
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
+
+            this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
+        });
+        return;
+    }
+
+    const cartasExigidas = this.clienteConfig.cartasExigidas[fase] ?? [];
+    const ehObrigatoria  = cartasExigidas.includes(carta.key);
+    const faseComAvanco  = fase === 'abordagem' || fase === 'sondagem';
+
+    if (faseComAvanco && ehObrigatoria) {
+        this.time.delayedCall(ANIM_FADE_DURATION, () => {
+            fecharModal();
+            this._mostrarDialogo(this._falaAcertoFase(fase));
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
+            this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
+        });
+    }
+}
     _criarFundoCarta(x, y, key) {
         const obj = this.textures.exists(key)
             ? this.add.image(x, y, key).setDisplaySize(CARD_WIDTH, CARD_HEIGHT)

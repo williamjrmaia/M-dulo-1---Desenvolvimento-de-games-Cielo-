@@ -29,6 +29,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                 botaoInicio.on('pointerout', () => {
                     botaoInicio.setTexture('botao_iniciar');
                 })
+                // troca de cena só ocorre após o fade terminar, evitando flash branco
                 botaoInicio.on('pointerdown', () => {
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {

@@ -164,7 +164,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         }).setOrigin(0.5);
 
         if (this.textures.exists(chaveInicial)) {
-            this.spriteCliente = this.add.image(W / 2, H * 0.28, chaveInicial).setScale(2.5);
+            this.spriteCliente = this.add.image(W / 2, H * 0.28, chaveInicial).setDisplaySize(150, 200);
         } else {
             this.spriteCliente = this.add.rectangle(W / 2, H * 0.28, 100, 150, 0x1a3a5a)
                 .setStrokeStyle(2, 0x2a6a9a);
@@ -174,7 +174,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     _criarBarraSatisfacao(W, H) {
         const barraW = 300;
         const barraH = 18;
-        const x      = W - barraW / 2 - 40;
+        const x      = W - barraW / 2 - 40; // canto superior direito com 40px de margem
         const y      = H * 0.08;
 
         this.add.text(x, y - 18, 'SATISFAÇÃO', {
@@ -206,9 +206,9 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _criarBarraFases(W, H) {
         const fases   = CenaNegociacao.FASES;
-        const largura = W * 0.55;
+        const largura = W * 0.55; // ocupa 55% da largura, centralizado
         const startX  = (W - largura) / 2;
-        const y       = H * 0.535;
+        const y       = H * 0.535; // linha divisória entre área do cliente e área das cartas
         const passo   = largura / (fases.length - 1);
 
         this.indicadoresFase = [];
@@ -289,6 +289,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     // ... resto do método permanece igual
         const cartasDaFase = this._getCartasDaFase(fase, numCartas);
 
+        // Sondagem tem muitas cartas — divide em páginas de 3 para não poluir a tela
         if (fase === 'sondagem' && cartasDaFase.length > 3) {
             Phaser.Utils.Array.Shuffle(cartasDaFase);
             this._paginas = [];

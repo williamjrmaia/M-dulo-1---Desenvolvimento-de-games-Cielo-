@@ -20,7 +20,7 @@ export default class CenaCasa extends Phaser.Scene {
         const H = this.scale.height;
 
         // Background
-        const background = this.add.image(W / 2, H / 2, 'DentroCasa').setScale(2.3);
+        const background = this.add.image(W / 2, H / 2, 'DentroCasa').setScale(2.3); // scale 2.3 preenche a tela sem cortar o cenário
 
         // World bounds
         const larguraMapa = background.displayWidth;
@@ -50,11 +50,11 @@ export default class CenaCasa extends Phaser.Scene {
         // ── DialogoManager ────────────────────────────────────────────────────
         this.dialogo = new DialogoManager(this);
 
-        this.falas = [
-            { personagem: 'Cielita', texto: 'Eu sou Celita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
+        this.falas = [//Diálogo com a Cielita
+            { personagem: 'Cielita', texto: 'Eu sou Cielita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
             { personagem: 'Cielita', texto: 'Sinta-se à vontade para explorar e conversar comigo.' },
             { personagem: 'Cielita', texto: 'Se precisar de algo, é só me chamar!' },
-            { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },
+            { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },//na classe de diálogo, todo 'Jogador' é trocado pelo nome escrito pelo jogador
         ];
         // ─────────────────────────────────────────────────────────────────────
 
@@ -62,7 +62,7 @@ export default class CenaCasa extends Phaser.Scene {
         this.indicadorE = this.add.image(0, 0, 'IndicadorE')
             .setDepth(11).setVisible(false).setScale(2.5);
 
-        this.DISTANCIA_INTERACAO = 80;
+        this.DISTANCIA_INTERACAO = 80;//aparece apenas perto da Cielita para não poluir a tela
 
         this.cameras.main.fadeIn(500, 0, 0, 0);
     }

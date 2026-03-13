@@ -10,10 +10,15 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('Ponte', '../assets/CenarioCasa/ponte.png');
-        this.load.image('MapaGelo', '../assets/MapaGelo/MapaGelo.png');
-        this.load.image('Placa', '../assets/MapaGelo/PlacaCasaPedro.png');
-        this.load.tilemapTiledJSON('mapa_dados', '../assets/MapaGelo/MapaGeloHitbox.tmj');
+        this.load.image('Ponte', './assets/CenarioCasa/ponte.png');
+        this.load.image('MapaGelo', './assets/MapaGelo/MapaGelo.png');
+        this.load.image('Placa', './assets/MapaGelo/PlacaCasaPedro.png');
+        this.load.tilemapTiledJSON('mapa_dados', './assets/MapaGelo/MapaGeloHitbox.tmj');
+            
+        this.load.spritesheet('Andando',    '../assets/animacoes/andarfrente.png',  { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('IdleFrente', '../assets/animacoes/idlefrente.png',   { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Lado',       '../assets/animacoes/andarlado.png',    { frameWidth: 64, frameHeight: 64 });
+        this.load.spritesheet('Costa',      '../assets/animacoes/andarcosta.png',   { frameWidth: 64, frameHeight: 64 });
     }
 
     create() {
@@ -42,6 +47,7 @@ export default class MapaGelo extends Phaser.Scene {
                     this.physics.add.existing(poly, true);
                     this.personagem.adicionarColisao(poly);
                 } else {
+                    // retângulos do Tiled usam topo-esquerdo; zone usa centro — por isso o offset de width/2 e height/2
                     let zonaTiled = this.add.zone(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height);
                     this.physics.add.existing(zonaTiled, true);
                     this.personagem.adicionarColisao(zonaTiled);

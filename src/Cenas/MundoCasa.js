@@ -17,6 +17,7 @@ export default class MundoCasa extends Phaser.Scene {
         
         var background = this.add.image(750, 400, 'MundoCasa');
 
+        // converte posição central do background para coordenadas de topo-esquerdo
         let bx = background.x - background.displayWidth  / 2;
         let by = background.y - background.displayHeight / 2;
         let bw = background.displayWidth;
@@ -34,7 +35,7 @@ export default class MundoCasa extends Phaser.Scene {
         let paredeCima = this.add.rectangle(bx + bw / 2, by + espessura / 2, bw, espessura, 0xff0000, 0);
         this.physics.add.existing(paredeCima, true);
 
-        let paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0);
+        let paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0); // /0.7 sobe a parede para cobrir a ponte
         this.physics.add.existing(paredeBaixo, true);
 
         // Player
@@ -83,7 +84,7 @@ export default class MundoCasa extends Phaser.Scene {
             this.naPorta = true;
         });
         
-        this.fazendoTransicao = false;
+        this.fazendoTransicao = false; // evita disparar a troca de cena duas vezes
 
         if (this.origem === 'MapaGelo') {
             this.personagem.sprite.setPosition(900, 400);
@@ -94,7 +95,9 @@ export default class MundoCasa extends Phaser.Scene {
             this.time.delayedCall(200, () => { // delay para a cena carregar antes de abrir
                 this.scene.launch('TutorialOverlay');
                 this.scene.bringToTop('TutorialOverlay');
-                this.input.keyboard.enabled = false; });}
+                this.input.keyboard.enabled = false; // bloqueia movimento enquanto o tutorial estiver aberto
+            });
+        }
 
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);

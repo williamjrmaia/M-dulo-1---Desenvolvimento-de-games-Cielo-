@@ -4,6 +4,7 @@ export default class TutorialOverlay extends Phaser.Scene {
     create() {
         const { width, height } = this.cameras.main;
 
+        // guarda a cena que estava rodando antes do overlay para poder reativar o teclado dela ao fechar
         this.cenaAnterior = this.scene.manager.scenes.find(s =>
             s.scene.key !== 'TutorialOverlay' && s.scene.isActive()
         );
@@ -20,14 +21,14 @@ export default class TutorialOverlay extends Phaser.Scene {
             padding: { x: 8, y: 4 }
         }).setOrigin(0.5);
 
-        this.podeFechar = false;
+        this.podeFechar = false; // impede fechar acidentalmente logo ao abrir (H ainda está pressionado)
         this.time.delayedCall(300, () => {
             this.podeFechar = true;
         });
 
         this.teclah = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H);
 
-        // 👇 ESSA É A CORREÇÃO PRINCIPAL
+        // reativa o teclado da cena anterior quando o overlay é fechado (seja por H ou por código)
         this.events.on('shutdown', () => {
             if (this.cenaAnterior) {
                 this.cenaAnterior.input.keyboard.enabled = true;
