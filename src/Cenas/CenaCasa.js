@@ -20,7 +20,7 @@ export default class CenaCasa extends Phaser.Scene {
         const H = this.scale.height;
 
         // Background
-        const background = this.add.image(W / 2, H / 2, 'DentroCasa').setScale(2.3);
+        const background = this.add.image(W / 2, H / 2, 'DentroCasa').setScale(2.9);
 
         // World bounds
         const larguraMapa = background.displayWidth;
@@ -30,13 +30,14 @@ export default class CenaCasa extends Phaser.Scene {
         this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
 
         // NPC Cielita
-        this.cielita = this.physics.add.sprite(W / 2, H / 2, 'cielitaparada').setScale(2.3);
+        this.cielita = this.physics.add.sprite(W / 2, H / 2, 'cielitaparada').setScale(3);
         this.cielita.setImmovable(true);
         this.cielita.play('cielitaparada', true);
 
         // Jogador
-        this.jogador = new Jogador(this, W / 2, H / 2 + 80);
+        this.jogador = new Jogador(this, W / 2, H / 2 + 120, 3.5);
         this.teclas  = this.jogador.configurarTeclas();
+        this.jogador.velocidade = 200;
         this.jogador.adicionarColisao(this.cielita);
 
         // Porta
