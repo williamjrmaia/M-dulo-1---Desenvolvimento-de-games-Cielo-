@@ -8,9 +8,11 @@ import NegociacaoPedro from './NegociacaoPedro.js';
 import MapaGelo from './MapaGelo.js';
 import CenaCasaGelo from './CenaCasaGelo.js';
 import TutorialOverlay from './TutorialOverlay.js';
+import BootScene from './BootScene.js';
 
 const config = {
     type: Phaser.AUTO,
+    pixelArt: true,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -28,8 +30,8 @@ const config = {
         }
     },
 
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, 
-        TutorialOverlay]//Preloader carrega as sprites antes do jogo começar 
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, CenaCasaGelo, NegociacaoPedro, 
+        TutorialOverlay, BootScene]//Preloader carrega as sprites antes do jogo começar 
                                                                                       //para evitar redundância
 
 };

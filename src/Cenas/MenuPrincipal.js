@@ -1,13 +1,13 @@
 export default class MenuPrincipal extends Phaser.Scene {
             constructor() { super('MenuPrincipal'); }
             preload() {
-             this.load.image('menu_jogo', '../assets/Menu/menu_fundo.png');
-             this.load.image('botao_iniciar', '../assets/Menu/botoes/iniciar_02.png');
-             this.load.image('botao_iniciar_hover', '../assets/Menu//botoes/iniciar_01.png');
-             this.load.image('botao_sair', '../assets/Menu/botoes/sair_02.png');
-             this.load.image('botao_sair_hover', '../assets/Menu/botoes/sair_01.png');
-             this.load.image('botao_config', '../assets/Menu/botoes/configuracao_02.png');
-             this.load.image('botao_config_hover', '../assets/Menu/botoes/configuracao_01.png');
+             this.load.image('menu_jogo', 'assets/Menu/menu_fundo.png');
+             this.load.image('botao_iniciar', 'assets/Menu/botoes/iniciar_02.png');
+             this.load.image('botao_iniciar_hover', 'assets/Menu//botoes/iniciar_01.png');
+             this.load.image('botao_sair', 'assets/Menu/botoes/sair_02.png');
+             this.load.image('botao_sair_hover', 'assets/Menu/botoes/sair_01.png');
+             this.load.image('botao_config', 'assets/Menu/botoes/configuracao_02.png');
+             this.load.image('botao_config_hover', 'assets/Menu/botoes/configuracao_01.png');
             }
 
             create() {
@@ -29,6 +29,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                 botaoInicio.on('pointerout', () => {
                     botaoInicio.setTexture('botao_iniciar');
                 })
+                // troca de cena só ocorre após o fade terminar, evitando flash branco
                 botaoInicio.on('pointerdown', () => {
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
