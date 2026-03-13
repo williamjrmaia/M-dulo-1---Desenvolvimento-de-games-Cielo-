@@ -522,7 +522,339 @@ A fase final ocorre no Mundo de Negociação, onde o jogo transita para um siste
 
 ## 4.3. Desenvolvimento intermediário do jogo (sprint 3)
 
-*Descreva e ilustre aqui o desenvolvimento da versão intermediária do jogo, explicando brevemente o que foi entregue em termos de código e jogo. Utilize prints de tela para ilustrar. Indique as eventuais dificuldades e próximos passos.*
+O projeto **Cielo Verso** é estruturado sobre um conjunto de sistemas integrados que garantem a experiência central do jogo: navegação pelo mundo, interação com NPCs e realização de negociações por meio de cartas. Esta seção documenta a implementação técnica desses sistemas, descrevendo as decisões de arquitetura, os padrões de código adotados e as soluções encontradas para os desafios de desenvolvimento. O documento será atualizado conforme novos sistemas forem incorporados ao jogo.
+
+
+### Sistema de transição com fadeOut/fadeIn
+
+Todas as trocas de cena utilizam um padrão consistente de fade para evitar cortes abruptos. O evento `FADE_OUT_COMPLETE` garante que a nova cena só carrega após a animação terminar:
+
+```javascript
+// MundoCasa.js — transição para o MapaGelo
+this.cameras.main.fadeOut(500, 0, 0, 0);
+this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+    this.scene.start('MapaGelo');
+});
+```
+
+### Preservação de origem entre cenas
+
+Para evitar que o personagem reapareça na posição padrão ao retornar de uma cena, todas as cenas que recebem o jogador de outra utilizam o parâmetro `init(data)` para verificar a origem e reposicionar corretamente:
+
+```javascript
+// MapaGelo.js
+init(data) {
+    this.origem = data.vindoDe;
+}
+
+create() {
+    // ...
+    if (this.origem === 'CenaCasaGelo') {
+        this.personagem.sprite.setPosition(655, 210);
+    }
+}
+```
+
+Sem esse mecanismo, o jogador sofreria "spawn incorreto" ao retornar da Casa do Pedro para o Mapa de Gelo.
+
+---
+
+### Sistema de Personagem e Movimentação (Jogador.js)
+
+### O que foi implementado
+
+A classe `Jogador` encapsula toda a lógica de movimentação, animação e colisão do personagem jogável. Ela lê o personagem escolhido na tela de seleção via `registry` e aplica automaticamente as animações corretas:
+
+```javascript
+// Jogador.js
+const skin = cena.game.registry.get('spriteJogador') || 'man_whi';
+this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
+
+// Hitbox reduzida ao nível dos pés para colisão realista
+this.sprite.body.setSize(10, 5);
+this.sprite.setOffset(27, 40);
+```
+
+### Animações direcionais
+
+O sistema define quatro animações por skin (idle, andar frente, andar de costas, andar de lado) e controla qual toca com base nas teclas pressionadas. O flip horizontal (`setFlipX`) evita a necessidade de um spritesheet separado para a direção oposta:
+
+```javascript
+// Movimento para a esquerda
+if (teclas.left.isDown) {
+    sprite.setVelocityX(-velocidade);
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(false);
+} else if (teclas.right.isDown) {
+    sprite.setVelocityX(velocidade);
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(true); // espelha o sprite — sem asset duplicado
+}
+```
+
+### Tutorial integrado (tecla H)
+
+O tutorial pode ser aberto a qualquer momento com a tecla **H**. Ao abrir, o input da cena ativa é desabilitado para evitar movimento em segundo plano; ao fechar, é reativado automaticamente via evento `shutdown`:
+
+```javascript
+// TutorialOverlay.js
+this.events.on('shutdown', () => {
+    if (this.cenaAnterior) {
+        this.cenaAnterior.input.keyboard.enabled = true;
+    }
+});
+```
+
+---
+
+## Sistema de Colisão com Hitboxes do Tiled
+
+### O que foi implementado
+
+As colisões do **Mapa de Gelo** e da **Casa do Pedro** são definidas visualmente na ferramenta **Tiled Map Editor** e exportadas como arquivo `.tmj`. O Phaser lê a camada de objetos em tempo de execução e cria colisores físicos dinamicamente:
+
+```javascript
+// MapaGelo.js — leitura das hitboxes do Tiled
+const mapa = this.make.tilemap({ key: 'mapa_dados' });
+const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
+
+camadaObjetos.objects.forEach(obj => {
+    if (obj.polygon) {
+        // Rochas e objetos irregulares: Polygon Collider
+        const poly = this.add.polygon(obj.x, obj.y, obj.polygon, 0x0000ff, 0);
+        this.physics.add.existing(poly, true);
+        this.personagem.adicionarColisao(poly);
+    } else {
+        // Casas e objetos retangulares: Box Collider (mais eficiente)
+        let zona = this.add.zone(
+            obj.x + (obj.width / 2),
+            obj.y + (obj.height / 2),
+            obj.width, obj.height
+        );
+        this.physics.add.existing(zona, true);
+        this.personagem.adicionarColisao(zona);
+    }
+});
+```
+
+**Decisão de design:** objetos retangulares (casas) usam `zone` (Box Collider) por ser mais leve computacionalmente. Polígonos são reservados para geometria irregular (rochas), onde um Box Collider criaria "paredes invisíveis" no ar.
+
+**Correção implementada:** O Tiled exporta coordenadas com origem no **canto superior esquerdo**, mas o Phaser posiciona zones pelo **centro**. O offset `obj.width / 2` e `obj.height / 2` corrige esse deslocamento, evitando que as colisões apareçam com posição errada no mapa.
+
+---
+
+## Sistema de Diálogo com Typewriter (DialogoManager.js)
+
+### O que foi implementado
+
+A classe `DialogoManager` é reutilizável e gerencia caixas de diálogo com efeito typewriter para qualquer NPC do jogo. O sistema funciona com uma fila de falas e avança via tecla **E**:
+
+```javascript
+// DialogoManager.js — efeito typewriter
+this._timer = this._cena.time.addEvent({
+    delay:    35, // 35ms por caractere
+    repeat:   textoCompleto.length - 1,
+    callback: () => {
+        this._textoFala.setText(textoCompleto.substring(0, i + 1));
+        i++;
+        if (i >= textoCompleto.length) {
+            this._digitando = false;
+            this._indicador.setVisible(true); // mostra ▼ ao terminar
+        }
+    },
+});
+```
+
+### Funcionalidades implementadas
+
+| Funcionalidade | Descrição |
+|---|---|
+| **Skip do typewriter** | Apertar E durante a digitação exibe o texto completo instantaneamente |
+| **Cores por personagem** | Cada NPC tem cor de nome configurável via `CORES_PERSONAGEM` |
+| **Fechamento por distância** | Se o jogador se afastar durante o diálogo, ele fecha automaticamente |
+| **Substituição de nome** | Falas do `Jogador` exibem o nome real digitado na tela de seleção |
+| **Callback de fim** | Ao terminar todas as falas, executa uma função opcional (ex: iniciar negociação) |
+
+### Fechamento por distância (CenaCasa.js)
+
+```javascript
+// update() — fecha o diálogo se o jogador se afastar da Cielita
+if (!perto && this.dialogo.aberto) {
+    this.dialogo.fechar();
+}
+```
+
+### Integração com NegociacaoPedro
+
+A classe `DialogoPedro` estende `DialogoManager` com as falas específicas do NPC. Ao terminar o último diálogo, o callback inicia automaticamente a cena de negociação:
+
+```javascript
+// CenaCasaGelo.js
+this.dialogoPedro.abrir(() => {
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.start('NegociacaoPedro');
+    });
+});
+```
+
+---
+
+## Sistema de Negociação por Cartas (CenaNegociacao.js / NegociacaoPedro.js)
+
+### O que foi implementado
+
+O sistema de negociação é a mecânica central do jogo. A classe `CenaNegociacao` é uma **classe base abstrata** que define toda a lógica da UI e do fluxo de jogo. Cada cliente é implementado como uma subclasse (ex: `NegociacaoPedro`) que sobrescreve apenas o conteúdo específico daquele cliente.
+
+### Estrutura das 5 fases
+
+```javascript
+// CenaNegociacao.js
+static FASES = ['abordagem', 'sondagem', 'demonstracao', 'negociacao', 'fechamento'];
+```
+
+Cada fase tem um conjunto de cartas exigidas e uma quantidade de cartas distribuídas na mão do jogador:
+
+```javascript
+// NegociacaoPedro.js
+cartasExigidas: {
+    abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
+    sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
+    demonstracao: [], // qualquer produto vale — pontuação varia
+    negociacao:   ['carta_desconto'],
+    fechamento:   ['carta_contrato'],
+},
+cartasPorFase: {
+    abordagem: 5, sondagem: 6, demonstracao: 4,
+    negociacao: 3, fechamento: 3,
+},
+```
+
+### Barra de satisfação com 3 estados
+
+O cliente reage visualmente às jogadas do jogador. A satisfação vai de 0 a 100 e determina o sprite exibido e a cor da barra:
+
+```javascript
+// CenaNegociacao.js
+static SATISFACAO_ESTADOS = [
+    { min: 67, max: 100, estado: 'satisfeito', cor: 0x44cc88 },
+    { min: 34, max: 66,  estado: 'neutro',     cor: 0xccaa44 },
+    { min: 0,  max: 33,  estado: 'bravo',      cor: 0xcc4444 },
+];
+
+static GANHO_SATISFACAO = 20;
+static PERDA_SATISFACAO = 30;
+```
+
+A barra anima suavemente via `tween` ao receber ou perder satisfação:
+
+```javascript
+this.tweens.add({
+    targets:  this.barraSatisfacaoFill,
+    width:    larguraTotal * (this.satisfacao / 100),
+    duration: 400,
+    ease:     'Quad.easeOut',
+});
+```
+
+### Sistema de pontuação na fase de Demonstração
+
+Na fase de demonstração, cada produto Cielo tem uma pontuação diferente. O jogador escolhe qual produto apresentar e a satisfação aumenta de acordo:
+
+```javascript
+// NegociacaoPedro.js
+const PONTUACAO_PRODUTO = {
+    CieloLioOn:  10,
+    CieloFlash:  15,
+    CVBA:        20,
+    CieloFlash2: 25,
+};
+
+// A satisfação ganha = GANHO_BASE (20) + pontuação do produto
+this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
+```
+
+### Paginação na fase de Sondagem
+
+Como a fase de Sondagem tem 6 cartas (acima do limite visual de 3), o sistema divide automaticamente as cartas em páginas navegáveis com botões `<` e `>`:
+
+```javascript
+// CenaNegociacao.js
+if (fase === 'sondagem' && cartasDaFase.length > 3) {
+    Phaser.Utils.Array.Shuffle(cartasDaFase);
+    this._paginas = [];
+    for (let i = 0; i < cartasDaFase.length; i += 3) {
+        this._paginas.push(cartasDaFase.slice(i, i + 3));
+    }
+    this._paginaAtual = 0;
+    this._mostrarPaginaSondagem();
+}
+```
+
+### Modal de detalhes da carta
+
+Ao clicar em uma carta, um overlay exibe a imagem ampliada com botões de "Voltar" e "Selecionar". Na fase de Demonstração, selecionar a carta já aciona o avanço de fase automaticamente, sem precisar do botão CONFIRMAR:
+
+```javascript
+// NegociacaoPedro.js
+if (fase === 'demonstracao') {
+    this.time.delayedCall(300, () => {
+        fecharModal();
+        const soma = PONTUACAO_PRODUTO[carta.key] ?? 0;
+        this._mostrarDialogo(this._falaAcertoFase(fase));
+        this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
+        this.time.delayedCall(4000, () => this._avancarOuVencer());
+    });
+}
+```
+
+### Indicador de progresso de fases
+
+A barra de fases no topo da tela usa tweens para animar o indicador da fase atual:
+
+```javascript
+// CenaNegociacao.js — indicador pulsa ao entrar em nova fase
+this.tweens.add({
+    targets: circulo, scaleX: 1.2, scaleY: 1.2,
+    duration: 200, yoyo: true,
+});
+```
+
+---
+
+## Carregamento de Assets (Preloader.js / BootScene.js)
+
+### O que foi implementado
+
+Para evitar o erro **"Texture key already in use"**, todos os assets do jogo são carregados uma única vez no `Preloader`, que roda antes de qualquer cena de gameplay. O `BootScene` possui uma barra de progresso visual que reflete o carregamento em tempo real:
+
+```javascript
+// BootScene.js
+this.load.on('progress', (value) => {
+    fill.width = barraW * value;
+    textoPorc.setText(`${Math.floor(value * 100)}%`);
+});
+```
+
+Os assets de cartas carregados nesta sprint incluem 5 cartas de Abordagem, 6 de Sondagem e 4 Produtos Cielo (`CieloLioOn`, `CieloFlash`, `CieloFlash2`, `CVBA`), além de 4 skins de jogador com 5 animações cada (total de 20 spritesheets).
+
+---
+
+## Tela de Seleção de Personagem (CenaPersonagem.js)
+
+### O que foi implementado
+
+Antes de entrar no jogo, o jogador escolhe entre **4 skins** (homem/mulher × branco/negro) e digita seu nome. As escolhas são persistidas via `game.registry` para durar durante toda a sessão:
+
+```javascript
+// CenaPersonagem.js
+this.game.registry.set('nomeJogador', nome);
+this.game.registry.set('spriteJogador', this.spriteSelecionado);
+```
+
+O input de nome é feito diretamente via `input.keyboard`, com limite de 16 caracteres, suporte a Backspace e confirmação por Enter ou pelo botão "COMEÇAR". As skins são exibidas com animação idle em loop e efeito de hover com `tween` de escala.
+
+
 
 ## 4.4. Desenvolvimento final do MVP (sprint 4)
 
