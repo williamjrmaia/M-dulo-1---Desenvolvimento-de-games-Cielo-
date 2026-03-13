@@ -8,7 +8,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
     }
 
      init(data) {
-        this.origem = data.vindoDe; 
+        this.origem = data.vindoDe; //guarda a informação da úlitma posição do jogador
     }
 
    
@@ -16,7 +16,6 @@ export default class CenaCasaGelo extends Phaser.Scene {
     this.load.image('CasaPedro', 'assets/MapaGelo/CasaPedro.png');
     this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
 
-    // ← ADICIONE ESTAS LINHAS:
     this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
     this.load.image('balao',      'assets/objetos/balao dialogo.png');
     this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
@@ -168,6 +167,7 @@ this.dialogoPedro = new DialogoPedro(this, {
 
     // ── Tecla E ───────────────────────────────────────────────
     if (apertouInteragir) {
+        // Abre o diálogo; ao fim do último texto, o callback inicia a negociação
         if (perto && !this.dialogoPedro.aberto) {
             this.dialogoPedro.abrir(() => {
     this.cameras.main.fadeOut(500, 0, 0, 0);

@@ -105,6 +105,7 @@ _acertarFase(fase) {
         return;
     }
 
+    // soma os pontos de cada produto selecionado; produtos sem pontuação valem 0
     const soma = this.cartasSelecionadas.reduce(
         (total, carta) => total + (PONTUACAO_PRODUTO[carta.key] ?? 0),
         0

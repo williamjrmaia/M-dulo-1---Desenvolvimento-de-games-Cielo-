@@ -47,6 +47,7 @@ export default class MapaGelo extends Phaser.Scene {
                     this.physics.add.existing(poly, true);
                     this.personagem.adicionarColisao(poly);
                 } else {
+                    // retângulos do Tiled usam topo-esquerdo; zone usa centro — por isso o offset de width/2 e height/2
                     let zonaTiled = this.add.zone(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height);
                     this.physics.add.existing(zonaTiled, true);
                     this.personagem.adicionarColisao(zonaTiled);

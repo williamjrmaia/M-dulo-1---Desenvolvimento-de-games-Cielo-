@@ -4,6 +4,7 @@ export default class Preloader extends Phaser.Scene {
     }
 
     preload() {
+        // skin: chave usada no registry | pasta: caminho dos assets | cor: sufixo do arquivo
         const personagens = [
             { skin: 'man_whi',   pasta: 'MAN/WHITE',   cor: 'whi' },
             { skin: 'man_bla',   pasta: 'MAN/BLACK',   cor: 'bla' },
@@ -20,7 +21,7 @@ export default class Preloader extends Phaser.Scene {
                 this.load.spritesheet(
                     `${skin}_${anim}`,
                     `assets/PLAYER/${pasta}/spr_player_${gen}_${anim}_${cor}.png`,
-                    { frameWidth: 64, frameHeight: 64 }
+                    { frameWidth: 64, frameHeight: 64 } // tamanho padrão de todos os sprites do jogador
                 );
             });
         });
