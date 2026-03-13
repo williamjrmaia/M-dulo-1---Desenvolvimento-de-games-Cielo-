@@ -65,7 +65,7 @@ export default class BootScene extends Phaser.Scene {
             this.cameras.main.fadeOut(100, 0, 0, 0);
             this.cameras.main.once(
                 Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
-                () => this.scene.start('NegociacaoPedro')
+                () => this.scene.start('NegociacaoJoao')
             );
         };
 

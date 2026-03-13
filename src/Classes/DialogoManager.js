@@ -37,7 +37,7 @@ export default class DialogoManager {
     static CORES_PERSONAGEM = {
         'Cielita':   '#ffdd57',
         'Jogador':   '#88eeff',
-        'Seu Pedro': '#ff9900',
+        'Seu João': '#ff9900',
         _default:    '#ffffff',
     };
 

@@ -28,7 +28,7 @@ export default class Preloader extends Phaser.Scene {
 
         this.load.image('Tutorial', 'assets/CenarioCasa/tutorial_andar.png');
 
-        // ── Cartas (carregadas aqui para ficarem em cache antes da NegociacaoPedro) ──
+        // ── Cartas (carregadas aqui para ficarem em cache antes da NegociacaoJoao) ──
         this.load.image('AntiPitch',             'assets/Cartas/Abordagem/AntiPitch.png');
         this.load.image('ComparacaoInteligente', 'assets/Cartas/Abordagem/ComparacaoInteligente.png');
         this.load.image('DesarmeElegante',       'assets/Cartas/Abordagem/DesarmeElegante.png');
@@ -48,9 +48,9 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('CieloFlash2', 'assets/Cartas/Produtos/FLASH2.png');
 
 
-        this.load.image('Pedro_neutro',    'assets/NPC/BossPedro.png');
-        this.load.image('Pedro_satisfeito','assets/NPC/BossPedro.png');
-        this.load.image('Pedro_bravo',     'assets/NPC/BossPedro.png');
+        this.load.image('João_neutro',    'assets/NPC/BossJoao.png');
+        this.load.image('João_satisfeito','assets/NPC/BossJoao.png');
+        this.load.image('João_bravo',     'assets/NPC/BossJoao.png');
         
     }
 

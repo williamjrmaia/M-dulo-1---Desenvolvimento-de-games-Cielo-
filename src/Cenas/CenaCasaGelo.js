@@ -1,5 +1,5 @@
 import Jogador from '../Classes/Jogador.js';
-import DialogoPedro from '../Classes/DialogoPedro.js';
+import DialogoJoao from '../Classes/DialogoJoao.js';
 
 
 export default class CenaCasaGelo extends Phaser.Scene {
@@ -13,12 +13,12 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
    
       preload() {
-    this.load.image('CasaPedro', 'assets/MapaGelo/CasaPedro.png');
-    this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
+    this.load.image('CasaJoao', 'assets/MapaGelo/CasaJoao.png');
+    this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaJoaoHitbox.tmj');
 
     this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
     this.load.image('balao',      'assets/objetos/balao dialogo.png');
-    this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
+    this.load.image('seujoao_idl', 'assets/NPC/Joao/spr_seujoao_front_idl_stop.png');
 }
 
     create() {
@@ -27,7 +27,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
     const centerY = 400;
 
     // 2. Adicionar a imagem de fundo
-    const bg = this.add.image(centerX, centerY, 'CasaPedro');
+    const bg = this.add.image(centerX, centerY, 'CasaJoao');
     console.log('bg tamanho:', bg.displayWidth, bg.displayHeight);
     console.log('bg visivel:', bg.visible);
     
@@ -69,14 +69,14 @@ export default class CenaCasaGelo extends Phaser.Scene {
     // 6. Ativar Colisão entre o sprite e o grupo de paredes
     this.physics.add.collider(this.personagem.sprite, paredes);
 
-    // NPC Seu Pedro
-    this.seupedro = this.physics.add.sprite(710, 390, 'seupedro_idl');
-    this.seupedro.setImmovable(true);
-    this.seupedro.body.setAllowGravity(false);
-    this.seupedro.setScale(1.5);
-    this.seupedro.setDepth(5);
+    // NPC Seu João
+    this.seujoao = this.physics.add.sprite(710, 390, 'seujoao_idl');
+    this.seujoao.setImmovable(true);
+    this.seujoao.body.setAllowGravity(false);
+    this.seujoao.setScale(1.5);
+    this.seujoao.setDepth(5);
 
-this.physics.add.collider(this.personagem.sprite, this.seupedro);
+this.physics.add.collider(this.personagem.sprite, this.seujoao);
 
 
 
@@ -90,7 +90,7 @@ this.indicadorE = this.add.image(0, 0, 'IndicadorE')
 this.DISTANCIA_INTERACAO = 80;
 
 // Diálogo
-this.dialogoPedro = new DialogoPedro(this, {
+this.dialogoJoao = new DialogoJoao(this, {
     caixaX:       this.cameras.main.width / 2,
     caixaY:       this.cameras.main.height - 80,
     caixaLargura: this.cameras.main.width,
@@ -103,25 +103,25 @@ this.dialogoPedro = new DialogoPedro(this, {
     this.cameras.main.fadeIn(500, 0, 0, 0);
 
    
-    this.portaPedro = this.add.zone(751, 530, 45, 15);
-    this.physics.add.existing(this.portaPedro);
-    this.portaPedro.body.setAllowGravity(false);
-    this.portaPedro.body.moves = false;
+this.portaJoao = this.add.zone(751, 530, 45, 15);
+    this.physics.add.existing(this.portaJoao);
+    this.portaJoao.body.setAllowGravity(false);
+    this.portaJoao.body.moves = false;
 
     this.personagem.configurarTeclas();
 
     
 
-        // ✅ ZONA DE INTERAÇÃO COM PEDRO
-        this.zonaInteracaoPedro = this.add.zone(750, 430, 300, 30);
-        this.physics.world.enable(this.zonaInteracaoPedro);
-        this.zonaInteracaoPedro.body.setImmovable(true);
-        this.zonaInteracaoPedro.body.setAllowGravity(false);
+        // ✅ ZONA DE INTERAÇÃO COM JOÃO
+        this.zonaInteracaoJoao = this.add.zone(750, 430, 300, 30);
+        this.physics.world.enable(this.zonaInteracaoJoao);
+        this.zonaInteracaoJoao.body.setImmovable(true);
+        this.zonaInteracaoJoao.body.setAllowGravity(false);
         
         // Configurar overlap para disparar a negociação
         this.physics.add.overlap(
             this.personagem.sprite, 
-            this.zonaInteracaoPedro, 
+            this.zonaInteracaoJoao, 
             this.irParaNegociacao, 
             null, 
             this
@@ -134,30 +134,30 @@ this.dialogoPedro = new DialogoPedro(this, {
      update() {
     this.personagem.atualizar();
 
-    // ── Interação com Seu Pedro ───────────────────────────────
+    // ── Interação com Seu João ───────────────────────────────
     const dist = Phaser.Math.Distance.Between(
         this.personagem.sprite.x, this.personagem.sprite.y,
-        this.seupedro.x,          this.seupedro.y
+        this.seujoao.x,          this.seujoao.y
     );
     const perto = dist <= this.DISTANCIA_INTERACAO;
 
-    this.indicadorE.setVisible(perto && !this.dialogoPedro.aberto);
+    this.indicadorE.setVisible(perto && !this.dialogoJoao.aberto);
     if (perto) {
         this.indicadorE.setPosition(
-            this.seupedro.x,
-            this.seupedro.y - (this.seupedro.displayHeight / 2) - 12
+            this.seujoao.x,
+            this.seujoao.y - (this.seujoao.displayHeight / 2) - 12
         );
     }
 
-    if (!perto && this.dialogoPedro.aberto) {
-        this.dialogoPedro.fechar();
+    if (!perto && this.dialogoJoao.aberto) {
+        this.dialogoJoao.fechar();
     }
 
     // ── Portal de saída ───────────────────────────────────────
-    const estaNoPortal     = this.physics.overlap(this.personagem.sprite, this.portaPedro);
+    const estaNoPortal     = this.physics.overlap(this.personagem.sprite, this.portaJoao);
     const apertouInteragir = Phaser.Input.Keyboard.JustDown(this.teclas.interagir);
 
-    if (estaNoPortal && apertouInteragir && !this.dialogoPedro.aberto) {
+    if (estaNoPortal && apertouInteragir && !this.dialogoJoao.aberto) {
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
             this.scene.start('MapaGelo', { vindoDe: 'CenaCasaGelo' });
@@ -168,16 +168,16 @@ this.dialogoPedro = new DialogoPedro(this, {
     // ── Tecla E ───────────────────────────────────────────────
     if (apertouInteragir) {
         // Abre o diálogo; ao fim do último texto, o callback inicia a negociação
-        if (perto && !this.dialogoPedro.aberto) {
-            this.dialogoPedro.abrir(() => {
+        if (perto && !this.dialogoJoao.aberto) {
+            this.dialogoJoao.abrir(() => {
     this.cameras.main.fadeOut(500, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-        this.scene.start('NegociacaoPedro');
+        this.scene.start('NegociacaoJoao');
     });
 });
             return;
         }
-        this.dialogoPedro.avancar();
+        this.dialogoJoao.avancar();
     }
  }
 }

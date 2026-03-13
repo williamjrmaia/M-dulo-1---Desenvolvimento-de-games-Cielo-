@@ -26,10 +26,10 @@ const PONTUACAO_PRODUTO = {
     CieloFlash2: 25,
 };
 
-export default class NegociacaoPedro extends CenaNegociacao {
+export default class NegociacaoJoao extends CenaNegociacao {
     constructor() {
-        super('NegociacaoPedro', {
-            nomeCliente:       'Pedro',
+        super('NegociacaoJoao', {
+            nomeCliente:       'João',
             satisfacaoInicial: 0,
             cartasExigidas: {
                 abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
@@ -67,7 +67,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     _falaAcertoFase(fase) {
         const falas = {
-            abordagem:    'Claro, sou o dono do estabelecimento! Me chamo Pedro.',
+            abordagem:    'Claro, sou o dono do estabelecimento! Me chamo João.',
             sondagem:     'Entendi, isso faz bastante sentido. Continue...',
             demonstracao: 'Interessante! Esse produto parece atender bem o que preciso.',
         };

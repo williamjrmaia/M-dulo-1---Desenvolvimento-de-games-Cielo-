@@ -4,7 +4,7 @@ import CenaPersonagem from './CenaPersonagem.js';
 import CenaConfig from './CenaConfig.js';
 import CenaCasa from './CenaCasa.js';
 import MundoCasa from './MundoCasa.js';
-import NegociacaoPedro from './NegociacaoPedro.js';
+import NegociacaoJoao from './NegociacaoJoao.js';
 import MapaGelo from './MapaGelo.js';
 import CenaCasaGelo from './CenaCasaGelo.js';
 import TutorialOverlay from './TutorialOverlay.js';
@@ -30,7 +30,7 @@ const config = {
         }
     },
 
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, CenaCasaGelo, NegociacaoPedro, 
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, CenaCasaGelo, NegociacaoJoao, 
         TutorialOverlay, BootScene]//Preloader carrega as sprites antes do jogo começar 
                                                                                       //para evitar redundância
 
