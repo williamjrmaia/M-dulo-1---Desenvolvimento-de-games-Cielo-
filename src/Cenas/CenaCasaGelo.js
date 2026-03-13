@@ -17,7 +17,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
     this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
 
     this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
-    this.load.image('balao',      'assets/objetos/balao dialogo.png');
+    this.load.image('balao',      'assets/objetos/balao_dialogo.png');
     this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
 }
 
@@ -76,26 +76,26 @@ export default class CenaCasaGelo extends Phaser.Scene {
     this.seupedro.setScale(1.5);
     this.seupedro.setDepth(5);
 
-this.physics.add.collider(this.personagem.sprite, this.seupedro);
+    this.physics.add.collider(this.personagem.sprite, this.seupedro);
 
 
 
-// Botão E acima da cabeça
-this.indicadorE = this.add.image(0, 0, 'IndicadorE')
-    .setDepth(15)
-    .setVisible(false)
-    .setScale(1.1);
+    // Botão E acima da cabeça
+    this.indicadorE = this.add.image(0, 0, 'IndicadorE')
+        .setDepth(15)
+        .setVisible(false)
+        .setScale(1.1);
 
-// Distância de interação
-this.DISTANCIA_INTERACAO = 80;
+    // Distância de interação
+    this.DISTANCIA_INTERACAO = 80;
 
-// Diálogo
-this.dialogoPedro = new DialogoPedro(this, {
-    caixaX:       this.cameras.main.width / 2,
-    caixaY:       this.cameras.main.height - 80,
-    caixaLargura: this.cameras.main.width,
-    caixaAltura:  160,
-});
+    // Diálogo
+    this.dialogoPedro = new DialogoPedro(this, {
+        caixaX:       this.cameras.main.width / 2,
+        caixaY:       this.cameras.main.height - 80,
+        caixaLargura: this.cameras.main.width,
+        caixaAltura:  160,
+    });
 
     // 7. Câmera
     this.cameras.main.startFollow(this.personagem.sprite);
@@ -107,25 +107,8 @@ this.dialogoPedro = new DialogoPedro(this, {
     this.physics.add.existing(this.portaPedro);
     this.portaPedro.body.setAllowGravity(false);
     this.portaPedro.body.moves = false;
-
-    this.personagem.configurarTeclas();
-
-    
-
-        // ✅ ZONA DE INTERAÇÃO COM PEDRO
-        this.zonaInteracaoPedro = this.add.zone(750, 430, 300, 30);
-        this.physics.world.enable(this.zonaInteracaoPedro);
-        this.zonaInteracaoPedro.body.setImmovable(true);
-        this.zonaInteracaoPedro.body.setAllowGravity(false);
         
-        // Configurar overlap para disparar a negociação
-        this.physics.add.overlap(
-            this.personagem.sprite, 
-            this.zonaInteracaoPedro, 
-            this.irParaNegociacao, 
-            null, 
-            this
-        );
+    // Configurar overlap para disparar a negociação
        
         // e na criação do personagem:
         this.personagem.sprite.setDepth(2);
