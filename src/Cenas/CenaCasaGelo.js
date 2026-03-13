@@ -126,7 +126,7 @@ this.dialogoPedro = new DialogoPedro(this, {
             null, 
             this
         );
-        this.add.image(780, 400, 'Pedro').setScale(1.5).setDepth(1);
+       
         // e na criação do personagem:
         this.personagem.sprite.setDepth(2);
     }
