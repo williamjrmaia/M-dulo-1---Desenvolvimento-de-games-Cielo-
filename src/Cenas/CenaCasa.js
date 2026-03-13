@@ -15,6 +15,9 @@ export default class CenaCasa extends Phaser.Scene {
         // Objetos
         this.load.image('balao', 'assets/objetos/balao dialogo.png');
         this.load.image('IndicadorE', 'assets/objetos/Botão E.png');
+
+        // Tilemap for hitboxes
+        this.load.tilemapTiledJSON('mapa_casa', '../assets/MapaGelo/CasaPedroHitbox.tmj');
     }
 
     create() {
