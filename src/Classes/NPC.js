@@ -109,6 +109,13 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             onFimDialogo: null,       // function() — chamada ao fim do último texto
         }, opcoes);
 
+        // ── Colisão NPC↔NPC ───────────────────────────────────────────────────
+        // Precisa vir ANTES de setImmovable: group.add() recria o corpo físico
+        // e sobrescreveria immovable se chamado depois.
+        if (this._cfg.grupoNPCs) {
+            this._cfg.grupoNPCs.add(this);
+        }
+
         // ── Física ────────────────────────────────────────────────────────────
         this.setImmovable(true);
         this.body.setAllowGravity(false);
@@ -136,13 +143,6 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             this._dialogo    = null;
             this._falas      = [];
             this._indicadorE = null;
-        }
-
-        // ── Colisão NPC↔NPC ───────────────────────────────────────────────────
-        // O NPC se adiciona ao grupo; a cena chama physics.add.collider(grupo, grupo)
-        // uma vez após criar todos os NPCs.
-        if (this._cfg.grupoNPCs) {
-            this._cfg.grupoNPCs.add(this);
         }
     }
 

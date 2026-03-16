@@ -16,6 +16,15 @@ export default class Jogador {
         this.sprite.setOffset(27, 40);
 
         this._criarAnimacoes();
+        this._ultimaDirecao = 'frente'; // 'frente' | 'costas' | 'lado'
+
+        const largura = cena.cameras.main.width;
+        this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
+            fontSize: '11px',
+            fill: '#FFD700',
+            backgroundColor: '#000000',
+            padding: { x: 6, y: 3 }
+        }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
     }
 
     _criarAnimacoes() {
@@ -24,7 +33,8 @@ export default class Jogador {
 
     if (cena.anims.exists(`${s}_idle`)) return;
 
-        cena.anims.create({ key: `${s}_idle`,  frames: cena.anims.generateFrameNumbers(`${s}_front_idl`,  { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_idle`,       frames: cena.anims.generateFrameNumbers(`${s}_front_idl`, { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_idle_costas`, frames: cena.anims.generateFrameNumbers(`${s}_back_idl`,  { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
         cena.anims.create({ key: `${s}_andar`, frames: cena.anims.generateFrameNumbers(`${s}_front_walk`, { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
         cena.anims.create({ key: `${s}_costa`, frames: cena.anims.generateFrameNumbers(`${s}_back_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
         cena.anims.create({ key: `${s}_lado`,  frames: cena.anims.generateFrameNumbers(`${s}_side_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
@@ -39,13 +49,6 @@ export default class Jogador {
             interagir: Phaser.Input.Keyboard.KeyCodes.E,
             tutorial:  Phaser.Input.Keyboard.KeyCodes.H,
         });
-        const largura = this.cena.cameras.main.width;
-    this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
-        fontSize: '11px',
-        fill: '#FFD700',
-        backgroundColor: '#000000',
-        padding: { x: 6, y: 3 }
-    }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
         return this.teclas;
     }
    
@@ -55,31 +58,24 @@ export default class Jogador {
         const s = this.skin;
         if (!sprite || !teclas) return;
         
-        // Tecla H: abre/fecha o tutorial. Desabilita o teclado da cena enquanto
-        // o overlay está ativo para evitar movimento em segundo plano.
+        // Se o tutorial está ativo (aberto via H ou automaticamente): trava
+        // o jogador e só permite fechar via H.
+        if (this.cena.scene.isActive('TutorialOverlay')) {
+            this.sprite.setVelocity(0);
+            if (Phaser.Input.Keyboard.JustDown(teclas.tutorial)) {
+                this.cena.scene.stop('TutorialOverlay');
+                this.cena.input.keyboard.enabled = true;
+            }
+            return;
+        }
+
+        // Tutorial fechado: permite abrir via H.
         if (Phaser.Input.Keyboard.JustDown(teclas.tutorial)) {
-    if (this.cena.scene.isActive('TutorialOverlay')) {
-        this.cena.scene.stop('TutorialOverlay');
-        this.cena.input.keyboard.enabled = true;
-    } else {
-        this.sprite.setVelocity(0);
-        this.cena.scene.launch('TutorialOverlay');
-        this.cena.scene.bringToTop('TutorialOverlay');
-        this.cena.input.keyboard.enabled = false;
-    }
-}
-
-// Guarda extra: se o tutorial foi aberto de outra forma (ex: automático na
-// primeira vez), garante que o jogador fique parado de qualquer jeito.
-if (this.cena.scene.isActive('TutorialOverlay')) {
-    this.sprite.setVelocity(0);
-    return; // impede qualquer movimentação
-}
-   
-
-
-
-       
+            this.sprite.setVelocity(0);
+            this.cena.scene.launch('TutorialOverlay');
+            this.cena.scene.bringToTop('TutorialOverlay');
+            this.cena.input.keyboard.enabled = false;
+        }
     
        
         sprite.setVelocity(0);
@@ -89,7 +85,8 @@ if (this.cena.scene.isActive('TutorialOverlay')) {
             !teclas.up.isDown   && !teclas.down.isDown;
 
         if (nenhumaTecla) {
-            sprite.play(`${s}_idle`, true);
+            const idleAnim = this._ultimaDirecao === 'costas' ? `${s}_idle_costas` : `${s}_idle`;
+            sprite.play(idleAnim, true);
             return;
         }
 
@@ -97,21 +94,27 @@ if (this.cena.scene.isActive('TutorialOverlay')) {
             sprite.setVelocityX(-velocidade);
             sprite.play(`${s}_lado`, true);
             sprite.setFlipX(false);
+            this._ultimaDirecao = 'lado';
         } else if (teclas.right.isDown) {
             sprite.setVelocityX(velocidade);
             sprite.play(`${s}_lado`, true);
             sprite.setFlipX(true);
+            this._ultimaDirecao = 'lado';
         }
 
         // animação vertical só toca se não há tecla horizontal (evita conflito)
         if (teclas.up.isDown) {
             sprite.setVelocityY(-velocidade);
-            if (!teclas.left.isDown && !teclas.right.isDown)
+            if (!teclas.left.isDown && !teclas.right.isDown) {
                 sprite.play(`${s}_costa`, true);
+                this._ultimaDirecao = 'costas';
+            }
         } else if (teclas.down.isDown) {
             sprite.setVelocityY(velocidade);
-            if (!teclas.left.isDown && !teclas.right.isDown)
+            if (!teclas.left.isDown && !teclas.right.isDown) {
                 sprite.play(`${s}_andar`, true);
+                this._ultimaDirecao = 'frente';
+            }
         }
     }
 

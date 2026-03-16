@@ -44,9 +44,6 @@ export default class CenaCasa extends Phaser.Scene {
             });
         }
 
-        // ── Jogador ───────────────────────────────────────────────────────────
-        this.jogador = new Jogador(this, W / 2, H / 2 + 80);
-        this.teclas  = this.jogador.configurarTeclas();
 
         // ── Grupo NPC ─────────────────────────────────────────────────────────
         this.grupoNPCs = this.physics.add.group();
@@ -66,6 +63,11 @@ export default class CenaCasa extends Phaser.Scene {
 
         // Colisão NPC↔NPC (apenas um NPC aqui, mas mantemos o padrão)
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
+
+        // ── Jogador ───────────────────────────────────────────────────────────
+        this.jogador = new Jogador(this, W / 2, H / 2 + 80);
+        this.teclas  = this.jogador.configurarTeclas();
+
 
         // Colisão Jogador↔Cielita
         this.jogador.adicionarColisao(this.cielita);

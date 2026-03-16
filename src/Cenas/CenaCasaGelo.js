@@ -24,7 +24,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.load.image('CasaPedro',    'assets/MapaGelo/CasaPedro.png');
         this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
         this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
-        this.load.image('balao',        'assets/objetos/balao dialogo.png');
+        this.load.image('balao',        'assets/objetos/balao_dialogo.png');
         this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
     }
 
@@ -52,14 +52,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
             console.error("Camada 'Object Layer 1' não encontrada no Tiled.");
         }
 
-        // ── Jogador ───────────────────────────────────────────────────────────
-        this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
-        this.personagem.sprite.setScale(1.3);
-        this.personagem.sprite.setCollideWorldBounds(true);
-        this.personagem.sprite.setDepth(2);
-        this.teclas = this.personagem.configurarTeclas();
-
-        this.physics.add.collider(this.personagem.sprite, paredes);
+        
 
         // ── Grupo NPC (colisão NPC↔NPC e NPC↔Jogador) ────────────────────────
         this.grupoNPCs = this.physics.add.group();
@@ -71,13 +64,10 @@ export default class CenaCasaGelo extends Phaser.Scene {
             grupoNPCs:          this.grupoNPCs,
             onFimDialogo: () => {
                 this.cameras.main.fadeOut(500, 0, 0, 0);
-                this.cameras.main.once('camerafadeoutcomplete', () => {
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                     this.scene.start('NegociacaoPedro');
                 });
             },
-            // animacoes: não configuradas — Pedro usa sprite estático por enquanto
-            // Quando tiver spritesheet direcional, adicione as chaves aqui:
-            // animacoes: { idle: 'pedro_idle', lado: 'pedro_lado', ... }
         });
         this.pedro.setScale(1.5);
         this.pedro.setDepth(5);
@@ -85,6 +75,14 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
         // Colisão NPC↔NPC (chamada uma vez após criar todos os NPCs)
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
+
+                // ── Jogador ───────────────────────────────────────────────────────────
+        this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
+        this.personagem.sprite.setScale(1.3);
+        this.personagem.sprite.setCollideWorldBounds(true);
+        this.personagem.sprite.setDepth(2);
+        this.teclas = this.personagem.configurarTeclas();
+        this.physics.add.collider(this.personagem.sprite, paredes);
 
         // Colisão Jogador↔Pedro
         this.personagem.adicionarColisao(this.pedro);
