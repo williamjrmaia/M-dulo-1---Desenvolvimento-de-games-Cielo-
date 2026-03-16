@@ -167,7 +167,29 @@ O desempenho de cada GN é acompanhado por duas métricas: o tempo total de conc
 
 ### 1.1.6. Matriz de Riscos (sprint 4)
 
-*Registre na matriz os riscos identificados no projeto, visando avaliar situações que possam representar ameaças e oportunidades, bem como os impactos relevantes sobre o projeto. Apresente os riscos, ressaltando, para cada um, impactos e probabilidades com plano de ação e respostas.*
+Risco | Impacto no projeto | Probabilidade | Plano de ação / Resposta
+---|---|---|---
+Problemas técnicos no desenvolvimento do jogo | Pode atrasar a entrega ou impedir o funcionamento de algumas mecânicas | Média | Realizar testes frequentes e corrigir erros ao longo do desenvolvimento
+Falta de integração entre as fases do jogo | Pode impedir a progressão correta do jogador entre as áreas | Média | Testar a lógica de progressão e validar o desbloqueio das fases
+Falhas no sistema de diálogo com NPCs | Pode prejudicar a experiência do jogador e a compreensão do processo de vendas | Média | Revisar e testar todas as interações e opções de diálogo
+Dificuldade de compreensão das mecânicas pelo jogador | O jogador pode não entender como avançar no jogo | Baixa | Criar tutorial claro e instruções dentro do jogo
+Falta de tempo para finalizar todas as funcionalidades planejadas | Pode resultar em funcionalidades incompletas | Média | Priorizar as mecânicas essenciais para o funcionamento do jogo
+Desbalanceamento das interações de negociação | Pode tornar o jogo muito fácil ou muito difícil | Baixa | Realizar testes de jogabilidade e ajustar as decisões e respostas
+
+<div align="center">
+  <sub>Matriz de Riscos do Projeto CieloVerso</sub><br>
+  <img src="../assets/GDD/matrizderiscos.png" width="100%" alt="A imagem representa a matriz de risco de forma visual em um diagrama."><br>
+  <sup>Fonte: Autoria Própria</sup>
+</div>
+
+### Cores selecionadas por nível de risco (Para melhor visualização)
+🟢 Verde → baixo risco
+
+🟡 Amarelo → risco moderado
+
+🟠 Laranja → risco alto
+
+🔴 Vermelho → risco crítico
 
 ### 1.1.7. Objetivos, Metas e Indicadores (sprint 4)
 
