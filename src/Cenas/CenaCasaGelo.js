@@ -15,6 +15,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
         this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
         this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
+        this.load.image('saida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
@@ -22,6 +23,10 @@ export default class CenaCasaGelo extends Phaser.Scene {
         const centerY = 400;
 
         this.add.image(centerX, centerY, 'CasaPedro');
+
+        // Porta saída na parte de baixo
+        this.add.image(751, 530, 'saida').setDepth(1);
+
 
         const map = this.make.tilemap({ key: 'mapa_casa' });
 
@@ -59,7 +64,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
             .setVisible(false)
             .setScale(1.1);
 
-        this.DISTANCIA_INTERACAO = 80;
+        this.DISTANCIA_INTERACAO = 30;
 
         this.dialogoPedro = new DialogoPedro(this, {
             caixaX:       this.cameras.main.width / 2,
