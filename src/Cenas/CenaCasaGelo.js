@@ -26,14 +26,25 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
         this.load.image('balao',        'assets/objetos/balao_dialogo.png');
         this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
+        this.load.image('saida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
         const centerX = 750;
         const centerY = 400;
 
-        // ── Fundo ─────────────────────────────────────────────────────────────
-        const bg = this.add.image(centerX, centerY, 'CasaPedro');
+        this.add.image(centerX, centerY, 'CasaPedro');
+
+        // Porta saída na parte de baixo
+        this.add.image(751, 530, 'saida').setDepth(1);
+
+
+        const map = this.make.tilemap({ key: 'mapa_casa' });
+
+        this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
+        this.personagem.sprite.setScale(1.3);
+        this.personagem.sprite.setCollideWorldBounds(true);
+        this.teclas = this.personagem.configurarTeclas(); // ← só UMA vez
 
         // ── Mapa / Hitboxes ───────────────────────────────────────────────────
         const map    = this.make.tilemap({ key: 'mapa_casa' });
