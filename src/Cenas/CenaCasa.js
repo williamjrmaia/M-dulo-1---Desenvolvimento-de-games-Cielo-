@@ -1,6 +1,13 @@
+import Jogador from '../Classes/Jogador.js';
+import NPC     from '../Classes/NPC.js';
 
-import DialogoManager from '../Classes/DialogoManager.js';
-import Jogador from "../Classes/Jogador.js";
+// Falas da Cielita — definidas aqui, próximo da cena que as usa
+const FALAS_CIELITA = [
+    { personagem: 'Cielita', texto: 'Eu sou Cielita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
+    { personagem: 'Cielita', texto: 'Sinta-se à vontade para explorar e conversar comigo.' },
+    { personagem: 'Cielita', texto: 'Se precisar de algo, é só me chamar!' },
+    { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },
+];
 
 export default class CenaCasa extends Phaser.Scene {
 
@@ -19,27 +26,51 @@ export default class CenaCasa extends Phaser.Scene {
         const W = this.scale.width;
         const H = this.scale.height;
 
-        // Background
-        const background = this.add.image(W / 2, H / 2, 'DentroCasa').setScale(2.3); // scale 2.3 preenche a tela sem cortar o cenário
-
-        // World bounds
+        // ── Fundo ─────────────────────────────────────────────────────────────
+        const background  = this.add.image(W / 2, H / 2, 'DentroCasa').setScale(2.3);
         const larguraMapa = background.displayWidth;
         const alturaMapa  = background.displayHeight;
         const limiteX     = background.x - larguraMapa / 2;
         const limiteY     = background.y - alturaMapa  / 2;
         this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
 
-        // NPC Cielita
-        this.cielita = this.physics.add.sprite(W / 2, H / 2, 'cielitaparada').setScale(2.3);
-        this.cielita.setImmovable(true);
-        this.cielita.play('cielitaparada', true);
+        // ── Animação Cielita ──────────────────────────────────────────────────
+        if (!this.anims.exists('cielitaparada')) {
+            this.anims.create({
+                key:       'cielitaparada',
+                frames:    this.anims.generateFrameNumbers('cielitaparada', { start: 0, end: -1 }),
+                frameRate: 8,
+                repeat:    -1,
+            });
+        }
 
-        // Jogador
+        // ── Jogador ───────────────────────────────────────────────────────────
         this.jogador = new Jogador(this, W / 2, H / 2 + 80);
         this.teclas  = this.jogador.configurarTeclas();
+
+        // ── Grupo NPC ─────────────────────────────────────────────────────────
+        this.grupoNPCs = this.physics.add.group();
+
+        // ── NPC: Cielita ──────────────────────────────────────────────────────
+        this.cielita = new NPC(this, W / 2, H / 2, 'cielitaparada', {
+            velocidade:         0,        // estática — sem patrulha
+            distanciaInteracao: 80,
+            grupoNPCs:          this.grupoNPCs,
+            animacoes: {
+                idle: 'cielitaparada',    // toca a animação idle quando parada
+            },
+            // sem onFimDialogo — Cielita não aciona nenhuma cena ao fim
+        });
+        this.cielita.setScale(2.3);
+        this.cielita.setFalas(FALAS_CIELITA);
+
+        // Colisão NPC↔NPC (apenas um NPC aqui, mas mantemos o padrão)
+        this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
+
+        // Colisão Jogador↔Cielita
         this.jogador.adicionarColisao(this.cielita);
 
-        // Porta
+        // ── Porta ─────────────────────────────────────────────────────────────
         this.gatilhoPorta = this.add.zone(limiteX + larguraMapa / 2, limiteY + alturaMapa - 20, 40, 40);
         this.physics.add.existing(this.gatilhoPorta);
         this.gatilhoPorta.body.setAllowGravity(false);
@@ -47,71 +78,23 @@ export default class CenaCasa extends Phaser.Scene {
         this.naPorta = false;
         this.jogador.adicionarOverlap(this.gatilhoPorta, () => { this.naPorta = true; });
 
-        // ── DialogoManager ────────────────────────────────────────────────────
-        this.dialogo = new DialogoManager(this);
-
-        this.falas = [//Diálogo com a Cielita
-            { personagem: 'Cielita', texto: 'Eu sou Cielita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
-            { personagem: 'Cielita', texto: 'Sinta-se à vontade para explorar e conversar comigo.' },
-            { personagem: 'Cielita', texto: 'Se precisar de algo, é só me chamar!' },
-            { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },//na classe de diálogo, todo 'Jogador' é trocado pelo nome escrito pelo jogador
-        ];
-        // ─────────────────────────────────────────────────────────────────────
-
-        // Indicador "Aperte E" acima da Cielita
-        this.indicadorE = this.add.image(0, 0, 'IndicadorE')
-            .setDepth(11).setVisible(false).setScale(2.5);
-
-        this.DISTANCIA_INTERACAO = 80;//aparece apenas perto da Cielita para não poluir a tela
-
         this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
         this.jogador.atualizar();
 
-        // Porta
+        // Delega toda a lógica de interação da Cielita para a classe NPC
+        this.cielita.atualizar(this.jogador.sprite, this.teclas.interagir);
+
+        // ── Porta ─────────────────────────────────────────────────────────────
         if (!this.jogador.temOverlap(this.gatilhoPorta)) this.naPorta = false;
 
-        if (this.naPorta && !this.dialogo.aberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+        if (this.naPorta && !this.cielita.dialogoAberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('MundoCasa');
             });
-        }
-
-        // Proximidade com Cielita
-        const dist  = Phaser.Math.Distance.Between(
-            this.jogador.sprite.x, this.jogador.sprite.y,
-            this.cielita.x,        this.cielita.y
-        );
-        const perto = dist <= this.DISTANCIA_INTERACAO;
-
-        // Indicador E — só aparece com diálogo fechado e jogador perto
-        this.indicadorE.setVisible(perto && !this.dialogo.aberto);
-        if (perto) {
-            this.indicadorE.setPosition(
-                this.cielita.x - 10,
-                this.cielita.y - this.cielita.displayHeight / 2 - 20
-            );
-        }
-
-        // Fecha se o jogador se afastar durante o diálogo
-        if (!perto && this.dialogo.aberto) {
-            this.dialogo.fechar();
-        }
-
-        // Tecla E
-        if (Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            if (perto && !this.dialogo.aberto) {
-                // Abre o diálogo — callback opcional ao fim
-                this.dialogo.abrir(this.falas, () => {
-                    console.log('Diálogo com Cielita encerrado.');
-                });
-                return;
-            }
-            // Avança/completa typewriter/fecha — tudo dentro do manager
-            this.dialogo.avancar();
         }
     }
 }
