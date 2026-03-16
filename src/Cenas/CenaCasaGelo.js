@@ -64,7 +64,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
             .setVisible(false)
             .setScale(1.1);
 
-        this.DISTANCIA_INTERACAO = 80;
+        this.DISTANCIA_INTERACAO = 30;
 
         this.dialogoPedro = new DialogoPedro(this, {
             caixaX:       this.cameras.main.width / 2,
