@@ -133,7 +133,7 @@ export default class CenaPersonagem extends Phaser.Scene {
             } else if (event.keyCode === 13) {
                 // Enter
                 this._confirmar();
-            } else if (this.nomeDigitado.length < 16 && event.key.length === 1) {
+            } else if (this.nomeDigitado.length < 16 && event.key.length === 1) { // máx 16 chars; event.key.length===1 filtra teclas especiais (Shift, Alt...)
                 this.nomeDigitado += event.key;
             }
 
@@ -154,6 +154,7 @@ export default class CenaPersonagem extends Phaser.Scene {
             letterSpacing: 4,
         }).setOrigin(0.5);
 
+        // efeito de "pressão": botão desce 2px no hover e volta no pointerout
         btnBg.on('pointerover', () => {
             btnBg.setFillStyle(0x4422aa);
             btnText.setColor('#ffffff');

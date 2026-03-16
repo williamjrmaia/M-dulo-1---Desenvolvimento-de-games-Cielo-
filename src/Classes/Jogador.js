@@ -11,6 +11,7 @@ export default class Jogador {
         // Usa a chave correta do Preloader
         this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
         this.sprite.setCollideWorldBounds(true);
+        // Hitbox reduzida para colisão ao nível dos pés
         this.sprite.body.setSize(10, 5);
         this.sprite.setOffset(27, 40);
 
@@ -21,14 +22,7 @@ export default class Jogador {
         const cena = this.cena;
         const s = this.skin;
 
-        console.log('skin:', s);
-        console.log('front_idl existe?', cena.textures.exists(`${s}_front_idl`));
-        console.log('front_walk existe?', cena.textures.exists(`${s}_front_walk`));
-        console.log('side_walk existe?',  cena.textures.exists(`${s}_side_walk`));
-
     if (cena.anims.exists(`${s}_idle`)) return;
-
-        if (cena.anims.exists(`${s}_idle`)) return;
 
         cena.anims.create({ key: `${s}_idle`,  frames: cena.anims.generateFrameNumbers(`${s}_front_idl`,  { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
         cena.anims.create({ key: `${s}_andar`, frames: cena.anims.generateFrameNumbers(`${s}_front_walk`, { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
@@ -61,19 +55,22 @@ export default class Jogador {
         const s = this.skin;
         if (!sprite || !teclas) return;
         
+        // Tecla H: abre/fecha o tutorial. Desabilita o teclado da cena enquanto
+        // o overlay está ativo para evitar movimento em segundo plano.
         if (Phaser.Input.Keyboard.JustDown(teclas.tutorial)) {
     if (this.cena.scene.isActive('TutorialOverlay')) {
         this.cena.scene.stop('TutorialOverlay');
         this.cena.input.keyboard.enabled = true;
     } else {
-        this.sprite.setVelocity(0); 
+        this.sprite.setVelocity(0);
         this.cena.scene.launch('TutorialOverlay');
         this.cena.scene.bringToTop('TutorialOverlay');
         this.cena.input.keyboard.enabled = false;
     }
 }
 
-
+// Guarda extra: se o tutorial foi aberto de outra forma (ex: automático na
+// primeira vez), garante que o jogador fique parado de qualquer jeito.
 if (this.cena.scene.isActive('TutorialOverlay')) {
     this.sprite.setVelocity(0);
     return; // impede qualquer movimentação
@@ -106,6 +103,7 @@ if (this.cena.scene.isActive('TutorialOverlay')) {
             sprite.setFlipX(true);
         }
 
+        // animação vertical só toca se não há tecla horizontal (evita conflito)
         if (teclas.up.isDown) {
             sprite.setVelocityY(-velocidade);
             if (!teclas.left.isDown && !teclas.right.isDown)

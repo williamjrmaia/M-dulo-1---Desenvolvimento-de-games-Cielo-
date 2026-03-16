@@ -74,23 +74,68 @@ A análise das Cinco Forças de Porter indica que o mercado de adquirência no B
 
 ### 1.1.2. Análise SWOT (sprint 2)
 
-A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). 
+A análise SWOT é uma ferramenta de planejamento estratégico utilizada para identificar forças, fraquezas, oportunidades e ameaças relacionadas à competição em negócios ou ao planejamento de projetos (Fernandes et al., 2015). Essa metodologia permite avaliar fatores internos e externos que influenciam o desempenho organizacional, contribuindo para a formulação de estratégias mais alinhadas ao ambiente competitivo.
 
-Forças são vantagens internas, e, no caso da Cielo, destacam-se a marca consolidada e a alta capilaridade de mercado, sustentadas por uma vantagem competitiva robusta junto ao sistema bancário (Cielo, 2023). Sua presença institucionalizada no setor varejista reforça seu posicionamento como player de referência no ecossistema de pagamentos (Abecs, 2023), evidenciando solidez estrutural e reconhecimento no mercado.
+No caso da Cielo, a análise dos fatores internos e externos evidencia os seguintes elementos estratégicos:
 
-Por outro lado, as fraquezas correspondem a limitações internas que reduzem a capacidade competitiva da organização (Fernandes et al., 2015). No caso da Cielo, destaca-se a elevada concentração de suas operações no mercado brasileiro, o que amplia sua exposição a oscilações econômicas e regulatórias (Cielo, 2023). Além disso, a perda de participação de mercado e a redução de margens observadas nos últimos anos refletem dificuldades internas de adaptação frente ao aumento da concorrência, impactando seu desempenho financeiro e estratégico.
-
-Já as oportunidades referem-se a fatores externos favoráveis, como a digitalização progressiva de pequenos negócios e a expansão do e-commerce, que ampliam a adesão aos meios de pagamento digitais e criam novos fluxos de receita e possibilidades de diversificação do portfólio de serviços (Vial, 2019). 
-
-Em contrapartida, as ameaças envolvem riscos regulatórios que podem comprimir margens financeiras (Banco Central do Brasil, 2023), além da saturação competitiva e da ascensão do Pix como método de pagamento substituto, reduzindo a dependência de cartões físicos e terminais de captura (Banco Central do Brasil, 2023).
-
-Assim, conclui-se que a Cielo atua em um mercado competitivo e em constante transformação, no qual possui pontos fortes relevantes, mas também enfrenta desafios internos e externos que exigem adaptação contínua. De modo geral, a análise SWOT demonstra que a empresa apresenta base sólida para crescimento, embora precise acompanhar as mudanças do setor para manter sua posição no mercado.
+### Forças (Strengths)
+ 
+- Marca consolidada com alta capilaridade — presente em mais de 1 milhão de estabelecimentos comerciais no Brasil (Cielo, 2023).
+- Relacionamento preferencial com os maiores bancos emissores do país, criando barreiras de entrada para novos concorrentes.
+- Infraestrutura própria de captura e processamento de transações, com expertise regulatória acumulada.
+- Reconhecimento institucional no ecossistema de pagamentos digitais (Abecs, 2023).
+ 
+### Fraquezas (Weaknesses)
+ 
+- Elevada concentração das operações no mercado brasileiro, ampliando exposição a oscilações econômicas e regulatórias locais.
+- Perda contínua de participação de mercado para concorrentes como Stone e PagSeguro desde 2018 (Cielo, 2023).
+- Estrutura de custos elevada frente a fintechs nativas digitais, pressionando margens financeiras.
+- Dependência significativa do modelo tradicional de adquirência, com baixa agilidade de desenvolvimento de novos produtos.
+ 
+### Oportunidades (Opportunities)
+ 
+- Digitalização de micro e pequenos negócios — segmento ainda sub-penetrado em soluções de gestão financeira (Vial, 2019).
+- Expansão do comércio eletrônico e dos pagamentos recorrentes como novos fluxos de receita.
+- Potencial de cross-sell de serviços financeiros (crédito, antecipação de recebíveis) via base instalada.
+- Open Finance como canal de dados para personalização de ofertas e ampliação do portfólio.
+ 
+### Ameaças (Threats)
+ 
+- Crescimento do Pix como substituto de pagamentos no varejo físico, reduzindo a dependência de terminais de captura (Banco Central do Brasil, 2023).
+- Compressão regulatória das taxas de intercâmbio, impactando margens financeiras.
+- Entrada de BigTechs (Mercado Pago, Google Pay) com modelos de negócio de margem zero em adquirência.
+- Saturação competitiva com fintechs de baixo custo no mercado de adquirência (Banco Central do Brasil, 2023).
+ 
+---
+ 
+### SWOT Cruzada
+ 
+A partir da identificação desses fatores, é possível elaborar estratégias combinando elementos internos e externos, transformando o diagnóstico em direcionamento estratégico.
+ 
+| | **Oportunidades (O)** | **Ameaças (T)** |
+|---|---|---|
+| **Forças (S)** | **SO — Alavancagem:** Usar capilaridade e vínculo bancário para escalar oferta de crédito e serviços financeiros a PMEs digitais; posicionar-se como hub de gestão financeira para o varejo omnichannel via Open Finance. | **ST — Defesa:** Integrar o Pix ao portfólio como funcionalidade complementar; usar vantagem regulatória para criar produtos que BigTechs não conseguem oferecer; diferenciar por confiabilidade e SLA frente a novos entrantes. |
+| **Fraquezas (W)** | **WO — Desenvolvimento:** Reduzir time-to-market com squads ágeis para capturar demanda de e-commerce; modernizar stack tecnológica para competir em custo com fintechs nativas digitais. | **WT — Contenção:** Priorizar segmentos de maior margem onde o Pix não substitui o cartão (ex.: crédito parcelado); avaliar parcerias ou aquisições de fintechs para reduzir gap de custo operacional. |
 
 
 ### 1.1.3. Missão / Visão / Valores (sprint 2)
 
-A missão deste projeto é promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva, na qual os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Floresta dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil. Sua visão é consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas. Sustentado pelos valores de equidade, empatia, inovação e colaboração, o projeto vai além do entretenimento, posicionando-se como uma ferramenta de transformação profissional e fortalecimento do desempenho nacional.
+### Missão
+ 
+Promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva. Os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Floresta dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil.
 
+### Visão
+ 
+Consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas da Cielo.
+
+### Valores
+ 
+| Valor | Descrição |
+|---|---|
+| **Equidade** | Garantir acesso igualitário ao aprendizado independentemente da região ou perfil do colaborador. |
+| **Empatia** | Considerar as necessidades e realidades dos Gerentes de Negócios na construção da experiência. |
+| **Inovação** | Transformar o treinamento corporativo por meio de mecânicas de jogo e tecnologia educacional. |
+| **Colaboração** | Estimular a troca de conhecimento e o desenvolvimento coletivo da força de vendas. |
 
 ### 1.1.4. Proposta de Valor (sprint 4)
 
@@ -477,7 +522,339 @@ A fase final ocorre no Mundo de Negociação, onde o jogo transita para um siste
 
 ## 4.3. Desenvolvimento intermediário do jogo (sprint 3)
 
-*Descreva e ilustre aqui o desenvolvimento da versão intermediária do jogo, explicando brevemente o que foi entregue em termos de código e jogo. Utilize prints de tela para ilustrar. Indique as eventuais dificuldades e próximos passos.*
+O projeto **Cielo Verso** é estruturado sobre um conjunto de sistemas integrados que garantem a experiência central do jogo: navegação pelo mundo, interação com NPCs e realização de negociações por meio de cartas. Esta seção documenta a implementação técnica desses sistemas, descrevendo as decisões de arquitetura, os padrões de código adotados e as soluções encontradas para os desafios de desenvolvimento. O documento será atualizado conforme novos sistemas forem incorporados ao jogo.
+
+
+### Sistema de transição com fadeOut/fadeIn
+
+Todas as trocas de cena utilizam um padrão consistente de fade para evitar cortes abruptos. O evento `FADE_OUT_COMPLETE` garante que a nova cena só carrega após a animação terminar:
+
+```javascript
+// MundoCasa.js — transição para o MapaGelo
+this.cameras.main.fadeOut(500, 0, 0, 0);
+this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+    this.scene.start('MapaGelo');
+});
+```
+
+### Preservação de origem entre cenas
+
+Para evitar que o personagem reapareça na posição padrão ao retornar de uma cena, todas as cenas que recebem o jogador de outra utilizam o parâmetro `init(data)` para verificar a origem e reposicionar corretamente:
+
+```javascript
+// MapaGelo.js
+init(data) {
+    this.origem = data.vindoDe;
+}
+
+create() {
+    // ...
+    if (this.origem === 'CenaCasaGelo') {
+        this.personagem.sprite.setPosition(655, 210);
+    }
+}
+```
+
+Sem esse mecanismo, o jogador sofreria "spawn incorreto" ao retornar da Casa do Pedro para o Mapa de Gelo.
+
+---
+
+### Sistema de Personagem e Movimentação (Jogador.js)
+
+### O que foi implementado
+
+A classe `Jogador` encapsula toda a lógica de movimentação, animação e colisão do personagem jogável. Ela lê o personagem escolhido na tela de seleção via `registry` e aplica automaticamente as animações corretas:
+
+```javascript
+// Jogador.js
+const skin = cena.game.registry.get('spriteJogador') || 'man_whi';
+this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
+
+// Hitbox reduzida ao nível dos pés para colisão realista
+this.sprite.body.setSize(10, 5);
+this.sprite.setOffset(27, 40);
+```
+
+### Animações direcionais
+
+O sistema define quatro animações por skin (idle, andar frente, andar de costas, andar de lado) e controla qual toca com base nas teclas pressionadas. O flip horizontal (`setFlipX`) evita a necessidade de um spritesheet separado para a direção oposta:
+
+```javascript
+// Movimento para a esquerda
+if (teclas.left.isDown) {
+    sprite.setVelocityX(-velocidade);
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(false);
+} else if (teclas.right.isDown) {
+    sprite.setVelocityX(velocidade);
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(true); // espelha o sprite — sem asset duplicado
+}
+```
+
+### Tutorial integrado (tecla H)
+
+O tutorial pode ser aberto a qualquer momento com a tecla **H**. Ao abrir, o input da cena ativa é desabilitado para evitar movimento em segundo plano; ao fechar, é reativado automaticamente via evento `shutdown`:
+
+```javascript
+// TutorialOverlay.js
+this.events.on('shutdown', () => {
+    if (this.cenaAnterior) {
+        this.cenaAnterior.input.keyboard.enabled = true;
+    }
+});
+```
+
+---
+
+## Sistema de Colisão com Hitboxes do Tiled
+
+### O que foi implementado
+
+As colisões do **Mapa de Gelo** e da **Casa do Pedro** são definidas visualmente na ferramenta **Tiled Map Editor** e exportadas como arquivo `.tmj`. O Phaser lê a camada de objetos em tempo de execução e cria colisores físicos dinamicamente:
+
+```javascript
+// MapaGelo.js — leitura das hitboxes do Tiled
+const mapa = this.make.tilemap({ key: 'mapa_dados' });
+const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
+
+camadaObjetos.objects.forEach(obj => {
+    if (obj.polygon) {
+        // Rochas e objetos irregulares: Polygon Collider
+        const poly = this.add.polygon(obj.x, obj.y, obj.polygon, 0x0000ff, 0);
+        this.physics.add.existing(poly, true);
+        this.personagem.adicionarColisao(poly);
+    } else {
+        // Casas e objetos retangulares: Box Collider (mais eficiente)
+        let zona = this.add.zone(
+            obj.x + (obj.width / 2),
+            obj.y + (obj.height / 2),
+            obj.width, obj.height
+        );
+        this.physics.add.existing(zona, true);
+        this.personagem.adicionarColisao(zona);
+    }
+});
+```
+
+**Decisão de design:** objetos retangulares (casas) usam `zone` (Box Collider) por ser mais leve computacionalmente. Polígonos são reservados para geometria irregular (rochas), onde um Box Collider criaria "paredes invisíveis" no ar.
+
+**Correção implementada:** O Tiled exporta coordenadas com origem no **canto superior esquerdo**, mas o Phaser posiciona zones pelo **centro**. O offset `obj.width / 2` e `obj.height / 2` corrige esse deslocamento, evitando que as colisões apareçam com posição errada no mapa.
+
+---
+
+## Sistema de Diálogo com Typewriter (DialogoManager.js)
+
+### O que foi implementado
+
+A classe `DialogoManager` é reutilizável e gerencia caixas de diálogo com efeito typewriter para qualquer NPC do jogo. O sistema funciona com uma fila de falas e avança via tecla **E**:
+
+```javascript
+// DialogoManager.js — efeito typewriter
+this._timer = this._cena.time.addEvent({
+    delay:    35, // 35ms por caractere
+    repeat:   textoCompleto.length - 1,
+    callback: () => {
+        this._textoFala.setText(textoCompleto.substring(0, i + 1));
+        i++;
+        if (i >= textoCompleto.length) {
+            this._digitando = false;
+            this._indicador.setVisible(true); // mostra ▼ ao terminar
+        }
+    },
+});
+```
+
+### Funcionalidades implementadas
+
+| Funcionalidade | Descrição |
+|---|---|
+| **Skip do typewriter** | Apertar E durante a digitação exibe o texto completo instantaneamente |
+| **Cores por personagem** | Cada NPC tem cor de nome configurável via `CORES_PERSONAGEM` |
+| **Fechamento por distância** | Se o jogador se afastar durante o diálogo, ele fecha automaticamente |
+| **Substituição de nome** | Falas do `Jogador` exibem o nome real digitado na tela de seleção |
+| **Callback de fim** | Ao terminar todas as falas, executa uma função opcional (ex: iniciar negociação) |
+
+### Fechamento por distância (CenaCasa.js)
+
+```javascript
+// update() — fecha o diálogo se o jogador se afastar da Cielita
+if (!perto && this.dialogo.aberto) {
+    this.dialogo.fechar();
+}
+```
+
+### Integração com NegociacaoPedro
+
+A classe `DialogoPedro` estende `DialogoManager` com as falas específicas do NPC. Ao terminar o último diálogo, o callback inicia automaticamente a cena de negociação:
+
+```javascript
+// CenaCasaGelo.js
+this.dialogoPedro.abrir(() => {
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.start('NegociacaoPedro');
+    });
+});
+```
+
+---
+
+## Sistema de Negociação por Cartas (CenaNegociacao.js / NegociacaoPedro.js)
+
+### O que foi implementado
+
+O sistema de negociação é a mecânica central do jogo. A classe `CenaNegociacao` é uma **classe base abstrata** que define toda a lógica da UI e do fluxo de jogo. Cada cliente é implementado como uma subclasse (ex: `NegociacaoPedro`) que sobrescreve apenas o conteúdo específico daquele cliente.
+
+### Estrutura das 5 fases
+
+```javascript
+// CenaNegociacao.js
+static FASES = ['abordagem', 'sondagem', 'demonstracao', 'negociacao', 'fechamento'];
+```
+
+Cada fase tem um conjunto de cartas exigidas e uma quantidade de cartas distribuídas na mão do jogador:
+
+```javascript
+// NegociacaoPedro.js
+cartasExigidas: {
+    abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
+    sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
+    demonstracao: [], // qualquer produto vale — pontuação varia
+    negociacao:   ['carta_desconto'],
+    fechamento:   ['carta_contrato'],
+},
+cartasPorFase: {
+    abordagem: 5, sondagem: 6, demonstracao: 4,
+    negociacao: 3, fechamento: 3,
+},
+```
+
+### Barra de satisfação com 3 estados
+
+O cliente reage visualmente às jogadas do jogador. A satisfação vai de 0 a 100 e determina o sprite exibido e a cor da barra:
+
+```javascript
+// CenaNegociacao.js
+static SATISFACAO_ESTADOS = [
+    { min: 67, max: 100, estado: 'satisfeito', cor: 0x44cc88 },
+    { min: 34, max: 66,  estado: 'neutro',     cor: 0xccaa44 },
+    { min: 0,  max: 33,  estado: 'bravo',      cor: 0xcc4444 },
+];
+
+static GANHO_SATISFACAO = 20;
+static PERDA_SATISFACAO = 30;
+```
+
+A barra anima suavemente via `tween` ao receber ou perder satisfação:
+
+```javascript
+this.tweens.add({
+    targets:  this.barraSatisfacaoFill,
+    width:    larguraTotal * (this.satisfacao / 100),
+    duration: 400,
+    ease:     'Quad.easeOut',
+});
+```
+
+### Sistema de pontuação na fase de Demonstração
+
+Na fase de demonstração, cada produto Cielo tem uma pontuação diferente. O jogador escolhe qual produto apresentar e a satisfação aumenta de acordo:
+
+```javascript
+// NegociacaoPedro.js
+const PONTUACAO_PRODUTO = {
+    CieloLioOn:  10,
+    CieloFlash:  15,
+    CVBA:        20,
+    CieloFlash2: 25,
+};
+
+// A satisfação ganha = GANHO_BASE (20) + pontuação do produto
+this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
+```
+
+### Paginação na fase de Sondagem
+
+Como a fase de Sondagem tem 6 cartas (acima do limite visual de 3), o sistema divide automaticamente as cartas em páginas navegáveis com botões `<` e `>`:
+
+```javascript
+// CenaNegociacao.js
+if (fase === 'sondagem' && cartasDaFase.length > 3) {
+    Phaser.Utils.Array.Shuffle(cartasDaFase);
+    this._paginas = [];
+    for (let i = 0; i < cartasDaFase.length; i += 3) {
+        this._paginas.push(cartasDaFase.slice(i, i + 3));
+    }
+    this._paginaAtual = 0;
+    this._mostrarPaginaSondagem();
+}
+```
+
+### Modal de detalhes da carta
+
+Ao clicar em uma carta, um overlay exibe a imagem ampliada com botões de "Voltar" e "Selecionar". Na fase de Demonstração, selecionar a carta já aciona o avanço de fase automaticamente, sem precisar do botão CONFIRMAR:
+
+```javascript
+// NegociacaoPedro.js
+if (fase === 'demonstracao') {
+    this.time.delayedCall(300, () => {
+        fecharModal();
+        const soma = PONTUACAO_PRODUTO[carta.key] ?? 0;
+        this._mostrarDialogo(this._falaAcertoFase(fase));
+        this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
+        this.time.delayedCall(4000, () => this._avancarOuVencer());
+    });
+}
+```
+
+### Indicador de progresso de fases
+
+A barra de fases no topo da tela usa tweens para animar o indicador da fase atual:
+
+```javascript
+// CenaNegociacao.js — indicador pulsa ao entrar em nova fase
+this.tweens.add({
+    targets: circulo, scaleX: 1.2, scaleY: 1.2,
+    duration: 200, yoyo: true,
+});
+```
+
+---
+
+## Carregamento de Assets (Preloader.js / BootScene.js)
+
+### O que foi implementado
+
+Para evitar o erro **"Texture key already in use"**, todos os assets do jogo são carregados uma única vez no `Preloader`, que roda antes de qualquer cena de gameplay. O `BootScene` possui uma barra de progresso visual que reflete o carregamento em tempo real:
+
+```javascript
+// BootScene.js
+this.load.on('progress', (value) => {
+    fill.width = barraW * value;
+    textoPorc.setText(`${Math.floor(value * 100)}%`);
+});
+```
+
+Os assets de cartas carregados nesta sprint incluem 5 cartas de Abordagem, 6 de Sondagem e 4 Produtos Cielo (`CieloLioOn`, `CieloFlash`, `CieloFlash2`, `CVBA`), além de 4 skins de jogador com 5 animações cada (total de 20 spritesheets).
+
+---
+
+## Tela de Seleção de Personagem (CenaPersonagem.js)
+
+### O que foi implementado
+
+Antes de entrar no jogo, o jogador escolhe entre **4 skins** (homem/mulher × branco/negro) e digita seu nome. As escolhas são persistidas via `game.registry` para durar durante toda a sessão:
+
+```javascript
+// CenaPersonagem.js
+this.game.registry.set('nomeJogador', nome);
+this.game.registry.set('spriteJogador', this.spriteSelecionado);
+```
+
+O input de nome é feito diretamente via `input.keyboard`, com limite de 16 caracteres, suporte a Backspace e confirmação por Enter ou pelo botão "COMEÇAR". As skins são exibidas com animação idle em loop e efeito de hover com `tween` de escala.
+
+
 
 ## 4.4. Desenvolvimento final do MVP (sprint 4)
 
@@ -554,6 +931,12 @@ SOBRENOME, Nome. Título do site. Disponível em: link do site. Acesso em: Dia M
 
 Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review.
 https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy
+
+> - ABECS. *Associação Brasileira das Empresas de Cartões de Crédito e Serviços*. 2023.
+> - BANCO CENTRAL DO BRASIL. *Relatório de Estabilidade Financeira*. 2023.
+> - CIELO. *Relatório Anual*. 2023.
+> - FERNANDES, A. et al. *Planejamento estratégico*. 2015.
+> - VIAL, G. Understanding digital transformation. *Journal of Strategic Information Systems*, 2019.
 
 
 
