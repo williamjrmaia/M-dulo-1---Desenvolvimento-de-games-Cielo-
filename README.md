@@ -16,7 +16,7 @@
 - <a href="https://www.linkedin.com/in/victorbarq/">Felipe Menossi Estrada</a> 
 - <a href="https://www.linkedin.com/in/victorbarq/">Jorge Nader</a> 
 - <a href="https://www.linkedin.com/in/j%C3%BAlia-silva-sales-a7b3602a6/">Júlia Silva Sales</a>
-- <a href="https://www.linkedin.com/in/victorbarq/">Rafael Sleumer Hamacek Succi</a> 
+- <a href="https://www.linkedin.com/in/rafael-succi/">Rafael Sleumer Hamacek Succi</a> 
 - <a href="https://www.linkedin.com/in/thain%C3%A1-lima-33b7a7288/">Thainá Camilly Alves de Lima</a>
 - <a href="https://www.linkedin.com/in/victorbarq/">William Junior dos Santos</a>
 
