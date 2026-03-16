@@ -15,27 +15,27 @@ export default class MundoCasa extends Phaser.Scene {
     create() {
         this.add.image(750, 400, 'MenuFundo');
         
-        var background = this.add.image(750, 400, 'MundoCasa');
+        const background = this.add.image(750, 400, 'MundoCasa');
 
         // converte posição central do background para coordenadas de topo-esquerdo
-        let bx = background.x - background.displayWidth  / 2;
-        let by = background.y - background.displayHeight / 2;
-        let bw = background.displayWidth;
-        let bh = background.displayHeight;
+        const bx = background.x - background.displayWidth  / 2;
+        const by = background.y - background.displayHeight / 2;
+        const bw = background.displayWidth;
+        const bh = background.displayHeight;
 
         // Paredes invisíveis de colisão
-        let espessura = 20;
+        const espessura = 20;
 
-        let paredeEsq = this.add.rectangle(bx + espessura / 2, by + bh / 2, espessura, bh, 0xff0000, 0);
+        const paredeEsq = this.add.rectangle(bx + espessura / 2, by + bh / 2, espessura, bh, 0xff0000, 0);
         this.physics.add.existing(paredeEsq, true);
 
-        let paredeDir = this.add.rectangle(bx + bw - espessura / 2, by + bh / 2, espessura, bh, 0xff0000, 0);
+        const paredeDir = this.add.rectangle(bx + bw - espessura / 2, by + bh / 2, espessura, bh, 0xff0000, 0);
         this.physics.add.existing(paredeDir, true);
 
-        let paredeCima = this.add.rectangle(bx + bw / 2, by + espessura / 2, bw, espessura, 0xff0000, 0);
+        const paredeCima = this.add.rectangle(bx + bw / 2, by + espessura / 2, bw, espessura, 0xff0000, 0);
         this.physics.add.existing(paredeCima, true);
 
-        let paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0); // /0.7 sobe a parede para cobrir a ponte
+        const paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0); // /0.7 sobe a parede para cobrir a ponte
         this.physics.add.existing(paredeBaixo, true);
 
         // Player
@@ -116,10 +116,6 @@ export default class MundoCasa extends Phaser.Scene {
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('CenaCasa');
             });
-        }
-
-        if (!this.personagem.temOverlap(this.portalGelo)) {
-            this.noPortal = false;
         }
 
         if (this.personagem.temOverlap(this.portalGelo) && !this.fazendoTransicao) {
