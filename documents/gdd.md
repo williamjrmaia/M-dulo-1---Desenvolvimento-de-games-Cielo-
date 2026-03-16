@@ -139,7 +139,27 @@ Consolidar-se como uma solução digital escalável e inovadora de desenvolvimen
 
 ### 1.1.4. Proposta de Valor (sprint 4)
 
-*Posicione aqui o canvas de proposta de valor. Descreva os aspectos essenciais para a criação de valor da ideia do produto com o objetivo de ajudar a entender melhor a realidade do cliente e entregar uma solução que está alinhado com o que ele espera.*
+### 1.1.4. Proposta de Valor
+
+O canvas de proposta de valor a seguir foi estruturado com base no framework de Alexander Osterwalder, composto por dois blocos: o Perfil do Cliente — dividido em tarefas, dores e ganhos — e o Mapa de Valor — dividido em produtos e serviços, aliviadores de dor e criadores de ganho.
+
+![Canvas Proposta de Valor](../../assets/GDD/canvas-proposta-valor.png)
+
+**A proposta central**
+
+No contexto deste projeto, desenvolvido no âmbito do curso de tecnologia do Inteli, o jogo digital foi adotado como formato de solução, unindo a demanda da Cielo por capacitação escalável à proposta pedagógica de aprendizado por experiência. O Cielo Verso existe para resolver um problema concreto: reduzir o custo de capacitação da força de vendas da Cielo, garantindo que qualquer Gerente de Vendas (GN) no Brasil — independente de onde esteja — tenha acesso ao mesmo treinamento de qualidade, em um formato que engaja e que prepara para situações reais de venda.
+
+**O problema que justifica o produto**
+
+O modelo atual de capacitação da Cielo é presencial. Isso cria duas consequências diretas: um custo logístico significativo para deslocar GNs de todo o Brasil, e uma desigualdade estrutural de acesso — profissionais de regiões remotas recebem menos treinamento do que os de grandes centros, simplesmente por uma questão geográfica. Além disso, o formato presencial e expositivo resulta em baixo engajamento e limitada retenção do conteúdo, sem oferecer ao GN qualquer prática simulada antes de enfrentar situações reais de venda.
+
+**A transformação que o produto entrega**
+
+O Cielo Verso elimina a barreira geográfica: um GN no Acre acessa exatamente o mesmo conteúdo que um GN em São Paulo, sem deslocamento, sem custo adicional e no seu próprio ritmo. A experiência gamificada substitui o formato passivo por simulações ativas de abordagem, negociação e apresentação de produtos — aumentando o engajamento e a retenção do conteúdo de forma mensurável.
+
+**Como o valor é medido**
+
+O desempenho de cada GN é acompanhado por duas métricas: o tempo total de conclusão do jogo, que indica a fluência do aprendizado ao longo da jornada, e o mapeamento de erros — incluindo a identificação de erros críticos ao final da experiência. Essas métricas permitem identificar lacunas de conhecimento individuais e regionais, transformando o Cielo Verso em um instrumento de diagnóstico além de capacitação.
 
 ### 1.1.5. Descrição da Solução Desenvolvida (sprint 4)
 
