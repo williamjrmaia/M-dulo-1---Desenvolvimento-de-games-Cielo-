@@ -13,6 +13,7 @@ export default class CenaCasa extends Phaser.Scene {
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
         this.load.image('balao',        './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE',   './assets/objetos/botao_e.png');
+        this.load.image('PortaCielita', './assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
@@ -33,6 +34,10 @@ export default class CenaCasa extends Phaser.Scene {
         this.cielita = this.physics.add.sprite(W / 2, H / 2, 'cielitaparada').setScale(2.3);
         this.cielita.setImmovable(true);
         this.cielita.play('cielitaparada', true);
+
+        //Porta da Cielita
+        this.add.image(750, 705, 'PortaCielita').setScale(2)
+
 
         // Jogador
         this.jogador = new Jogador(this, W / 2, H / 2 + 80);
