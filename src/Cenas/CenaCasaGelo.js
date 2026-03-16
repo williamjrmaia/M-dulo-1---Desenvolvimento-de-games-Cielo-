@@ -39,8 +39,6 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.add.image(751, 530, 'saida').setDepth(1);
 
 
-        const map = this.make.tilemap({ key: 'mapa_casa' });
-
         this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
         this.personagem.sprite.setScale(1.3);
         this.personagem.sprite.setCollideWorldBounds(true);
