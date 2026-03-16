@@ -1,24 +1,20 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
 
-// ─── Constantes de layout e tempo ────────────────────────────────────────────
 const CARD_WIDTH         = 270;
 const CARD_HEIGHT        = 330;
 const CARD_SPACING       = 25;
 const CARD_ZOOM_WIDTH    = 400;
 const CARD_ZOOM_HEIGHT   = 550;
-const DELAY_PROXIMA_FASE = 4000;
 const ANIM_FADE_DURATION = 300;
 const ANIM_HOVER_OFFSET  = 8;
 
-// ─── Camadas de profundidade (depth) ─────────────────────────────────────────
 const LAYERS = {
-    CARTAS:    10,
     OVERLAY:   100,
     MODAL:     101,
     MODAL_BTN: 102,
 };
 
-// ─── Pontuação por produto na fase de demonstração ───────────────────────────
+// Pontuação extra por produto — somada ao GANHO_SATISFACAO base
 const PONTUACAO_PRODUTO = {
     CieloLioOn:  10,
     CieloFlash:  15,
@@ -34,35 +30,33 @@ export default class NegociacaoPedro extends CenaNegociacao {
             cartasExigidas: {
                 abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
                 sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
-                demonstracao: [],
-                negociacao:   ['carta_desconto'],
-                fechamento:   ['carta_contrato'],
+                demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'], // todas acertam
+                negociacao:   ['Ajuste', 'Validacao', 'Quebra'],
+                fechamento:   ['Adicional', 'Alternativo', 'Desconto'],
             },
             cartasPorFase: {
                 abordagem:    5,
                 sondagem:     6,
                 demonstracao: 4,
                 negociacao:   3,
-                fechamento:   3,
+                fechamento:   5,
             },
         });
-
-        this.cartaEmDetalhes = null;
     }
 
-   create() {
-    super.create();
-}
+    // Pontuação extra por carta de produto
+    _getPontuacaoCarta(key) {
+        return PONTUACAO_PRODUTO[key] ?? 0;
+    }
 
     _falaInicioFase(fase) {
         const falas = {
             abordagem:    'Olá, boa tarde! Em que posso ajudar?',
-            sondagem:     'Pois é, os negócios estão indo, mas sinto que poderia ser melhor.',
-            demonstracao: 'Ah, essa maquininha parece ser interessante. O que ela faz de bom?',
+            demonstracao: 'Essa maquininha parece interessante. O que ela faz de bom?',
             negociacao:   'O serviço é bom, mas esse custo está alto para o meu bolso.',
             fechamento:   'Bom, se os termos forem esses, podemos assinar.',
         };
-        return falas[fase] ?? 'Pode continuar...';
+        return falas[fase] ?? 'O que você tem a me apresentar?';
     }
 
     _falaAcertoFase(fase) {
@@ -70,59 +64,20 @@ export default class NegociacaoPedro extends CenaNegociacao {
             abordagem:    'Claro, sou o dono do estabelecimento! Me chamo Pedro.',
             sondagem:     'Entendi, isso faz bastante sentido. Continue...',
             demonstracao: 'Interessante! Esse produto parece atender bem o que preciso.',
+            negociacao:   'As condições parecem razoáveis.',
+            fechamento:   'Fechado! Bem-vindo à Cielo.',
         };
-        return falas[fase] ?? 'Pode continuar';
+        return falas[fase] ?? 'Pode continuar.';
     }
 
     _falaErroFase(fase) {
         const falas = {
             abordagem: 'Não estou interessado nisso. Obrigado.',
-            sondagem:  'Hm, isso não responde muito bem à minha situação.',
+            sondagem:  'Hm, isso não responde à minha situação.',
+            negociacao: 'Não consigo aceitar essas condições.',
+            fechamento: 'Não acho que chegamos a um acordo.',
         };
-        return falas[fase] ?? 'Não entendi sua estratégia';
-    }
-
-    _confirmarJogada() {
-    if (!this.negociacaoAtiva) return;
-
-    const fase = CenaNegociacao.FASES[this.faseAtual];
-
-    if (fase === 'demonstracao') {
-        if (this.cartasSelecionadas.length === 0) {
-            this._mostrarDialogo('Selecione um produto para apresentar ao cliente.');
-            return;
-        }
-        this._acertarFase(fase);
-        return;
-    }
-
-    super._confirmarJogada();
-}
-
-_acertarFase(fase) {
-    if (fase !== 'demonstracao') {
-        super._acertarFase(fase);
-        return;
-    }
-
-    // soma os pontos de cada produto selecionado; produtos sem pontuação valem 0
-    const soma = this.cartasSelecionadas.reduce(
-        (total, carta) => total + (PONTUACAO_PRODUTO[carta.key] ?? 0),
-        0
-    );
-
-    this._mostrarDialogo(this._falaAcertoFase(fase));
-    this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
-
-    this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
-}
-    _avancarOuVencer() {
-        if (this.faseAtual < CenaNegociacao.FASES.length - 1) {
-            this.faseAtual++;
-            this._iniciarFase();
-        } else {
-            this._vencerNegociacao();
-        }
+        return falas[fase] ?? 'Não entendi sua estratégia.';
     }
 
     _getCartasDaFase(fase, quantidade) {
@@ -130,23 +85,17 @@ _acertarFase(fase) {
             abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch', 'ComparacaoInteligente', 'DesarmeElegante'],
             sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor', 'AutoridadeImplicita', 'ChaveDeExclusividade', 'Cliffhanger', 'LoboCurioso'],
             demonstracao: ['CieloLioOn', 'CieloFlash', 'CieloFlash2', 'CVBA'],
-            negociacao:   ['carta_desconto'],
-            fechamento:   ['carta_contrato'],
+            negociacao:   ['Ajuste', 'Validacao', 'Quebra'],
+            fechamento:   ['Adicional', 'Alternativo', 'Desconto', 'Penalidade', 'Teste'],
         };
 
-        const cartasExigidas    = this.clienteConfig.cartasExigidas[fase] ?? [];
-        const cartasDisponiveis = todasCartas[fase] ?? [];
-        const embaralhadas      = Phaser.Utils.Array.Shuffle([...cartasDisponiveis]);
+        const exigidas     = this.clienteConfig.cartasExigidas[fase] ?? [];
+        const disponiveis  = todasCartas[fase] ?? [];
+        const embaralhadas = Phaser.Utils.Array.Shuffle([...disponiveis]);
 
         return Array.from({ length: quantidade }, (_, i) => {
             const key = embaralhadas[i] ?? `carta_${fase}_${i}`;
-            return {
-                key,
-                label:       key,
-                descricao:   'Estratégia de vendas',
-                fase,
-                obrigatoria: cartasExigidas.includes(key),
-            };
+            return { key, fase, obrigatoria: exigidas.includes(key) };
         });
     }
 
@@ -166,63 +115,44 @@ _acertarFase(fase) {
             bg.setAlpha(0);
             this.tweens.add({ targets: bg, alpha: 1, duration: ANIM_FADE_DURATION, delay: i * 80 });
 
-            bg.on('pointerover', () => {
-                if (!carta._selecionada) {
-                    this.tweens.add({ targets: bg, y: `-=${ANIM_HOVER_OFFSET}`, duration: 100 });
-                }
-            });
-            bg.on('pointerout', () => {
-                if (!carta._selecionada) {
-                    this.tweens.add({ targets: bg, y: `+=${ANIM_HOVER_OFFSET}`, duration: 100 });
-                }
-            });
+            bg.on('pointerover', () => this.tweens.add({ targets: bg, y: `-=${ANIM_HOVER_OFFSET}`, duration: 100 }));
+            bg.on('pointerout',  () => this.tweens.add({ targets: bg, y: `+=${ANIM_HOVER_OFFSET}`, duration: 100 }));
             bg.on('pointerdown', () => this._mostrarDetalheCarta(carta));
 
-            carta._selecionada = false;
-            carta._objetos     = { bg };
+            carta._objetos = { bg };
             this.cartasNaMao.push(carta);
             this.grupoCartas.add(bg);
         });
     }
 
     _mostrarDetalheCarta(carta) {
-        if (this.cartaEmDetalhes && this.cartaEmDetalhes !== carta) return;
+        if (!this.negociacaoAtiva) return;
+        if (this.cartaEmDetalhes) return; // já tem um modal aberto
+
         this.cartaEmDetalhes = carta;
 
-        const W    = this.scale.width;
-        const H    = this.scale.height;
-        const fase = CenaNegociacao.FASES[this.faseAtual];
+        const W = this.scale.width;
+        const H = this.scale.height;
 
         const overlay = this.add
             .rectangle(0, 0, W, H, 0x000000, 0.7)
-            .setOrigin(0, 0)
-            .setDepth(LAYERS.OVERLAY)
-            .setInteractive();
+            .setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
 
         const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
         cartaZoom.setDepth(LAYERS.MODAL);
 
         const { btn: btnVoltar, texto: textoVoltar } = this._criarBotao(
-            40, 40, 100, 50,
-            '◀ VOLTAR', 0x1a3a5a, 0xcc4444, '#ff6666'
+            40, 40, 100, 50, '◀ VOLTAR', 0x1a3a5a, 0xcc4444, '#ff6666'
         );
-
         const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(
-            W / 2, H / 2 + 320, 150, 50,
-            'SELECIONAR ✓', 0x1a4a2a, 0x22cc66, '#22cc66'
+            W / 2, H / 2 + 320, 180, 50, 'SELECIONAR ✓', 0x1a4a2a, 0x22cc66, '#22cc66'
         );
-
-        const objetosModal = [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar];
 
         const fecharModal = () => {
-            objetosModal.forEach(obj => obj.destroy());
+            [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar]
+                .forEach(obj => obj.destroy());
             this.cartaEmDetalhes = null;
         };
-
-        if (this.cartasSelecionadas.includes(carta)) {
-            textoSelecionar.setText('SELECIONADO ✓');
-            btnSelecionar.setFillStyle(0x2a6a3a);
-        }
 
         btnVoltar.on('pointerover', () => btnVoltar.setFillStyle(0x2a4a6a));
         btnVoltar.on('pointerout',  () => btnVoltar.setFillStyle(0x1a3a5a));
@@ -231,66 +161,16 @@ _acertarFase(fase) {
         btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
         btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
         btnSelecionar.on('pointerdown', () => {
-            this._alternarSelecaoCarta(carta, textoSelecionar, btnSelecionar, fecharModal);
-        });
-    }
-
-    _alternarSelecaoCarta(carta, textoSelecionar, btnSelecionar, fecharModal) {
-    const jaEstaSelecionada = this.cartasSelecionadas.includes(carta);
-    const fase              = CenaNegociacao.FASES[this.faseAtual];
-
-    if (jaEstaSelecionada) {
-        this.cartasSelecionadas = this.cartasSelecionadas.filter(c => c !== carta);
-        carta._selecionada      = false;
-        textoSelecionar.setText('SELECIONAR ✓');
-        btnSelecionar.setFillStyle(0x1a4a2a);
-        return;
-    }
-
-    if (fase === 'demonstracao') {
-        this.cartasSelecionadas = [];
-        this.cartasNaMao.forEach(c => { c._selecionada = false; });
-    }
-
-    this.cartasSelecionadas.push(carta);
-    carta._selecionada = true;
-    textoSelecionar.setText('SELECIONADO ✓');
-    btnSelecionar.setFillStyle(0x2a6a3a);
-
-    // Demonstração: fecha modal e aciona pontuação direto, sem precisar do CONFIRMAR
-    if (fase === 'demonstracao') {
-        this.time.delayedCall(ANIM_FADE_DURATION, () => {
             fecharModal();
-
-            const soma = PONTUACAO_PRODUTO[carta.key] ?? 0;
-            this._mostrarDialogo(this._falaAcertoFase(fase));
-            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
-
-            this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
-        });
-        return;
-    }
-
-    const cartasExigidas = this.clienteConfig.cartasExigidas[fase] ?? [];
-    const ehObrigatoria  = cartasExigidas.includes(carta.key);
-    const faseComAvanco  = fase === 'abordagem' || fase === 'sondagem';
-
-    if (faseComAvanco && ehObrigatoria) {
-        this.time.delayedCall(ANIM_FADE_DURATION, () => {
-            fecharModal();
-            this._mostrarDialogo(this._falaAcertoFase(fase));
-            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
-            this.time.delayedCall(DELAY_PROXIMA_FASE, () => this._avancarOuVencer());
+            this._resolverCarta(carta); // ← toda a lógica de acerto/erro fica aqui
         });
     }
-}
+
     _criarFundoCarta(x, y, key) {
         const obj = this.textures.exists(key)
             ? this.add.image(x, y, key).setDisplaySize(CARD_WIDTH, CARD_HEIGHT)
             : this.add.rectangle(x, y, CARD_WIDTH, CARD_HEIGHT, 0x0d1f2e).setStrokeStyle(2, 0x1a4a6a);
-
-        obj.setInteractive({ useHandCursor: true });
-        return obj;
+        return obj.setInteractive({ useHandCursor: true });
     }
 
     _criarFundoCartaZoom(x, y, key) {
@@ -307,9 +187,9 @@ _acertarFase(fase) {
             .setDepth(LAYERS.MODAL);
 
         const texto = this.add.text(x, y, label, {
-            fontFamily:    '"Courier New", monospace',
-            fontSize:      '13px',
-            color:         corTexto,
+            fontFamily: '"Courier New", monospace',
+            fontSize: '13px',
+            color: corTexto,
             letterSpacing: 1,
         }).setOrigin(0.5).setDepth(LAYERS.MODAL_BTN);
 

@@ -47,6 +47,16 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('CVBA',        'assets/Cartas/Produtos/CVBA.png');
         this.load.image('CieloFlash2', 'assets/Cartas/Produtos/FLASH2.png');
 
+        this.load.image('Ajuste', 'assets/Cartas/Negociacao/AjusteDeCondicoes.png');
+        this.load.image('Quebra', 'assets/Cartas/Negociacao/QuebraObjecao.png');
+        this.load.image('Validacao', 'assets/Cartas/Negociacao/ValidacaoDeValor.png');
+
+        this.load.image('Adicional', 'assets/Cartas/Fechamento/Adicional.png');
+        this.load.image('Alternativo', 'assets/Cartas/Fechamento/Alternativo.png');
+        this.load.image('Desconto', 'assets/Cartas/Fechamento/Desconto.png');
+        this.load.image('Penalidade', 'assets/Cartas/Fechamento/Penalidade.png');
+        this.load.image('Teste', 'assets/Cartas/Fechamento/Teste.png');
+
 
         this.load.image('Pedro_neutro',    'assets/NPC/BossPedro.png');
         this.load.image('Pedro_satisfeito','assets/NPC/BossPedro.png');
