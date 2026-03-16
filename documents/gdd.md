@@ -153,25 +153,29 @@ Consolidar-se como uma solução digital escalável e inovadora de desenvolvimen
 
 As metas SMART do projeto foram definidas com base nos objetivos estratégicos identificados junto à Cielo: padronizar a capacitação dos Gerentes de Negócios entre regiões e garantir a cobertura completa das etapas do Funil de Vendas por meio de uma experiência gamificada.
 
-| # | Meta | Específica | Mensurável | Alcançável | Relevante | Temporal |
-|---|---|---|---|---|---|---|
-| 1 | Cobrir as 5 etapas do Funil de Vendas | Implementar as fases de abordagem, sondagem, demonstração, negociação e fechamento no sistema de cartas | Acompanhado pelo número de fases implementadas a cada sprint, com meta final de 5/5 | Escopo definido, mecânica de cartas já implementada e validada na sprint 3 | Garante que o GN seja treinado em toda a jornada comercial | Até a entrega do MVP (sprint 4) |
-| 2 | Cobrir todas as regiões do jogo | Desenvolver e integrar as quatro regiões temáticas: Quebra-Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo | Acompanhado pelo número de regiões funcionais a cada sprint, com meta final de 4/4 | Regiões já definidas, com Quebra-Gelo e Casa da Cielita implementadas na sprint 3 | Garante padronização do treinamento independentemente da região do GN | Até a entrega do MVP (sprint 4) |
-| 3 | Monitorar desempenho nas negociações | Registrar taxa de acerto, taxa de erros normais e taxa de erros críticos por sessão de jogo | Taxas medidas e comparadas entre sessões de playtest para identificar evolução do jogador | Os playtests da sprint 5 fornecerão os dados necessários para calibrar e validar os valores de referência junto à Cielo | Permite à Cielo avaliar a absorção do conteúdo de vendas pelo GN | A partir da sprint 5, com dados de playtest |
-| 4 | Monitorar tempo médio de negociação | Registrar o tempo médio que o jogador leva para concluir cada negociação | Tempo medido e comparado entre sessões de playtest para identificar evolução da fluência do jogador | Os playtests da sprint 5 fornecerão os dados necessários para calibrar e validar o tempo de referência junto à Cielo | Indica fluidez da experiência e adequação ao contexto corporativo | A partir da sprint 5, com dados de playtest |
+**Meta 1 — Entregar o MVP do jogo educacional**
 
-### Indicadores de Acompanhamento
+- **Específica:** Desenvolver um jogo RPG 2D com quatro regiões temáticas e sistema de negociação por cartas cobrindo as cinco etapas do Funil de Vendas.
+- **Mensurável:** Número de regiões e fases implementadas a cada sprint, com meta final de 4 regiões e 5 fases funcionais.
+- **Atingível:** Regiões e mecânicas já definidas, com Quebra-Gelo e Casa da Cielita implementadas na sprint 3 e sistema de cartas validado.
+- **Relevante:** Garante que o Gerente de Negócios seja capacitado em toda a jornada comercial, independentemente de sua região.
+- **Temporal:** Entrega do MVP até a sprint 4 (27/03/2025).
 
-| Indicador | Descrição | Como medir |
-|---|---|---|
-| Taxa de acerto | Percentual de negociações concluídas com sucesso em relação ao total de tentativas | Registro de sessões nos testes de jogabilidade |
-| Taxa de erros normais | Percentual de escolhas incorretas que reduzem a satisfação do cliente sem encerrar a negociação | Registro de sessões nos testes de jogabilidade |
-| Taxa de erros críticos | Percentual de escolhas que encerram a negociação prematuramente por zerarem a barra de satisfação | Registro de sessões nos testes de jogabilidade |
-| Tempo médio por negociação | Tempo médio que o jogador leva para concluir cada fase de negociação | Cronometragem durante os playtests |
-| Cobertura do funil | Número de etapas do funil de vendas implementadas em relação ao total planejado (5) | Verificação das fases implementadas no sistema de cartas a cada sprint |
-| Cobertura regional | Número de regiões temáticas funcionais em relação ao total planejado (4) | Verificação das cenas implementadas no repositório a cada sprint |
+**Meta 2 — Monitorar desempenho nas negociações**
 
-> **Nota:** Os valores de referência para taxa de acerto, taxa de erros normais, taxa de erros críticos e tempo médio por negociação serão definidos pela Cielo com base nos dados coletados durante os playtests da sprint 5.
+- **Específica:** Registrar taxa de acerto, taxa de erros normais e taxa de erros críticos por sessão de jogo para avaliar a absorção do conteúdo de vendas pelo Gerente de Negócios.
+- **Mensurável:** Taxas comparadas entre sessões de playtest para identificar evolução do jogador, com valores de referência a serem definidos pela Cielo.
+- **Atingível:** Os playtests da sprint 5 fornecerão os dados necessários para calibrar e validar os valores de referência junto à Cielo.
+- **Relevante:** Permite à Cielo avaliar objetivamente se o GN está absorvendo o conteúdo de vendas proposto pelo jogo.
+- **Temporal:** Coleta iniciada na sprint 5 (10/04/2025), com valores de referência validados com a Cielo até o final da sprint 5.
+
+**Meta 3 — Monitorar fluidez da experiência de treinamento**
+
+- **Específica:** Registrar o tempo médio que o jogador leva para concluir cada negociação ao longo das sessões de playtest.
+- **Mensurável:** Tempo médio comparado entre sessões para identificar evolução da fluência do jogador, com valor de referência a ser definido pela Cielo.
+- **Atingível:** Os playtests da sprint 5 fornecerão os dados necessários para calibrar e validar o tempo de referência junto à Cielo.
+- **Relevante:** Indica se a experiência está fluida e adequada ao contexto corporativo de treinamento da Cielo.
+- **Temporal:** Coleta iniciada na sprint 5 (10/04/2025), com valor de referência validado com a Cielo até o final da sprint 5.
 
 ## 1.2. Requisitos do Projeto (sprints 1 e 2)
 
