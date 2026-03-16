@@ -74,13 +74,10 @@ import DialogoManager from './DialogoManager.js';
 
 export default class NPC extends Phaser.Physics.Arcade.Sprite {
 
-    /**
-     * @param {Phaser.Scene}  cena        - Cena Phaser onde o NPC será criado
-     * @param {number}        x           - Posição X de spawn no mundo
-     * @param {number}        y           - Posição Y de spawn no mundo
-     * @param {string}        texturaKey  - Chave da textura/spritesheet já carregada
-     * @param {object}        opcoes      - Configurações (ver defaults abaixo)
-     */
+    // cena: Phaser.Scene — cena onde o NPC será criado
+    // x, y: posição de spawn no mundo
+    // texturaKey: chave da textura/spritesheet já carregada
+    // opcoes: configurações (ver defaults abaixo)
     constructor(cena, x, y, texturaKey, opcoes = {}) {
         super(cena, x, y, texturaKey);
 
@@ -150,21 +147,16 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     // API Pública
     // ─────────────────────────────────────────────────────────────────────────
 
-    /**
-     * Define as falas do NPC.
-     * Retorna `this` para encadeamento.
-     * @param {Array<{personagem: string, texto: string}>} falas
-     */
+    // Define as falas do NPC. Retorna `this` para encadeamento.
+    // falas: Array<{personagem: string, texto: string}>
     setFalas(falas) {
         this._falas = falas;
         return this;
     }
 
-    /**
-     * Deve ser chamado no update() da cena a cada frame.
-     * @param {Phaser.GameObjects.Sprite} jogadorSprite  - sprite físico do jogador
-     * @param {Phaser.Input.Keyboard.Key} teclaInteragir - tecla E (ou outra)
-     */
+    // Deve ser chamado no update() da cena a cada frame.
+    // jogadorSprite: Phaser.GameObjects.Sprite — sprite físico do jogador
+    // teclaInteragir: Phaser.Input.Keyboard.Key — tecla E (ou outra)
     atualizar(jogadorSprite, teclaInteragir) {
         // NPCs não-interativos só patrulham — sem checagem de proximidade
         if (!this._cfg.interativo) {
