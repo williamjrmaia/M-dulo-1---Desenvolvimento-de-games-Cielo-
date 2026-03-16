@@ -20,6 +20,7 @@ export default class CenaCasa extends Phaser.Scene {
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
         this.load.image('balao',        './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE',   './assets/objetos/botao_e.png');
+        this.load.image('PortaCielita', './assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
@@ -44,7 +45,6 @@ export default class CenaCasa extends Phaser.Scene {
             });
         }
 
-
         // ── Grupo NPC ─────────────────────────────────────────────────────────
         this.grupoNPCs = this.physics.add.group();
 
@@ -64,7 +64,10 @@ export default class CenaCasa extends Phaser.Scene {
         // Colisão NPC↔NPC (apenas um NPC aqui, mas mantemos o padrão)
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
-        // ── Jogador ───────────────────────────────────────────────────────────
+        //Porta da Cielita
+        this.add.image(750, 705, 'PortaCielita').setScale(2)
+
+
         this.jogador = new Jogador(this, W / 2, H / 2 + 80);
         this.teclas  = this.jogador.configurarTeclas();
 
