@@ -9,15 +9,15 @@ export default class MundoCasa extends Phaser.Scene {
 
     preload() {
         this.load.image('MundoCasa', 'assets/CenarioCasa/Scene1.png');
-        this.load.image('MenuFundo', 'assets/menu/menu_fundo.png');
+        this.load.image('MenuFundo', 'assets/Menu/menu_fundo.png');
     }
 
     create() {
-        this.add.image(750, 400, 'MenuFundo');
-        
+
         const background = this.add.image(750, 400, 'MundoCasa');
 
-        // converte posição central do background para coordenadas de topo-esquerdo
+        this.add.image(750, 400, 'MenuFundo').setDepth(-1);
+
         const bx = background.x - background.displayWidth  / 2;
         const by = background.y - background.displayHeight / 2;
         const bw = background.displayWidth;
@@ -35,11 +35,19 @@ export default class MundoCasa extends Phaser.Scene {
         const paredeCima = this.add.rectangle(bx + bw / 2, by + espessura / 2, bw, espessura, 0xff0000, 0);
         this.physics.add.existing(paredeCima, true);
 
-        const paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0); // /0.7 sobe a parede para cobrir a ponte
+        const paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0);
         this.physics.add.existing(paredeBaixo, true);
 
+        // ── Posição de spawn: porta ou centro dependendo da origem ─────────────
+        const origem = this.game.registry.get('origemCena');
+        const spawnX = origem === 'CenaCasa'   ? 857 :
+                       origem === 'CenaPonteh' ? 910 : 750;
+        const spawnY = origem === 'CenaCasa'   ? 390 :
+                       origem === 'CenaPonteh' ? 410 : 480;
+        this.game.registry.remove('origemCena');
+
         // Player
-        this.personagem = new Jogador(this, 750, 480, 1.0);
+        this.personagem = new Jogador(this, spawnX, spawnY, 1.0);
         this.teclas = this.personagem.configurarTeclas();
 
         // Colisão do jogador com as paredes
@@ -84,22 +92,9 @@ export default class MundoCasa extends Phaser.Scene {
             this.naPorta = true;
         });
         
-        this.fazendoTransicao = false; // evita disparar a troca de cena duas vezes
+        this.fazendoTransicao = false;
 
-        if (this.origem === 'CenaPonteh') {
-            this.personagem.sprite.setPosition(900, 400);
-        }
-                const jaViuTutorial = this.game.registry.get('jaViuTutorial');
-        if (!jaViuTutorial) {
-            this.game.registry.set('jaViuTutorial', true);
-            this.time.delayedCall(200, () => { // delay para a cena carregar antes de abrir
-                this.scene.launch('TutorialOverlay');
-                this.scene.bringToTop('TutorialOverlay');
-                this.input.keyboard.enabled = false; // bloqueia movimento enquanto o tutorial estiver aberto
-            });
-        }
-
-        this.cameras.main.setZoom(2.6);
+        this.cameras.main.setZoom(3.0);
         this.cameras.main.setBounds(0, 0, 1500, 800);
         this.cameras.main.startFollow(this.personagem.sprite);
     }
@@ -107,23 +102,26 @@ export default class MundoCasa extends Phaser.Scene {
     update() {
         this.personagem.atualizar();
 
+        // ── Porta → CenaCasa ──────────────────────────────────────────────────
         if (!this.personagem.temOverlap(this.gatilhoPorta)) {
             this.naPorta = false;
         }
 
         if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.game.registry.set('origemCena', 'MundoCasa');
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('CenaCasa');
             });
         }
 
+        // ── Portal do Gelo → CenaPonteh ───────────────────────────────────────
         if (this.personagem.temOverlap(this.portalGelo) && !this.fazendoTransicao) {
             this.fazendoTransicao = true;
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });;
+                this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });
             });
         }
     }
-    }
+}
