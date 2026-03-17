@@ -45,10 +45,6 @@ export default class CenaPonte extends Phaser.Scene {
             this.portaisAtivos = true;
         });
 
-        this.input.keyboard.once('keydown', () => {
-            this.modoAuto = false;
-        });
-
         // ── Portal esquerda → MundoCasa ───────────────────────────────────────
         this.portalEsquerda = this.add.zone(centerX - 55, centerY, 20, 800);
         this.physics.add.existing(this.portalEsquerda);
