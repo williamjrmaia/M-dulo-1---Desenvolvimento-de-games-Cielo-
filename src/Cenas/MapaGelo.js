@@ -65,14 +65,28 @@ export default class MapaGelo extends Phaser.Scene {
         
         this.geloPorta2 = this.add.zone(685, 190, 17, 20);
         this.physics.add.existing(this.geloPorta2, true);
+
+        //Portal para VilaDoVarejo
+        this.portalVarejo = this.add.zone(897, 1015, 25, 15)
+        this.physics.add.existing(this.portalVarejo, true)
         
+        //Parede em baixo do portal pra não vazar do mapa
+        this.ParedePortal = this.add.zone(897, 1025, 70, 5)
+        this.physics.add.existing(this.ParedePortal, true)
+
+
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.6);
         this.cameras.main.fadeIn(500, 0, 0, 0);
+        this.cameras.main.setBounds(0, 0, 1024, 1024);
 
         if (this.origem === 'CenaCasaGelo') {
             this.personagem.sprite.setPosition(655, 210)
+        }
+
+        if (this.origem === 'VilaDoVarejo') {
+            this.personagem.sprite.setPosition(897, 980)
         }
     }
         
@@ -85,6 +99,14 @@ export default class MapaGelo extends Phaser.Scene {
         // 1. Lógica do Portal Lateral (Saída automática)
         if (this.personagem.temOverlap(this.portalGelo)) {
             this.trocarCena('MundoCasa', { vindoDe: 'MapaGelo' });
+            return;
+        }
+
+
+
+        // Portal Varejo (automático)
+         if (this.personagem.temOverlap(this.portalVarejo)) {
+            this.trocarCena('VilaDoVarejo', { vindoDe: 'MapaGelo' });
             return;
         }
 
