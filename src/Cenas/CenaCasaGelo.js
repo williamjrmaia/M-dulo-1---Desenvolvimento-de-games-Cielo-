@@ -39,10 +39,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.add.image(751, 530, 'saida').setDepth(1);
 
 
-        this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
-        this.personagem.sprite.setScale(1.3);
-        this.personagem.sprite.setCollideWorldBounds(true);
-        this.teclas = this.personagem.configurarTeclas(); // ← só UMA vez
+        
 
         // ── Mapa / Hitboxes ───────────────────────────────────────────────────
         const map    = this.make.tilemap({ key: 'mapa_casa' });
@@ -67,9 +64,9 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.grupoNPCs = this.physics.add.group();
 
         // ── NPC: Seu Pedro ────────────────────────────────────────────────────
-        this.pedro = new NPC(this, 710, 390, 'seupedro_idl', {
+        this.pedro = new NPC(this, 750, 460, 'seupedro_idl', {
             velocidade:         0,           // estático — sem patrulha
-            distanciaInteracao: 80,
+            distanciaInteracao: 40,
             grupoNPCs:          this.grupoNPCs,
             onFimDialogo: () => {
                 this.cameras.main.fadeOut(500, 0, 0, 0);

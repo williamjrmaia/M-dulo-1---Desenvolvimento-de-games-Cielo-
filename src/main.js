@@ -8,13 +8,14 @@ import NegociacaoPedro from './Cenas/NegociacaoPedro.js';
 import MapaGelo from './Cenas/MapaGelo.js';
 import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
 import TutorialOverlay from './Cenas/TutorialOverlay.js';
+import CenaPonteh from './Cenas/CenaPonteh.js';
 
 const config = {
     type: Phaser.AUTO,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        parent: 'game',
+        parent: 'game-container',
         width: 1500,
         height: 800,
     },
@@ -28,7 +29,7 @@ const config = {
         }
     },
 
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, 
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh,
         TutorialOverlay, CenaCasaGelo]//Preloader carrega as sprites antes do jogo começar 
                                       //para evitar redundância
 
