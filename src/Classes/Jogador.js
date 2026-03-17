@@ -90,34 +90,41 @@ export default class Jogador {
             return;
         }
 
-        if (teclas.left.isDown) {
-            sprite.setVelocityX(-velocidade);
-            sprite.play(`${s}_lado`, true);
-            sprite.setFlipX(false);
-            this._ultimaDirecao = 'lado';
-        } else if (teclas.right.isDown) {
-            sprite.setVelocityX(velocidade);
-            sprite.play(`${s}_lado`, true);
-            sprite.setFlipX(true);
-            this._ultimaDirecao = 'lado';
-        }
+    let vx = 0, vy = 0; 
 
-        // animação vertical só toca se não há tecla horizontal (evita conflito)
-        if (teclas.up.isDown) {
-            sprite.setVelocityY(-velocidade);
-            if (!teclas.left.isDown && !teclas.right.isDown) {
-                sprite.play(`${s}_costa`, true);
-                this._ultimaDirecao = 'costas';
-            }
-        } else if (teclas.down.isDown) {
-            sprite.setVelocityY(velocidade);
-            if (!teclas.left.isDown && !teclas.right.isDown) {
-                sprite.play(`${s}_andar`, true);
-                this._ultimaDirecao = 'frente';
-            }
-        }
+    if (teclas.left.isDown) {
+    vx = -velocidade;
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(false);
+    this._ultimaDirecao = 'lado';
+} else if (teclas.right.isDown) {
+    vx = velocidade;
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(true);
+    this._ultimaDirecao = 'lado';
+}
+
+if (teclas.up.isDown) {
+    vy = -velocidade;
+    if (!teclas.left.isDown && !teclas.right.isDown) {
+        sprite.play(`${s}_costa`, true);
+        this._ultimaDirecao = 'costas';
     }
+} else if (teclas.down.isDown) {
+    vy = velocidade;
+    if (!teclas.left.isDown && !teclas.right.isDown) {
+        sprite.play(`${s}_andar`, true);
+        this._ultimaDirecao = 'frente';
+    }
+}
 
+const mag = Math.sqrt(vx * vx + vy * vy);
+if (mag > 0) {
+    sprite.setVelocityX((vx / mag) * velocidade);
+    sprite.setVelocityY((vy / mag) * velocidade);
+}
+    }
+      
     adicionarColisao(objeto) {
         return this.cena.physics.add.collider(this.sprite, objeto);
     }
@@ -133,4 +140,3 @@ export default class Jogador {
     get x() { return this.sprite.x; }
     get y() { return this.sprite.y; }
 }
-
