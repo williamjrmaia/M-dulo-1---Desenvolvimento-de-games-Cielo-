@@ -55,8 +55,12 @@ export default class MapaGelo extends Phaser.Scene {
         this.physics.add.existing(this.portalGelo, true);
 
         // PORTAS (Interação com E)
+        //Porta para Casa do Pedro
         this.geloPorta = this.add.zone(622, 190, 17, 20);
         this.physics.add.existing(this.geloPorta, true);
+        //Porta para CasaGelo2
+        this.GeloPortaCasa2 = this.add.zone(400, 675, 20, 20);
+        this.physics.add.existing(this.GeloPortaCasa2, true);
         
         this.geloPorta2 = this.add.zone(685, 190, 17, 20);
         this.physics.add.existing(this.geloPorta2, true);
@@ -83,6 +87,11 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'VilaDoVarejo') {
             this.personagem.sprite.setPosition(897, 980)
         }
+         if (this.origem === 'CasaGelo2') {
+            this.personagem.sprite.setPosition(400, 675)
+        }
+       
+
     }
         
     update() {
@@ -109,6 +118,7 @@ export default class MapaGelo extends Phaser.Scene {
         // Checamos individualmente se ele está em uma OU na outra porta
         const naPorta1 = this.personagem.temOverlap(this.geloPorta);
         const naPorta2 = this.personagem.temOverlap(this.geloPorta2);
+        const naPortaGelo2 = this.personagem.temOverlap(this.GeloPortaCasa2)
 
         if (naPorta1 || naPorta2) {
             // Se estiver em qualquer porta e apertar a tecla de interagir
@@ -116,6 +126,14 @@ export default class MapaGelo extends Phaser.Scene {
                 this.trocarCena('CenaCasaGelo');
             }
         }
+
+         if (naPortaGelo2) {
+            // Se estiver em qualquer porta e apertar a tecla de interagir
+            if (Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+                this.trocarCena('CasaGelo2');
+            }
+        }
+
     }
 
     // Função auxiliar para evitar repetição de código e bugs de colisão dupla
