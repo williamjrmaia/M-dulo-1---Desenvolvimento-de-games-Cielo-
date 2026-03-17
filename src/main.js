@@ -9,6 +9,8 @@ import MapaGelo from './Cenas/MapaGelo.js';
 import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
 import TutorialOverlay from './Cenas/TutorialOverlay.js';
 import CenaPonteh from './Cenas/CenaPonteh.js';
+import VilaDoVarejo from './Cenas/VilaDoVarejo.js'; 
+
 
 const config = {
     type: Phaser.AUTO,
@@ -25,12 +27,15 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     },
 
+
     scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh,
-        TutorialOverlay, CenaCasaGelo]//Preloader carrega as sprites antes do jogo começar 
+        TutorialOverlay, CenaCasaGelo,]//Preloader carrega as sprites antes do jogo começar 
+
+
                                       //para evitar redundância
 
 };
