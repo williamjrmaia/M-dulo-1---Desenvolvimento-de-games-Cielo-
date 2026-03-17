@@ -37,10 +37,6 @@ export default class CenaPonte extends Phaser.Scene {
             this.portaisAtivos = true;
         });
 
-        this.input.keyboard.once('keydown', () => {
-            this.modoAuto = false;
-        });
-
         // ── Portal esquerda → MundoCasa ───────────────────────────────────────
         this.portalEsquerda = this.add.zone(centerX - 55, centerY, 20, 800);
         this.physics.add.existing(this.portalEsquerda);
@@ -60,14 +56,10 @@ export default class CenaPonte extends Phaser.Scene {
     }
 
     update() {
-        if (this.modoAuto) {
             const skin = this.personagem.skin;
             this.personagem.sprite.setVelocityX(80 * this.direcaoAuto);
             this.personagem.sprite.play(`${skin}_lado`, true);
             this.personagem.sprite.setFlipX(this.direcaoAuto === 1);
-        } else {
-            this.personagem.atualizar();
-        }
 
         if (this.fazendoTransicao || !this.portaisAtivos) return;
 
