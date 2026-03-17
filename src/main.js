@@ -1,6 +1,7 @@
 import Preloader from './Cenas/Preloader.js';
 import MenuPrincipal from './Cenas/MenuPrincipal.js';
 import CenaPersonagem from './Cenas/CenaPersonagem.js';
+import CenaStorytelling from './Cenas/CenaStorytelling.js';
 import CenaConfig from './Cenas/CenaConfig.js';
 import CenaCasa from './Cenas/CenaCasa.js';
 import MundoCasa from './Cenas/MundoCasa.js';
@@ -32,7 +33,7 @@ const config = {
     },
 
 
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh,
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaStorytelling, CenaConfig, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh,
         TutorialOverlay, CenaCasaGelo,]//Preloader carrega as sprites antes do jogo começar 
 
 

@@ -40,7 +40,7 @@ export default class CenaCasa extends Phaser.Scene {
             this.anims.create({
                 key:       'cielitaparada',
                 frames:    this.anims.generateFrameNumbers('cielitaparada', { start: 0, end: -1 }),
-                frameRate: 8,
+                frameRate: 2,
                 repeat:    -1,
             });
         }
