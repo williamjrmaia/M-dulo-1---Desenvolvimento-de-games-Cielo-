@@ -79,7 +79,7 @@ export default class MapaGelo extends Phaser.Scene {
 
         // 1. Lógica do Portal Lateral (Saída automática)
         if (this.personagem.temOverlap(this.portalGelo)) {
-            this.trocarCena('MundoCasa', { vindoDe: 'MapaGelo' });
+            this.trocarCena('CenaPonteh', { vindoDe: 'MapaGelo' });
             return;
         }
 

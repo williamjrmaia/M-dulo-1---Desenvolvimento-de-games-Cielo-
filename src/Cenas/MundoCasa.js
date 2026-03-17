@@ -86,7 +86,7 @@ export default class MundoCasa extends Phaser.Scene {
         
         this.fazendoTransicao = false; // evita disparar a troca de cena duas vezes
 
-        if (this.origem === 'MapaGelo') {
+        if (this.origem === 'CenaPonteh') {
             this.personagem.sprite.setPosition(900, 400);
         }
                 const jaViuTutorial = this.game.registry.get('jaViuTutorial');
@@ -122,7 +122,7 @@ export default class MundoCasa extends Phaser.Scene {
             this.fazendoTransicao = true;
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('MapaGelo');
+                this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });;
             });
         }
     }
