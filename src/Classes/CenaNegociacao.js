@@ -19,13 +19,28 @@ export default class CenaNegociacao extends Phaser.Scene {
     static GANHO_SATISFACAO = 20;
     static PERDA_SATISFACAO = 10;
 
+    static CARD_WIDTH         = 270;
+    static CARD_HEIGHT        = 330;
+    static CARD_SPACING       = 25;
+    static CARD_ZOOM_WIDTH    = 400;
+    static CARD_ZOOM_HEIGHT   = 550;
+    static ANIM_FADE_DURATION = 300;
+    static ANIM_HOVER_OFFSET  = 8;
+
+    static LAYERS = {
+        OVERLAY:   100,
+        MODAL:     101,
+        MODAL_BTN: 102,
+    };
+
     constructor(key, clienteConfig = {}) {
         super(key);
 
         this.clienteConfig = {
-            nomeCliente:       clienteConfig.nomeCliente       ?? 'default',
-            satisfacaoInicial: clienteConfig.satisfacaoInicial ?? 50,
+            nomeCliente:       clienteConfig.nomeCliente        ?? 'default',
+            satisfacaoInicial: clienteConfig.satisfacaoInicial  ??  0,
             cartasExigidas:    clienteConfig.cartasExigidas     ?? {},
+            fases:             clienteConfig.fases              ?? CenaNegociacao.FASES, // se o número específico de fases não for dito, usa a quantidade default de 5
             cartasPorFase:     clienteConfig.cartasPorFase      ?? {
                 abordagem:    5,
                 sondagem:     6,
@@ -101,41 +116,32 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _criarBarraSatisfacao(W, H) {
         const barraW = 300;
-        const barraH = 18;
         const x      = W - barraW / 2 - 40;
         const y      = H * 0.08;
 
-        this.add.text(x, y - 18, 'SATISFAÇÃO', {
+        this.add.text(x, y - 22, 'SATISFAÇÃO', {
             fontFamily: '"Courier New", monospace',
             fontSize: '12px',
             color: '#5a8a9a',
             letterSpacing: 3,
         }).setOrigin(0.5);
 
-        this.add.rectangle(x, y, barraW, barraH, 0x0a1520).setStrokeStyle(1, 0x2a4a5a);
+        this.barraSatisfacaoImg = this.add.image(x, y, this._getChaveBarra())
+            .setDisplaySize(barraW, 40);
 
-        this.barraSatisfacaoFill = this.add.rectangle(
-            x - barraW / 2, y,
-            barraW * (this.satisfacao / 100),
-            barraH - 4,
-            this._getCorSatisfacao()
-        ).setOrigin(0, 0.5);
-
-        this.satisfacaoTexto = this.add.text(x, y + 20, `${this.satisfacao}%`, {
+        this.satisfacaoTexto = this.add.text(x, y + 28, `${this.satisfacao}%`, {
             fontFamily: '"Courier New", monospace',
             fontSize: '12px',
             color: '#7aaabb',
         }).setOrigin(0.5);
-
-        this._barraSatisfacaoConfig = { x: x - barraW / 2, larguraTotal: barraW };
     }
 
     _criarBarraFases(W, H) {
-        const fases   = CenaNegociacao.FASES;
+        const fases   = this.clienteConfig.fases;
         const largura = W * 0.55;
         const startX  = (W - largura) / 2;
         const y       = H * 0.535;
-        const passo   = largura / (fases.length - 1);
+        const passo   = fases.length > 1 ? largura / (fases.length - 1) : largura;
 
         this.indicadoresFase = [];
 
@@ -156,7 +162,7 @@ export default class CenaNegociacao extends Phaser.Scene {
                 color: '#4a8aaa',
             }).setOrigin(0.5);
 
-            this.add.text(x, y + 22, CenaNegociacao.LABELS_FASE[fase], {
+            this.add.text(x, y + 22, CenaNegociacao.LABELS_FASE[fase] ?? fase, {
                 fontFamily: '"Courier New", monospace',
                 fontSize: '10px',
                 color: '#3a6a7a',
@@ -186,7 +192,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     // ── Fluxo de fases ────────────────────────────────────────────────────────
 
     _iniciarFase() {
-        const fase      = CenaNegociacao.FASES[this.faseAtual];
+        const fase      = this.clienteConfig.fases[this.faseAtual];
         const numCartas = this.clienteConfig.cartasPorFase[fase] || 3;
 
         this._atualizarIndicadoresFase();
@@ -216,7 +222,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     _resolverCarta(carta) {
         if (!this.negociacaoAtiva) return;
 
-        const fase     = CenaNegociacao.FASES[this.faseAtual];
+        const fase     = this.clienteConfig.fases[this.faseAtual];
         const exigidas = this.clienteConfig.cartasExigidas[fase] ?? [];
 
         const acertou = exigidas.length === 0 || exigidas.includes(carta.key);
@@ -252,7 +258,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     _avancarOuVencer() {
-        if (this.faseAtual < CenaNegociacao.FASES.length - 1) {
+        if (this.faseAtual < this.clienteConfig.fases.length - 1) {
             this.faseAtual++;
             this._iniciarFase();
         } else {
@@ -300,15 +306,18 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     _atualizarBarraSatisfacao() {
-        const { larguraTotal } = this._barraSatisfacaoConfig;
-        this.tweens.add({
-            targets:  this.barraSatisfacaoFill,
-            width:    larguraTotal * (this.satisfacao / 100),
-            duration: 400,
-            ease:     'Quad.easeOut',
-        });
-        this.barraSatisfacaoFill.setFillStyle(this._getCorSatisfacao());
+        this.barraSatisfacaoImg.setTexture(this._getChaveBarra());
         this.satisfacaoTexto.setText(`${this.satisfacao}%`);
+    }
+
+    _getChaveBarra() {
+        const s = this.satisfacao;
+        if (s === 0)  return 'barra_vazia';
+        if (s <= 20)  return 'barra_baixa';
+        if (s <= 40)  return 'barra_baixa_metade';
+        if (s <= 60)  return 'barra_metade';
+        if (s <= 80)  return 'barra_metade_cheia';
+        return 'barra_cheia';
     }
 
     _atualizarSpriteCliente() {
@@ -396,6 +405,110 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.cartasNaMao = [];
     }
 
+    // ── Renderização de cartas ────────────────────────────────────────────────
+
+    _distribuirCartas(cartas) {
+        const W      = this.scale.width;
+        const H      = this.scale.height;
+        const { CARD_WIDTH, CARD_HEIGHT, CARD_SPACING, ANIM_FADE_DURATION, ANIM_HOVER_OFFSET } = CenaNegociacao;
+        const totalW = cartas.length * CARD_WIDTH + (cartas.length - 1) * CARD_SPACING;
+        const startX = (W - totalW) / 2;
+        const y      = H * 0.78;
+
+        this.cartasNaMao = [];
+
+        cartas.forEach((carta, i) => {
+            const x  = startX + i * (CARD_WIDTH + CARD_SPACING) + CARD_WIDTH / 2;
+            const bg = this._criarFundoCarta(x, y, carta.key);
+
+            bg.setAlpha(0);
+            this.tweens.add({ targets: bg, alpha: 1, duration: ANIM_FADE_DURATION, delay: i * 80 });
+
+            bg.on('pointerover', () => this.tweens.add({ targets: bg, y: `-=${ANIM_HOVER_OFFSET}`, duration: 100 }));
+            bg.on('pointerout',  () => this.tweens.add({ targets: bg, y: `+=${ANIM_HOVER_OFFSET}`, duration: 100 }));
+            bg.on('pointerdown', () => this._mostrarDetalheCarta(carta));
+
+            carta._objetos = { bg };
+            this.cartasNaMao.push(carta);
+            this.grupoCartas.add(bg);
+        });
+    }
+
+    _mostrarDetalheCarta(carta) {
+        if (!this.negociacaoAtiva) return;
+        if (this.cartaEmDetalhes) return;
+
+        this.cartaEmDetalhes = carta;
+
+        const W = this.scale.width;
+        const H = this.scale.height;
+        const { LAYERS } = CenaNegociacao;
+
+        const overlay = this.add
+            .rectangle(0, 0, W, H, 0x000000, 0.7)
+            .setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
+
+        const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
+        cartaZoom.setDepth(LAYERS.MODAL);
+
+        const { btn: btnVoltar, texto: textoVoltar } = this._criarBotao(
+            40, 40, 100, 50, '◀ VOLTAR', 0x1a3a5a, 0xcc4444, '#ff6666'
+        );
+        const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(
+            W / 2, H / 2 + 320, 180, 50, 'SELECIONAR ✓', 0x1a4a2a, 0x22cc66, '#22cc66'
+        );
+
+        const fecharModal = () => {
+            [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar]
+                .forEach(obj => obj.destroy());
+            this.cartaEmDetalhes = null;
+        };
+
+        btnVoltar.on('pointerover', () => btnVoltar.setFillStyle(0x2a4a6a));
+        btnVoltar.on('pointerout',  () => btnVoltar.setFillStyle(0x1a3a5a));
+        btnVoltar.on('pointerdown', fecharModal);
+
+        btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
+        btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
+        btnSelecionar.on('pointerdown', () => {
+            fecharModal();
+            this._resolverCarta(carta);
+        });
+    }
+
+    _criarFundoCarta(x, y, key) {
+        const { CARD_WIDTH, CARD_HEIGHT } = CenaNegociacao;
+        const obj = this.textures.exists(key)
+            ? this.add.image(x, y, key).setDisplaySize(CARD_WIDTH, CARD_HEIGHT)
+            : this.add.rectangle(x, y, CARD_WIDTH, CARD_HEIGHT, 0x0d1f2e).setStrokeStyle(2, 0x1a4a6a);
+        return obj.setInteractive({ useHandCursor: true });
+    }
+
+    _criarFundoCartaZoom(x, y, key) {
+        const { CARD_ZOOM_WIDTH, CARD_ZOOM_HEIGHT } = CenaNegociacao;
+        return this.textures.exists(key)
+            ? this.add.image(x, y, key).setDisplaySize(CARD_ZOOM_WIDTH, CARD_ZOOM_HEIGHT)
+            : this.add.rectangle(x, y, CARD_ZOOM_WIDTH, CARD_ZOOM_HEIGHT, 0x0d1f2e).setStrokeStyle(2, 0x1a4a6a);
+    }
+
+    _criarBotao(x, y, w, h, label, corFundo, corBorda, corTexto) {
+        const { LAYERS } = CenaNegociacao;
+        const btn = this.add
+            .rectangle(x, y, w, h, corFundo)
+            .setStrokeStyle(2, corBorda)
+            .setInteractive({ useHandCursor: true })
+            .setDepth(LAYERS.MODAL);
+
+        const texto = this.add.text(x, y, label, {
+            fontFamily: '"Courier New", monospace',
+            fontSize: '13px',
+            color: corTexto,
+            letterSpacing: 1,
+        }).setOrigin(0.5).setDepth(LAYERS.MODAL_BTN);
+
+        return { btn, texto };
+    }
+
     // ── Sobrescreva na subclasse ──────────────────────────────────────────────
 
     _getCartasDaFase(fase, quantidade) {
@@ -403,8 +516,6 @@ export default class CenaNegociacao extends Phaser.Scene {
             key: `carta_${fase}_${i}`, label: `Carta ${i + 1}`, fase,
         }));
     }
-
-    _distribuirCartas(cartas) {}
 
     _falaInicioFase(fase)  { return '...'; }
     _falaAcertoFase(fase)  { return 'Muito bem!'; }
