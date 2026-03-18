@@ -78,7 +78,7 @@ export default class PraiaDosProveitos extends Phaser.Scene {
         this.physics.add.existing(this.PortalPonte1, true)
 
         
-        
+        this.teclas = this.personagem.configurarTeclas();
     }
 
     update() {

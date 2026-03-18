@@ -55,8 +55,11 @@ export default class VilaDoVarejo extends Phaser.Scene {
             });
         }
 
-        //Portal para voltar ao Gelo
+        //Porta Casa1Varejo
+        this.portaCasa1Varejo = this.add.zone(555, 225, 40, 30)
+        this.physics.add.existing(this.portaCasa1Varejo, true);
 
+        //Portal para voltar ao Gelo
         this.portalGelo = this.add.zone(270, 20, 25, 15)
         this.physics.add.existing(this.portalGelo, true)
 
@@ -73,7 +76,10 @@ export default class VilaDoVarejo extends Phaser.Scene {
         }
          if (this.origem === 'PraiaDosProveitos') {
             this.personagem.sprite.setPosition(1260, 70)
-    }
+        }
+        if (this.origem === 'CasaVarejo1') {
+            this.personagem.sprite.setPosition(555, 245)
+        }
         this.portalparapraia = this.add.zone(1260, 40, 20, 20)
         this.physics.add.existing(this.portalparapraia, true)
 }
@@ -95,8 +101,13 @@ export default class VilaDoVarejo extends Phaser.Scene {
             this.trocarCena('PraiaDosProveitos', { vindoDe: 'VilaDoVarejo' });
             return;
         }
+         if (this.personagem.temOverlap(this.portaCasa1Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaVarejo1', { vindoDe: 'VilaDoVarejo' });
+            return;
+        }
+        this.teclas = this.personagem.configurarTeclas();
 
-
+         
     }
 
     trocarCena(nomeCena, dados = {}) {
