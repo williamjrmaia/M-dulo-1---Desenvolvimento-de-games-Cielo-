@@ -35,11 +35,25 @@ export default class MundoCasa extends Phaser.Scene {
         const paredeCima = this.add.rectangle(bx + bw / 2, by + espessura / 2, bw, espessura, 0xff0000, 0);
         this.physics.add.existing(paredeCima, true);
 
-        const paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0); // /0.7 sobe a parede para cobrir a ponte
+        const paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0);
         this.physics.add.existing(paredeBaixo, true);
 
+        // ── Spawn do jogador conforme origem ──────────────────────────────────
+        let spawnX = 750;   // posição padrão (centro)
+        let spawnY = 480;
+
+        if (this.origem === 'CenaCasa') {
+            // Vindo da casa → aparece em frente à porta da casa
+            spawnX = 857;
+            spawnY = 370;
+        } else if (this.origem === 'CenaPonteh') {
+            // Vindo da ponte → aparece em frente ao portal da ponte
+            spawnX = 900;
+            spawnY = 400;
+        }
+
         // Player
-        this.personagem = new Jogador(this, 750, 480, 1.0);
+        this.personagem = new Jogador(this, spawnX, spawnY, 1.0);
         this.teclas = this.personagem.configurarTeclas();
 
         // Colisão do jogador com as paredes
@@ -84,24 +98,22 @@ export default class MundoCasa extends Phaser.Scene {
             this.naPorta = true;
         });
         
-        this.fazendoTransicao = false; // evita disparar a troca de cena duas vezes
+        this.fazendoTransicao = false;
 
-        if (this.origem === 'CenaPonteh') {
-            this.personagem.sprite.setPosition(900, 400);
-        }
-                const jaViuTutorial = this.game.registry.get('jaViuTutorial');
+        const jaViuTutorial = this.game.registry.get('jaViuTutorial');
         if (!jaViuTutorial) {
             this.game.registry.set('jaViuTutorial', true);
-            this.time.delayedCall(200, () => { // delay para a cena carregar antes de abrir
+            this.time.delayedCall(200, () => {
                 this.scene.launch('TutorialOverlay');
                 this.scene.bringToTop('TutorialOverlay');
-                this.input.keyboard.enabled = false; // bloqueia movimento enquanto o tutorial estiver aberto
+                this.input.keyboard.enabled = false;
             });
         }
 
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
         this.cameras.main.startFollow(this.personagem.sprite);
+        this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
@@ -114,7 +126,7 @@ export default class MundoCasa extends Phaser.Scene {
         if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('CenaCasa');
+                this.scene.start('CenaCasa', { vindoDe: 'MundoCasa' });
             });
         }
 
@@ -122,8 +134,8 @@ export default class MundoCasa extends Phaser.Scene {
             this.fazendoTransicao = true;
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });;
+                this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });
             });
         }
     }
-    }
+}
