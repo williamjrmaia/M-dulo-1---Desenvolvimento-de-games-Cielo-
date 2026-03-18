@@ -24,6 +24,8 @@ export default class CasaGelo2 extends Phaser.Scene {
         const centerX = 750;
         const centerY = 400;
 
+        this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
+        
         // 1. Adiciona o cenário no centro (como você queria)
         const fundo = this.add.image(centerX, centerY, 'Casa2');
 
