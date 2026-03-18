@@ -12,50 +12,84 @@ export default class CasaGelo2 extends Phaser.Scene {
     }
 
     preload() {
-         this.load.image('Casa2',    'assets/MapaGelo/Scene2_House2.png');
-         this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
+        // Imagens
+        this.load.image('Casa2', 'assets/MapaGelo/Scene2_House2.png');
+        this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
+        
+        // Arquivo JSON do Tiled
+        this.load.tilemapTiledJSON('mapaCasaGelo2', 'assets/MapaGelo/CasaGelo2.tmj');
     }
 
     create() {
         const centerX = 750;
         const centerY = 400;
 
-        this.add.image(centerX, centerY, 'Casa2');
+        // 1. Adiciona o cenário no centro (como você queria)
+        const fundo = this.add.image(centerX, centerY, 'Casa2');
 
-        //Personagem
-        this.personagem = new Jogador(this, 600, 400, 1.3);
+        // TRUQUE: Calculamos a distância entre o centro e o canto superior esquerdo da imagem
+        // Vamos usar isso para empurrar as hitboxes do Tiled para o lugar certo
+        const offsetX = fundo.x - (fundo.width / 2);
+        const offsetY = fundo.y - (fundo.height / 2);
+
+        // 2. Personagem nas suas coordenadas originais
+        this.personagem = new Jogador(this, 750, 510, 1.3);
         this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
 
-        //Câmera
+        // 3. LER AS HITBOXES DO TILED (COM O DESLOCAMENTO)
+        const mapa = this.make.tilemap({ key: 'mapaCasaGelo2' });
+        const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
+        
+        if (camadaObjetos) {
+            camadaObjetos.objects.forEach(obj => {
+                if (obj.polygon) {
+                    // Somamos o offsetX e offsetY para a hitbox acompanhar a imagem
+                    // Mantive 0.5 de opacidade para você ver a hitbox azul e confirmar que encaixou!
+                    const poly = this.add.polygon(obj.x + offsetX, obj.y + offsetY, obj.polygon, 0x0000ff, 0.5);
+                    this.physics.add.existing(poly, true); // true = corpo estático
+                    this.personagem.adicionarColisao(poly);
+                } else {
+                    // Mesma coisa para os retângulos
+                    let zonaTiled = this.add.zone(
+                        (obj.x + offsetX) + (obj.width / 2), 
+                        (obj.y + offsetY) + (obj.height / 2), 
+                        obj.width, 
+                        obj.height
+                    );
+                    this.physics.add.existing(zonaTiled, true);
+                    this.personagem.adicionarColisao(zonaTiled);
+                }
+            });
+        }
+
+        // 4. Câmera
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.4);
         this.cameras.main.fadeIn(500, 0, 0, 0);
 
-        //Porta de sair
+        // 5. Porta de sair no lugar original
         this.add.image(750, 530, 'PortaSaida');
-        this.PortaSaída = this.add.zone(750, 525, 40, 15);
-        this.physics.add.existing(this.PortaSaída, true);
+        this.PortaSaida = this.add.zone(750, 525, 40, 15);
+        this.physics.add.existing(this.PortaSaida, true);
 
         this.teclas = this.personagem.configurarTeclas();
-
     }
+
     update() {
         this.personagem.atualizar();
 
-        if (!this.personagem.temOverlap(this.PortaSaída)) {
+        if (!this.personagem.temOverlap(this.PortaSaida)) {
             this.naPorta = false;
         } else {
-        this.naPorta = true;
-    }
+            this.naPorta = true;
+        }
 
-        if (this.personagem.temOverlap(this.PortaSaída) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+        if (this.personagem.temOverlap(this.PortaSaida) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('MapaGelo', { vindoDe: 'CasaGelo2' });
             return;
         }
     }
-
-    
 
     trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
@@ -64,5 +98,4 @@ export default class CasaGelo2 extends Phaser.Scene {
             this.scene.start(nomeCena, dados);
         });
     }
-
 }
