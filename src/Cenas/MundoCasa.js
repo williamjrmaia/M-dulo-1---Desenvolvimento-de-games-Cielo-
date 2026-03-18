@@ -86,18 +86,11 @@ export default class MundoCasa extends Phaser.Scene {
         
         this.fazendoTransicao = false; // evita disparar a troca de cena duas vezes
 
-        if (this.origem === 'CenaPonteh') {
-            this.personagem.sprite.setPosition(900, 400);
-        }
-                const jaViuTutorial = this.game.registry.get('jaViuTutorial');
-        if (!jaViuTutorial) {
-            this.game.registry.set('jaViuTutorial', true);
-            this.time.delayedCall(200, () => { // delay para a cena carregar antes de abrir
-                this.scene.launch('TutorialOverlay');
-                this.scene.bringToTop('TutorialOverlay');
-                this.input.keyboard.enabled = false; // bloqueia movimento enquanto o tutorial estiver aberto
-            });
-        }
+        if (this.origem === 'CenaCasa') {
+        this.personagem.sprite.setPosition(857, 390);
+        }   else if (this.origem === 'CenaPonteh') {
+        this.personagem.sprite.setPosition(900, 400);
+            }
 
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
@@ -114,7 +107,7 @@ export default class MundoCasa extends Phaser.Scene {
         if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('CenaCasa');
+                this.scene.start('CenaCasa', { vindoDe: 'MundoCasa' });
             });
         }
 

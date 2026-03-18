@@ -15,6 +15,10 @@ export default class CenaCasa extends Phaser.Scene {
         super('CenaCasa');
     }
 
+    init(data) {
+    this.origem = data?.vindoDe || null;
+}
+
     preload() {
         this.load.image('DentroCasa',   './assets/CenarioCasa/ROOM1-HOUSE/Scene1_House1.png');
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
@@ -83,6 +87,14 @@ export default class CenaCasa extends Phaser.Scene {
         this.naPorta = false;
         this.jogador.adicionarOverlap(this.gatilhoPorta, () => { this.naPorta = true; });
 
+        if (this.origem === 'CenaIntroducao') {
+    this.time.delayedCall(700, () => {
+        this.scene.launch('TutorialOverlay');
+        this.scene.bringToTop('TutorialOverlay');
+        this.input.keyboard.enabled = false;
+    });
+}
+
         this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
@@ -98,7 +110,7 @@ export default class CenaCasa extends Phaser.Scene {
         if (this.naPorta && !this.cielita.dialogoAberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('MundoCasa');
+                this.scene.start('MundoCasa', { vindoDe: 'CenaCasa' });
             });
         }
     }
