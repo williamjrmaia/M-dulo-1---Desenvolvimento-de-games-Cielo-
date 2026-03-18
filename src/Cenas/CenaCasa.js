@@ -89,6 +89,14 @@ export default class CenaCasa extends Phaser.Scene {
         this.naPorta = false;
         this.jogador.adicionarOverlap(this.gatilhoPorta, () => { this.naPorta = true; });
 
+        if (this.origem === 'CenaIntroducao') {
+    this.time.delayedCall(700, () => {
+        this.scene.launch('TutorialOverlay');
+        this.scene.bringToTop('TutorialOverlay');
+        this.input.keyboard.enabled = false;
+    });
+}
+
         this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 

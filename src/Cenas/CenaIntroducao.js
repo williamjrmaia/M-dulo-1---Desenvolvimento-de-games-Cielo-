@@ -175,7 +175,7 @@ export default class CenaIntroducao extends Phaser.Scene {
         this.cameras.main.fadeOut(800, 0, 0, 0);
         this.cameras.main.once(
             Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
-            () => this.scene.start('CenaCasa'),
+            () => this.scene.start('CenaCasa', { vindoDe: 'CenaIntroducao' }),
         );
     }
 
