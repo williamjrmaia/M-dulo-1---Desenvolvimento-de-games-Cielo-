@@ -62,7 +62,11 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.btnProxPage  = null;
     }
 
-    preload() {}
+    preload() {
+        this.load.image('reacao_bravo',  'assets/objetos/reacoes/reacao_bravo.png');
+        this.load.image('reacao_neutro', 'assets/objetos/reacoes/reacao_neutro.png');
+        this.load.image('reacao_feliz',  'assets/objetos/reacoes/reacao_feliz.png');
+    }
 
     create() {
         const W = this.scale.width;
@@ -128,6 +132,10 @@ export default class CenaNegociacao extends Phaser.Scene {
 
         this.barraSatisfacaoImg = this.add.image(x, y, this._getChaveBarra())
             .setDisplaySize(barraW, 40);
+
+        this.reacaoImg = this.add.image(x - barraW / 2 - 50, y, this._getChaveReacao())
+            .setDisplaySize(40, 40)
+            .setScale(1.3);
 
         this.satisfacaoTexto = this.add.text(x, y + 28, `${this.satisfacao}%`, {
             fontFamily: '"Courier New", monospace',
@@ -307,7 +315,14 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _atualizarBarraSatisfacao() {
         this.barraSatisfacaoImg.setTexture(this._getChaveBarra());
+        this.reacaoImg.setTexture(this._getChaveReacao());
         this.satisfacaoTexto.setText(`${this.satisfacao}%`);
+    }
+
+    _getChaveReacao() {
+        if (this.satisfacao <= 33) return 'reacao_bravo';
+        if (this.satisfacao <= 66) return 'reacao_neutro';
+        return 'reacao_feliz';
     }
 
     _getChaveBarra() {
