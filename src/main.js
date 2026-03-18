@@ -13,6 +13,7 @@ import CenaPonteh from './Cenas/CenaPonteh.js';
 import VilaDoVarejo from './Cenas/VilaDoVarejo.js'; 
 import CasaGelo2 from './Cenas/CasaGelo2.js';
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
+import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -34,7 +35,7 @@ const config = {
     },
 
 
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaIntroducao, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh,
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaIntroducao, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro,NegociacaoThaina,CenaPonteh,
         TutorialOverlay, CenaCasaGelo, VilaDoVarejo, CasaGelo2, PraiaDosProveitos]//Preloader carrega as sprites antes do jogo começar 
 
 
