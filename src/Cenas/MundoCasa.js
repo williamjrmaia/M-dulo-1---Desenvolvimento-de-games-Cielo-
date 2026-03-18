@@ -100,16 +100,6 @@ export default class MundoCasa extends Phaser.Scene {
         
         this.fazendoTransicao = false;
 
-        const jaViuTutorial = this.game.registry.get('jaViuTutorial');
-        if (!jaViuTutorial) {
-            this.game.registry.set('jaViuTutorial', true);
-            this.time.delayedCall(200, () => {
-                this.scene.launch('TutorialOverlay');
-                this.scene.bringToTop('TutorialOverlay');
-                this.input.keyboard.enabled = false;
-            });
-        }
-
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
         this.cameras.main.startFollow(this.personagem.sprite);
