@@ -547,7 +547,172 @@ Clique do mouse | Confirmar ações ou escolhas
 
 ## 3.8. Implementação Matemática de Animação/Movimento (sprint 4)
 
-*Descreva aqui a função que implementa a movimentação/animação de personagens ou elementos gráficos no seu jogo. Sua função deve se basear em alguma formulação matemática (e.g. fórmula de aceleração). A explicação do funcionamento desta função deve conter notação matemática formal de fórmulas/equações. Se necessário, crie subseções para sua descrição.*
+Esta seção descreve os modelos matemáticos que fundamentam os sistemas de movimentação e animação de personagens no jogo. Dois subsistemas distintos são abordados: a movimentação do jogador por entrada de teclado e a navegação autônoma dos NPCs por waypoints.
+
+---
+
+### Movimentação do Jogador (Jogador.js)
+
+#### Fundamentos: Vetores no Plano 2D
+
+Antes de descrever as fórmulas, é importante compreender o conceito de **vetor**. No contexto de um jogo 2D, um vetor é um par ordenado $(v_x, v_y)$ que representa simultaneamente uma direção e uma intensidade (magnitude). Visualmente, pode-se imaginar uma seta: ela aponta para onde algo está indo e seu comprimento indica quão rápido.
+
+O motor Phaser representa cada objeto no mundo por suas coordenadas $(x, y)$ no plano cartesiano. A cada quadro (*frame*) de animação, o motor atualiza a posição de cada objeto somando sua velocidade ao longo do tempo:
+
+$$x_{t+1} = x_t + v_x \cdot \Delta t$$
+
+$$y_{t+1} = y_t + v_y \cdot \Delta t$$
+
+onde:
+
+| Símbolo | Descrição |
+|---|---|
+| $x_t,\ y_t$ | Posição do personagem no frame $t$ (em pixels) |
+| $v_x,\ v_y$ | Componentes do vetor velocidade (em pixels por segundo) |
+| $\Delta t$ | Intervalo de tempo entre dois frames consecutivos (em segundos) |
+
+> **Nota:** Este é o modelo de cinemática de posição com velocidade constante: a posição varia linearmente com o tempo, sem aceleração.
+
+#### Decomposição Vetorial — Teclas WASD
+
+Cada tecla pressionada define o sinal de uma das componentes do vetor velocidade, onde $V = 100$ px/s é a velocidade escalar configurada na classe `Jogador`:
+
+| Tecla | Componente | Valor atribuído |
+|---|---|---|
+| A | $v_x$ | $-V$ (esquerda) |
+| D | $v_x$ | $+V$ (direita) |
+| W | $v_y$ | $-V$ (cima — eixo invertido) |
+| S | $v_y$ | $+V$ (baixo) |
+
+> **Convenção de eixos:** Em Phaser, o eixo $y$ cresce **para baixo** — diferente do plano cartesiano tradicional. Por isso, pressionar W (mover para cima na tela) resulta em $v_y = -V$.
+
+Quando apenas uma tecla é pressionada, a magnitude do vetor resultante é simplesmente $V$:
+
+$$\|\vec{v}\| = \sqrt{v_x^2 + v_y^2} = \sqrt{V^2 + 0^2} = V$$
+
+#### Movimento Diagonal com Velocidade Constante
+
+Quando dois eixos são ativados simultaneamente — por exemplo, as teclas D e W pressionadas ao mesmo tempo —, o vetor de entrada passa a ter componentes em ambos os eixos. Sem tratamento, a magnitude desse vetor cresceria:
+
+$$\|\vec{v}_{\text{diagonal}}\|_{\text{sem normalização}} = \sqrt{V^2 + V^2} = \sqrt{2} \cdot V \approx 1{,}414 \cdot V$$
+
+Para garantir que o personagem se desloque sempre à mesma velocidade escalar $V$ independentemente da direção, o sistema aplica a **normalização** do vetor de entrada antes de escaloná-lo pela velocidade desejada. Normalizar significa dividir cada componente pela magnitude total do vetor, produzindo um **vetor unitário** $\hat{v}$ de comprimento exatamente igual a 1:
+
+$$\hat{v} = \frac{\vec{v}}{\|\vec{v}\|} = \left(\frac{v_x}{\|\vec{v}\|},\ \frac{v_y}{\|\vec{v}\|}\right)$$
+
+O vetor velocidade final aplicado ao personagem é então:
+
+$$\vec{v}_{\text{final}} = V \cdot \hat{v} = \left(\frac{v_x \cdot V}{\|\vec{v}\|},\ \frac{v_y \cdot V}{\|\vec{v}\|}\right)$$
+
+#### Verificação Formal
+
+Para o caso diagonal onde $v_x = V$ e $v_y = -V$, demonstra-se que a magnitude resultante é sempre $V$:
+
+$$\|\vec{v}\| = \sqrt{V^2 + V^2} = V\sqrt{2}$$
+
+$$\vec{v}_{\text{final}} = \left(\frac{V}{\sqrt{2}},\ \frac{-V}{\sqrt{2}}\right)$$
+
+$$\|\vec{v}_{\text{final}}\| = \sqrt{\left(\frac{V}{\sqrt{2}}\right)^2 + \left(\frac{V}{\sqrt{2}}\right)^2} = \sqrt{\frac{V^2}{2} + \frac{V^2}{2}} = \sqrt{V^2} = V \checkmark$$
+
+A magnitude é $V$ em qualquer direção — eixos ortogonais e diagonais.
+
+A implementação correspondente em `Jogador.js`:
+```javascript
+// Vetor de entrada — leitura das teclas
+let vx = 0, vy = 0;
+if (teclas.left.isDown)  vx -= velocidade;
+if (teclas.right.isDown) vx += velocidade;
+if (teclas.up.isDown)    vy -= velocidade;
+if (teclas.down.isDown)  vy += velocidade;
+
+//  garante ‖v⃗_final‖ = V em qualquer direção
+const mag = Math.sqrt(vx * vx + vy * vy);
+if (mag > 0) {
+    sprite.setVelocityX((vx / mag) * velocidade);
+    sprite.setVelocityY((vy / mag) * velocidade);
+} else {
+    sprite.setVelocity(0);
+}
+```
+
+---
+
+### Movimentação Autônoma dos NPCs — Patrulha por Waypoints (NPC.js)
+
+#### Visão Geral
+
+Os NPCs do jogo navegam autonomamente entre uma sequência de pontos predefinidos chamados **waypoints** — coordenadas absolutas no mapa que definem o caminho de patrulha. A cada frame, o sistema executa quatro etapas:
+
+1. Identificar o waypoint atual $\mathbf{w} = (w_x, w_y)$
+2. Calcular a distância euclidiana até ele
+3. Se a distância for menor que o limiar $\varepsilon = 4$ px, avançar para o próximo waypoint
+4. Caso contrário, mover o NPC em direção ao waypoint com velocidade constante $V_{\text{NPC}}$
+
+#### Distância Euclidiana
+
+A distância entre a posição atual do NPC $\mathbf{p} = (p_x, p_y)$ e o waypoint $\mathbf{w} = (w_x, w_y)$ é calculada pela **distância euclidiana**, derivada diretamente do Teorema de Pitágoras. Ela mede o comprimento do segmento de reta que conecta dois pontos no plano — a menor distância possível entre eles:
+
+$$d(\mathbf{p},\ \mathbf{w}) = \sqrt{(w_x - p_x)^2 + (w_y - p_y)^2}$$
+
+| Símbolo | Descrição |
+|---|---|
+| $\mathbf{p} = (p_x, p_y)$ | Posição atual do NPC no mundo (em pixels) |
+| $\mathbf{w} = (w_x, w_y)$ | Coordenadas do waypoint alvo (em pixels) |
+| $d(\mathbf{p}, \mathbf{w})$ | Distância euclidiana entre os dois pontos (em pixels) |
+
+#### Vetor Direção e Normalização
+
+O vetor deslocamento $\vec{d}$ aponta da posição atual do NPC até o waypoint alvo:
+
+$$\vec{d} = \mathbf{w} - \mathbf{p} = (w_x - p_x,\ w_y - p_y)$$
+
+Note que $\|\vec{d}\| = d(\mathbf{p}, \mathbf{w})$. Para que o NPC se mova com velocidade constante independentemente da distância ao alvo, normaliza-se $\vec{d}$ para obter o vetor unitário $\hat{d}$:
+
+$$\hat{d} = \frac{\vec{d}}{\|\vec{d}\|} = \left(\frac{w_x - p_x}{\|\vec{d}\|},\ \frac{w_y - p_y}{\|\vec{d}\|}\right)$$
+
+O vetor velocidade final aplicado ao NPC é:
+
+$$\vec{v}_{\text{NPC}} = V_{\text{NPC}} \cdot \hat{d} = \left(\frac{(w_x - p_x) \cdot V_{\text{NPC}}}{\|\vec{d}\|},\ \frac{(w_y - p_y) \cdot V_{\text{NPC}}}{\|\vec{d}\|}\right)$$
+
+Esta é exatamente a formulação implementada em `NPC.js`:
+```javascript
+const dx  = alvo.x - this.x;           // componente x do vetor d⃗
+const dy  = alvo.y - this.y;           // componente y do vetor d⃗
+const mag = Math.sqrt(dx*dx + dy*dy);  // ‖d⃗‖ — distância euclidiana
+
+this.setVelocityX((dx / mag) * vel);   // vₓ = (dx / ‖d⃗‖) · V
+this.setVelocityY((dy / mag) * vel);   // vᵧ = (dy / ‖d⃗‖) · V
+```
+
+#### Condição de Chegada ao Waypoint
+
+O NPC é considerado como tendo alcançado o waypoint quando a distância euclidiana cai abaixo de um limiar $\varepsilon$:
+
+$$d(\mathbf{p},\ \mathbf{w}) < \varepsilon, \quad \varepsilon = 4 \text{ px}$$
+
+O limiar $\varepsilon$ é necessário porque, com velocidade discreta frame a frame, o NPC pode nunca pousar exatamente sobre o waypoint. Ao detectar a chegada, o NPC é teleportado para a posição exata do waypoint — eliminando deriva acumulada — e o índice é avançado.
+
+#### Progressão Cíclica dos Waypoints
+
+A patrulha é cíclica e infinita. O índice do waypoint atual avança utilizando a operação de módulo:
+
+$$i_{\text{próximo}} = (i_{\text{atual}} + 1) \bmod N$$
+
+| Símbolo | Descrição |
+|---|---|
+| $i_{\text{atual}}$ | Índice do waypoint que o NPC acabou de alcançar |
+| $N$ | Número total de waypoints definidos na patrulha |
+| $\bmod$ | Operação de módulo (resto da divisão inteira) |
+
+> **Nota:** A operação $\bmod\ N$ garante que, ao atingir o último waypoint (índice $N-1$), o próximo índice calculado seja $0$ — reiniciando a patrulha ciclicamente.
+
+#### Seleção de Animação por Eixo Dominante
+
+Após definir o vetor velocidade, o sistema determina qual animação reproduzir comparando os valores absolutos das componentes $d_x$ e $d_y$. O eixo com maior deslocamento absoluto é considerado o **eixo dominante**:
+
+$$\text{animação}(d_x, d_y) = \begin{cases} \textit{lado} & \text{se } |d_x| \geq |d_y| \\ \textit{costas} & \text{se } |d_x| < |d_y| \text{ e } d_y < 0 \\ \textit{frente} & \text{se } |d_x| < |d_y| \text{ e } d_y \geq 0 \end{cases}$$
+
+A condição $|d_x| \geq |d_y|$ seleciona o eixo de maior deslocamento como eixo dominante, produzindo uma animação coerente com a direção percebida pelo jogador mesmo em movimentos diagonais. Quando o eixo horizontal domina, o flip horizontal (`setFlipX`) evita a necessidade de um spritesheet separado para a direção oposta.
 
 # <a name="c4"></a>4. Desenvolvimento do Jogo
 
