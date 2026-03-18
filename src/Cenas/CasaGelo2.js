@@ -12,7 +12,7 @@ export default class CasaGelo2 extends Phaser.Scene {
     }
 
     preload() {
-         this.load.image('CasaPedro',    'assets/MapaGelo/CasaPedro.png');
+         this.load.image('Casa2',    'assets/MapaGelo/Scene2_House2.png');
          this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
@@ -20,7 +20,7 @@ export default class CasaGelo2 extends Phaser.Scene {
         const centerX = 750;
         const centerY = 400;
 
-        this.add.image(centerX, centerY, 'CasaPedro');
+        this.add.image(centerX, centerY, 'Casa2');
 
         //Personagem
         this.personagem = new Jogador(this, 600, 400, 1.3);
