@@ -110,7 +110,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         }).setOrigin(0.5);
 
         this.spriteCliente = this.textures.exists(chaveInicial)
-            ? this.add.image(W / 2, H * 0.28, chaveInicial).setDisplaySize(150, 200)
+            ? this.add.image(W / 2, H * 0.28, chaveInicial).setScale(0.3)
             : this.add.rectangle(W / 2, H * 0.28, 100, 150, 0x1a3a5a).setStrokeStyle(2, 0x2a6a9a);
     }
 
@@ -158,13 +158,13 @@ export default class CenaNegociacao extends Phaser.Scene {
 
             this.add.text(x, y, `${i + 1}`, {
                 fontFamily: '"Courier New", monospace',
-                fontSize: '12px',
+                fontSize: '16px',
                 color: '#4a8aaa',
             }).setOrigin(0.5);
 
             this.add.text(x, y + 22, CenaNegociacao.LABELS_FASE[fase] ?? fase, {
                 fontFamily: '"Courier New", monospace',
-                fontSize: '10px',
+                fontSize: '14px',
                 color: '#3a6a7a',
             }).setOrigin(0.5);
 
@@ -182,7 +182,7 @@ export default class CenaNegociacao extends Phaser.Scene {
 
         this.dialogoTexto = this.add.text(W / 2, H * 0.47, '', {
             fontFamily: '"Courier New", monospace',
-            fontSize: '14px',
+            fontSize: '16px',
             color: '#a0c8d8',
             wordWrap: { width: W * 0.42 },
             align: 'center',
@@ -501,7 +501,7 @@ export default class CenaNegociacao extends Phaser.Scene {
 
         const texto = this.add.text(x, y, label, {
             fontFamily: '"Courier New", monospace',
-            fontSize: '13px',
+            fontSize: '15px',
             color: corTexto,
             letterSpacing: 1,
         }).setOrigin(0.5).setDepth(LAYERS.MODAL_BTN);
