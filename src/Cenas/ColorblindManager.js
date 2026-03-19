@@ -135,14 +135,18 @@ export class ColorblindManager {
     }
 
     _aplicarFiltro(modo) {
-        // Tenta encontrar o canvas diretamente
-        const canvas = document.querySelector('#game canvas') || document.querySelector('canvas');
-        if (!canvas) {
-            console.warn('[ColorblindManager] Canvas não encontrado. Certifique-se que o Phaser já iniciou.');
-            return;
-        }
-        canvas.style.filter = modo === 'none' ? '' : `url(#cb-${modo})`;
+    const canvas = document.querySelector('#game canvas') || document.querySelector('canvas');
+    if (!canvas) {
+        console.warn('[ColorblindManager] Canvas não encontrado.');
+        return;
     }
+    // Preserva brightness se já existir
+    const brilhoMatch = canvas.style.filter.match(/brightness\([^)]*\)/);
+    const brilho = brilhoMatch ? brilhoMatch[0] : '';
+
+    const filtroColor = modo === 'none' ? '' : `url(#cb-${modo})`;
+    canvas.style.filter = [filtroColor, brilho].filter(Boolean).join(' ');
+}
 
     _salvar(modo) {
         try { localStorage.setItem(STORAGE_KEY, modo); } catch (_) {}
