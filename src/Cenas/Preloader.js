@@ -28,13 +28,14 @@ export default class Preloader extends Phaser.Scene {
 
         this.load.image('Tutorial', 'assets/CenarioCasa/tutorial_andar.png');
 
-        // ── Cartas (carregadas aqui para ficarem em cache antes da NegociacaoPedro) ──
+        // ABORDAGEM ---------------------------
         this.load.image('AntiPitch',             'assets/Cartas/Abordagem/AntiPitch.png');
         this.load.image('ComparacaoInteligente', 'assets/Cartas/Abordagem/ComparacaoInteligente.png');
         this.load.image('DesarmeElegante',       'assets/Cartas/Abordagem/DesarmeElegante.png');
         this.load.image('DiretoAoPonto',         'assets/Cartas/Abordagem/DiretoAoPonto.png');
         this.load.image('GanchoSocial',          'assets/Cartas/Abordagem/GanchoSocial.png');
 
+        //SONDAGEM -----------------------------
         this.load.image('AutoridadeImplicita',  'assets/Cartas/Sondagem/AutoridadeImplicita.png');
         this.load.image('ChaveDeExclusividade', 'assets/Cartas/Sondagem/ChaveDeExclusividade.png');
         this.load.image('Cliffhanger',          'assets/Cartas/Sondagem/Cliffhanger.png');
@@ -42,6 +43,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('LoboCurioso',          'assets/Cartas/Sondagem/LoboCurioso.png');
         this.load.image('PerguntaDeImpacto',    'assets/Cartas/Sondagem/PerguntaDeImpacto.png');
 
+        //DEMONSTRAÇÃO -------------------------
         this.load.image('CieloLioOn',  'assets/Cartas/Produtos/LIOON.png');
         this.load.image('CieloFlash',  'assets/Cartas/Produtos/FLASH.png');
         this.load.image('CVBA',        'assets/Cartas/Produtos/CVBA.png');

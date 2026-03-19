@@ -1,4 +1,14 @@
 import Jogador from '../Classes/Jogador.js';
+import NPC     from '../Classes/NPC.js';
+
+// ── Falas da Cielita no início do Mapa Gelo ──────────────────────────────────
+const FALAS_CIELITA_GELO = [
+    { personagem: 'Cielita', texto: 'Bem-vindo ao Mapa Gelo! Aqui o frio é intenso, mas as oportunidades são ainda maiores.' },
+    { personagem: 'Cielita', texto: 'Explore com cuidado — há lojas, igluus e portais escondidos por toda parte.' },
+    { personagem: 'Cielita', texto: 'Se quiser visitar o Seu Pedro, procure a porta marcada pela placa ao norte.' },
+    { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
+    { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
+];
 
 export default class MapaGelo extends Phaser.Scene {
     constructor() { 
@@ -24,16 +34,53 @@ export default class MapaGelo extends Phaser.Scene {
 
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
+        // Zoom definido antes de criar NPCs para que o DialogoManager leia o valor correto
+        this.cameras.main.setZoom(2.6);
 
         const mapa = this.make.tilemap({ key: 'mapa_dados' });
         this.add.image(0, 0, 'MapaGelo').setOrigin(0, 0);
-      
-        this.personagem = new Jogador(this, 25, 212, 1.0);
-        this.personagem.sprite.setCollideWorldBounds(true);
 
         this.add.image(655, 155, 'Placa').setScale(0.4);
 
-        // HITBOXES DO TILED
+        
+
+        // ── Animação da Cielita ───────────────────────────────────────────────
+        if (!this.anims.exists('cielitaparada')) {
+            this.anims.create({
+                key:       'cielitaparada',
+                frames:    this.anims.generateFrameNumbers('cielitaparada', { start: 0, end: -1 }),
+                frameRate: 3,
+                repeat:    -1,
+            });
+        }
+
+        // ── Grupo de NPCs ─────────────────────────────────────────────────────
+        this.grupoNPCs = this.physics.add.group();
+
+        // ── NPC: Cielita — posicionada perto do spawn do jogador (início do mapa) ──
+        this.cielita = new NPC(this, 300, 190, 'cielitaparada', {
+            velocidade:         0,
+            distanciaInteracao: 60,
+            grupoNPCs:          this.grupoNPCs,
+            animacoes: { idle: 'cielitaparada' },
+            scaleIndicador:     1.3,
+        });
+        this.cielita.setScale(1.1);
+        this.cielita.setDepth(5);
+        this.cielita.setFalas(FALAS_CIELITA_GELO);
+
+        // Colisão NPC↔NPC
+        this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
+
+        // ── Jogador ───────────────────────────────────────────────────────────
+        this.personagem = new Jogador(this, 25, 212, 1.0);
+        this.personagem.sprite.setCollideWorldBounds(true);
+        this.personagem.sprite.setDepth(10);
+
+        // Colisão Jogador↔Cielita
+        this.personagem.adicionarColisao(this.cielita);
+
+        // ── Hitboxes do Tiled ─────────────────────────────────────────────────
         const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
         if (camadaObjetos) {
             camadaObjetos.objects.forEach(obj => {
@@ -61,9 +108,13 @@ export default class MapaGelo extends Phaser.Scene {
          this.geloPorta2, this.portalVarejo, this.ParedePortal
         ].forEach(z => this.physics.add.existing(z, true));
 
+        // Parede abaixo do portal (evita vazar do mapa)
+        this.ParedePortal = this.add.zone(897, 1025, 70, 5);
+        this.physics.add.existing(this.ParedePortal, true);
+
+        // ── Teclas e câmera ───────────────────────────────────────────────────
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
-        this.cameras.main.setZoom(2.6);
         this.cameras.main.fadeIn(500, 0, 0, 0);
         this.cameras.main.setBounds(0, 0, 1024, 1024);
 
@@ -74,7 +125,7 @@ export default class MapaGelo extends Phaser.Scene {
         // Verifica e concede a insígnia se o jogador já venceu a negociação
         this.personagem.verificarInsigniaMapa('mapa_gelo');
     }
-        
+
     update() {
         if (this.fazendoTransicao) return;
 
