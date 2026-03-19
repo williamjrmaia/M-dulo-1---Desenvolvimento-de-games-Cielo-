@@ -16,8 +16,9 @@ export default class CenaNegociacao extends Phaser.Scene {
         { min: 0,  max: 33,  estado: 'bravo',      cor: 0xcc4444 },
     ];
 
-    static GANHO_SATISFACAO = 20;
-    static PERDA_SATISFACAO = 10;
+    static GANHO_SATISFACAO     = 20;
+    static PERDA_SATISFACAO     = 10;
+    static ACERTOS_PARA_AVANCAR = 3;
 
     static CARD_WIDTH         = 270;
     static CARD_HEIGHT        = 330;
@@ -40,7 +41,7 @@ export default class CenaNegociacao extends Phaser.Scene {
             nomeCliente:       clienteConfig.nomeCliente        ?? 'default',
             satisfacaoInicial: clienteConfig.satisfacaoInicial  ??  0,
             cartasExigidas:    clienteConfig.cartasExigidas     ?? {},
-            fases:             clienteConfig.fases              ?? CenaNegociacao.FASES, // se o número específico de fases não for dito, usa a quantidade default de 5
+            fases:             clienteConfig.fases              ?? CenaNegociacao.FASES,
             cartasPorFase:     clienteConfig.cartasPorFase      ?? {
                 abordagem:    5,
                 sondagem:     6,
@@ -55,6 +56,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.cartasNaMao     = [];
         this.negociacaoAtiva = false;
         this.cartaEmDetalhes = null;
+        this.acertosNaFase   = 0;
 
         this._paginas     = null;
         this._paginaAtual = 0;
@@ -66,6 +68,12 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.load.image('reacao_bravo',  'assets/objetos/reacoes/reacao_bravo.png');
         this.load.image('reacao_neutro', 'assets/objetos/reacoes/reacao_neutro.png');
         this.load.image('reacao_feliz',  'assets/objetos/reacoes/reacao_feliz.png');
+
+        // Carrega a insígnia definida pela subclasse, se houver
+        const insignia = this._getInsignia();
+        if (insignia) {
+            this.load.image(insignia.key, insignia.path);
+        }
     }
 
     create() {
@@ -203,6 +211,8 @@ export default class CenaNegociacao extends Phaser.Scene {
         const fase      = this.clienteConfig.fases[this.faseAtual];
         const numCartas = this.clienteConfig.cartasPorFase[fase] || 3;
 
+        this.acertosNaFase = 0;
+
         this._atualizarIndicadoresFase();
         this._mostrarDialogo(this._falaInicioFase(fase));
         this._limparCartas();
@@ -225,33 +235,52 @@ export default class CenaNegociacao extends Phaser.Scene {
         }
     }
 
-    // ── Lógica central: chame _resolverCarta(carta) ao confirmar uma escolha ──
+    // ── Lógica central ────────────────────────────────────────────────────────
 
     _resolverCarta(carta) {
         if (!this.negociacaoAtiva) return;
 
         const fase     = this.clienteConfig.fases[this.faseAtual];
         const exigidas = this.clienteConfig.cartasExigidas[fase] ?? [];
-
-        const acertou = exigidas.length === 0 || exigidas.includes(carta.key);
+        const acertou  = exigidas.length === 0 || exigidas.includes(carta.key);
 
         if (acertou) {
             const pontos = this._getPontuacaoCarta(carta.key);
-            this._mostrarDialogo(this._falaAcertoFase(fase));
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
-            this.negociacaoAtiva = false;
+            this.acertosNaFase++;
 
-            this.time.delayedCall(4000, () => {
-                this.negociacaoAtiva = true;
-                this._avancarOuVencer();
-            });
+            // Remove a carta visualmente da mão
+            if (carta._objetos?.bg) {
+                carta._objetos.bg.destroy();
+            }
+            this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
+
+            const exigidasCount      = exigidas.length > 0 ? exigidas.length : CenaNegociacao.ACERTOS_PARA_AVANCAR;
+            const acertosNecessarios = Math.min(CenaNegociacao.ACERTOS_PARA_AVANCAR, exigidasCount);
+            const faltam             = acertosNecessarios - this.acertosNaFase;
+
+            if (faltam <= 0) {
+                // Atingiu o número necessário de acertos — avança de fase
+                this._mostrarDialogo(this._falaAcertoFase(fase));
+                this.negociacaoAtiva = false;
+
+                this.time.delayedCall(4000, () => {
+                    this.negociacaoAtiva = true;
+                    this._avancarOuVencer();
+                });
+            } else {
+                // Ainda faltam cartas — mostra progresso e aguarda próxima escolha
+                this._mostrarDialogo(`✅ Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
+            }
+
         } else {
+            // Erro: perde satisfação mas mantém acertos anteriores e continua na fase
             this._mostrarDialogo(this._falaErroFase(fase));
             this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
             this.negociacaoAtiva = false;
 
             this.time.delayedCall(2000, () => {
-                if (this.satisfacao <= 0){
+                if (this.satisfacao <= 0) {
                     this._perderNegociacao();
                 } else {
                     this.negociacaoAtiva = true;
@@ -260,7 +289,6 @@ export default class CenaNegociacao extends Phaser.Scene {
         }
     }
 
-    // Sobrescreva na subclasse para pontuação extra por carta (padrão: 0)
     _getPontuacaoCarta(key) {
         return 0;
     }
@@ -368,13 +396,118 @@ export default class CenaNegociacao extends Phaser.Scene {
     _vencerNegociacao() {
         this.negociacaoAtiva = false;
         this._mostrarDialogo('✅ Negociação concluída com sucesso!');
+
+        // Salva a vitória no registry
+        const chave = this._chaveVitoria();
+        if (chave) {
+            const vitorias = this.game.registry.get('negociacoesVencidas') ?? {};
+            vitorias[chave] = true;
+            this.game.registry.set('negociacoesVencidas', vitorias);
+            console.log('✅ Vitória salva:', chave, vitorias);
+        }
+
         this.game.registry.set('ultimaNegociacao', 'vitoria');
 
-        this.time.delayedCall(2000, () => {
-            this.cameras.main.fadeOut(600, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start(this._cenaDeRetorno());
+        // Salva a insígnia no registry e exibe o modal antes de redirecionar
+        const insignia = this._getInsignia();
+        if (insignia) {
+            const insignias = this.game.registry.get('insigniasDesbloqueadas') ?? {};
+            if (!insignias[insignia.key]) {
+                insignias[insignia.key] = true;
+                this.game.registry.set('insigniasDesbloqueadas', insignias);
+                console.log('🏅 Insígnia desbloqueada:', insignia.key);
+            }
+
+            this.time.delayedCall(1000, () => {
+                this._mostrarModalInsignia(insignia, () => {
+                    this._irParaCenaDeRetorno();
+                });
             });
+        } else {
+            this.time.delayedCall(2000, () => {
+                this._irParaCenaDeRetorno();
+            });
+        }
+    }
+
+    _mostrarModalInsignia(insignia, aoFechar) {
+        const W = this.scale.width;
+        const H = this.scale.height;
+        const { LAYERS } = CenaNegociacao;
+
+        // Overlay escuro
+        const overlay = this.add
+            .rectangle(0, 0, W, H, 0x000000, 0.75)
+            .setOrigin(0, 0)
+            .setDepth(LAYERS.OVERLAY);
+
+        // Painel central
+        const painel = this.add
+            .rectangle(W / 2, H / 2, 420, 480, 0x0a1a2a)
+            .setStrokeStyle(3, 0xf0c040)
+            .setDepth(LAYERS.MODAL);
+
+        // Título
+        const titulo = this.add.text(W / 2, H / 2 - 190, '🏅 INSÍGNIA DESBLOQUEADA!', {
+            fontFamily: '"Courier New", monospace',
+            fontSize: '18px',
+            color: '#f0c040',
+            letterSpacing: 2,
+            stroke: '#000000',
+            strokeThickness: 3,
+        }).setOrigin(0.5).setDepth(LAYERS.MODAL);
+
+        // Imagem da insígnia (ou placeholder se não existir)
+        const imgInsignia = this.textures.exists(insignia.key)
+            ? this.add.image(W / 2, H / 2 - 50, insignia.key)
+                .setDisplaySize(180, 180)
+                .setDepth(LAYERS.MODAL)
+            : this.add.rectangle(W / 2, H / 2 - 50, 180, 180, 0x1a3a5a)
+                .setStrokeStyle(2, 0xf0c040)
+                .setDepth(LAYERS.MODAL);
+
+        // Animação de entrada na imagem
+        imgInsignia.setScale(0);
+        this.tweens.add({
+            targets:  imgInsignia,
+            scaleX:   1,
+            scaleY:   1,
+            duration: 400,
+            ease:     'Back.easeOut',
+        });
+
+        // Nome da insígnia
+        const nomeTexto = this.add.text(W / 2, H / 2 + 100, insignia.nome, {
+            fontFamily: '"Courier New", monospace',
+            fontSize: '22px',
+            color: '#ffffff',
+            letterSpacing: 2,
+            stroke: '#000000',
+            strokeThickness: 3,
+        }).setOrigin(0.5).setDepth(LAYERS.MODAL);
+
+        // Botão continuar
+        const { btn: btnContinuar, texto: textoContinuar } = this._criarBotao(
+            W / 2, H / 2 + 170, 200, 50, 'CONTINUAR ▶', 0x1a4a2a, 0x22cc66, '#22cc66'
+        );
+        btnContinuar.setDepth(LAYERS.MODAL);
+        textoContinuar.setDepth(LAYERS.MODAL_BTN);
+
+        const fechar = () => {
+            [overlay, painel, titulo, imgInsignia, nomeTexto, btnContinuar, textoContinuar]
+                .forEach(obj => obj.destroy());
+            if (aoFechar) aoFechar();
+        };
+
+        btnContinuar.on('pointerover', () => btnContinuar.setFillStyle(0x2a6a3a));
+        btnContinuar.on('pointerout',  () => btnContinuar.setFillStyle(0x1a4a2a));
+        btnContinuar.on('pointerdown', fechar);
+    }
+
+    _irParaCenaDeRetorno() {
+        this.cameras.main.fadeOut(600, 0, 0, 0);
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start(this._cenaDeRetorno());
         });
     }
 
@@ -384,10 +517,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.game.registry.set('ultimaNegociacao', 'derrota');
 
         this.time.delayedCall(2000, () => {
-            this.cameras.main.fadeOut(600, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start(this._cenaDeRetorno());
-            });
+            this._irParaCenaDeRetorno();
         });
     }
 
@@ -536,4 +666,8 @@ export default class CenaNegociacao extends Phaser.Scene {
     _falaAcertoFase(fase)  { return 'Muito bem!'; }
     _falaErroFase(fase)    { return 'Não é isso que preciso agora.'; }
     _cenaDeRetorno()       { return 'MundoCasa'; }
+    _chaveVitoria()        { return null; }
+
+    // Sobrescreva na subclasse retornando { key, path, nome } ou null se não houver insígnia
+    _getInsignia()         { return null; }
 }
