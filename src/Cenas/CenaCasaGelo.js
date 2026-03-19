@@ -25,7 +25,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
         this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
         this.load.image('balao',        'assets/objetos/balao_dialogo.png');
-        this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
+        this.load.spritesheet('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl.png', {frameWidth: 32, frameHeight: 32});
         this.load.image('saida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
@@ -64,10 +64,20 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.grupoNPCs = this.physics.add.group();
 
         // ── NPC: Seu Pedro ────────────────────────────────────────────────────
+
+        if (!this.anims.exists('seupedro_idl')) {
+            this.anims.create({
+                key:       'seupedro_idl',
+                frames:    this.anims.generateFrameNumbers('seupedro_idl', { start: 0, end: -1 }),
+                frameRate: 3,
+                repeat:    -1,
+            });
+        }
         this.pedro = new NPC(this, 750, 460, 'seupedro_idl', {
             velocidade:         0,           // estático — sem patrulha
             distanciaInteracao: 40,
             grupoNPCs:          this.grupoNPCs,
+            animacoes: { idle: 'seupedro_idl' },
             onFimDialogo: () => {
                 this.cameras.main.fadeOut(500, 0, 0, 0);
                 this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
