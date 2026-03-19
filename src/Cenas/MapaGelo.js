@@ -90,6 +90,9 @@ export default class MapaGelo extends Phaser.Scene {
          if (this.origem === 'CasaGelo2') {
             this.personagem.sprite.setPosition(400, 675)
         }
+         if (this.origem === 'CenaPonteV') {
+            this.personagem.sprite.setPosition(897, 980);
+        }
        
 
     }
@@ -110,9 +113,11 @@ export default class MapaGelo extends Phaser.Scene {
 
         // Portal Varejo (automático)
          if (this.personagem.temOverlap(this.portalVarejo)) {
-            this.trocarCena('VilaDoVarejo', { vindoDe: 'MapaGelo' });
+            console.log('overlap portalVarejo detectado, indo para CenaPontev');
+            this.trocarCena('CenaPonteV', { vindoDe: 'MapaGelo' });
             return;
         }
+
 
         // 2. Lógica das Portas (Interação com a tecla 'E')
         // Checamos individualmente se ele está em uma OU na outra porta

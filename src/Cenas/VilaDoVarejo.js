@@ -80,6 +80,10 @@ export default class VilaDoVarejo extends Phaser.Scene {
         if (this.origem === 'CasaVarejo1') {
             this.personagem.sprite.setPosition(555, 245)
         }
+        if (this.origem === 'CenaPonteV') {
+            this.personagem.sprite.setPosition(270, 50);
+        }
+        
         this.portalparapraia = this.add.zone(1260, 40, 20, 20)
         this.physics.add.existing(this.portalparapraia, true)
 }
@@ -93,7 +97,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         }
 
         if (this.personagem.temOverlap(this.portalGelo)) {
-            this.trocarCena('MapaGelo', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('CenaPonteV', { vindoDe: 'VilaDoVarejo' });
             return;
         }
 
