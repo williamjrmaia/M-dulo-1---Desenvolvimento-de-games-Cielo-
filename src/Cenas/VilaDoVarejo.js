@@ -76,9 +76,10 @@ export default class VilaDoVarejo extends Phaser.Scene {
         //Grupo de colisão
         this.grupoNPCs = this.physics.add.group();
 
-        this.eric = new NPC(this, 515, 250, 'eric_idle', {
-        velocidade: 50,
+        this.eric = new NPC(this, 515, 230, 'eric_idle', {
+        velocidade: 40,
         distanciaInteracao: 30,
+        flipDireita: true,
         grupoNPCs: this.grupoNPCs,        // registra no grupo automaticamente
         animacoes: {
             idle:  'eric_idle',          // chaves de animações criadas na cena
@@ -89,10 +90,10 @@ export default class VilaDoVarejo extends Phaser.Scene {
         waypoints: [                      // relativos à posição de spawn
             { x:   0, y:  0 },
             { x: 390, y:  0 },
-            { x: 390, y: 280 },
-            { x: 135,   y: 280},
-            { x: 135, y: 230},
-            { x: 85, y: 230}
+            { x: 390, y: 300 },
+            { x: 135,   y: 300},
+            { x: 135, y: 270},
+            { x: 0, y: 270}
         ],});
         this.eric.setScale(1.6);
         this.eric.setFalas([

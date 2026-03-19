@@ -104,6 +104,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             },
             grupoNPCs:    null,       // Phaser.Physics.Arcade.Group — para colisão NPC↔NPC
             onFimDialogo: null,       // function() — chamada ao fim do último texto
+            flipDireita:  false,      // true se o sprite padrão aponta para a ESQUERDA (espelha ao andar para direita)
         }, opcoes);
 
         // ── Colisão NPC↔NPC ───────────────────────────────────────────────────
@@ -241,7 +242,9 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         // Animação direcional — eixo dominante decide a animação
         if (Math.abs(dx) >= Math.abs(dy)) {
             this._playAnim('lado');
-            this.setFlipX(dx < 0); // espelha sprite para simular direção esquerda
+            // flipDireita: true  → sprite padrão aponta esquerda, espelha ao ir para direita
+            // flipDireita: false → sprite padrão aponta direita,  espelha ao ir para esquerda
+            this.setFlipX(this._cfg.flipDireita ? dx > 0 : dx < 0);
         } else {
             this._playAnim(dy < 0 ? 'costa' : 'andar');
         }
