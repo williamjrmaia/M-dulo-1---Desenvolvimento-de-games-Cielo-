@@ -1,4 +1,6 @@
-import Jogador from '../Classes/Jogador.js';
+import Jogador        from '../Classes/Jogador.js';
+import NPC            from '../Classes/NPC.js';
+import DialogoManager from '../Classes/DialogoManager.js';
 
 export default class CasaVarejo1 extends Phaser.Scene {
 
@@ -15,6 +17,11 @@ export default class CasaVarejo1 extends Phaser.Scene {
         this.load.image('CasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.png');
          this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
         this.load.tilemapTiledJSON('mapaCasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.tmj');
+
+        //sprites da thainá
+        this.load.spritesheet('thaina_idl', 'assets/NPC/THAINA/spr_thaina_front_idl.png', {frameWidth: 14, frameHeight: 19});
+        this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
+        this.load.image('balao',      'assets/objetos/balao_dialogo.png');
     }
 
     create() {
@@ -40,11 +47,46 @@ export default class CasaVarejo1 extends Phaser.Scene {
 
         // 2. Limites da física (Paredes extras do mundo)
         this.physics.world.setBounds(xInicialFisica, yInicialFisica, larguraMapa, alturaMapa);
+
+        // Animação da Thainá
+        if (!this.anims.exists('thaina_idl')) {
+            this.anims.create({
+                key:       'thaina_idl',
+                frames:    this.anims.generateFrameNumbers('thaina_idl', { start: 0, end: -1 }),
+                frameRate: 3,
+                repeat:    -1,
+            });
+        }
+
+        //Colisão entre NPCs
+        this.grupoNPCs = this.physics.add.group();
+
+        //Thainá (NPC)
+        this.thaina= new NPC(this, 650, 450, 'thaina_idl', {
+            velocidade: 0,
+            distanciaInteracao: 80,
+            grupoNPCs: this.grupoNPCs,        // registra no grupo automaticamente
+            onFimDialogo: () => {             // callback opcional pós-diálogo
+               this.scene.start('NegociacaoThaina');
+            },
+            scaleIndicador:     1.3,
+            animacoes: {
+                idle:  'thaina_idl'
+            }
+            });
+            this.thaina.setScale(1.3)
+        
+            this.thaina.setFalas([
+                { personagem: 'Thainá', texto: 'Bem-vindo!' },
+                { personagem: 'Jogador',   texto: 'Olá!'      },
+            ]);
         
         // 3. Cria o Personagem
         this.personagem = new Jogador(this, 750, 480, 1);
-        this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
+
+                // Colisão NPC↔Jogador (opcional, mesma API do Jogador)
+        this.personagem.adicionarColisao(this.thaina);
 
         // --- INÍCIO: LER AS HITBOXES DO TILED ---
         const mapa = this.make.tilemap({ key: 'mapaCasaVarejo1' });
@@ -74,7 +116,6 @@ export default class CasaVarejo1 extends Phaser.Scene {
 
         this.cameras.main.setBackgroundColor('#000000');
         this.cameras.main.centerOn(750, 400);
-        this.cameras.main.setZoom(3.5); 
 
         //Porta para sair
         this.PortaCasaVarejo1 = this.add.zone(750, 510, 20, 10)
@@ -82,12 +123,16 @@ export default class CasaVarejo1 extends Phaser.Scene {
 
         this.teclas = this.personagem.configurarTeclas();
 
+        DialogoManager.configurarCameraUI(this, 3.5, [this.thaina]);
+
         
     }
 
     update() {
         if (this.fazendoTransicao) return;
-        this.personagem.atualizar();    
+
+        this.personagem.atualizar();
+        this.thaina.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         if (this.personagem.temOverlap(this.PortaCasaVarejo1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('VilaDoVarejo', { vindoDe: 'CasaVarejo1' });

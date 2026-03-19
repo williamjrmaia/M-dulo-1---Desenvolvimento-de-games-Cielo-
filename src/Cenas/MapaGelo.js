@@ -1,5 +1,6 @@
-import Jogador from '../Classes/Jogador.js';
-import NPC     from '../Classes/NPC.js';
+import Jogador        from '../Classes/Jogador.js';
+import NPC            from '../Classes/NPC.js';
+import DialogoManager from '../Classes/DialogoManager.js';
 
 // ── Falas da Cielita no início do Mapa Gelo ──────────────────────────────────
 const FALAS_CIELITA_GELO = [
@@ -149,20 +150,7 @@ export default class MapaGelo extends Phaser.Scene {
             this.personagem.sprite.setPosition(400, 675);
         }
 
-        // ── Câmera UI para diálogos ───────────────────────────────────────────
-        // A câmera principal tem zoom=2.6, o que faz o Phaser aplicar um clip
-        // region de 577×308px, ocultando elementos scrollFactor(0) fora dessa
-        // área (ex: diálogo em y=740). Uma câmera UI separada com zoom=1 resolve
-        // isso: o diálogo é ignorado pela câmera principal e renderizado apenas
-        // pela câmera UI nas coordenadas de tela corretas.
-        const uiCam = this.cameras.add(0, 0, this.scale.width, this.scale.height);
-        const _dlg  = this.cielita._dialogo;
-        if (_dlg) {
-            const elementosDialogo = [_dlg._fundo, _dlg._textoNome, _dlg._textoFala, _dlg._indicador].filter(Boolean);
-            const objetosMundo     = this.children.list.filter(obj => !elementosDialogo.includes(obj));
-            uiCam.ignore(objetosMundo);
-            this.cameras.main.ignore(elementosDialogo);
-        }
+        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
     }
 
     update() {

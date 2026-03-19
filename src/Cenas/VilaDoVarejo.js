@@ -1,4 +1,6 @@
-import Jogador from "../Classes/Jogador.js";
+import Jogador        from "../Classes/Jogador.js";
+import NPC            from "../Classes/NPC.js";
+import DialogoManager from "../Classes/DialogoManager.js";
 
 export default class VilaDoVarejo extends Phaser.Scene {
     constructor() {
@@ -12,12 +14,29 @@ export default class VilaDoVarejo extends Phaser.Scene {
     preload() {
         // Carrega a imagem do cenário
         this.load.image('fundoVila', 'assets/VilaDoVarejo/vila_do_varejo.png');
+        //diálogo
+        this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
+        this.load.image('balao',        'assets/objetos/balao_dialogo.png');
+
+        this.load.spritesheet('eric_idle', 'assets/NPC/ERIC/spr_eric_front_idl.png', {frameWidth: 14, frameHeight: 19});
+        this.load.spritesheet('eric_andar', 'assets/NPC/ERIC/spr_eric_front_walk.png', {frameWidth: 14, frameHeight: 19});
+        this.load.spritesheet('eric_lado', 'assets/NPC/ERIC/spr_eric_side_walk.png', {frameWidth: 14, frameHeight: 19});
+        this.load.spritesheet('eric_costas', 'assets/NPC/ERIC/spr_eric_back_walk.png', {frameWidth: 14, frameHeight: 19});
         
         // Carrega o seu arquivo TMJ (que é um JSON gerado pelo Tiled)
         this.load.json('hitboxesVila', 'assets/VilaDoVarejo/VilaDoVarejo.tmj'); 
+
+        
     }
 
     create() {
+
+        //debug para coordenadas
+        this.input.on('pointerdown', (pointer) => {
+    const worldX = pointer.worldX.toFixed(0);
+    const worldY = pointer.worldY.toFixed(0);
+    console.log(`x: ${worldX}, y: ${worldY}`);
+});
 
         this.fazendoTransicao = false;
         // Coloca o fundo primeiro
@@ -26,10 +45,70 @@ export default class VilaDoVarejo extends Phaser.Scene {
         // Limites do mundo (bordas da tela)
         this.physics.world.setBounds(110, 0, 1264, 842);
         
+        this.anims.create({
+            key: 'eric_idle',
+            frames: this.anims.generateFrameNumbers('eric_idle', { start: 0, end: 3 }),
+            frameRate: 3,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eric_andar',
+            frames: this.anims.generateFrameNumbers('eric_andar', { start: 0, end: 3 }),
+            frameRate: 4,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eric_lado',
+            frames: this.anims.generateFrameNumbers('eric_lado', { start: 0, end: 3 }),
+            frameRate: 4,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: 'eric_costas',
+            frames: this.anims.generateFrameNumbers('eric_costas', { start: 0, end: 3 }),
+            frameRate: 4,
+            repeat: -1
+        });
+
+        //Grupo de colisão
+        this.grupoNPCs = this.physics.add.group();
+
+        this.eric = new NPC(this, 515, 250, 'eric_idle', {
+        velocidade: 50,
+        distanciaInteracao: 30,
+        grupoNPCs: this.grupoNPCs,        // registra no grupo automaticamente
+        animacoes: {
+            idle:  'eric_idle',          // chaves de animações criadas na cena
+            andar: 'eric_andar',         // frente
+            costa: 'eric_costas',        // costas
+            lado:  'eric_lado',          // lateral
+        },
+        waypoints: [                      // relativos à posição de spawn
+            { x:   0, y:  0 },
+            { x: 390, y:  0 },
+            { x: 390, y: 280 },
+            { x: 135,   y: 280},
+            { x: 135, y: 230},
+            { x: 85, y: 230}
+        ],});
+        this.eric.setScale(1.6);
+        this.eric.setFalas([
+        { personagem: 'Eric',      texto: 'Eu ouvi que a loja de doces da Thainá estava com problemas na maquininha...' },
+        { personagem: 'Jogador',   texto: 'Obrigado!'  },
+        ]);
+
+
+        this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
+
         // Cria o jogador
         this.personagem = new Jogador(this, 400, 300, 1.5);
-        this.personagem.configurarTeclas();
+        this.teclas = this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
+        
+        this.personagem.adicionarColisao(this.grupoNPCs);
         
         // Cria um grupo físico estático para guardar todos os obstáculos do cenário
         this.obstaculos = this.physics.add.staticGroup();
@@ -68,7 +147,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
         
         // Configura a câmera
         this.cameras.main.startFollow(this.personagem.sprite);
-        this.cameras.main.setZoom(1.7);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
         if (this.origem === 'MapaGelo') {
@@ -86,15 +164,16 @@ export default class VilaDoVarejo extends Phaser.Scene {
         
         this.portalparapraia = this.add.zone(1260, 40, 20, 20)
         this.physics.add.existing(this.portalparapraia, true)
+
+        DialogoManager.configurarCameraUI(this, 1.7, [this.eric]);
 }
 
     update() {
 
          if (this.fazendoTransicao) return;
 
-        if (this.personagem) {
-            this.personagem.atualizar();
-        }
+        this.personagem.atualizar();
+        this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         if (this.personagem.temOverlap(this.portalGelo)) {
             this.trocarCena('CenaPonteV', { vindoDe: 'VilaDoVarejo' });
@@ -109,7 +188,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
             this.trocarCena('CasaVarejo1', { vindoDe: 'VilaDoVarejo' });
             return;
         }
-        this.teclas = this.personagem.configurarTeclas();
 
          
     }
