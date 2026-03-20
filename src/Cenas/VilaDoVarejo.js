@@ -12,7 +12,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
     }
 
     preload() {
-        // Carrega a imagem do cenário
         this.load.image('fundoVila', 'assets/VilaDoVarejo/vila_do_varejo.png');
         //diálogo
         this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
@@ -23,7 +22,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.load.spritesheet('eric_lado', 'assets/NPC/ERIC/spr_eric_side_walk.png', {frameWidth: 14, frameHeight: 19});
         this.load.spritesheet('eric_costas', 'assets/NPC/ERIC/spr_eric_back_walk.png', {frameWidth: 14, frameHeight: 19});
         
-        // Carrega o seu arquivo TMJ (que é um JSON gerado pelo Tiled)
         this.load.json('hitboxesVila', 'assets/VilaDoVarejo/VilaDoVarejo.tmj'); 
 
         
@@ -39,10 +37,9 @@ export default class VilaDoVarejo extends Phaser.Scene {
 });
 
         this.fazendoTransicao = false;
-        // Coloca o fundo primeiro
+
         this.add.image(110, 0, 'fundoVila').setOrigin(0, 0).setScale(1);
     
-        // Limites do mundo (bordas da tela)
         this.physics.world.setBounds(110, 0, 1264, 842);
         
         this.anims.create({
@@ -114,19 +111,14 @@ export default class VilaDoVarejo extends Phaser.Scene {
         // Cria um grupo físico estático para guardar todos os obstáculos do cenário
         this.obstaculos = this.physics.add.staticGroup();
 
-        //Cria as hitbox vindo do Tiled
         const mapData = this.cache.json.get('hitboxesVila');
-
-        // Valores de deslocamento (offset) para bater com a imagem de fundo
         const offsetX = 112;
         const offsetY = 4;
 
-        //Posicionamento e criação da hitbox vindo do Tiled como um json
         if (mapData && mapData.layers) {
             mapData.layers.forEach(layer => {
                 if (layer.type === 'objectgroup' && layer.objects) {
                     layer.objects.forEach(obj => {
-                        // Agora somamos o offsetX e offsetY nas coordenadas!
                         let zona = this.add.zone(obj.x + offsetX, obj.y + offsetY, obj.width, obj.height).setOrigin(0, 0);
                         this.physics.add.existing(zona, true);
                         this.obstaculos.add(zona);
@@ -135,43 +127,63 @@ export default class VilaDoVarejo extends Phaser.Scene {
             });
         }
 
-        //Porta Casa1Varejo
-        this.portaCasa1Varejo = this.add.zone(555, 225, 40, 30)
+        // ── Porta Casa 1 Varejo (existente) ───────────────────────────────────
+        this.portaCasa1Varejo = this.add.zone(555, 225, 40, 30);
         this.physics.add.existing(this.portaCasa1Varejo, true);
 
-        //Portal para voltar ao Gelo
-        this.portalGelo = this.add.zone(270, 20, 25, 15)
-        this.physics.add.existing(this.portalGelo, true)
+        // ── Portal para o Gelo (existente) ────────────────────────────────────
+        this.portalGelo = this.add.zone(270, 20, 25, 15);
+        this.physics.add.existing(this.portalGelo, true);
 
-        // Adiciona a colisão entre o jogador e o grupo de obstáculos que acabamos de criar
+        // ── Portal para a Praia (existente) ───────────────────────────────────
+        this.portalparapraia = this.add.zone(1260, 40, 20, 20);
+        this.physics.add.existing(this.portalparapraia, true);
+
+        // ── ZONA DE TESTE TEMPORÁRIA ──────────────────────────────────────────
+        // Remove este bloco inteiro quando o NPC da Thaina estiver no mapa.
+        // Posição: próxima à entrada da vila para facilitar o teste.
+        this.zonaTesteThaina = this.add.zone(400, 300, 60, 60);
+        this.physics.add.existing(this.zonaTesteThaina, true);
+
+        // Marcador visual para encontrar a zona facilmente durante os testes
+        this._marcadorTeste = this.add.rectangle(400, 300, 60, 60, 0xffff00, 0.3)
+            .setStrokeStyle(2, 0xffff00);
+        this.add.text(400, 270, '[TESTE]\nE = Thaina', {
+            fontFamily: 'Courier',
+            fontSize:   '10px',
+            color:      '#ffff00',
+            align:      'center',
+        }).setOrigin(0.5);
+        // ── FIM ZONA DE TESTE ─────────────────────────────────────────────────
+
         this.physics.add.collider(this.personagem.sprite, this.obstaculos);
         
-        // Configura a câmera
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
+        // Posicionamento por origem
         if (this.origem === 'MapaGelo') {
             this.personagem.sprite.setPosition(270, 50);
         }
-         if (this.origem === 'PraiaDosProveitos') {
-            this.personagem.sprite.setPosition(1260, 70)
+        if (this.origem === 'PraiaDosProveitos') {
+            this.personagem.sprite.setPosition(1260, 70);
         }
         if (this.origem === 'CasaVarejo1') {
-            this.personagem.sprite.setPosition(555, 245)
+            this.personagem.sprite.setPosition(555, 245);
         }
         if (this.origem === 'CenaPonteV') {
             this.personagem.sprite.setPosition(270, 50);
         }
         
-        this.portalparapraia = this.add.zone(1260, 40, 20, 20)
-        this.physics.add.existing(this.portalparapraia, true)
+        if (this.origem === 'NegociacaoThaina') {
+            this.personagem.sprite.setPosition(400, 320);
+        }
 
         DialogoManager.configurarCameraUI(this, 1.7, [this.eric]);
-}
+    }
 
     update() {
-
-         if (this.fazendoTransicao) return;
+        if (this.fazendoTransicao) return;
 
         this.personagem.atualizar();
         this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
@@ -185,12 +197,20 @@ export default class VilaDoVarejo extends Phaser.Scene {
             this.trocarCena('PraiaDosProveitos', { vindoDe: 'VilaDoVarejo' });
             return;
         }
-         if (this.personagem.temOverlap(this.portaCasa1Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+
+        if (this.personagem.temOverlap(this.portaCasa1Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CasaVarejo1', { vindoDe: 'VilaDoVarejo' });
             return;
         }
 
-         
+        // ── ZONA DE TESTE TEMPORÁRIA ──────────────────────────────────────────
+        // Remove este bloco junto com a zona declarada no create() quando
+        // o NPC da Thaina estiver no mapa.
+        if (this.personagem.temOverlap(this.zonaTesteThaina) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('NegociacaoThaina', { vindoDe: 'VilaDoVarejo' });
+            return;
+        }
+        // ── FIM ZONA DE TESTE ─────────────────────────────────────────────────
     }
 
     trocarCena(nomeCena, dados = {}) {

@@ -16,21 +16,33 @@ export default class NegociacaoPedro extends CenaNegociacao {
             cartasExigidas: {
                 abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
                 sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
-                demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'], // todas acertam
+                demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'],
                 negociacao:   ['Ajuste', 'Validacao', 'Quebra'],
-                fechamento:   ['Adicional', 'Alternativo', 'Desconto'],
+                fechamento:   ['Adicional', 'Alternativo', 'Desconto','Teste'],
             },
             cartasPorFase: {
                 abordagem:    5,
                 sondagem:     6,
                 demonstracao: 4,
                 negociacao:   3,
-                fechamento:   5,
+                fechamento:   4,
             },
         });
     }
 
-    // Pontuação extra por carta de produto
+    _chaveVitoria() {
+        return 'pedro_vencido';
+    }
+
+    // Insígnia concedida ao vencer a negociação com Pedro
+    _getInsignia() {
+        return {
+            key:  'insignia_pedro',
+            path: 'assets/insignias/InsigniaAbordagem1.png',
+            nome: 'Mestre da Abordagem',
+        };
+    }
+
     _getPontuacaoCarta(key) {
         return PONTUACAO_PRODUTO[key] ?? 0;
     }
