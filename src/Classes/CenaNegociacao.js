@@ -17,7 +17,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     ];
 
     static GANHO_SATISFACAO     = 20;
-    static PERDA_SATISFACAO     = 10;
+    static PERDA_SATISFACAO     = 15;
     static ACERTOS_PARA_AVANCAR = 3;
 
     static CARD_WIDTH         = 270;
