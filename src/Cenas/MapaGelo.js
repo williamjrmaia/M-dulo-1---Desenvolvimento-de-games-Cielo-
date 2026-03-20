@@ -127,9 +127,8 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'VilaDoVarejo') this.personagem.sprite.setPosition(897, 980);
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
 
-<<<<<<< HEAD
         DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
-=======
+        
          //── Câmera UI para diálogos ───────────────────────────────────────────
         // A câmera principal tem zoom=2.6, o que faz o Phaser aplicar um clip
         // region de 577×308px, ocultando elementos scrollFactor(0) fora dessa
@@ -146,7 +145,6 @@ export default class MapaGelo extends Phaser.Scene {
 
         // Verifica e concede a insígnia se o jogador já venceu a negociação
         this.personagem.verificarInsigniaMapa('mapa_gelo');
->>>>>>> origin/dev
     }
 }
 

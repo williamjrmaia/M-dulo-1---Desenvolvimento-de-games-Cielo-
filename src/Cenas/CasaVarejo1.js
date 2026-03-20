@@ -48,15 +48,9 @@ export default class CasaVarejo1 extends Phaser.Scene {
         // 2. Limites da física (Paredes extras do mundo)
         this.physics.world.setBounds(xInicialFisica, yInicialFisica, larguraMapa, alturaMapa);
 
-        // Animação da Thainá
-        if (!this.anims.exists('thaina_idl')) {
-            this.anims.create({
-                key:       'thaina_idl',
-                frames:    this.anims.generateFrameNumbers('thaina_idl', { start: 0, end: -1 }),
-                frameRate: 3,
-                repeat:    -1,
-            });
-        }
+        NPC.criarAnimacoes(this, [
+            { key: 'thaina_idl', frameRate: 3 },
+        ]);
 
         //Colisão entre NPCs
         this.grupoNPCs = this.physics.add.group();

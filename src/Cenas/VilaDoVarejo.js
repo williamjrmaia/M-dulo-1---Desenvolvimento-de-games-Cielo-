@@ -17,10 +17,17 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
         this.load.image('balao',        'assets/objetos/balao_dialogo.png');
 
+        //eric
         this.load.spritesheet('eric_idle', 'assets/NPC/ERIC/spr_eric_front_idl.png', {frameWidth: 14, frameHeight: 19});
         this.load.spritesheet('eric_andar', 'assets/NPC/ERIC/spr_eric_front_walk.png', {frameWidth: 14, frameHeight: 19});
         this.load.spritesheet('eric_lado', 'assets/NPC/ERIC/spr_eric_side_walk.png', {frameWidth: 14, frameHeight: 19});
         this.load.spritesheet('eric_costas', 'assets/NPC/ERIC/spr_eric_back_walk.png', {frameWidth: 14, frameHeight: 19});
+
+        //jorge
+        this.load.spritesheet('jorge_idle', 'assets/NPC/JORGE/spr_jorge_front_idl.png', {frameWidth: 14, frameHeight: 19});
+        this.load.spritesheet('jorge_andar', 'assets/NPC/JORGE/spr_jorge_front_walk.png', {frameWidth: 14, frameHeight: 19});
+        this.load.spritesheet('jorge_lado', 'assets/NPC/JORGE/spr_jorge_side_walk.png', {frameWidth: 14, frameHeight: 19});
+        this.load.spritesheet('jorge_costas', 'assets/NPC/JORGE/spr_jorge_back_walk.png', {frameWidth: 14, frameHeight: 19});
         
         this.load.json('hitboxesVila', 'assets/VilaDoVarejo/VilaDoVarejo.tmj'); 
 
@@ -42,33 +49,18 @@ export default class VilaDoVarejo extends Phaser.Scene {
     
         this.physics.world.setBounds(110, 0, 1264, 842);
         
-        this.anims.create({
-            key: 'eric_idle',
-            frames: this.anims.generateFrameNumbers('eric_idle', { start: 0, end: 3 }),
-            frameRate: 3,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'eric_andar',
-            frames: this.anims.generateFrameNumbers('eric_andar', { start: 0, end: 3 }),
-            frameRate: 4,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'eric_lado',
-            frames: this.anims.generateFrameNumbers('eric_lado', { start: 0, end: 3 }),
-            frameRate: 4,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'eric_costas',
-            frames: this.anims.generateFrameNumbers('eric_costas', { start: 0, end: 3 }),
-            frameRate: 4,
-            repeat: -1
-        });
+        NPC.criarAnimacoes(this, [
+            //ERIC ANIMS -------------------------
+            { key: 'eric_idle',    frameRate: 3 },
+            { key: 'eric_andar',   frameRate: 4 },
+            { key: 'eric_lado',    frameRate: 4 },
+            { key: 'eric_costas',  frameRate: 4 },
+            //JORGE ANIMS ------------------------
+            { key: 'jorge_idle',   frameRate: 3 },
+            { key: 'jorge_andar',  frameRate: 4 },
+            { key: 'jorge_lado',   frameRate: 4 },
+            { key: 'jorge_costas', frameRate: 4 },
+        ]);
 
         //Grupo de colisão
         this.grupoNPCs = this.physics.add.group();
@@ -77,20 +69,20 @@ export default class VilaDoVarejo extends Phaser.Scene {
         velocidade: 40,
         distanciaInteracao: 30,
         flipDireita: true,
-        grupoNPCs: this.grupoNPCs,        // registra no grupo automaticamente
+        grupoNPCs: this.grupoNPCs,       // registra no grupo automaticamente
         animacoes: {
             idle:  'eric_idle',          // chaves de animações criadas na cena
             andar: 'eric_andar',         // frente
             costa: 'eric_costas',        // costas
             lado:  'eric_lado',          // lateral
         },
-        waypoints: [                      // relativos à posição de spawn
+        waypoints: [                     // relativos à posição de spawn
             { x:   0, y:  0 },
             { x: 390, y:  0 },
             { x: 390, y: 300 },
-            { x: 135,   y: 300},
-            { x: 135, y: 270},
-            { x: 0, y: 270}
+            { x: 135,   y: 300 },
+            { x: 135, y: 270 },
+            { x: 0, y: 270 }
         ],});
         this.eric.setScale(1.6);
         this.eric.setFalas([
@@ -98,6 +90,41 @@ export default class VilaDoVarejo extends Phaser.Scene {
         { personagem: 'Jogador',   texto: 'Obrigado!'  },
         ]);
 
+        this.jorge = new NPC(this, 1160, 680, 'jorge_idle', {
+            velocidade: 50,
+            distanciaInteracao: 30,
+            grupoNPCs: this.grupoNPCs,
+            animacoes: {
+                idle:  'jorge_idle',
+                andar: 'jorge_andar',
+                costa: 'jorge_costas',  
+                lado:  'jorge_lado', 
+            },
+            waypoints: [ {x: 0, y: 0},
+                         {x: 0, y:10},
+                         {x: -260, y:20},
+                         {x: -260, y: 70},
+                         {x: -270, y:70},
+                         {x: -270, y: 80},
+                         {x: -510, y: 80},
+                         {x: -510, y: -80},
+                         {x: -580, y: -80},
+                         {x: -580, y: -120, pausa: 45000},
+                         {x: -580, y: -80},
+                         {x: -510, y: -80},
+                         {x: -510, y: 80},
+                         {x: -270, y: 80},
+                         {x: -270, y:70},
+                         {x: -260, y: 70},
+                         {x: -260, y:20},
+                         {x: 0, y:10}
+
+            ]
+        });
+        this.jorge.setScale(1.6);
+        this.jorge.setFalas([ 
+            { personagem: 'Jorge', texto: 'Forsche...'} 
+        ]);
 
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
@@ -127,34 +154,17 @@ export default class VilaDoVarejo extends Phaser.Scene {
             });
         }
 
-        // ── Porta Casa 1 Varejo (existente) ───────────────────────────────────
+        // ── Porta Casa 1 Varejo ───────────────────────────────────
         this.portaCasa1Varejo = this.add.zone(555, 225, 40, 30);
         this.physics.add.existing(this.portaCasa1Varejo, true);
 
-        // ── Portal para o Gelo (existente) ────────────────────────────────────
+        // ── Portal para o Gelo ────────────────────────────────────
         this.portalGelo = this.add.zone(270, 20, 25, 15);
         this.physics.add.existing(this.portalGelo, true);
 
-        // ── Portal para a Praia (existente) ───────────────────────────────────
+        // ── Portal para a Praia ───────────────────────────────────
         this.portalparapraia = this.add.zone(1260, 40, 20, 20);
         this.physics.add.existing(this.portalparapraia, true);
-
-        // ── ZONA DE TESTE TEMPORÁRIA ──────────────────────────────────────────
-        // Remove este bloco inteiro quando o NPC da Thaina estiver no mapa.
-        // Posição: próxima à entrada da vila para facilitar o teste.
-        this.zonaTesteThaina = this.add.zone(400, 300, 60, 60);
-        this.physics.add.existing(this.zonaTesteThaina, true);
-
-        // Marcador visual para encontrar a zona facilmente durante os testes
-        this._marcadorTeste = this.add.rectangle(400, 300, 60, 60, 0xffff00, 0.3)
-            .setStrokeStyle(2, 0xffff00);
-        this.add.text(400, 270, '[TESTE]\nE = Thaina', {
-            fontFamily: 'Courier',
-            fontSize:   '10px',
-            color:      '#ffff00',
-            align:      'center',
-        }).setOrigin(0.5);
-        // ── FIM ZONA DE TESTE ─────────────────────────────────────────────────
 
         this.physics.add.collider(this.personagem.sprite, this.obstaculos);
         
@@ -187,6 +197,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
 
         this.personagem.atualizar();
         this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.jorge.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         if (this.personagem.temOverlap(this.portalGelo)) {
             this.trocarCena('CenaPonteV', { vindoDe: 'VilaDoVarejo' });
