@@ -10,6 +10,16 @@
 //   import NPC from '../Classes/NPC.js';
 //
 //   // No create() da cena:
+//   //   NPC.criarAnimacoes(this, [
+//   //       { key: 'eric_idle',   frameRate: 3 },
+//   //       { key: 'eric_andar',  frameRate: 4 },
+//   //       { key: 'eric_lado',   frameRate: 4 },
+//   //       { key: 'eric_costas', frameRate: 4 },
+//   //   ]);
+//
+//   // PARÂMETROS opcionais por entrada:
+//   //   start (padrão 0)  — frame inicial
+//   //   end   (padrão -1) — frame final (-1 = todos os frames)
 //
 //   // 1. Grupo compartilhado para colisão NPC↔NPC (crie UMA vez por cena)
 //   this.grupoNPCs = this.physics.add.group();
@@ -104,6 +114,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             },
             grupoNPCs:    null,       // Phaser.Physics.Arcade.Group — para colisão NPC↔NPC
             onFimDialogo: null,       // function() — chamada ao fim do último texto
+            flipDireita:  false,      // true se o sprite padrão aponta para a ESQUERDA (espelha ao andar para direita)
         }, opcoes);
 
         // ── Colisão NPC↔NPC ───────────────────────────────────────────────────
@@ -119,13 +130,16 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
 
         // ── Patrulha ──────────────────────────────────────────────────────────
         // Converte waypoints relativos para absolutos uma única vez
+        // pausa (opcional, em ms): tempo parado ao chegar neste waypoint
         this._waypoints = this._cfg.waypoints.map(wp => ({
-            x: x + wp.x,
-            y: y + wp.y,
+            x:     x + wp.x,
+            y:     y + wp.y,
+            pausa: wp.pausa ?? 0,
         }));
-        this._waypointAtual = 0;
-        this._patrulhando   = this._waypoints.length > 0;
-        this._pausado       = false;
+        this._waypointAtual  = 0;
+        this._patrulhando    = this._waypoints.length > 0;
+        this._pausado        = false;
+        this._pausaAte       = 0; // timestamp até quando o NPC fica parado no waypoint
 
         // ── Diálogo e indicador E — apenas para NPCs interativos ─────────────
         if (this._cfg.interativo) {
@@ -221,10 +235,23 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         const alvo = this._waypoints[this._waypointAtual];
         const dist = Phaser.Math.Distance.Between(this.x, this.y, alvo.x, alvo.y);
 
-        // Chegou no waypoint — avança para o próximo (circular)
+        // Aguardando pausa no waypoint atual
+        if (this._pausaAte > 0) {
+            if (Date.now() < this._pausaAte) {
+                this.setVelocity(0);
+                this._playAnim('idle');
+                return;
+            }
+            this._pausaAte = 0;
+        }
+
+        // Chegou no waypoint — aplica pausa (se houver) e avança para o próximo
         if (dist < 4) {
             this.setVelocity(0);
             this.setPosition(alvo.x, alvo.y);
+            if (alvo.pausa > 0) {
+                this._pausaAte = Date.now() + alvo.pausa;
+            }
             this._waypointAtual = (this._waypointAtual + 1) % this._waypoints.length;
             return;
         }
@@ -241,7 +268,9 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         // Animação direcional — eixo dominante decide a animação
         if (Math.abs(dx) >= Math.abs(dy)) {
             this._playAnim('lado');
-            this.setFlipX(dx < 0); // espelha sprite para simular direção esquerda
+            // flipDireita: true  → sprite padrão aponta esquerda, espelha ao ir para direita
+            // flipDireita: false → sprite padrão aponta direita,  espelha ao ir para esquerda
+            this.setFlipX(this._cfg.flipDireita ? dx > 0 : dx < 0);
         } else {
             this._playAnim(dy < 0 ? 'costa' : 'andar');
         }
@@ -271,5 +300,27 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     destroy(fromScene) {
         if (this._indicadorE) this._indicadorE.destroy();
         super.destroy(fromScene);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // Utilitários estáticos
+    // ─────────────────────────────────────────────────────────────────────────
+
+    // Registra animações no gerenciador de animações da cena de forma concisa.
+    // O key da animação é usado também como key do spritesheet (padrão do projeto).
+    // Ignora animações já registradas para evitar erros ao revisitar a cena.
+
+
+
+    static criarAnimacoes(cena, definicoes) {
+        definicoes.forEach(({ key, frameRate, start = 0, end = -1 }) => {
+            if (cena.anims.exists(key)) return;
+            cena.anims.create({
+                key,
+                frames:    cena.anims.generateFrameNumbers(key, { start, end }),
+                frameRate,
+                repeat:    -1,
+            });
+        });
     }
 }

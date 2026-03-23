@@ -14,12 +14,12 @@ export default class Jogador {
             negociacaoChave: 'pedro_vencido',
         },
         // Adicione novos mapas aqui:
-        // vila_varejo: {
-        //     nome:            'Rei do Varejo',
-        //     assetKey:        'insignia_vila_varejo',
-        //     assetPath:       'assets/insignias/InsigniaVarejo.png',
-        //     negociacaoChave: 'varejo_vencido',
-        // },
+             vila_varejo: {
+              nome:            'Rei do Varejo',
+             assetKey:        'insignia_vila_varejo',
+             assetPath:       'assets/insignias/InsigniaProduto1.png',
+             negociacaoChave: 'varejo_vencido',
+        },
     };
 
     constructor(cena, x, y, scale = 2.3) {

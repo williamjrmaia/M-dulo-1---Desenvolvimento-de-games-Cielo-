@@ -1,5 +1,6 @@
-import Jogador from '../Classes/Jogador.js';
-import NPC     from '../Classes/NPC.js';
+import Jogador        from '../Classes/Jogador.js';
+import NPC            from '../Classes/NPC.js';
+import DialogoManager from '../Classes/DialogoManager.js';
 
 // ── Falas da Cielita no início do Mapa Gelo ──────────────────────────────────
 const FALAS_CIELITA_GELO = [
@@ -28,7 +29,7 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.image('Placa',    './assets/MapaGelo/PlacaCasaPedro.png');
         this.load.tilemapTiledJSON('mapa_dados', './assets/MapaGelo/MapaGeloHitbox.tmj');
         Jogador.preloadInsignias(this);
-         // Assets da Cielita (mesmos do CenaCasa)
+        // Assets da Cielita (mesmos do CenaCasa)
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
@@ -133,6 +134,8 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
         if (this.origem === 'CenaPonteV') this.personagem.sprite.setPosition(897, 990);
 
+        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
+        
          //── Câmera UI para diálogos ───────────────────────────────────────────
         // A câmera principal tem zoom=2.6, o que faz o Phaser aplicar um clip
         // region de 577×308px, ocultando elementos scrollFactor(0) fora dessa
@@ -153,14 +156,12 @@ export default class MapaGelo extends Phaser.Scene {
         
     }
 
-
-
     update() {
         // IF para impedir bugs de repetição
         if (this.fazendoTransicao) return;
         //Atualizando as animações e spritesheets do personagem
         this.personagem.atualizar();
-         // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
+        // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         // Portal de volta — livre, sem verificação de insígnia
@@ -186,10 +187,6 @@ export default class MapaGelo extends Phaser.Scene {
 
         //Se estiver interagindo ou na Porta1 ou na Porta2 (que são da CasaPedro), apertar a tecla de interagir (E) vai entrar na casa. A não ser que não tenha a insignia
         if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            if (!this._temInsignia()) {
-                this._mostrarMensagemBloqueio();
-                return;
-            }
             this.trocarCena('CenaCasaGelo');
             return;
         }
@@ -271,3 +268,5 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
+
+
