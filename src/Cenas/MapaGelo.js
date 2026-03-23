@@ -1,5 +1,6 @@
-import Jogador from '../Classes/Jogador.js';
-import NPC     from '../Classes/NPC.js';
+import Jogador        from '../Classes/Jogador.js';
+import NPC            from '../Classes/NPC.js';
+import DialogoManager from '../Classes/DialogoManager.js';
 
 // ── Falas da Cielita no início do Mapa Gelo ──────────────────────────────────
 const FALAS_CIELITA_GELO = [
@@ -122,8 +123,8 @@ export default class MapaGelo extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, 1024, 1024);
 
         if (this.origem === 'CenaCasaGelo') this.personagem.sprite.setPosition(655, 210);
-        if (this.origem === 'VilaDoVarejo') this.personagem.sprite.setPosition(897, 980);
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
+        if (this.origem === 'CenaPonteV') this.personagem.sprite.setPosition(897, 990);
 
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         const uiCam = this.cameras.add(0, 0, this.scale.width, this.scale.height);
@@ -248,3 +249,4 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
+

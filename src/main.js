@@ -16,7 +16,9 @@ import VilaDoVarejo from './Cenas/VilaDoVarejo.js';
 import CasaGelo2 from './Cenas/CasaGelo2.js';
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
 import CasaVarejo1 from './Cenas/CasaVarejo1.js';
+import CasaVarejo2 from './Cenas/CasaVarejo2.js';
 import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
+
 
 const config = {
     type: Phaser.AUTO,
@@ -33,7 +35,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
 
