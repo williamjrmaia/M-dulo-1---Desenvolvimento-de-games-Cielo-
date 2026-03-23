@@ -15,7 +15,9 @@ import VilaDoVarejo from './Cenas/VilaDoVarejo.js';
 import CasaGelo2 from './Cenas/CasaGelo2.js';
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
 import CasaVarejo1 from './Cenas/CasaVarejo1.js';
+import CasaVarejo2 from './Cenas/CasaVarejo2.js';
 import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
+
 
 const config = {
     type: Phaser.AUTO,
@@ -32,19 +34,14 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
 
-
-
     scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaIntroducao, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh, CenaPonteV,
-        TutorialOverlay, CenaCasaGelo, VilaDoVarejo, CasaGelo2, PraiaDosProveitos, CasaVarejo1, NegociacaoThaina]//Preloader carrega as sprites antes do jogo começar 
+        TutorialOverlay, CenaCasaGelo, VilaDoVarejo, CasaGelo2, PraiaDosProveitos, CasaVarejo1, CasaVarejo2, NegociacaoThaina]//Preloader carrega as sprites antes do jogo começar 
                                       //para evitar redundância
 
 };
 
 const game = new Phaser.Game(config);
-
-
-

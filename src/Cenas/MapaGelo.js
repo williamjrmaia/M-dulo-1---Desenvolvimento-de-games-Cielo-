@@ -1,5 +1,6 @@
-import Jogador from '../Classes/Jogador.js';
-import NPC     from '../Classes/NPC.js';
+import Jogador        from '../Classes/Jogador.js';
+import NPC            from '../Classes/NPC.js';
+import DialogoManager from '../Classes/DialogoManager.js';
 
 // ── Falas da Cielita no início do Mapa Gelo ──────────────────────────────────
 const FALAS_CIELITA_GELO = [
@@ -122,10 +123,12 @@ export default class MapaGelo extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, 1024, 1024);
 
         if (this.origem === 'CenaCasaGelo') this.personagem.sprite.setPosition(655, 210);
-        if (this.origem === 'VilaDoVarejo') this.personagem.sprite.setPosition(897, 980);
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
+        if (this.origem === 'CenaPonteV') this.personagem.sprite.setPosition(897, 990);
 
-        // ── Câmera UI para diálogos ───────────────────────────────────────────
+        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
+        
+         //── Câmera UI para diálogos ───────────────────────────────────────────
         // A câmera principal tem zoom=2.6, o que faz o Phaser aplicar um clip
         // region de 577×308px, ocultando elementos scrollFactor(0) fora dessa
         // área (ex: diálogo em y=740). Uma câmera UI separada com zoom=1 resolve
@@ -159,6 +162,7 @@ export default class MapaGelo extends Phaser.Scene {
 
         // Portal VilaDoVarejo — exige insígnia
         if (this.personagem.temOverlap(this.portalVarejo)) {
+            this.trocarCena('CenaPonteV', { vindoDe: 'MapaGelo' });
             if (!this._temInsignia()) {
                 this._mostrarMensagemBloqueio();
                 return;
@@ -233,3 +237,5 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
+
+
