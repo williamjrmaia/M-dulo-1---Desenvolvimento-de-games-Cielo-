@@ -16,9 +16,9 @@ export default class NegociacaoPedro extends CenaNegociacao {
             cartasExigidas: {
                 abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
                 sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
-                demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'],
-                negociacao:   ['Ajuste', 'Validacao', 'Quebra'],
-                fechamento:   ['Adicional', 'Alternativo', 'Desconto','Teste'],
+                //demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'],
+               // negociacao:   ['Ajuste', 'Validacao', 'Quebra'],
+               // fechamento:   ['Adicional', 'Alternativo', 'Desconto','Teste'],
             },
             cartasPorFase: {
                 abordagem:    5,

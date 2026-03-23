@@ -32,7 +32,9 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     create() {
-        this.fazendoTransicao = false;
+        this.fazendoTransicao  = false;
+        this._mensagemBloqueio = null;
+
         const larguraMapa = 1500;
         const alturaMapa  = 1200; 
 
@@ -113,7 +115,6 @@ export default class MapaGelo extends Phaser.Scene {
         ].forEach(z => this.physics.add.existing(z, true));
 
         // Parede abaixo do portal (evita vazar do mapa)
-        this.ParedePortal = this.add.zone(897, 1025, 70, 5);
         this.physics.add.existing(this.ParedePortal, true);
 
         // ── Teclas e câmera ───────────────────────────────────────────────────
@@ -139,11 +140,13 @@ export default class MapaGelo extends Phaser.Scene {
             const objetosMundo     = this.children.list.filter(obj => !elementosDialogo.includes(obj));
             uiCam.ignore(objetosMundo);
             this.cameras.main.ignore(elementosDialogo);
+        }
 
         // Verifica e concede a insígnia se o jogador já venceu a negociação
         this.personagem.verificarInsigniaMapa('mapa_gelo');
     }
-}
+
+
 
     update() {
         if (this.fazendoTransicao) return;
@@ -152,33 +155,83 @@ export default class MapaGelo extends Phaser.Scene {
          // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
 
-        // Portais automáticos (sem tecla E)
+        // Portal de volta — livre, sem verificação de insígnia
         if (this.personagem.temOverlap(this.portalGelo)) {
             this.trocarCena('CenaPonteh', { vindoDe: 'MapaGelo' });
             return;
         }
 
+        // Portal VilaDoVarejo — exige insígnia
         if (this.personagem.temOverlap(this.portalVarejo)) {
             this.trocarCena('CenaPonteV', { vindoDe: 'MapaGelo' });
+            if (!this._temInsignia()) {
+                this._mostrarMensagemBloqueio();
+                return;
+            }
+            this.trocarCena('VilaDoVarejo', { vindoDe: 'MapaGelo' });
             return;
         }
 
-        // Porta Casa do Pedro — aperta E para entrar
+        // Porta Casa do Pedro — exige insígnia, aperta E para entrar
         const naPorta1 = this.personagem.temOverlap(this.geloPorta);
         const naPorta2 = this.personagem.temOverlap(this.geloPorta2);
         if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            if (!this._temInsignia()) {
+                this._mostrarMensagemBloqueio();
+                return;
+            }
             this.trocarCena('CenaCasaGelo');
             return;
         }
-    
-     
-        if (naPorta2 && !this.cielita.dialogoAberto) {
-            if (Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-                this.trocarCena('CasaGelo2');
+
+        // Porta CasaGelo2 — exige insígnia, aperta E para entrar
+        if (this.personagem.temOverlap(this.GeloPortaCasa2) &&
+            Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            if (!this._temInsignia()) {
+                this._mostrarMensagemBloqueio();
+                return;
             }
+            this.trocarCena('CasaGelo2');
         }
     }
 
+    // ── Verificação de insígnia ───────────────────────────────────────────────
+
+    _temInsignia() {
+        // Usa o método do Jogador que consulta 'insigniasJogador' no registry
+        return this.personagem.temInsignia('mapa_gelo');
+    }
+
+    _mostrarMensagemBloqueio() {
+        if (this._mensagemBloqueio) return;
+
+        const W = this.scale.width;
+        const H = this.scale.height;
+
+        const bg = this.add.rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
+            .setStrokeStyle(2, 0xcc4444)
+            .setDepth(200)
+            .setScrollFactor(0);
+
+        const texto = this.add.text(W / 2, H * 0.2, '⛔ Você precisa vencer a negociação com Pedro primeiro!', {
+            fontFamily: '"Courier New", monospace',
+            fontSize:   '13px',
+            color:      '#ff6666',
+            align:      'center',
+            wordWrap:   { width: 500 },
+        }).setOrigin(0.5).setDepth(201)
+          .setScrollFactor(0);
+
+        this._mensagemBloqueio = { bg, texto };
+
+        this.time.delayedCall(2500, () => {
+            bg.destroy();
+            texto.destroy();
+            this._mensagemBloqueio = null;
+        });
+    }
+
+    // ── Transição ─────────────────────────────────────────────────────────────
 
     trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
