@@ -8,7 +8,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
     }
 
     init(data) {
-        this.origem = data.vindoDe; 
+        this.origem = data.vindoDe;
     }
 
     preload() {
@@ -46,7 +46,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.fazendoTransicao = false;
 
         this.add.image(110, 0, 'fundoVila').setOrigin(0, 0).setScale(1);
-    
+
         this.physics.world.setBounds(110, 0, 1264, 842);
         
         NPC.criarAnimacoes(this, [
@@ -154,24 +154,23 @@ export default class VilaDoVarejo extends Phaser.Scene {
             });
         }
 
-        // ── Porta Casa 1 Varejo ───────────────────────────────────
         this.portaCasa1Varejo = this.add.zone(555, 225, 40, 30);
         this.physics.add.existing(this.portaCasa1Varejo, true);
 
-        // ── Portal para o Gelo ────────────────────────────────────
+        this.portaCasa2Varejo = this.add.zone(1126, 450, 40, 30);
+        this.physics.add.existing(this.portaCasa2Varejo, true);
+
         this.portalGelo = this.add.zone(270, 20, 25, 15);
         this.physics.add.existing(this.portalGelo, true);
 
-        // ── Portal para a Praia ───────────────────────────────────
         this.portalparapraia = this.add.zone(1260, 40, 20, 20);
         this.physics.add.existing(this.portalparapraia, true);
 
         this.physics.add.collider(this.personagem.sprite, this.obstaculos);
-        
+
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        // Posicionamento por origem
         if (this.origem === 'MapaGelo') {
             this.personagem.sprite.setPosition(270, 50);
         }
@@ -180,6 +179,9 @@ export default class VilaDoVarejo extends Phaser.Scene {
         }
         if (this.origem === 'CasaVarejo1') {
             this.personagem.sprite.setPosition(555, 245);
+        }
+        if (this.origem === 'CasaVarejo2') {
+            this.personagem.sprite.setPosition(1125, 465);
         }
         if (this.origem === 'CenaPonteV') {
             this.personagem.sprite.setPosition(270, 50);
@@ -214,14 +216,10 @@ export default class VilaDoVarejo extends Phaser.Scene {
             return;
         }
 
-        // ── ZONA DE TESTE TEMPORÁRIA ──────────────────────────────────────────
-        // Remove este bloco junto com a zona declarada no create() quando
-        // o NPC da Thaina estiver no mapa.
-        if (this.personagem.temOverlap(this.zonaTesteThaina) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('NegociacaoThaina', { vindoDe: 'VilaDoVarejo' });
+        if (this.personagem.temOverlap(this.portaCasa2Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaVarejo2', { vindoDe: 'VilaDoVarejo' });
             return;
         }
-        // ── FIM ZONA DE TESTE ─────────────────────────────────────────────────
     }
 
     trocarCena(nomeCena, dados = {}) {
