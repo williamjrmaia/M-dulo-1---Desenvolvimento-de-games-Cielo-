@@ -1,5 +1,6 @@
 import Jogador from '../Classes/Jogador.js';
 
+// Construção do cenário CasaGelo2
 export default class CasaGelo2 extends Phaser.Scene {
 
     constructor() {
@@ -11,8 +12,8 @@ export default class CasaGelo2 extends Phaser.Scene {
     }
 
     preload() {
-        // Imagens
-        this.load.image('Casa2',      'assets/MapaGelo/Scene2_House2.png');
+        // dando Preload nas Imagens
+        this.load.image('Casa2', 'assets/MapaGelo/Scene2_House2.png');
         this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
         this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
 
@@ -24,14 +25,14 @@ export default class CasaGelo2 extends Phaser.Scene {
     }
 
     create() {
-        this.fazendoTransicao = false;
-
-        const centerX    = 750;
-        const centerY    = 400;
-        const larguraMapa = 1500;
-        const alturaMapa  = 800;
-
+        //Definindo centro do mapa (para formatação da hitbox e câmera)
+        const centerX = 750;
+        const centerY = 400;
+        //Definindo centro da câmera
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
+        
+        // 1. Adiciona o cenário no centro 
+        const fundo = this.add.image(centerX, centerY, 'Casa2');
 
         // ── Fundo ─────────────────────────────────────────────────────────────
         const fundo  = this.add.image(centerX, centerY, 'Casa2');
@@ -44,7 +45,8 @@ export default class CasaGelo2 extends Phaser.Scene {
         const mapa          = this.make.tilemap({ key: 'mapaCasaGelo2' });
         const paredes       = this.physics.add.staticGroup();
         const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
-
+        
+        //Verificando a existência da camada de hitbox e aplicando ela
         if (camadaObjetos) {
             camadaObjetos.objects.forEach(obj => {
                 if (obj.polygon) {
@@ -134,6 +136,7 @@ export default class CasaGelo2 extends Phaser.Scene {
         }
     }
 
+    // Função de trocar de cena com animação de FADE de tela
     trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
         this.cameras.main.fadeOut(500, 0, 0, 0);

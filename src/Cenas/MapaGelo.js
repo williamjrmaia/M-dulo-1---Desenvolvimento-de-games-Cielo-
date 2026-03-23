@@ -11,16 +11,19 @@ const FALAS_CIELITA_GELO = [
     { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
 ];
 
+//Construindo a cena do MapaGelo
 export default class MapaGelo extends Phaser.Scene {
     constructor() { 
         super('MapaGelo'); 
     }
 
+    //Função de pegar a origem do mapa (usada para trocar de cena -> spawnar em um lugar específico)
     init(data) {
         this.origem = data?.vindoDe; 
     }
 
     preload() {
+        //Carregando imagens do mapa
         this.load.image('Ponte',    './assets/CenarioCasa/ponte.png');
         this.load.image('MapaGelo', './assets/MapaGelo/MapaGelo.png');
         this.load.image('Placa',    './assets/MapaGelo/PlacaCasaPedro.png');
@@ -33,20 +36,24 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     create() {
+        //Bloqueadores para evitar bugs (tipo o apertar E no meio da transição reinicia ela mesma)
         this.fazendoTransicao  = false;
         this._mensagemBloqueio = null;
 
+        //Definindo a altura e largura do mapa (para hitbox e para a câmera)
         const larguraMapa = 1500;
         const alturaMapa  = 1200; 
 
+        //Colocando o centro do límite + paredes
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
         // Zoom definido antes de criar NPCs para que o DialogoManager leia o valor correto
         this.cameras.main.setZoom(2.6);
 
+        //Criando o tilemap (hitbox) do mapa de Gelo, cujo nome é 'mapa_dados'
         const mapa = this.make.tilemap({ key: 'mapa_dados' });
+        //Criando a imagem do mapa de gelo + a placa da casa do SeuPedro
         this.add.image(0, 0, 'MapaGelo').setOrigin(0, 0);
-
         this.add.image(655, 155, 'Placa').setScale(0.4);
 
         // ── Animação da Cielita ───────────────────────────────────────────────
@@ -70,6 +77,7 @@ export default class MapaGelo extends Phaser.Scene {
             animacoes: { idle: 'cielitaparada' },
             scaleIndicador:     1.3,
         });
+        //Proporções e ambientação da NPC Cielita
         this.cielita.setScale(1.1);
         this.cielita.setDepth(5);
         this.cielita.setFalas(FALAS_CIELITA_GELO);
@@ -102,15 +110,15 @@ export default class MapaGelo extends Phaser.Scene {
         }
 
         // PORTAIS E PORTAS
-        this.portalGelo     = this.add.zone(10,  215,  10, 15);
-        this.geloPorta      = this.add.zone(622, 190,  17, 20);
+        this.PortalGelo     = this.add.zone(10,  215,  10, 15);
+        this.GeloPorta      = this.add.zone(622, 190,  17, 20);
         this.GeloPortaCasa2 = this.add.zone(400, 675,  20, 20);
-        this.geloPorta2     = this.add.zone(685, 190,  17, 20);
-        this.portalVarejo   = this.add.zone(897, 1015, 25, 15);
+        this.GeloPorta2     = this.add.zone(685, 190,  17, 20);
+        this.PortalVarejo   = this.add.zone(897, 1015, 25, 15);
         this.ParedePortal   = this.add.zone(897, 1025, 70,  5);
 
-        [this.portalGelo, this.geloPorta, this.GeloPortaCasa2,
-         this.geloPorta2, this.portalVarejo, this.ParedePortal
+        [this.PortalGelo, this.GeloPorta, this.GeloPortaCasa2,
+         this.GeloPorta2, this.PortalVarejo, this.ParedePortal
         ].forEach(z => this.physics.add.existing(z, true));
 
         // Parede abaixo do portal (evita vazar do mapa)
@@ -141,21 +149,23 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     update() {
+        // IF para impedir bugs de repetição
         if (this.fazendoTransicao) return;
-
+        //Atualizando as animações e spritesheets do personagem
         this.personagem.atualizar();
         // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         // Portal de volta — livre, sem verificação de insígnia
-        if (this.personagem.temOverlap(this.portalGelo)) {
+        if (this.personagem.temOverlap(this.PortalGelo)) {
             this.trocarCena('CenaPonteh', { vindoDe: 'MapaGelo' });
             return;
         }
 
-        // Portal VilaDoVarejo — exige que AMBAS as negociações estejam completas
-        if (this.personagem.temOverlap(this.portalVarejo)) {
-            if (!this._ambasNegociacoesCompletas()) {
+        // Portal VilaDoVarejo — exige insígnia
+        if (this.personagem.temOverlap(this.PortalVarejo)) {
+            this.trocarCena('CenaPonteV', { vindoDe: 'MapaGelo' });
+            if (!this._temInsignia()) {
                 this._mostrarMensagemBloqueio();
                 return;
             }
@@ -163,9 +173,11 @@ export default class MapaGelo extends Phaser.Scene {
             return;
         }
 
-        // Porta Casa do Pedro — LIVRE, sem verificação de insígnia
-        const naPorta1 = this.personagem.temOverlap(this.geloPorta);
-        const naPorta2 = this.personagem.temOverlap(this.geloPorta2);
+        // Porta Casa do Pedro — exige insígnia, aperta E para entrar
+        const naPorta1 = this.personagem.temOverlap(this.GeloPorta);
+        const naPorta2 = this.personagem.temOverlap(this.GeloPorta2);
+
+        //Se estiver interagindo ou na Porta1 ou na Porta2 (que são da CasaPedro), apertar a tecla de interagir (E) vai entrar na casa. A não ser que não tenha a insignia
         if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CenaCasaGelo');
             return;
@@ -196,54 +208,60 @@ export default class MapaGelo extends Phaser.Scene {
         }
     }
 
+    /**
+     * Exibe uma mensagem temporária na tela indicando que o acesso está bloqueado.
+     * Útil para feedbacks de progresso (ex: impedir passagem sem vencer um NPC).
+     */
     _mostrarMensagemBloqueio() {
+        // Impede que múltiplas mensagens sejam criadas ao mesmo tempo se uma já estiver visível
         if (this._mensagemBloqueio) return;
 
+        // Pega as dimensões atuais do canvas do jogo para centralizar os elementos
         const W = this.scale.width;
         const H = this.scale.height;
 
-        // Monta mensagem de acordo com o que ainda falta
-        const registry  = this.registry.get('negociacoesVencidas') ?? {};
-        const faltaPedro = !registry['pedro_vencido'];
-        const faltaSofia = !registry['sofia_vencido'];
-
-        let mensagem = '⛔ ';
-        if (faltaPedro && faltaSofia) {
-            mensagem += 'Você precisa vencer as negociações com Pedro e Sofia primeiro!';
-        } else if (faltaPedro) {
-            mensagem += 'Você ainda precisa vencer a negociação com Pedro!';
-        } else {
-            mensagem += 'Você ainda precisa vencer a negociação com Sofia!';
-        }
-
+        // Cria o retângulo de fundo (background) da mensagem
+        // Posicionado no centro (W/2) e a 20% da altura da tela (H * 0.2)
         const bg = this.add.rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
-            .setStrokeStyle(2, 0xcc4444)
-            .setDepth(200)
-            .setScrollFactor(0);
+            .setStrokeStyle(2, 0xcc4444) // Borda avermelhada para indicar "negado/erro"
+            .setDepth(200)               // Garante que fique acima de quase todos os elementos
+            .setScrollFactor(0);         // Faz o elemento "fixar" na tela, ignorando o movimento da câmera
 
-        const texto = this.add.text(W / 2, H * 0.2, mensagem, {
+        // Cria o texto de aviso
+        const texto = this.add.text(W / 2, H * 0.2, '⛔ Você precisa vencer a negociação com Pedro primeiro!', {
             fontFamily: '"Courier New", monospace',
             fontSize:   '13px',
             color:      '#ff6666',
             align:      'center',
-            wordWrap:   { width: 500 },
-        }).setOrigin(0.5).setDepth(201)
+            wordWrap:   { width: 500 }, // Quebra linha automaticamente se o texto for longo
+        }).setOrigin(0.5).setDepth(201)   // Origem no centro e profundidade ligeiramente maior que o bg
           .setScrollFactor(0);
 
+        // Armazena a referência para controle de existência
         this._mensagemBloqueio = { bg, texto };
 
+        // Agenda a destruição dos elementos após 2.5 segundos (2500ms)
         this.time.delayedCall(2500, () => {
             bg.destroy();
             texto.destroy();
-            this._mensagemBloqueio = null;
+            this._mensagemBloqueio = null; // Libera o estado para permitir uma nova mensagem no futuro
         });
     }
 
     // ── Transição ─────────────────────────────────────────────────────────────
 
+    /**
+     * Realiza uma transição suave de "fade out" (escurecimento) antes de iniciar outra cena.
+     * @param {string} nomeCena - A chave da cena para a qual o jogo deve ir.
+     * @param {object} dados - Dados opcionais para passar para a função init() da próxima cena.
+     */
     trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
+        
+        // Inicia o efeito de escurecer a tela (duração de 500ms)
         this.cameras.main.fadeOut(500, 0, 0, 0);
+
+        // Quando o efeito de fade terminar, o Phaser executa a troca real de cena
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             this.scene.start(nomeCena, dados);
         });
