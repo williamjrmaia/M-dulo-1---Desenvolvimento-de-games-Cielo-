@@ -124,8 +124,8 @@ export default class MapaGelo extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, 1024, 1024);
 
         if (this.origem === 'CenaCasaGelo') this.personagem.sprite.setPosition(655, 210);
-        if (this.origem === 'VilaDoVarejo') this.personagem.sprite.setPosition(897, 980);
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
+        if (this.origem === 'CenaPonteV') this.personagem.sprite.setPosition(897, 990);
 
          //── Câmera UI para diálogos ───────────────────────────────────────────
         // A câmera principal tem zoom=2.6, o que faz o Phaser aplicar um clip
@@ -163,6 +163,7 @@ export default class MapaGelo extends Phaser.Scene {
 
         // Portal VilaDoVarejo — exige insígnia
         if (this.personagem.temOverlap(this.portalVarejo)) {
+            this.trocarCena('CenaPonteV', { vindoDe: 'MapaGelo' });
             if (!this._temInsignia()) {
                 this._mostrarMensagemBloqueio();
                 return;
