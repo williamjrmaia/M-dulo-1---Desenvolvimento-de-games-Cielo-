@@ -241,3 +241,4 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
+s
