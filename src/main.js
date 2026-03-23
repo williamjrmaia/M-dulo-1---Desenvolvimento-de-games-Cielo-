@@ -10,6 +10,7 @@ import MapaGelo from './Cenas/MapaGelo.js';
 import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
 import TutorialOverlay from './Cenas/TutorialOverlay.js';
 import CenaPonteh from './Cenas/CenaPonteh.js';
+import CenaPonteV from './Cenas/CenaPonteV.js';
 import VilaDoVarejo from './Cenas/VilaDoVarejo.js'; 
 import CasaGelo2 from './Cenas/CasaGelo2.js';
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
@@ -37,9 +38,7 @@ const config = {
         }
     },
 
-
-
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaIntroducao, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh,
+    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaIntroducao, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh, CenaPonteV,
         TutorialOverlay, CenaCasaGelo, VilaDoVarejo, CasaGelo2, PraiaDosProveitos, CasaVarejo1, CasaVarejo2, NegociacaoThaina]//Preloader carrega as sprites antes do jogo começar 
                                       //para evitar redundância
 
