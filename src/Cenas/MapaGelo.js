@@ -237,8 +237,5 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
-<<<<<<< Updated upstream
 
 
-=======
->>>>>>> Stashed changes
