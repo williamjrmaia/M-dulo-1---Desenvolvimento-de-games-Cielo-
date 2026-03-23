@@ -26,7 +26,7 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.image('Placa',    './assets/MapaGelo/PlacaCasaPedro.png');
         this.load.tilemapTiledJSON('mapa_dados', './assets/MapaGelo/MapaGeloHitbox.tmj');
         Jogador.preloadInsignias(this);
-         // Assets da Cielita (mesmos do CenaCasa)
+        // Assets da Cielita (mesmos do CenaCasa)
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
@@ -48,8 +48,6 @@ export default class MapaGelo extends Phaser.Scene {
         this.add.image(0, 0, 'MapaGelo').setOrigin(0, 0);
 
         this.add.image(655, 155, 'Placa').setScale(0.4);
-
-        
 
         // ── Animação da Cielita ───────────────────────────────────────────────
         if (!this.anims.exists('cielitaparada')) {
@@ -149,13 +147,11 @@ export default class MapaGelo extends Phaser.Scene {
         this.personagem.verificarInsigniaMapa('mapa_gelo');
     }
 
-
-
     update() {
         if (this.fazendoTransicao) return;
 
         this.personagem.atualizar();
-         // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
+        // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         // Portal de volta — livre, sem verificação de insígnia
@@ -175,14 +171,11 @@ export default class MapaGelo extends Phaser.Scene {
             return;
         }
 
-        // Porta Casa do Pedro — exige insígnia, aperta E para entrar
+        // Porta Casa do Pedro — LIVRE, sem verificação de insígnia
+        // O jogador precisa entrar aqui para vencer a negociação e desbloquear os demais portais
         const naPorta1 = this.personagem.temOverlap(this.geloPorta);
         const naPorta2 = this.personagem.temOverlap(this.geloPorta2);
         if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            if (!this._temInsignia()) {
-                this._mostrarMensagemBloqueio();
-                return;
-            }
             this.trocarCena('CenaCasaGelo');
             return;
         }
@@ -244,4 +237,5 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
-s
+
+
