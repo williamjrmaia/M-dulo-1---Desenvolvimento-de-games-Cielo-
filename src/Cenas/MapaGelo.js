@@ -134,14 +134,7 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
         if (this.origem === 'CenaPonteV') this.personagem.sprite.setPosition(897, 990);
 
-        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
-        
-         //── Câmera UI para diálogos ───────────────────────────────────────────
-        // A câmera principal tem zoom=2.6, o que faz o Phaser aplicar um clip
-        // region de 577×308px, ocultando elementos scrollFactor(0) fora dessa
-        // área (ex: diálogo em y=740). Uma câmera UI separada com zoom=1 resolve
-        // isso: o diálogo é ignorado pela câmera principal e renderizado apenas
-        // pela câmera UI nas coordenadas de tela corretas.
+        // ── Câmera UI para diálogos ───────────────────────────────────────────
         const uiCam = this.cameras.add(0, 0, this.scale.width, this.scale.height);
         const _dlg  = this.cielita._dialogo;
         if (_dlg) {
@@ -151,9 +144,8 @@ export default class MapaGelo extends Phaser.Scene {
             this.cameras.main.ignore(elementosDialogo);
         }
 
-        // Verifica e concede a insígnia se o jogador já venceu a negociação
-        this.personagem.verificarInsigniaMapa('mapa_gelo');
-        
+        // Verifica e concede a insígnia se o jogador já completou ambas as negociações
+        this._verificarEConcederInsignia();
     }
 
     update() {
@@ -191,22 +183,29 @@ export default class MapaGelo extends Phaser.Scene {
             return;
         }
 
-        // Porta CasaGelo2 — exige insígnia, aperta E para entrar
+        // Porta CasaGelo2 — LIVRE, sem verificação de insígnia
         if (this.personagem.temOverlap(this.GeloPortaCasa2) &&
             Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            if (!this._temInsignia()) {
-                this._mostrarMensagemBloqueio();
-                return;
-            }
             this.trocarCena('CasaGelo2');
         }
     }
 
-    // ── Verificação de insígnia ───────────────────────────────────────────────
+    // ── Verificação de negociações ────────────────────────────────────────────
 
-    _temInsignia() {
-        // Usa o método do Jogador que consulta 'insigniasJogador' no registry
-        return this.personagem.temInsignia('mapa_gelo');
+    /** Retorna true somente se Pedro E Sofia já foram vencidos. */
+    _ambasNegociacoesCompletas() {
+        const registry = this.registry.get('negociacoesVencidas') ?? {};
+        return !!registry['pedro_vencido'] && !!registry['sofia_vencido'];
+    }
+
+    /**
+     * Concede a insígnia 'mapa_gelo' caso ambas as negociações estejam completas
+     * e a insígnia ainda não tenha sido concedida.
+     */
+    _verificarEConcederInsignia() {
+        if (this._ambasNegociacoesCompletas()) {
+            this.personagem.verificarInsigniaMapa('mapa_gelo');
+        }
     }
 
     /**
@@ -268,5 +267,4 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
-
 
