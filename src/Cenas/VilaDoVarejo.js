@@ -191,7 +191,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
             this.personagem.sprite.setPosition(400, 320);
         }
 
-        DialogoManager.configurarCameraUI(this, 1.7, [this.eric]);
+        DialogoManager.configurarCameraUI(this, 1.7, [this.eric, this.jorge]);
     }
 
     update() {
