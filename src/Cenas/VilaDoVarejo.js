@@ -55,21 +55,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.portalparapraia = this.add.zone(1260, 40, 20, 20);
         this.physics.add.existing(this.portalparapraia, true);
 
-        // ── ZONA DE TESTE TEMPORÁRIA ──────────────────────────────────────────
-        // Remove este bloco inteiro quando o NPC da Thaina estiver no mapa.
-        this.zonaTesteThaina = this.add.zone(400, 300, 60, 60);
-        this.physics.add.existing(this.zonaTesteThaina, true);
-
-        this._marcadorTeste = this.add.rectangle(400, 300, 60, 60, 0xffff00, 0.3)
-            .setStrokeStyle(2, 0xffff00);
-        this.add.text(400, 270, '[TESTE]\nE = Thaina', {
-            fontFamily: 'Courier',
-            fontSize:   '10px',
-            color:      '#ffff00',
-            align:      'center',
-        }).setOrigin(0.5);
-        // ── FIM ZONA DE TESTE ─────────────────────────────────────────────────
-
         this.physics.add.collider(this.personagem.sprite, this.obstaculos);
 
         this.cameras.main.startFollow(this.personagem.sprite);
