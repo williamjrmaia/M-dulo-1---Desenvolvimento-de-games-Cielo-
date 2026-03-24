@@ -15,13 +15,10 @@ export default class CasaVarejo1 extends Phaser.Scene {
     preload() {
         // Carrega a imagem e o arquivo de hitboxes do Tiled
         this.load.image('CasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.png');
-         this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
         this.load.tilemapTiledJSON('mapaCasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.tmj');
 
         //sprites da thainá
         this.load.spritesheet('thaina_idl', 'assets/NPC/THAINA/spr_thaina_front_idl.png', {frameWidth: 14, frameHeight: 19});
-        this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
-        this.load.image('balao',      'assets/objetos/balao_dialogo.png');
     }
 
     create() {

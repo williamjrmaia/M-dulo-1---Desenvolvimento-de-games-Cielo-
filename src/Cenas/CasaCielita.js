@@ -23,7 +23,6 @@ export default class CasaCielita extends Phaser.Scene {
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
         this.load.image('balao',        './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE',   './assets/objetos/botao_e.png');
-        this.load.image('PortaCielita', './assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
@@ -67,7 +66,7 @@ export default class CasaCielita extends Phaser.Scene {
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
         // Porta da Cielita
-        this.add.image(750, 705, 'PortaCielita').setScale(2);
+        this.add.image(750, 705, 'portaSaida').setScale(2);
 
         // Controla se o diálogo já foi concluído
         this.dialogoConcluido = false;

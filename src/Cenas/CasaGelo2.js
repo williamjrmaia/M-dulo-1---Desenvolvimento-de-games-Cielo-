@@ -25,7 +25,7 @@ export default class CasaGelo2 extends Phaser.Scene {
     preload() {
         this.load.image('Casa2',           'assets/MapaGelo/Scene2_House2.png');
         this.load.image('sofia',           'assets/NPC/Sofia/sofia.png');
-        this.load.image('PortaSaida',      'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
+        this.load.image('portaSaida',      'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
 
         // Arquivo JSON do Tiled
         this.load.tilemapTiledJSON('mapaCasaGelo2', 'assets/MapaGelo/CasaGelo2.tmj');

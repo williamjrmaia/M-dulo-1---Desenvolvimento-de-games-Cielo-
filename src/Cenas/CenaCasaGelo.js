@@ -12,9 +12,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
     preload() {
         this.load.image('CasaPedro',    'assets/MapaGelo/CasaPedro.png');
         this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
-        this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
         this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
-        this.load.image('saida',        'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
@@ -24,7 +22,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
         const centerY = 400;
 
         this.add.image(centerX, centerY, 'CasaPedro');
-        this.add.image(751, 530, 'saida').setDepth(1);
+        this.add.image(751, 530, 'portaSaida').setDepth(1);
 
         // ── Mapa / Hitboxes ───────────────────────────────────────────────────
         const map     = this.make.tilemap({ key: 'mapa_casa' });

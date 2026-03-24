@@ -12,7 +12,6 @@ export default class CasaVarejo2 extends Phaser.Scene {
 
     preload() {
          this.load.image('CasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.png');
-         this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
         
     }
 
@@ -21,7 +20,7 @@ export default class CasaVarejo2 extends Phaser.Scene {
 
         //Porta pra sair da cena
         const fundo = this.add.image(750, 400, 'CasaVarejo1');
-        this.add.image(750, 510, 'PortaSaida').setScale(0.7);
+        this.add.image(750, 510, 'portaSaida').setScale(0.7);
 
         this.fazendoTransicao = false;
 

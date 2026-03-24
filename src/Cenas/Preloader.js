@@ -26,6 +26,9 @@ export default class Preloader extends Phaser.Scene {
             });
         });
 
+        //zona de porta para indicar saída
+        this.load.image('portaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
+        
         //assets para o diálogo do jogo
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
