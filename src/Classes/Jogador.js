@@ -1,27 +1,5 @@
 export default class Jogador {
 
-    // ── Insígnias por mapa ────────────────────────────────────────────────────
-    // Cadastre aqui todos os mapas do jogo.
-    // negociacaoChave: chave salva no registry ao vencer a negociação do mapa.
-    // assetKey:        chave usada internamente pelo Phaser para a imagem.
-    // assetPath:       caminho do arquivo PNG da insígnia.
-    // nome:            texto exibido na notificação.
-    static INSIGNIAS = {
-        mapa_gelo: {
-            nome:            'Mestre do Gelo',
-            assetKey:        'insignia_mapa_gelo',
-            assetPath:       'assets/insignias/InsigniaAbordagem1.png',
-            negociacaoChave: 'pedro_vencido',
-        },
-        // Adicione novos mapas aqui:
-             vila_varejo: {
-              nome:            'Rei do Varejo',
-             assetKey:        'insignia_vila_varejo',
-             assetPath:       'assets/insignias/InsigniaProduto1.png',
-             negociacaoChave: 'varejo_vencido',
-        },
-    };
-
     constructor(cena, x, y, scale = 2.3) {
         this.cena = cena;
         this.velocidade = 100;
@@ -39,16 +17,16 @@ export default class Jogador {
 
         const largura = cena.cameras.main.width;
         this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
-            fontSize: '11px',
-            fill: '#FFD700',
+            fontSize:        '11px',
+            fill:            '#FFD700',
             backgroundColor: '#000000',
-            padding: { x: 6, y: 3 }
+            padding:         { x: 6, y: 3 },
         }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
     }
 
     _criarAnimacoes() {
         const cena = this.cena;
-        const s = this.skin;
+        const s    = this.skin;
 
         if (cena.anims.exists(`${s}_idle`)) return;
 
@@ -137,141 +115,6 @@ export default class Jogador {
             sprite.setVelocityX((vx / mag) * velocidade);
             sprite.setVelocityY((vy / mag) * velocidade);
         }
-    }
-
-    // ── Sistema de Insígnias ──────────────────────────────────────────────────
-
-    /**
-     * Carrega os assets de todas as insígnias cadastradas.
-     * Chame no preload() de qualquer mapa que use insígnias:
-     *   Jogador.preloadInsignias(this);
-     * @param {Phaser.Scene} cena
-     */
-    static preloadInsignias(cena) {
-        Object.values(Jogador.INSIGNIAS).forEach(({ assetKey, assetPath }) => {
-            if (!cena.textures.exists(assetKey)) {
-                cena.load.image(assetKey, assetPath);
-            }
-        });
-    }
-
-    /**
-     * Verifica se a negociação do mapa foi concluída e,
-     * se sim, concede a insígnia e exibe a notificação.
-     *
-     * Chame no create() de cada mapa logo após criar o personagem:
-     *   this.personagem.verificarInsigniaMapa('mapa_gelo');
-     *
-     * @param {string} chaveInsignia - chave de Jogador.INSIGNIAS
-     * @returns {boolean} - true se a insígnia foi concedida agora
-     */
-    verificarInsigniaMapa(chaveInsignia) {
-        const dados = Jogador.INSIGNIAS[chaveInsignia];
-        if (!dados) return false;
-
-        // Verifica se a negociação do mapa foi vencida
-        const vitorias = this.cena.game.registry.get('negociacoesVencidas') ?? {};
-        if (vitorias[dados.negociacaoChave] !== true) return false;
-
-        // Verifica se já tem a insígnia para não conceder duas vezes
-        const insignias = this.cena.game.registry.get('insigniasJogador') ?? [];
-        if (insignias.includes(chaveInsignia)) return false;
-
-        // Concede a insígnia
-        insignias.push(chaveInsignia);
-        this.cena.game.registry.set('insigniasJogador', insignias);
-
-        // Exibe a notificação com a imagem
-        this._mostrarNotificacaoInsignia(dados);
-
-        return true;
-    }
-
-    /**
-     * Verifica se o jogador possui uma insígnia.
-     * @param {string} chaveInsignia
-     * @returns {boolean}
-     */
-    temInsignia(chaveInsignia) {
-        const insignias = this.cena.game.registry.get('insigniasJogador') ?? [];
-        return insignias.includes(chaveInsignia);
-    }
-
-    /**
-     * Retorna todas as insígnias conquistadas pelo jogador.
-     * @returns {string[]}
-     */
-    getInsignias() {
-        return this.cena.game.registry.get('insigniasJogador') ?? [];
-    }
-
-    /**
-     * Exibe a notificação animada com a imagem real da insígnia.
-     * @param {{ nome: string, assetKey: string }} dados
-     */
-    _mostrarNotificacaoInsignia(dados) {
-        const cena = this.cena;
-        const W    = cena.scale.width;
-        const cx   = W / 2;
-        const cy   = 50;
-
-        const fundo = cena.add
-            .rectangle(cx, cy, 280, 64, 0x060e14, 0.92)
-            .setStrokeStyle(2, 0x2a4a6a)
-            .setOrigin(0.5)
-            .setScrollFactor(0)
-            .setDepth(500)
-            .setAlpha(0);
-
-        const imagem = cena.add
-            .image(cx - 110, cy, dados.assetKey)
-            .setDisplaySize(48, 48)
-            .setScrollFactor(0)
-            .setDepth(501)
-            .setAlpha(0);
-
-        const textoTitulo = cena.add
-            .text(cx - 80, cy - 12, 'INSÍGNIA CONQUISTADA!', {
-                fontFamily: '"Courier New", monospace',
-                fontSize:   '10px',
-                color:      '#5a8a9a',
-                letterSpacing: 1,
-            })
-            .setOrigin(0, 0.5)
-            .setScrollFactor(0)
-            .setDepth(501)
-            .setAlpha(0);
-
-        const textoNome = cena.add
-            .text(cx - 80, cy + 8, dados.nome, {
-                fontFamily: '"Courier New", monospace',
-                fontSize:   '14px',
-                color:      '#ffd700',
-            })
-            .setOrigin(0, 0.5)
-            .setScrollFactor(0)
-            .setDepth(501)
-            .setAlpha(0);
-
-        const objetos = [fundo, imagem, textoTitulo, textoNome];
-
-        cena.tweens.add({
-            targets:  objetos,
-            alpha:    1,
-            y:        '+=10',
-            duration: 350,
-            ease:     'Power2',
-            onComplete: () => {
-                cena.time.delayedCall(2500, () => {
-                    cena.tweens.add({
-                        targets:  objetos,
-                        alpha:    0,
-                        duration: 400,
-                        onComplete: () => objetos.forEach(o => o.destroy()),
-                    });
-                });
-            },
-        });
     }
 
     // ── Colisão e overlap ─────────────────────────────────────────────────────

@@ -1,4 +1,5 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
+import Insignia       from '../Classes/Insignia.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoThaina.js — Cliente da Vila do Varejo
@@ -17,7 +18,7 @@ import CenaNegociacao from '../Classes/CenaNegociacao.js';
 //   Se usou PerguntaDeImpacto → dor não foi especificada → todos os produtos
 //   dão pontuação normal, sem bônus nem penalidade extra.
 //
-// INSÍGNIA: 'InsigniaProduto1' — ajuste o path quando o asset estiver pronto.
+// INSÍGNIA: 'vila_varejo' — cadastrada em Insignia.CATALOGO
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Pontuação base por produto quando a dor NÃO foi especificada na sondagem
@@ -55,7 +56,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
             cartasExigidas: {
                 abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
                 sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
-                demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'], // todas acertam
+                demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'],
             },
             cartasPorFase: {
                 abordagem:    5,
@@ -68,42 +69,33 @@ export default class NegociacaoThaina extends CenaNegociacao {
         this._produtosSelecionados = [];
 
         // Guarda qual carta de sondagem o jogador usou
-        // para definir o produto correto na demonstração
         this._cartaSondagemUsada = null;
     }
 
     // ── Insígnia ──────────────────────────────────────────────────────────────
 
-    _getInsignia() {
-        return {
-            key:  'insignia_thaina',
-            path: 'assets/insignias/InsigniaProduto1.png', // ajuste quando o asset existir
-            nome: 'Mestre dos Produtos',
-        };
-    }
-
     preload() {
         super.preload();
 
-        // Sprites da Thaina — carregadas com as chaves no padrão da base
-        // (thaina_satisfeito / thaina_neutro / thaina_bravo) para que
-        // _atualizarSpriteCliente funcione automaticamente sem sobrescrita
         this.load.image('thaina_fundo',      'assets/NPC/Thaina/casa_thaina_negociacao.png');
         this.load.image('thaina_satisfeito', 'assets/NPC/Thaina/thaina_feliz.png');
         this.load.image('thaina_neutro',     'assets/NPC/Thaina/thaina_neutra.png');
         this.load.image('thaina_bravo',      'assets/NPC/Thaina/thaina_raiva.png');
 
-        const insignia = this._getInsignia();
-        if (insignia) {
-            this.load.image(insignia.key, insignia.path);
-        }
+        Insignia.preload(this);
+    }
+
+    // Chamado internamente por CenaNegociacao ao vencer a negociação
+    _aoVencer() {
+        const insignia = new Insignia(this, 'vila_varejo');
+        insignia.conceder();
+    }
+
+    _chaveVitoria() {
+        return 'varejo_vencido';
     }
 
     // ── Pontuação dinâmica — depende da carta usada na sondagem ──────────────
-    //
-    // Se o jogador revelou a dor de falha técnica (GanchoDaDor), usa a tabela
-    // específica: CieloFlash2 dá bônus máximo, os outros não ganham nada.
-    // Se usou outra carta, todos os produtos têm pontuação igual.
 
     _getPontuacaoCarta(key) {
         if (this._cartaSondagemUsada === CARTA_DOR_FALHA) {
@@ -175,17 +167,12 @@ export default class NegociacaoThaina extends CenaNegociacao {
     }
 
     // ── Lógica de seleção múltipla na demonstração ────────────────────────────
-    //
-    // Sobrescreve _iniciarFase para resetar a lista de produtos selecionados
-    // e sobrescreve _mostrarDetalheCarta para acumular seleções em vez de
-    // resolver imediatamente — só resolve quando atingir PRODUTOS_NECESSARIOS.
 
     _iniciarFase() {
         this._produtosSelecionados = [];
         this._contadorTexto        = null;
         super._iniciarFase();
 
-        // Exibe contador de produtos apenas na fase de demonstração
         if (this.clienteConfig.fases[this.faseAtual] === 'demonstracao') {
             this._criarContadorProdutos();
         }
@@ -215,21 +202,17 @@ export default class NegociacaoThaina extends CenaNegociacao {
         }
     }
 
-    // Sobrescreve o modal para acumular produtos em vez de resolver de imediato
     _mostrarDetalheCarta(carta) {
         if (!this.negociacaoAtiva) return;
         if (this.cartaEmDetalhes) return;
 
         const fase = this.clienteConfig.fases[this.faseAtual];
 
-        // Fases normais (abordagem, sondagem): comportamento padrão da base
         if (fase !== 'demonstracao') {
             super._mostrarDetalheCarta(carta);
             return;
         }
 
-        // ── Demonstração: seleção múltipla ────────────────────────────────────
-        // Impede selecionar o mesmo produto duas vezes
         if (this._produtosSelecionados.find(c => c.key === carta.key)) {
             this._mostrarDialogo('Você já apresentou este produto!');
             return;
@@ -248,11 +231,11 @@ export default class NegociacaoThaina extends CenaNegociacao {
         const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
         cartaZoom.setDepth(LAYERS.MODAL);
 
-        const restantes   = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
-        const labelBotao  = restantes === 1 ? 'APRESENTAR ✓ (último!)' : `APRESENTAR ✓ (faltam ${restantes})`;
+        const restantes  = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
+        const labelBotao = restantes === 1 ? 'APRESENTAR ✓ (último!)' : `APRESENTAR ✓ (faltam ${restantes})`;
 
-        const { btn: btnVoltar,      texto: textoVoltar      } = this._criarBotao(40, 40, 100, 50, '◀ VOLTAR',   0x1a3a5a, 0xcc4444, '#ff6666');
-        const { btn: btnSelecionar,  texto: textoSelecionar  } = this._criarBotao(W / 2, H / 2 + 320, 220, 50, labelBotao, 0x1a4a2a, 0x22cc66, '#22cc66');
+        const { btn: btnVoltar,     texto: textoVoltar     } = this._criarBotao(40, 40, 100, 50, '◀ VOLTAR',  0x1a3a5a, 0xcc4444, '#ff6666');
+        const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(W / 2, H / 2 + 320, 220, 50, labelBotao, 0x1a4a2a, 0x22cc66, '#22cc66');
 
         const fecharModal = () => {
             [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar]
@@ -280,11 +263,9 @@ export default class NegociacaoThaina extends CenaNegociacao {
         const pontos = this._getPontuacaoCarta(carta.key);
 
         if (errado) {
-            // Produto não resolve a dor revelada na sondagem — penaliza
             this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
             this._mostrarDialogo('Isso não resolve o travamento. Você prestou atenção no que eu disse?');
         } else {
-            // Produto correto ou neutro (sondagem não revelou dor específica)
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
 
             const faltam = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
@@ -296,10 +277,8 @@ export default class NegociacaoThaina extends CenaNegociacao {
             }
         }
 
-        // Ainda não atingiu o mínimo — aguarda próxima seleção
         if (this._produtosSelecionados.length < PRODUTOS_NECESSARIOS) return;
 
-        // Atingiu PRODUTOS_NECESSARIOS — resolve a fase
         this.negociacaoAtiva = false;
 
         if (this.satisfacao <= 0) {

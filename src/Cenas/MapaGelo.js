@@ -1,4 +1,5 @@
 import Jogador        from '../Classes/Jogador.js';
+import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
 
@@ -7,19 +8,19 @@ const FALAS_CIELITA_GELO = [
     { personagem: 'Cielita', texto: 'Bem-vindo ao Mapa Gelo! Aqui o frio é intenso, mas as oportunidades são ainda maiores.' },
     { personagem: 'Cielita', texto: 'Explore com cuidado — há lojas, igluus e portais escondidos por toda parte.' },
     { personagem: 'Cielita', texto: 'Se quiser visitar o Seu Pedro, procure a porta marcada pela placa ao norte.' },
-    { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
+    { personagem: 'Jogador',  texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
     { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
 ];
 
 // Construindo a cena do MapaGelo
 export default class MapaGelo extends Phaser.Scene {
-    constructor() { 
-        super('MapaGelo'); 
+    constructor() {
+        super('MapaGelo');
     }
 
     // Função de pegar a origem do mapa (usada para trocar de cena -> spawnar em um lugar específico)
     init(data) {
-        this.origem = data?.vindoDe; 
+        this.origem = data?.vindoDe;
     }
 
     preload() {
@@ -28,8 +29,6 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.image('MapaGelo', './assets/MapaGelo/MapaGelo.png');
         this.load.image('Placa',    './assets/MapaGelo/PlacaCasaPedro.png');
         this.load.tilemapTiledJSON('mapa_dados', './assets/MapaGelo/MapaGeloHitbox.tmj');
-        Jogador.preloadInsignias(this);
-        // Assets da Cielita (mesmos do CenaCasa)
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
 
         // LORENA
@@ -40,6 +39,9 @@ export default class MapaGelo extends Phaser.Scene {
 
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
+
+        // Carrega os assets de todas as insígnias
+        Insignia.preload(this);
     }
 
     create() {
@@ -55,13 +57,11 @@ export default class MapaGelo extends Phaser.Scene {
         this.input.on('pointerdown', p => console.log(`x: ${p.worldX.toFixed(0)}, y: ${p.worldY.toFixed(0)}`));
 
         const larguraMapa = 1500;
-        const alturaMapa  = 1200; 
+        const alturaMapa  = 1200;
 
         // Colocando o centro do limite + paredes
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
-        // Zoom definido antes de criar NPCs para que o DialogoManager leia o valor correto
-        this.cameras.main.setZoom(2.6);
 
         // Criando o tilemap (hitbox) do mapa de Gelo, cujo nome é 'mapa_dados'
         const mapa = this.make.tilemap({ key: 'mapa_dados' });
@@ -136,7 +136,8 @@ export default class MapaGelo extends Phaser.Scene {
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.sprite.setDepth(10);
 
-        // Colisão Jogador↔NPCs
+        this.personagem.adicionarColisao(this.cielita);
+        // Colisão Jogador↔Cielita
         this.personagem.adicionarColisao(this.grupoNPCs);
 
         // ── Hitboxes do Tiled ─────────────────────────────────────────────────
@@ -148,7 +149,11 @@ export default class MapaGelo extends Phaser.Scene {
                     this.physics.add.existing(poly, true);
                     this.personagem.adicionarColisao(poly);
                 } else {
-                    let zonaTiled = this.add.zone(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height);
+                    const zonaTiled = this.add.zone(
+                        obj.x + obj.width  / 2,
+                        obj.y + obj.height / 2,
+                        obj.width, obj.height
+                    );
                     this.physics.add.existing(zonaTiled, true);
                     this.personagem.adicionarColisao(zonaTiled);
                 }
@@ -167,9 +172,6 @@ export default class MapaGelo extends Phaser.Scene {
          this.GeloPorta2, this.PortalVarejo, this.ParedePortal
         ].forEach(z => this.physics.add.existing(z, true));
 
-        // Parede abaixo do portal (evita vazar do mapa)
-        this.physics.add.existing(this.ParedePortal, true);
-
         // ── Teclas e câmera ───────────────────────────────────────────────────
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
@@ -180,7 +182,8 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
         if (this.origem === 'CenaPonteV')   this.personagem.sprite.setPosition(897, 990);
 
-        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita, this.lorena]);
+        // ── Câmera UI para diálogos ───────────────────────────────────────────
+        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
 
         // ── HUD ───────────────────────────────────────────────────────────────
         this.scene.launch('HUDCenas');
@@ -196,7 +199,6 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     update() {
-        // IF para impedir bugs de repetição
         if (this.fazendoTransicao) return;
 
         this.personagem.atualizar();
@@ -268,30 +270,21 @@ export default class MapaGelo extends Phaser.Scene {
         }
     }
 
-    // ── Verificação de negociações ────────────────────────────────────────────
+    // ── Insígnia ──────────────────────────────────────────────────────────────
 
-    /** Retorna true somente se Pedro E Sofia já foram vencidos. */
-    _ambasNegociacoesCompletas() {
-        const registry = this.registry.get('negociacoesVencidas') ?? {};
-        return !!registry['pedro_vencido'] && !!registry['sofia_vencido'];
+    _negociacaoCompleta() {
+        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
+        return !!vitorias['pedro_vencido'];
     }
 
-    /**
-     * Concede a insígnia 'mapa_gelo' caso ambas as negociações estejam completas
-     * e a insígnia ainda não tenha sido concedida.
-     */
     _verificarEConcederInsignia() {
-        if (this._ambasNegociacoesCompletas()) {
-            this.personagem.verificarInsigniaMapa('mapa_gelo');
-        }
+        const insignia = new Insignia(this, 'mapa_gelo');
+        insignia.conceder();
     }
 
-    /**
-     * Exibe uma mensagem temporária na tela indicando que o acesso está bloqueado.
-     * Útil para feedbacks de progresso (ex: impedir passagem sem vencer um NPC).
-     */
+    // ── Mensagem de bloqueio ──────────────────────────────────────────────────
+
     _mostrarMensagemBloqueio() {
-        // Impede que múltiplas mensagens sejam criadas ao mesmo tempo se uma já estiver visível
         if (this._mensagemBloqueio) return;
 
         const W = this.scale.width;
@@ -302,14 +295,17 @@ export default class MapaGelo extends Phaser.Scene {
             .setDepth(200)
             .setScrollFactor(0);
 
-        const texto = this.add.text(W / 2, H * 0.2, '⛔ Você precisa vencer a negociação com Pedro primeiro!', {
-            fontFamily: '"Courier New", monospace',
-            fontSize:   '13px',
-            color:      '#ff6666',
-            align:      'center',
-            wordWrap:   { width: 500 },
-        }).setOrigin(0.5).setDepth(201)
-          .setScrollFactor(0);
+        const texto = this.add
+            .text(W / 2, H * 0.2, '⛔ Você precisa vencer a negociação com Pedro primeiro!', {
+                fontFamily: '"Courier New", monospace',
+                fontSize:   '13px',
+                color:      '#ff6666',
+                align:      'center',
+                wordWrap:   { width: 500 },
+            })
+            .setOrigin(0.5)
+            .setDepth(201)
+            .setScrollFactor(0);
 
         this._mensagemBloqueio = { bg, texto };
 
@@ -322,11 +318,6 @@ export default class MapaGelo extends Phaser.Scene {
 
     // ── Transição ─────────────────────────────────────────────────────────────
 
-    /**
-     * Realiza uma transição suave de "fade out" (escurecimento) antes de iniciar outra cena.
-     * @param {string} nomeCena - A chave da cena para a qual o jogo deve ir.
-     * @param {object} dados - Dados opcionais para passar para a função init() da próxima cena.
-     */
     trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
         this.scene.stop('HUDCenas'); // Para o HUD antes de trocar de cena
