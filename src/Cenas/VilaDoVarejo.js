@@ -13,9 +13,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
 
     preload() {
         this.load.image('fundoVila', 'assets/VilaDoVarejo/vila_do_varejo.png');
-        //diálogo
-        this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
-        this.load.image('balao',        'assets/objetos/balao_dialogo.png');
 
         //eric
         this.load.spritesheet('eric_idle', 'assets/NPC/ERIC/spr_eric_front_idl.png', {frameWidth: 14, frameHeight: 19});

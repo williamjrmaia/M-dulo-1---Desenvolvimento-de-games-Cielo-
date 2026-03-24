@@ -33,9 +33,6 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.spritesheet('lorena_andar', 'assets/NPC/LORENA/spr_lorena_front_walk.png', {frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('lorena_lado', 'assets/NPC/LORENA/spr_lorena_side_walk.png', {frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png', {frameWidth: 32, frameHeight: 32});
-
-        this.load.image('balao',      './assets/objetos/balao_dialogo.png');
-        this.load.image('IndicadorE', './assets/objetos/botao_e.png');
     }
 
     create() {

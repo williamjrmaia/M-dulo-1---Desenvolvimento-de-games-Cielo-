@@ -26,6 +26,10 @@ export default class Preloader extends Phaser.Scene {
             });
         });
 
+        //assets para o diálogo do jogo
+        this.load.image('balao',      './assets/objetos/balao_dialogo.png');
+        this.load.image('IndicadorE', './assets/objetos/botao_e.png');
+
         this.load.image('Tutorial', 'assets/CenarioCasa/tutorial_andar.png');
 
         // ABORDAGEM ---------------------------

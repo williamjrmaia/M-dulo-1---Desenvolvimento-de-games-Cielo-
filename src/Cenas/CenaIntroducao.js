@@ -8,8 +8,7 @@ export default class CenaIntroducao extends Phaser.Scene {
         // Substitua pelo caminho real da sua imagem de fundo
         this.load.image('IntroFundo', './assets/intro/fundo_intro.png');
 
-        this.load.image('balao',      './assets/objetos/balao_dialogo.png');
-        this.load.image('IndicadorE', './assets/objetos/botao_e.png');
+        
     }
 
     create() {
