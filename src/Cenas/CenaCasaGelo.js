@@ -94,9 +94,9 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
     update() {
         if (this.fazendoTransicao) return;
-
         this.personagem.atualizar();
 
+        //Se estiver na hitbox do pedro, pertoDoPedro = true
         const pertoDoPedro = this.personagem.temOverlap(this.zonaPedro);
 
         // Mantém o indicador sempre acima do Pedro
@@ -104,6 +104,8 @@ export default class CenaCasaGelo extends Phaser.Scene {
             this.spritePedro.x,
             this.spritePedro.y - 60
         );
+
+        //Criando o E em cima do Pedro quando estiver perto
         this.indicadorE.setVisible(pertoDoPedro);
 
         // Aperta E perto do Pedro → vai para NegociacaoPedro
@@ -118,7 +120,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
             this._trocarCena('MapaGelo', { vindoDe: 'CenaCasaGelo' });
         }
     }
-
+    //Função pra trocar de cena com animações
     _trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
         this.cameras.main.fadeOut(500, 0, 0, 0);

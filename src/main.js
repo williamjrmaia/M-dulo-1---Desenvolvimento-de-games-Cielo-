@@ -6,6 +6,7 @@ import CenaIntroducao from './Cenas/CenaIntroducao.js';
 import CenaCasa from './Cenas/CenaCasa.js';
 import MundoCasa from './Cenas/MundoCasa.js';
 import NegociacaoPedro from './Cenas/NegociacaoPedro.js';
+import NegociacaoSofia from './Cenas/NegociacaoSofia.js';
 import MapaGelo from './Cenas/MapaGelo.js';
 import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
 import TutorialOverlay from './Cenas/TutorialOverlay.js';
@@ -35,7 +36,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: true
+            debug: false
         }
     },
 
@@ -46,6 +47,3 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-
-
-

@@ -8,12 +8,10 @@ const PONTUACAO_PRODUTO = {
     CieloFlash2: 25,
 };
 
-
-
-export default class NegociacaoPedro extends CenaNegociacao {
+export default class NegociacaoSofia extends CenaNegociacao {
     constructor() {
-        super('NegociacaoPedro', {
-            nomeCliente:       'Pedro',
+        super('NegociacaoSofia', {
+            nomeCliente:       'Sofia',
             satisfacaoInicial: 0,
             cartasExigidas: {
                 abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
@@ -36,12 +34,12 @@ export default class NegociacaoPedro extends CenaNegociacao {
         return 'pedro_vencido';
     }
 
-    // Insígnia concedida ao vencer a negociação com Pedro
+    // Insígnia concedida ao vencer a negociação com Sofia
     _getInsignia() {
         return {
-            key:  'insignia_pedro',
+            key:  'insignia_sofia',
             path: 'assets/insignias/InsigniaAbordagem1.png',
-            nome: 'Mestre da Abordagem',
+            nome: 'Mestre da Negociação',
         };
     }
 
@@ -61,7 +59,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     _falaAcertoFase(fase) {
         const falas = {
-            abordagem:    'Claro, sou o dono do estabelecimento! Me chamo Pedro.',
+            abordagem:    'Claro, sou a dona do estabelecimento! Me chamo Sofia.',
             sondagem:     'Entendi, isso faz bastante sentido. Continue...',
             demonstracao: 'Interessante! Esse produto parece atender bem o que preciso.',
             negociacao:   'As condições parecem razoáveis.',
@@ -72,7 +70,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     _falaErroFase(fase) {
         const falas = {
-            abordagem:  'Não estou interessado nisso. Obrigado.',
+            abordagem:  'Não estou interessada nisso. Obrigado.',
             sondagem:   'Hm, isso não responde à minha situação.',
             negociacao: 'Não consigo aceitar essas condições.',
             fechamento: 'Não acho que chegamos a um acordo.',
@@ -101,10 +99,10 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     preload() {
         super.preload();
-        this.load.image('Pedro_fundo', 'assets/MapaGelo/Cena01_house1.png');
+        this.load.image('Sofia_fundo', 'assets/MapaGelo/Scene2_House2.png');
     }
 
     _cenaDeRetorno() {
-        return 'MapaGelo';
+        return 'CasaGelo2';
     }
 }
