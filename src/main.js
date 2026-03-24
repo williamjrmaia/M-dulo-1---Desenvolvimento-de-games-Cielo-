@@ -1,23 +1,32 @@
 import Preloader from './Cenas/Preloader.js';
 import MenuPrincipal from './Cenas/MenuPrincipal.js';
-import CenaPersonagem from './Cenas/CenaPersonagem.js';
 import CenaConfig from './Cenas/CenaConfig.js';
-import CenaIntroducao from './Cenas/CenaIntroducao.js';
-import CenaCasa from './Cenas/CenaCasa.js';
-import MundoCasa from './Cenas/MundoCasa.js';
-import NegociacaoPedro from './Cenas/NegociacaoPedro.js';
-import MapaGelo from './Cenas/MapaGelo.js';
-import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
+
+import HUDCenas from './Cenas/HUDCenas.js';
 import TutorialOverlay from './Cenas/TutorialOverlay.js';
-import CenaPonteh from './Cenas/CenaPonteh.js';
-import CenaPonteV from './Cenas/CenaPonteV.js';
-import VilaDoVarejo from './Cenas/VilaDoVarejo.js'; 
+import CenaPersonagem from './Cenas/CenaPersonagem.js';
+
+import CenaIntroducao from './Cenas/CenaIntroducao.js';
+
+import CasaCielita from './Cenas/CasaCielita.js';
+import MundoDaCielita from './Cenas/MundoDaCielita.js';
+
+import QuebraGelo from './Cenas/QuebraGelo.js';
+import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
 import CasaGelo2 from './Cenas/CasaGelo2.js';
-import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
+import NegociacaoPedro from './Cenas/NegociacaoPedro.js';
+
+import PonteMC_QG from './Cenas/PonteMC_QG.js';
+import PonteQG_VV from './Cenas/PonteQG_VV.js';
+
+import VilaDoVarejo from './Cenas/VilaDoVarejo.js'; 
+
 import CasaVarejo1 from './Cenas/CasaVarejo1.js';
 import CasaVarejo2 from './Cenas/CasaVarejo2.js';
 import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
-import Insignia from './Classes/Insignias.js';
+
+import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
+
 import HUDCenas from './Cenas/HUDCenas.js';
 
 
@@ -40,9 +49,25 @@ const config = {
         }
     },
 
-    scene: [Preloader, MenuPrincipal, CenaPersonagem, CenaConfig, CenaIntroducao,Insignia, CenaCasa, MundoCasa, MapaGelo, NegociacaoPedro, CenaPonteh, CenaPonteV,
-        TutorialOverlay, CenaCasaGelo, VilaDoVarejo, CasaGelo2, PraiaDosProveitos, CasaVarejo1, CasaVarejo2, NegociacaoThaina, HUDCenas]//Preloader carrega as sprites antes do jogo começar 
-                                      //para evitar redundância
+    scene:[
+        
+        Preloader, MenuPrincipal, CenaConfig,
+
+        CenaPersonagem, CenaIntroducao, TutorialOverlay, HUDCenas,
+
+        CasaCielita, MundoDaCielita, PonteMC_QG,
+
+        QuebraGelo, CenaCasaGelo, CasaGelo2, PonteQG_VV,
+        NegociacaoPedro, 
+
+        VilaDoVarejo, CasaVarejo1, CasaVarejo2, 
+        NegociacaoThaina, 
+
+        PraiaDosProveitos
+        ]            
+         
+        //Preloader carrega as sprites antes do jogo começar 
+        //para evitar redundância
 
 };
 

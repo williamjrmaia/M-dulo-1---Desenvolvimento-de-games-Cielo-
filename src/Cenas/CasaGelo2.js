@@ -1,6 +1,7 @@
 import Jogador        from '../Classes/Jogador.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
+import CenaMapa from '../Classes/CenaMapa.js';
 
 // Falas da Sofia
 const FALAS_SOFIA = [
@@ -11,7 +12,7 @@ const FALAS_SOFIA = [
     { personagem: 'Sofia', texto: 'Se precisar de mim, estarei aqui. Boa sorte na sua jornada!' },
 ];
 
-export default class CasaGelo2 extends Phaser.Scene {
+export default class CasaGelo2 extends CenaMapa {
 
     constructor() {
         super('CasaGelo2');
@@ -25,15 +26,15 @@ export default class CasaGelo2 extends Phaser.Scene {
     preload() {
         this.load.image('Casa2',           'assets/MapaGelo/Scene2_House2.png');
         this.load.image('sofia',           'assets/NPC/Sofia/sofia.png');
-        this.load.image('balao',           'assets/objetos/balao_dialogo.png');
-        this.load.image('IndicadorE',      'assets/objetos/botao_e.png');
-        this.load.image('PortaSaida',      'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
+        this.load.image('portaSaida',      'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
 
         // Arquivo JSON do Tiled
         this.load.tilemapTiledJSON('mapaCasaGelo2', 'assets/MapaGelo/CasaGelo2.tmj');
     }
 
     create() {
+        super.create();
+
         const centerX    = 750;
         const centerY    = 400;
         const larguraMapa = 1500;
@@ -91,7 +92,7 @@ export default class CasaGelo2 extends Phaser.Scene {
         // ── Jogador ────────────────────────────────────────────────────────────
         // Vindo do MapaGelo: aparece próximo à porta (parte de baixo)
         // Caso contrário: posição padrão no centro
-        const spawnY = this.origem === 'MapaGelo'
+        const spawnY = this.origem === 'QuebraGelo'
             ? 520
             : centerY + 100;
 
@@ -113,25 +114,21 @@ export default class CasaGelo2 extends Phaser.Scene {
 
         // ── Câmera ─────────────────────────────────────────────────────────────
         this.cameras.main.startFollow(this.jogador.sprite);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
 
         // Câmera UI separada para diálogos ficarem visíveis com zoom alto
         DialogoManager.configurarCameraUI(this, 2.4, [this.sofia]);
     }
 
     update() {
+        if (super.update()) return;
+
         this.jogador.atualizar();
 
         this.sofia.atualizar(this.jogador.sprite, this.teclas.interagir);
 
-        // DEBUG TEMPORÁRIO
         const naPorta = this.physics.overlap(this.jogador.sprite, this.gatilhoPorta);
-        console.log('naPorta:', naPorta, '| jogador y:', this.jogador.sprite.y);
         if (naPorta && !this.sofia.dialogoAberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('MapaGelo', { vindoDe: 'CasaGelo2' });
-            });
+            this.trocarCena('QuebraGelo');
         }
     }
 }

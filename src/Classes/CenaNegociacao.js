@@ -403,7 +403,6 @@ export default class CenaNegociacao extends Phaser.Scene {
             const vitorias = this.game.registry.get('negociacoesVencidas') ?? {};
             vitorias[chave] = true;
             this.game.registry.set('negociacoesVencidas', vitorias);
-            console.log('✅ Vitória salva:', chave, vitorias);
         }
 
         this.game.registry.set('ultimaNegociacao', 'vitoria');
@@ -415,7 +414,6 @@ export default class CenaNegociacao extends Phaser.Scene {
             if (!insignias[insignia.key]) {
                 insignias[insignia.key] = true;
                 this.game.registry.set('insigniasDesbloqueadas', insignias);
-                console.log('🏅 Insígnia desbloqueada:', insignia.key);
             }
 
             this.time.delayedCall(1000, () => {

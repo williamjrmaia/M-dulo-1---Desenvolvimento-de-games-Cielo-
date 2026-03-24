@@ -2,20 +2,11 @@ import Jogador        from '../Classes/Jogador.js';
 import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
+import CenaMapa from '../Classes/CenaMapa.js';
 
-// ── Falas da Cielita no início do Mapa Gelo ──────────────────────────────────
-const FALAS_CIELITA_GELO = [
-    { personagem: 'Cielita', texto: 'Bem-vindo ao Mapa Gelo! Aqui o frio é intenso, mas as oportunidades são ainda maiores.' },
-    { personagem: 'Cielita', texto: 'Explore com cuidado — há lojas, igluus e portais escondidos por toda parte.' },
-    { personagem: 'Cielita', texto: 'Se quiser visitar o Seu Pedro, procure a porta marcada pela placa ao norte.' },
-    { personagem: 'Jogador',  texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
-    { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
-];
-
-// Construindo a cena do MapaGelo
-export default class MapaGelo extends Phaser.Scene {
-    constructor() {
-        super('MapaGelo');
+export default class QuebraGelo extends CenaMapa {
+    constructor() { 
+        super('QuebraGelo'); 
     }
 
     // Função de pegar a origem do mapa (usada para trocar de cena -> spawnar em um lugar específico)
@@ -37,16 +28,12 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.spritesheet('lorena_lado',   'assets/NPC/LORENA/spr_lorena_side_walk.png',       { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png',       { frameWidth: 32, frameHeight: 32 });
 
-        this.load.image('balao',      './assets/objetos/balao_dialogo.png');
-        this.load.image('IndicadorE', './assets/objetos/botao_e.png');
-
         // Carrega os assets de todas as insígnias
         Insignia.preload(this);
     }
 
     create() {
-        // Bloqueadores para evitar bugs (tipo o apertar E no meio da transição reinicia ela mesma)
-        this.fazendoTransicao  = false;
+        super.create();
         this._mensagemBloqueio = null;
 
         // Controla se os diálogos já foram concluídos puxando do registro global
@@ -97,9 +84,14 @@ export default class MapaGelo extends Phaser.Scene {
         // Proporções e ambientação da NPC Cielita
         this.cielita.setScale(1.1);
         this.cielita.setDepth(5);
-        this.cielita.setFalas(FALAS_CIELITA_GELO);
-
-        // ── NPC: Lorena ───────────────────────────────────────────────────────
+        this.cielita.setFalas([
+    { personagem: 'Cielita', texto: 'Bem-vindo ao Mapa Gelo! Aqui o frio é intenso, mas as oportunidades são ainda maiores.' },
+    { personagem: 'Cielita', texto: 'Explore com cuidado — há lojas, igluus e portais escondidos por toda parte.' },
+    { personagem: 'Cielita', texto: 'Se quiser visitar o Seu Pedro, procure a porta marcada pela placa ao norte.' },
+    { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
+    { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
+]);
+        // -- NPC: Lorena
         this.lorena = new NPC(this, 300, 320, 'lorena_idle', {
             velocidade:         40,
             distanciaInteracao: 30,
@@ -175,15 +167,14 @@ export default class MapaGelo extends Phaser.Scene {
         // ── Teclas e câmera ───────────────────────────────────────────────────
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
         this.cameras.main.setBounds(0, 0, 1024, 1024);
 
         if (this.origem === 'CenaCasaGelo') this.personagem.sprite.setPosition(655, 210);
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
-        if (this.origem === 'CenaPonteV')   this.personagem.sprite.setPosition(897, 990);
+        if (this.origem === 'PonteQG_VV')   this.personagem.sprite.setPosition(897, 990);
 
         // ── Câmera UI para diálogos ───────────────────────────────────────────
-        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
+        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita, this.lorena]);
 
         // ── HUD ───────────────────────────────────────────────────────────────
         this.scene.launch('HUDCenas');
@@ -199,7 +190,7 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
 
         this.personagem.atualizar();
         // ── Atualiza NPCs (lida com indicador E, diálogo e proximidade) ───────
@@ -239,7 +230,7 @@ export default class MapaGelo extends Phaser.Scene {
 
         // ── Portal de volta — livre, sem verificação de insígnia ──────────────
         if (this.personagem.temOverlap(this.PortalGelo)) {
-            this.trocarCena('CenaPonteh', { vindoDe: 'MapaGelo' });
+            this.trocarCena('PonteMC_QG');
             return;
         }
 
@@ -250,7 +241,7 @@ export default class MapaGelo extends Phaser.Scene {
                 this._mostrarMensagemBloqueio();
                 return;
             }
-            this.trocarCena('CenaPonteV', { vindoDe: 'MapaGelo' });
+            this.trocarCena('PonteQG_VV');
             return;
         }
 
@@ -313,18 +304,6 @@ export default class MapaGelo extends Phaser.Scene {
             bg.destroy();
             texto.destroy();
             this._mensagemBloqueio = null;
-        });
-    }
-
-    // ── Transição ─────────────────────────────────────────────────────────────
-
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.scene.stop('HUDCenas'); // Para o HUD antes de trocar de cena
-
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
         });
     }
 }

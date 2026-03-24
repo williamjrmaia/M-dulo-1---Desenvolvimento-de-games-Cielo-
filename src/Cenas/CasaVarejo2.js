@@ -1,6 +1,7 @@
+import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 
-export default class CasaVarejo2 extends Phaser.Scene {
+export default class CasaVarejo2 extends CenaMapa {
 
     constructor() {
         super('CasaVarejo2');
@@ -12,20 +13,26 @@ export default class CasaVarejo2 extends Phaser.Scene {
     }
 
     preload() {
-         // Carrega o visual interno e o sprite da porta (reutilizando assets da Casa 1)
+        // Carrega o visual interno e o sprite da porta (reutilizando assets da Casa 1)
          this.load.image('CasaVarejo2', 'assets/VilaDoVarejo/CasaVarejo2/CasaVarejo2.png');
-         this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
-         
          // ── Implementação de Hitbox: Carrega os dados de colisão do Tiled ─────
-         this.load.tilemapTiledJSON('mapaCasaVarejo2', 'assets/VilaDoVarejo/CasaVarejo2/CasaVarejo2.tmj');
+         this.load.tilemapTiledJSON('mapaCasaVarejo2', 'assets/VilaDoVarejo/CasaVarejo2/CasaVarejo2.tmj');         
+    }
+
+    create() {
+        super.create();
+
+        // Renderiza o cenário centralizado e o sprite da porta de saída
+        const fundo = this.add.image(750, 400, 'CasaVarejo1');
+        this.add.image(750, 510, 'portaSaida').setScale(0.7);
+        
+
     }
 
     create() {
         // ── Configuração Visual ─────────────────────────────────────────────
         
-        // Renderiza o cenário centralizado e o sprite da porta de saída
-        const fundo = this.add.image(750, 400, 'CasaVarejo2');
-        this.add.image(750, 510, 'PortaSaida').setScale(1.5);
+        
 
         this.fazendoTransicao = false;
 
@@ -93,27 +100,12 @@ export default class CasaVarejo2 extends Phaser.Scene {
     }
 
     update() {
-        // Bloqueia comandos se estiver no meio de um Fade Out
-        if (this.fazendoTransicao) return;
-
-        // Atualiza a movimentação e animações do personagem
+        if (super.update()) return;
         this.personagem.atualizar();    
 
-        // Verifica se o player está na porta e apertou a tecla de interação (E)
-        if (this.personagem.temOverlap(this.PortaCasaVarejo2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('VilaDoVarejo', { vindoDe: 'CasaVarejo2' });
+       if (this.personagem.temOverlap(this.PortaCasaVarejo2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('VilaDoVarejo');
             return;
         }
-    }
-
-    // ── Lógica de Transição ────────────────────────────────────────────────
-    
-    // Função auxiliar para mudar de cena com efeito de escurecimento suave
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
     }
 }

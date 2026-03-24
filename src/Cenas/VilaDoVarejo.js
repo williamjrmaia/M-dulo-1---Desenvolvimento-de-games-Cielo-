@@ -1,8 +1,9 @@
 import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
+import CenaMapa from "../Classes/CenaMapa.js";
 
-export default class VilaDoVarejo extends Phaser.Scene {
+export default class VilaDoVarejo extends CenaMapa {
     constructor() {
         super('VilaDoVarejo');
     }
@@ -15,8 +16,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
     preload() {
         // Assets do mapa e elementos de interface para diálogos
         this.load.image('fundoVila', 'assets/VilaDoVarejo/vila_do_varejo.png');
-        this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
-        this.load.image('balao',        'assets/objetos/balao_dialogo.png');
 
         // Spritesheets do Eric (o NPC informativo)
         this.load.spritesheet('eric_idle', 'assets/NPC/ERIC/spr_eric_front_idl.png', {frameWidth: 14, frameHeight: 19});
@@ -35,14 +34,15 @@ export default class VilaDoVarejo extends Phaser.Scene {
     }
 
     create() {
-        // Ferramenta de debug: clica no mapa e vê a coordenada no console. Mão na roda!
+
+        super.create();
+
+        // Ferramenta de debug: clica no mapa e vê a coordenada no console.
         this.input.on('pointerdown', (pointer) => {
             const worldX = pointer.worldX.toFixed(0);
             const worldY = pointer.worldY.toFixed(0);
             console.log(`x: ${worldX}, y: ${worldY}`);
         });
-
-        this.fazendoTransicao = false;
         this.add.image(110, 0, 'fundoVila').setOrigin(0, 0).setScale(1);
 
         // Define até onde a física (e o jogador) pode ir
@@ -143,7 +143,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        if (this.origem === 'MapaGelo') {
+        if (this.origem === 'QuebraGelo') {
             this.personagem.sprite.setPosition(270, 50);
         }
         if (this.origem === 'PraiaDosProveitos') {
@@ -155,7 +155,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         if (this.origem === 'CasaVarejo2') {
             this.personagem.sprite.setPosition(1125, 465);
         }
-        if (this.origem === 'CenaPonteV') {
+        if (this.origem === 'PonteQG_VV') {
             this.personagem.sprite.setPosition(270, 50);
         }
         
@@ -167,7 +167,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
 
         // Atualiza o player e a lógica de movimento/diálogo dos NPCs
         this.personagem.atualizar();
@@ -176,33 +176,24 @@ export default class VilaDoVarejo extends Phaser.Scene {
 
         // ── Verificação de Troca de Cena ──────────────────────────────────────
         if (this.personagem.temOverlap(this.portalGelo)) {
-            this.trocarCena('CenaPonteV', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('PonteQG_VV');
             return;
         }
 
         if (this.personagem.temOverlap(this.portalparapraia)) {
-            this.trocarCena('PraiaDosProveitos', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('PraiaDosProveitos');
             return;
         }
 
         // Portas precisam da tecla de interação (E)
         if (this.personagem.temOverlap(this.portaCasa1Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('CasaVarejo1', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('CasaVarejo1');
             return;
         }
 
         if (this.personagem.temOverlap(this.portaCasa2Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('CasaVarejo2', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('CasaVarejo2');
             return;
         }
-    }
-
-    // Função para transição suave (Fade Out)
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
     }
 }

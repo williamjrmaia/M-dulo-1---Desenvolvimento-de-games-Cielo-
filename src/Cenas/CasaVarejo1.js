@@ -1,8 +1,9 @@
 import Jogador        from '../Classes/Jogador.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
+import CenaMapa from '../Classes/CenaMapa.js';
 
-export default class CasaVarejo1 extends Phaser.Scene {
+export default class CasaVarejo1 extends CenaMapa {
 
     constructor() {
         super('CasaVarejo1');
@@ -16,17 +17,14 @@ export default class CasaVarejo1 extends Phaser.Scene {
     preload() {
         // Carrega assets do cenário e os dados de colisão do Tiled
         this.load.image('CasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.png');
-        this.load.image('PortaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
         this.load.tilemapTiledJSON('mapaCasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.tmj');
 
         // Assets da Thainá e elementos visuais do balão de diálogo
         this.load.spritesheet('thaina_idl', 'assets/NPC/THAINA/spr_thaina_front_idl.png', {frameWidth: 14, frameHeight: 19});
-        this.load.image('IndicadorE', 'assets/objetos/botao_e.png');
-        this.load.image('balao',      'assets/objetos/balao_dialogo.png');
     }
 
     create() {
-        this.fazendoTransicao = false;
+        super.create();
 
         // 1. Posiciona o cenário e o sprite visual da porta de saída
         const fundo = this.add.image(750, 400, 'CasaVarejo1');
@@ -116,7 +114,7 @@ export default class CasaVarejo1 extends Phaser.Scene {
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
 
         // Atualiza movimentos do player e lógica de proximidade da NPC
         this.personagem.atualizar();
@@ -124,17 +122,8 @@ export default class CasaVarejo1 extends Phaser.Scene {
 
         // Se estiver na porta e apertar 'E', volta para a Vila
         if (this.personagem.temOverlap(this.PortaCasaVarejo1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('VilaDoVarejo', { vindoDe: 'CasaVarejo1' });
+            this.trocarCena('VilaDoVarejo');
             return;
         }
-    }
-
-    // Gerencia a transição de fade-out antes de mudar de cena
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
     }
 }
