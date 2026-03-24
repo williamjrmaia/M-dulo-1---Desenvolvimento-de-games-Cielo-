@@ -1,4 +1,5 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
+import Insignia       from '../Classes/Insignias.js';
 
 // Pontuação extra por produto — somada ao GANHO_SATISFACAO base
 const PONTUACAO_PRODUTO = {
@@ -8,19 +9,14 @@ const PONTUACAO_PRODUTO = {
     CieloFlash2: 25,
 };
 
-
-
 export default class NegociacaoPedro extends CenaNegociacao {
     constructor() {
         super('NegociacaoPedro', {
             nomeCliente:       'Pedro',
             satisfacaoInicial: 0,
             cartasExigidas: {
-                abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
-                sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
-                //demonstracao: ['CieloLioOn', 'CieloFlash', 'CVBA', 'CieloFlash2'],
-               // negociacao:   ['Ajuste', 'Validacao', 'Quebra'],
-               // fechamento:   ['Adicional', 'Alternativo', 'Desconto','Teste'],
+                abordagem: ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
+                sondagem:  ['PerguntaDeImpacto', 'GanchoDaDor'],
             },
             cartasPorFase: {
                 abordagem:    5,
@@ -32,17 +28,22 @@ export default class NegociacaoPedro extends CenaNegociacao {
         });
     }
 
-    _chaveVitoria() {
-        return 'pedro_vencido';
+    preload() {
+        super.preload();
+        this.load.image('Pedro_fundo', 'assets/MapaGelo/Cena01_house1.png');
+
+        // Carrega os assets de todas as insígnias
+        Insignia.preload(this);
     }
 
-    // Insígnia concedida ao vencer a negociação com Pedro
-    _getInsignia() {
-        return {
-            key:  'insignia_pedro',
-            path: 'assets/insignias/InsigniaAbordagem1.png',
-            nome: 'Mestre da Abordagem',
-        };
+    // Chamado internamente por CenaNegociacao ao vencer a negociação
+    _aoVencer() {
+        const insignia = new Insignia(this, 'mapa_gelo');
+        insignia.conceder();
+    }
+
+    _chaveVitoria() {
+        return 'pedro_vencido';
     }
 
     _getPontuacaoCarta(key) {
@@ -99,12 +100,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
         });
     }
 
-    preload() {
-        super.preload();
-        this.load.image('Pedro_fundo', 'assets/MapaGelo/Cena01_house1.png');
-    }
-
     _cenaDeRetorno() {
-        return 'MapaGelo';
+        return 'QuebraGelo';
     }
 }

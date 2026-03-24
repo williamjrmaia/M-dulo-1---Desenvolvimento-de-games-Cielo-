@@ -1,6 +1,7 @@
+import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 
-export default class CenaCasaGelo extends Phaser.Scene {
+export default class CenaCasaGelo extends CenaMapa {
     constructor() {
         super('CenaCasaGelo');
     }
@@ -12,19 +13,17 @@ export default class CenaCasaGelo extends Phaser.Scene {
     preload() {
         this.load.image('CasaPedro',    'assets/MapaGelo/CasaPedro.png');
         this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
-        this.load.image('IndicadorE',   'assets/objetos/botao_e.png');
         this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
-        this.load.image('saida',        'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
-        this.fazendoTransicao = false;
+        super.create();
 
         const centerX = 750;
         const centerY = 400;
 
         this.add.image(centerX, centerY, 'CasaPedro');
-        this.add.image(751, 530, 'saida').setDepth(1);
+        this.add.image(751, 530, 'portaSaida').setDepth(1);
 
         // ── Mapa / Hitboxes ───────────────────────────────────────────────────
         const map     = this.make.tilemap({ key: 'mapa_casa' });
@@ -89,12 +88,23 @@ export default class CenaCasaGelo extends Phaser.Scene {
         // ── Câmera ────────────────────────────────────────────────────────────
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.4);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
         this.personagem.atualizar();
+
+        // ── Atualiza HUD do Balão ─────────────────────────────────────────────
+        const registry = this.registry.get('negociacoesVencidas') ?? {};
+        const pedroVencido = !!registry['pedro_vencido'];
+
+        // Se o Pedro ainda não foi vencido, mostra a missão
+        if (!pedroVencido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Negocie com Pedro', visivel: true });
+        } else {
+            // Se já foi vencido, esconde o balão
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        }
 
         //Se estiver na hitbox do pedro, pertoDoPedro = true
         const pertoDoPedro = this.personagem.temOverlap(this.zonaPedro);
@@ -110,22 +120,16 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
         // Aperta E perto do Pedro → vai para NegociacaoPedro
         if (pertoDoPedro && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this._trocarCena('NegociacaoPedro');
+            // Limpa o balão ao interagir para ele não ficar flutuando
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false }); 
+            this.trocarCena('NegociacaoPedro');
             return;
         }
 
         // Aperta E na porta de saída → volta para o MapaGelo
         const naPorta = this.physics.overlap(this.personagem.sprite, this.portaSaida);
         if (naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this._trocarCena('MapaGelo', { vindoDe: 'CenaCasaGelo' });
+            this.trocarCena('MapaGelo');
         }
-    }
-    //Função pra trocar de cena com animações
-    _trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
     }
 }

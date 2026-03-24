@@ -6,10 +6,7 @@ export default class CenaIntroducao extends Phaser.Scene {
 
     preload() {
         // Substitua pelo caminho real da sua imagem de fundo
-        this.load.image('IntroFundo', './assets/intro/fundo_intro.png');
-
-        this.load.image('balao',      './assets/objetos/balao_dialogo.png');
-        this.load.image('IndicadorE', './assets/objetos/botao_e.png');
+        //this.load.image('IntroFundo', './assets/intro/fundo_intro.png');
     }
 
     create() {
@@ -18,7 +15,6 @@ export default class CenaIntroducao extends Phaser.Scene {
 
         // ── Nome do jogador — lido aqui, quando a cena já está ativa ──────────
         const nomeJogador = this.game.registry.get('nomeJogador')
-                         || localStorage.getItem('nomeJogador')
                          || 'Jogador';
 
         // ── Falas narrativas com contexto de GN/vendas ────────────────────────
@@ -175,7 +171,7 @@ export default class CenaIntroducao extends Phaser.Scene {
         this.cameras.main.fadeOut(800, 0, 0, 0);
         this.cameras.main.once(
             Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
-            () => this.scene.start('CenaCasa', { vindoDe: 'CenaIntroducao' }),
+            () => this.scene.start('CasaCielita', { vindoDe: 'CenaIntroducao' }),
         );
     }
 

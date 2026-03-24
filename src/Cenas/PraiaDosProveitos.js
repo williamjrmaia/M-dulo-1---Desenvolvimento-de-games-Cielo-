@@ -1,6 +1,7 @@
+import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 
-export default class PraiaDosProveitos extends Phaser.Scene {
+export default class PraiaDosProveitos extends CenaMapa {
     constructor() {
         super('PraiaDosProveitos');
     }
@@ -19,7 +20,7 @@ export default class PraiaDosProveitos extends Phaser.Scene {
     }
 
     create() {
-        this.fazendoTransicao = false;
+        super.create();
 
         // --- 2. POSICIONAMENTO DO FUNDO ---
         // Definimos a imagem no canto superior esquerdo (0,0) para alinhar com o Tiled
@@ -71,7 +72,6 @@ export default class PraiaDosProveitos extends Phaser.Scene {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.4);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
 
         //Criando portais para transição
         this.PortalPonte1 = this.add.zone(630, 830, 20, 20)
@@ -87,7 +87,7 @@ export default class PraiaDosProveitos extends Phaser.Scene {
         this.personagem.atualizar();
 
         if (this.personagem.temOverlap(this.PortalPonte1)) {
-            this.trocarCena('VilaDoVarejo', { vindoDe: 'PraiaDosProveitos' });
+            this.trocarCena('VilaDoVarejo');
             return;
         }
     }

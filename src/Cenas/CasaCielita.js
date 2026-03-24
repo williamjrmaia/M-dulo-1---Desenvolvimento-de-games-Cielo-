@@ -8,10 +8,10 @@ const FALAS_CIELITA = [
     { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },
 ];
 
-export default class CenaCasa extends Phaser.Scene {
+export default class CasaCielita extends Phaser.Scene {
 
     constructor() {
-        super('CenaCasa');
+        super('CasaCielita');
     }
 
     init(data) {
@@ -23,7 +23,6 @@ export default class CenaCasa extends Phaser.Scene {
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
         this.load.image('balao',        './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE',   './assets/objetos/botao_e.png');
-        this.load.image('PortaCielita', './assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
     }
 
     create() {
@@ -67,13 +66,13 @@ export default class CenaCasa extends Phaser.Scene {
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
         // Porta da Cielita
-        this.add.image(750, 705, 'PortaCielita').setScale(2);
+        this.add.image(750, 705, 'portaSaida').setScale(2);
 
         // Controla se o diálogo já foi concluído
         this.dialogoConcluido = false;
 
         // Spawn do jogador
-        const spawnY = this.origem === 'MundoCasa'
+        const spawnY = this.origem === 'MundoDaCielita'
             ? limiteY + alturaMapa - 80
             : H / 2 + 80;
 
@@ -126,7 +125,7 @@ export default class CenaCasa extends Phaser.Scene {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.stop('HUDCenas');
-                this.scene.start('MundoCasa', { vindoDe: 'CenaCasa' });
+                this.scene.start('MundoDaCielita', { vindoDe: 'CasaCielita' });
             });
         }
     }

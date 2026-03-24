@@ -1,7 +1,8 @@
+import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 
-export default class MundoCasa extends Phaser.Scene {
-    constructor() { super('MundoCasa'); }
+export default class MundoDaCielita extends CenaMapa {
+    constructor() { super('MundoDaCielita'); }
 
     init(data) {
         this.origem = data.vindoDe; 
@@ -13,6 +14,8 @@ export default class MundoCasa extends Phaser.Scene {
     }
 
     create() {
+        super.create();
+
         this.add.image(750, 400, 'MenuFundo');
         
         const background = this.add.image(750, 400, 'MundoCasa');
@@ -39,10 +42,10 @@ export default class MundoCasa extends Phaser.Scene {
         let spawnX = 750;
         let spawnY = 480;
 
-        if (this.origem === 'CenaCasa') {
+        if (this.origem === 'CasaCielita') {
             spawnX = 857;
             spawnY = 370;
-        } else if (this.origem === 'CenaPonteh') {
+        } else if (this.origem === 'PonteMC_QG') {
             spawnX = 900;
             spawnY = 400;
         }
@@ -90,20 +93,15 @@ export default class MundoCasa extends Phaser.Scene {
         this.personagem.adicionarOverlap(this.gatilhoPorta, () => {
             this.naPorta = true;
         });
-        
-        this.fazendoTransicao = false;
-
-        // ✅ Lança o HUD
-        this.scene.launch('HUDCenas');
-        this.scene.bringToTop('HUDCenas');
 
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
         this.cameras.main.startFollow(this.personagem.sprite);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
+        if (super.update()) return;
+
         this.personagem.atualizar();
 
         // ✅ Lógica do balão indicativo
@@ -120,20 +118,11 @@ export default class MundoCasa extends Phaser.Scene {
         }
 
         if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.stop('HUDCenas');
-                this.scene.start('CenaCasa', { vindoDe: 'MundoCasa' });
-            });
+            this.trocarCena('CasaCielita');
         }
 
-        if (this.personagem.temOverlap(this.portalGelo) && !this.fazendoTransicao) {
-            this.fazendoTransicao = true;
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.stop('HUDCenas');
-                this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });
-            });
+        if (this.personagem.temOverlap(this.portalGelo)) {
+            this.trocarCena('PonteCC_QG');
         }
-    }
+        }
 }
