@@ -1,6 +1,7 @@
+import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 
-export default class CenaCasaGelo extends Phaser.Scene {
+export default class CenaCasaGelo extends CenaMapa {
     constructor() {
         super('CenaCasaGelo');
     }
@@ -16,7 +17,7 @@ export default class CenaCasaGelo extends Phaser.Scene {
     }
 
     create() {
-        this.fazendoTransicao = false;
+        super.create();
 
         const centerX = 750;
         const centerY = 400;
@@ -87,11 +88,10 @@ export default class CenaCasaGelo extends Phaser.Scene {
         // ── Câmera ────────────────────────────────────────────────────────────
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.4);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
         this.personagem.atualizar();
 
         //Se estiver na hitbox do pedro, pertoDoPedro = true
@@ -108,22 +108,14 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
         // Aperta E perto do Pedro → vai para NegociacaoPedro
         if (pertoDoPedro && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this._trocarCena('NegociacaoPedro');
+            this.trocarCena('NegociacaoPedro');
             return;
         }
 
         // Aperta E na porta de saída → volta para o MapaGelo
         const naPorta = this.physics.overlap(this.personagem.sprite, this.portaSaida);
         if (naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this._trocarCena('MapaGelo', { vindoDe: 'CenaCasaGelo' });
+            this.trocarCena('MapaGelo');
         }
-    }
-    //Função pra trocar de cena com animações
-    _trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
     }
 }

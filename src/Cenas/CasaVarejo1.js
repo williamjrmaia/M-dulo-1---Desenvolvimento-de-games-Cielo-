@@ -1,8 +1,9 @@
 import Jogador        from '../Classes/Jogador.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
+import CenaMapa from '../Classes/CenaMapa.js';
 
-export default class CasaVarejo1 extends Phaser.Scene {
+export default class CasaVarejo1 extends CenaMapa {
 
     constructor() {
         super('CasaVarejo1');
@@ -22,7 +23,7 @@ export default class CasaVarejo1 extends Phaser.Scene {
     }
 
     create() {
-        this.fazendoTransicao = false;
+        super.create();
 
         //Porta de Saída
         
@@ -120,24 +121,15 @@ export default class CasaVarejo1 extends Phaser.Scene {
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
 
         this.personagem.atualizar();
         this.thaina.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         if (this.personagem.temOverlap(this.PortaCasaVarejo1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('VilaDoVarejo', { vindoDe: 'CasaVarejo1' });
+            this.trocarCena('VilaDoVarejo');
             return;
         }
         
     }
-
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
-    }
-
 }

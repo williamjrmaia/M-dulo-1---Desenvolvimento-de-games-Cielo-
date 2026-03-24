@@ -1,6 +1,7 @@
+import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 
-export default class MundoDaCielita extends Phaser.Scene {
+export default class MundoDaCielita extends CenaMapa {
     constructor() { super('MundoDaCielita'); }
 
     init(data) {
@@ -13,6 +14,9 @@ export default class MundoDaCielita extends Phaser.Scene {
     }
 
     create() {
+
+        super.create();
+
         this.add.image(750, 400, 'MenuFundo');
         
         const background = this.add.image(750, 400, 'MundoCasa');
@@ -90,20 +94,15 @@ export default class MundoDaCielita extends Phaser.Scene {
         this.personagem.adicionarOverlap(this.gatilhoPorta, () => {
             this.naPorta = true;
         });
-        
-        this.fazendoTransicao = false;
-
-        // ✅ Lança o HUD
-        this.scene.launch('HUDCenas');
-        this.scene.bringToTop('HUDCenas');
 
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
         this.cameras.main.startFollow(this.personagem.sprite);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
+        if (super.update()) return;
+
         this.personagem.atualizar();
 
         // ✅ Lógica do balão indicativo
@@ -120,20 +119,11 @@ export default class MundoDaCielita extends Phaser.Scene {
         }
 
         if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.stop('HUDCenas');
-                this.scene.start('CasaCielita', { vindoDe: 'MundoDaCielita' });
-            });
+            this.trocarCena('CasaCielita');
         }
 
-        if (this.personagem.temOverlap(this.portalGelo) && !this.fazendoTransicao) {
-            this.fazendoTransicao = true;
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.stop('HUDCenas');
-                this.scene.start('PonteCC_QG', { vindoDe: 'MundoDaCielita' });
-            });
+        if (this.personagem.temOverlap(this.portalGelo)) {
+            this.trocarCena('PonteCC_QG');
         }
-    }
+        }
 }

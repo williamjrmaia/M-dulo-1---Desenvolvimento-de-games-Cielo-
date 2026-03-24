@@ -1,8 +1,9 @@
 import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
+import CenaMapa from "../Classes/CenaMapa.js";
 
-export default class VilaDoVarejo extends Phaser.Scene {
+export default class VilaDoVarejo extends CenaMapa {
     constructor() {
         super('VilaDoVarejo');
     }
@@ -33,7 +34,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
 
     create() {
 
-        this.fazendoTransicao = false;
+        super.create();
 
         this.add.image(110, 0, 'fundoVila').setOrigin(0, 0).setScale(1);
 
@@ -80,6 +81,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         { personagem: 'Jogador',   texto: 'Obrigado!'  },
         ]);
 
+        
         this.jorge = new NPC(this, 1160, 680, 'jorge_idle', {
             velocidade: 50,
             distanciaInteracao: 30,
@@ -185,38 +187,30 @@ export default class VilaDoVarejo extends Phaser.Scene {
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
 
         this.personagem.atualizar();
         this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
         this.jorge.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         if (this.personagem.temOverlap(this.portalGelo)) {
-            this.trocarCena('PonteQG_VV', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('PonteQG_VV');
             return;
         }
 
         if (this.personagem.temOverlap(this.portalparapraia)) {
-            this.trocarCena('PraiaDosProveitos', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('PraiaDosProveitos');
             return;
         }
 
         if (this.personagem.temOverlap(this.portaCasa1Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('CasaVarejo1', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('CasaVarejo1');
             return;
         }
 
         if (this.personagem.temOverlap(this.portaCasa2Varejo) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('CasaVarejo2', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('CasaVarejo2');
             return;
         }
-    }
-
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
     }
 }

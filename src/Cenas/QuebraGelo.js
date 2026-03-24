@@ -1,8 +1,9 @@
 import Jogador        from '../Classes/Jogador.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
+import CenaMapa from '../Classes/CenaMapa.js';
 
-export default class QuebraGelo extends Phaser.Scene {
+export default class QuebraGelo extends CenaMapa {
     constructor() { 
         super('QuebraGelo'); 
     }
@@ -27,7 +28,7 @@ export default class QuebraGelo extends Phaser.Scene {
     }
 
     create() {
-        this.fazendoTransicao  = false;
+        super.create();
         this._mensagemBloqueio = null;
 
         //debug para coordenadas
@@ -138,7 +139,6 @@ export default class QuebraGelo extends Phaser.Scene {
         // ── Teclas e câmera ───────────────────────────────────────────────────
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
-        this.cameras.main.fadeIn(500, 0, 0, 0);
         this.cameras.main.setBounds(0, 0, 1024, 1024);
 
         if (this.origem === 'CenaCasaGelo') this.personagem.sprite.setPosition(655, 210);
@@ -153,7 +153,7 @@ export default class QuebraGelo extends Phaser.Scene {
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
 
         this.personagem.atualizar();
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
@@ -161,7 +161,7 @@ export default class QuebraGelo extends Phaser.Scene {
 
         // Portal de volta — livre
         if (this.personagem.temOverlap(this.PortalGelo)) {
-            this.trocarCena('PonteCC_QG', { vindoDe: 'QuebraGelo' });
+            this.trocarCena('PonteCC_QG');
             return;
         }
 
@@ -171,7 +171,7 @@ export default class QuebraGelo extends Phaser.Scene {
                 this._mostrarMensagemBloqueio();
                 return;
             }
-            this.trocarCena('PonteQG_VV', { vindoDe: 'QuebraGelo' });
+            this.trocarCena('PonteQG_VV');
             return;
         }
 
@@ -231,16 +231,6 @@ export default class QuebraGelo extends Phaser.Scene {
             bg.destroy();
             texto.destroy();
             this._mensagemBloqueio = null;
-        });
-    }
-
-    // ── Transição ─────────────────────────────────────────────────────────────
-
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
         });
     }
 }
