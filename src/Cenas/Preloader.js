@@ -79,6 +79,9 @@ export default class Preloader extends Phaser.Scene {
 
         // ── Audio ──
         this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
+
+        // ── Narração da introdução ──
+        this.load.audio('blip_dialogo', 'assets/Audio/blip_teclado.wav');
     }
 
     create() {
