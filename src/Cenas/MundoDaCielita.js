@@ -14,7 +14,6 @@ export default class MundoDaCielita extends CenaMapa {
     }
 
     create() {
-
         super.create();
 
         this.add.image(750, 400, 'MenuFundo');
@@ -46,7 +45,7 @@ export default class MundoDaCielita extends CenaMapa {
         if (this.origem === 'CasaCielita') {
             spawnX = 857;
             spawnY = 370;
-        } else if (this.origem === 'PonteCC_QG') {
+        } else if (this.origem === 'PonteMC_QG') {
             spawnX = 900;
             spawnY = 400;
         }

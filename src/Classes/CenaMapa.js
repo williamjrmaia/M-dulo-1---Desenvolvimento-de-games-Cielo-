@@ -52,7 +52,7 @@ export default class CenaMapa extends Phaser.Scene {
         return this.fazendoTransicao;
     }
 
-    trocarCena(nomeCena, dados = {}) {
+    trocarCena(nomeCena, dados = {}) { //método para fazer 
         this.fazendoTransicao = true;
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {

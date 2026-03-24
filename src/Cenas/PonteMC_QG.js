@@ -1,8 +1,8 @@
 import CenaPonte from '../Classes/CenaPonte.js';
 
-export default class PonteCC_QG extends CenaPonte {
+export default class PonteMC_QG extends CenaPonte {
     constructor() {
-        super('PonteCC_QG', {
+        super('PonteMC_QG', {
             eixo:           'horizontal',
             assetKey:       'fundo_ponte',
             assetPath:      'assets/CenarioCasa/ponte.png',

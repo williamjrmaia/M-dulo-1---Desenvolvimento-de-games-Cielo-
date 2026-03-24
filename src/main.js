@@ -16,7 +16,7 @@ import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
 import CasaGelo2 from './Cenas/CasaGelo2.js';
 import NegociacaoPedro from './Cenas/NegociacaoPedro.js';
 
-import PonteCC_QG from './Cenas/PonteCC_QG.js';
+import PonteMC_QG from './Cenas/PonteMC_QG.js';
 import PonteQG_VV from './Cenas/PonteQG_VV.js';
 
 import VilaDoVarejo from './Cenas/VilaDoVarejo.js'; 
@@ -27,6 +27,7 @@ import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
 
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
 
+import HUDCenas from './Cenas/HUDCenas.js';
 
 
 const config = {
@@ -49,11 +50,12 @@ const config = {
     },
 
     scene:[
-        Preloader, MenuPrincipal, CenaConfig, 
+        
+        Preloader, MenuPrincipal, CenaConfig,
 
         CenaPersonagem, CenaIntroducao, TutorialOverlay, HUDCenas,
 
-        CasaCielita, MundoDaCielita, PonteCC_QG,
+        CasaCielita, MundoDaCielita, PonteMC_QG,
 
         QuebraGelo, CenaCasaGelo, CasaGelo2, PonteQG_VV,
         NegociacaoPedro, 

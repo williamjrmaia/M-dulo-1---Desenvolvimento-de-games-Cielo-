@@ -1,4 +1,5 @@
 import Jogador        from '../Classes/Jogador.js';
+import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
 import CenaMapa from '../Classes/CenaMapa.js';
@@ -9,7 +10,7 @@ export default class QuebraGelo extends CenaMapa {
     }
 
     init(data) {
-        this.origem = data?.vindoDe; 
+        this.origem = data?.vindoDe;
     }
 
     preload() {
@@ -17,7 +18,6 @@ export default class QuebraGelo extends CenaMapa {
         this.load.image('MapaGelo', './assets/MapaGelo/MapaGelo.png');
         this.load.image('Placa',    './assets/MapaGelo/PlacaCasaPedro.png');
         this.load.tilemapTiledJSON('mapa_dados', './assets/MapaGelo/MapaGeloHitbox.tmj');
-        Jogador.preloadInsignias(this);
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
 
         // LORENA
@@ -25,6 +25,9 @@ export default class QuebraGelo extends CenaMapa {
         this.load.spritesheet('lorena_andar', 'assets/NPC/LORENA/spr_lorena_front_walk.png', {frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('lorena_lado', 'assets/NPC/LORENA/spr_lorena_side_walk.png', {frameWidth: 32, frameHeight: 32});
         this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png', {frameWidth: 32, frameHeight: 32});
+
+        // Carrega os assets de todas as insígnias
+        Insignia.preload(this);
     }
 
     create() {
@@ -35,7 +38,7 @@ export default class QuebraGelo extends CenaMapa {
         this.input.on('pointerdown', p => console.log(`x: ${p.worldX.toFixed(0)}, y: ${p.worldY.toFixed(0)}`));
 
         const larguraMapa = 1500;
-        const alturaMapa  = 1200; 
+        const alturaMapa  = 1200;
 
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
@@ -117,7 +120,11 @@ export default class QuebraGelo extends CenaMapa {
                     this.physics.add.existing(poly, true);
                     this.personagem.adicionarColisao(poly);
                 } else {
-                    let zonaTiled = this.add.zone(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height);
+                    const zonaTiled = this.add.zone(
+                        obj.x + obj.width  / 2,
+                        obj.y + obj.height / 2,
+                        obj.width, obj.height
+                    );
                     this.physics.add.existing(zonaTiled, true);
                     this.personagem.adicionarColisao(zonaTiled);
                 }
@@ -148,7 +155,7 @@ export default class QuebraGelo extends CenaMapa {
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         DialogoManager.configurarCameraUI(this, 2.6, [this.cielita, this.lorena]);
 
-        // Verifica e concede a insígnia se o jogador já completou ambas as negociações
+        // ── Verifica e concede insígnia ao retornar da negociação ─────────────
         this._verificarEConcederInsignia();
     }
 
@@ -161,13 +168,13 @@ export default class QuebraGelo extends CenaMapa {
 
         // Portal de volta — livre
         if (this.personagem.temOverlap(this.PortalGelo)) {
-            this.trocarCena('PonteCC_QG');
+            this.trocarCena('PonteMC_QG');
             return;
         }
 
-        // Portal VilaDoVarejo — exige ambas as negociações completas
+        // Portal VilaDoVarejo — exige negociação completa
         if (this.personagem.temOverlap(this.PortalVarejo)) {
-            if (!this._ambasNegociacoesCompletas()) {
+            if (!this._negociacaoCompleta()) {
                 this._mostrarMensagemBloqueio();
                 return;
             }
@@ -190,18 +197,19 @@ export default class QuebraGelo extends CenaMapa {
         }
     }
 
-    // ── Verificação de negociações ────────────────────────────────────────────
+    // ── Insígnia ──────────────────────────────────────────────────────────────
 
-    _ambasNegociacoesCompletas() {
-        const registry = this.registry.get('negociacoesVencidas') ?? {};
-        return !!registry['pedro_vencido'];
+    _negociacaoCompleta() {
+        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
+        return !!vitorias['pedro_vencido'];
     }
 
     _verificarEConcederInsignia() {
-        if (this._ambasNegociacoesCompletas()) {
-            this.personagem.verificarInsigniaMapa('mapa_gelo');
-        }
+        const insignia = new Insignia(this, 'mapa_gelo');
+        insignia.conceder();
     }
+
+    // ── Mensagem de bloqueio ──────────────────────────────────────────────────
 
     _mostrarMensagemBloqueio() {
         if (this._mensagemBloqueio) return;
@@ -209,21 +217,23 @@ export default class QuebraGelo extends CenaMapa {
         const W = this.scale.width;
         const H = this.scale.height;
 
-        const mensagem = '⛔ Você precisa vencer a negociação com Pedro primeiro!';
-
-        const bg = this.add.rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
+        const bg = this.add
+            .rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
             .setStrokeStyle(2, 0xcc4444)
             .setDepth(200)
             .setScrollFactor(0);
 
-        const texto = this.add.text(W / 2, H * 0.2, mensagem, {
-            fontFamily: '"Courier New", monospace',
-            fontSize:   '13px',
-            color:      '#ff6666',
-            align:      'center',
-            wordWrap:   { width: 500 },
-        }).setOrigin(0.5).setDepth(201)
-          .setScrollFactor(0);
+        const texto = this.add
+            .text(W / 2, H * 0.2, '⛔ Você precisa vencer a negociação com Pedro primeiro!', {
+                fontFamily: '"Courier New", monospace',
+                fontSize:   '13px',
+                color:      '#ff6666',
+                align:      'center',
+                wordWrap:   { width: 500 },
+            })
+            .setOrigin(0.5)
+            .setDepth(201)
+            .setScrollFactor(0);
 
         this._mensagemBloqueio = { bg, texto };
 
