@@ -17,13 +17,11 @@ export default class MundoCasa extends Phaser.Scene {
         
         const background = this.add.image(750, 400, 'MundoCasa');
 
-        // converte posição central do background para coordenadas de topo-esquerdo
         const bx = background.x - background.displayWidth  / 2;
         const by = background.y - background.displayHeight / 2;
         const bw = background.displayWidth;
         const bh = background.displayHeight;
 
-        // Paredes invisíveis de colisão
         const espessura = 20;
 
         const paredeEsq = this.add.rectangle(bx + espessura / 2, by + bh / 2, espessura, bh, 0xff0000, 0);
@@ -38,25 +36,20 @@ export default class MundoCasa extends Phaser.Scene {
         const paredeBaixo = this.add.rectangle(bx + bw / 2, by + bh - espessura / 0.7, bw, espessura, 0xff0000, 0);
         this.physics.add.existing(paredeBaixo, true);
 
-        // ── Spawn do jogador conforme origem ──────────────────────────────────
-        let spawnX = 750;   // posição padrão (centro)
+        let spawnX = 750;
         let spawnY = 480;
 
         if (this.origem === 'CenaCasa') {
-            // Vindo da casa → aparece em frente à porta da casa
             spawnX = 857;
             spawnY = 370;
         } else if (this.origem === 'CenaPonteh') {
-            // Vindo da ponte → aparece em frente ao portal da ponte
             spawnX = 900;
             spawnY = 400;
         }
 
-        // Player
         this.personagem = new Jogador(this, spawnX, spawnY, 1.0);
         this.teclas = this.personagem.configurarTeclas();
 
-        // Colisão do jogador com as paredes
         this.physics.add.collider(this.personagem.sprite, paredeEsq);
         this.physics.add.collider(this.personagem.sprite, paredeDir);
         this.physics.add.collider(this.personagem.sprite, paredeCima);
@@ -100,6 +93,10 @@ export default class MundoCasa extends Phaser.Scene {
         
         this.fazendoTransicao = false;
 
+        // ✅ Lança o HUD
+        this.scene.launch('HUDCenas');
+        this.scene.bringToTop('HUDCenas');
+
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
         this.cameras.main.startFollow(this.personagem.sprite);
@@ -109,6 +106,15 @@ export default class MundoCasa extends Phaser.Scene {
     update() {
         this.personagem.atualizar();
 
+        // ✅ Lógica do balão indicativo
+        if (this.naPorta) {
+            this.game.events.emit('atualizarBalao', { texto: 'Atravesse a ponte', visivel: true });
+        } else if (this.personagem.temOverlap(this.portalGelo)) {
+            this.game.events.emit('atualizarBalao', { texto: 'Atravesse a ponte', visivel: true });
+        } else {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        }
+
         if (!this.personagem.temOverlap(this.gatilhoPorta)) {
             this.naPorta = false;
         }
@@ -116,6 +122,7 @@ export default class MundoCasa extends Phaser.Scene {
         if (this.naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.stop('HUDCenas');
                 this.scene.start('CenaCasa', { vindoDe: 'MundoCasa' });
             });
         }
@@ -124,6 +131,7 @@ export default class MundoCasa extends Phaser.Scene {
             this.fazendoTransicao = true;
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.stop('HUDCenas');
                 this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });
             });
         }
