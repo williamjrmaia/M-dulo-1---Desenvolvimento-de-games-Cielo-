@@ -199,7 +199,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.jorge.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         if (this.personagem.temOverlap(this.portalGelo)) {
-            this.trocarCena('CenaPonteV', { vindoDe: 'VilaDoVarejo' });
+            this.trocarCena('PonteQG_VV', { vindoDe: 'VilaDoVarejo' });
             return;
         }
 

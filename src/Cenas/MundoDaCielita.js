@@ -1,7 +1,7 @@
 import Jogador from '../Classes/Jogador.js';
 
-export default class MundoCasa extends Phaser.Scene {
-    constructor() { super('MundoCasa'); }
+export default class MundoDaCielita extends Phaser.Scene {
+    constructor() { super('MundoDaCielita'); }
 
     init(data) {
         this.origem = data.vindoDe; 
@@ -39,10 +39,10 @@ export default class MundoCasa extends Phaser.Scene {
         let spawnX = 750;
         let spawnY = 480;
 
-        if (this.origem === 'CenaCasa') {
+        if (this.origem === 'CasaCielita') {
             spawnX = 857;
             spawnY = 370;
-        } else if (this.origem === 'CenaPonteh') {
+        } else if (this.origem === 'PonteCC_QG') {
             spawnX = 900;
             spawnY = 400;
         }
@@ -123,7 +123,7 @@ export default class MundoCasa extends Phaser.Scene {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.stop('HUDCenas');
-                this.scene.start('CenaCasa', { vindoDe: 'MundoCasa' });
+                this.scene.start('CasaCielita', { vindoDe: 'MundoDaCielita' });
             });
         }
 
@@ -132,7 +132,7 @@ export default class MundoCasa extends Phaser.Scene {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.stop('HUDCenas');
-                this.scene.start('CenaPonteh', { vindoDe: 'MundoCasa' });
+                this.scene.start('PonteCC_QG', { vindoDe: 'MundoDaCielita' });
             });
         }
     }

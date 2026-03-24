@@ -105,6 +105,6 @@ export default class NegociacaoPedro extends CenaNegociacao {
     }
 
     _cenaDeRetorno() {
-        return 'MapaGelo';
+        return 'QuebraGelo';
     }
 }
