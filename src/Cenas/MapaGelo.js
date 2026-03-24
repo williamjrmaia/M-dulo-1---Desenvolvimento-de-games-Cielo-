@@ -1,4 +1,5 @@
 import Jogador        from '../Classes/Jogador.js';
+import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
 
@@ -7,17 +8,17 @@ const FALAS_CIELITA_GELO = [
     { personagem: 'Cielita', texto: 'Bem-vindo ao Mapa Gelo! Aqui o frio é intenso, mas as oportunidades são ainda maiores.' },
     { personagem: 'Cielita', texto: 'Explore com cuidado — há lojas, igluus e portais escondidos por toda parte.' },
     { personagem: 'Cielita', texto: 'Se quiser visitar o Seu Pedro, procure a porta marcada pela placa ao norte.' },
-    { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
+    { personagem: 'Jogador',  texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
     { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
 ];
 
 export default class MapaGelo extends Phaser.Scene {
-    constructor() { 
-        super('MapaGelo'); 
+    constructor() {
+        super('MapaGelo');
     }
 
     init(data) {
-        this.origem = data?.vindoDe; 
+        this.origem = data?.vindoDe;
     }
 
     preload() {
@@ -25,10 +26,12 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.image('MapaGelo', './assets/MapaGelo/MapaGelo.png');
         this.load.image('Placa',    './assets/MapaGelo/PlacaCasaPedro.png');
         this.load.tilemapTiledJSON('mapa_dados', './assets/MapaGelo/MapaGeloHitbox.tmj');
-        Jogador.preloadInsignias(this);
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
+
+        // Carrega os assets de todas as insígnias
+        Insignia.preload(this);
     }
 
     create() {
@@ -36,7 +39,7 @@ export default class MapaGelo extends Phaser.Scene {
         this._mensagemBloqueio = null;
 
         const larguraMapa = 1500;
-        const alturaMapa  = 1200; 
+        const alturaMapa  = 1200;
 
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
@@ -88,7 +91,11 @@ export default class MapaGelo extends Phaser.Scene {
                     this.physics.add.existing(poly, true);
                     this.personagem.adicionarColisao(poly);
                 } else {
-                    let zonaTiled = this.add.zone(obj.x + (obj.width / 2), obj.y + (obj.height / 2), obj.width, obj.height);
+                    const zonaTiled = this.add.zone(
+                        obj.x + obj.width  / 2,
+                        obj.y + obj.height / 2,
+                        obj.width, obj.height
+                    );
                     this.physics.add.existing(zonaTiled, true);
                     this.personagem.adicionarColisao(zonaTiled);
                 }
@@ -120,7 +127,7 @@ export default class MapaGelo extends Phaser.Scene {
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
 
-        // Verifica e concede a insígnia se o jogador já completou ambas as negociações
+        // ── Verifica e concede insígnia ao retornar da negociação ─────────────
         this._verificarEConcederInsignia();
     }
 
@@ -136,9 +143,9 @@ export default class MapaGelo extends Phaser.Scene {
             return;
         }
 
-        // Portal VilaDoVarejo — exige ambas as negociações completas
+        // Portal VilaDoVarejo — exige negociação completa
         if (this.personagem.temOverlap(this.PortalVarejo)) {
-            if (!this._ambasNegociacoesCompletas()) {
+            if (!this._negociacaoCompleta()) {
                 this._mostrarMensagemBloqueio();
                 return;
             }
@@ -161,18 +168,19 @@ export default class MapaGelo extends Phaser.Scene {
         }
     }
 
-    // ── Verificação de negociações ────────────────────────────────────────────
+    // ── Insígnia ──────────────────────────────────────────────────────────────
 
-    _ambasNegociacoesCompletas() {
-        const registry = this.registry.get('negociacoesVencidas') ?? {};
-        return !!registry['pedro_vencido'];
+    _negociacaoCompleta() {
+        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
+        return !!vitorias['pedro_vencido'];
     }
 
     _verificarEConcederInsignia() {
-        if (this._ambasNegociacoesCompletas()) {
-            this.personagem.verificarInsigniaMapa('mapa_gelo');
-        }
+        const insignia = new Insignia(this, 'mapa_gelo');
+        insignia.conceder();
     }
+
+    // ── Mensagem de bloqueio ──────────────────────────────────────────────────
 
     _mostrarMensagemBloqueio() {
         if (this._mensagemBloqueio) return;
@@ -180,21 +188,23 @@ export default class MapaGelo extends Phaser.Scene {
         const W = this.scale.width;
         const H = this.scale.height;
 
-        const mensagem = '⛔ Você precisa vencer a negociação com Pedro primeiro!';
-
-        const bg = this.add.rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
+        const bg = this.add
+            .rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
             .setStrokeStyle(2, 0xcc4444)
             .setDepth(200)
             .setScrollFactor(0);
 
-        const texto = this.add.text(W / 2, H * 0.2, mensagem, {
-            fontFamily: '"Courier New", monospace',
-            fontSize:   '13px',
-            color:      '#ff6666',
-            align:      'center',
-            wordWrap:   { width: 500 },
-        }).setOrigin(0.5).setDepth(201)
-          .setScrollFactor(0);
+        const texto = this.add
+            .text(W / 2, H * 0.2, '⛔ Você precisa vencer a negociação com Pedro primeiro!', {
+                fontFamily: '"Courier New", monospace',
+                fontSize:   '13px',
+                color:      '#ff6666',
+                align:      'center',
+                wordWrap:   { width: 500 },
+            })
+            .setOrigin(0.5)
+            .setDepth(201)
+            .setScrollFactor(0);
 
         this._mensagemBloqueio = { bg, texto };
 
