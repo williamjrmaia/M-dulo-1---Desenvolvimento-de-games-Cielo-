@@ -41,6 +41,7 @@ export default class CenaNegociacao extends Phaser.Scene {
             nomeCliente:       clienteConfig.nomeCliente        ?? 'default',
             satisfacaoInicial: clienteConfig.satisfacaoInicial  ??  0,
             cartasExigidas:    clienteConfig.cartasExigidas     ?? {},
+            acertosPorFase:    clienteConfig.acertosPorFase     ?? {},
             fases:             clienteConfig.fases              ?? CenaNegociacao.FASES,
             cartasPorFase:     clienteConfig.cartasPorFase      ?? {
                 abordagem:    5,
@@ -220,7 +221,7 @@ export default class CenaNegociacao extends Phaser.Scene {
 
         const cartasDaFase = this._getCartasDaFase(fase, numCartas);
 
-        if (fase === 'sondagem' && cartasDaFase.length > 3) {
+        if (cartasDaFase.length > 3) {
             this._paginas = [];
             for (let i = 0; i < cartasDaFase.length; i += 3) {
                 this._paginas.push(cartasDaFase.slice(i, i + 3));
@@ -256,7 +257,8 @@ export default class CenaNegociacao extends Phaser.Scene {
             this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
 
             const exigidasCount      = exigidas.length > 0 ? exigidas.length : CenaNegociacao.ACERTOS_PARA_AVANCAR;
-            const acertosNecessarios = Math.min(CenaNegociacao.ACERTOS_PARA_AVANCAR, exigidasCount);
+            const acertosPorFase     = this.clienteConfig.acertosPorFase[fase];
+            const acertosNecessarios = acertosPorFase ?? Math.min(CenaNegociacao.ACERTOS_PARA_AVANCAR, exigidasCount);
             const faltam             = acertosNecessarios - this.acertosNaFase;
 
             if (faltam <= 0) {
@@ -460,7 +462,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         // Imagem da insígnia (ou placeholder se não existir)
         const imgInsignia = this.textures.exists(insignia.key)
             ? this.add.image(W / 2, H / 2 - 50, insignia.key)
-                .setDisplaySize(180, 180)
+                .setDisplaySize(100, 100)
                 .setDepth(LAYERS.MODAL)
             : this.add.rectangle(W / 2, H / 2 - 50, 180, 180, 0x1a3a5a)
                 .setStrokeStyle(2, 0xf0c040)
