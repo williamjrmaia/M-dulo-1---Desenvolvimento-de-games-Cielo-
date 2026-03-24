@@ -67,6 +67,8 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Pedro_satisfeito','assets/NPC/Pedro/feliz.png');
         this.load.image('Pedro_bravo',     'assets/NPC/Pedro/BossPedro.png');
 
+        this.load.image('Sofia', 'assets/NPC/Sofia/sofia.png');
+
         // ── Barra de satisfação ──
         this.load.image('barra_vazia',        'assets/objetos/barra/barra_vazia.png');
         this.load.image('barra_baixa',        'assets/objetos/barra/barra_baixa.png');

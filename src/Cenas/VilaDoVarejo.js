@@ -143,15 +143,26 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        // ── Lógica de Spawn (Onde o player aparece ao entrar na cena) ────────
-        if (this.origem === 'MapaGelo')          this.personagem.sprite.setPosition(270, 50);
-        if (this.origem === 'PraiaDosProveitos') this.personagem.sprite.setPosition(1260, 70);
-        if (this.origem === 'CasaVarejo1')       this.personagem.sprite.setPosition(555, 245);
-        if (this.origem === 'CasaVarejo2')       this.personagem.sprite.setPosition(1125, 465);
-        if (this.origem === 'CenaPonteV')        this.personagem.sprite.setPosition(270, 50);
-        if (this.origem === 'NegociacaoThaina')  this.personagem.sprite.setPosition(400, 320);
+        if (this.origem === 'MapaGelo') {
+            this.personagem.sprite.setPosition(270, 50);
+        }
+        if (this.origem === 'PraiaDosProveitos') {
+            this.personagem.sprite.setPosition(1260, 70);
+        }
+        if (this.origem === 'CasaVarejo1') {
+            this.personagem.sprite.setPosition(555, 245);
+        }
+        if (this.origem === 'CasaVarejo2') {
+            this.personagem.sprite.setPosition(1125, 465);
+        }
+        if (this.origem === 'CenaPonteV') {
+            this.personagem.sprite.setPosition(270, 50);
+        }
+        
+        if (this.origem === 'NegociacaoThaina') {
+            this.personagem.sprite.setPosition(400, 320);
+        }
 
-        // Configura o zoom da UI de diálogo
         DialogoManager.configurarCameraUI(this, 1.7, [this.eric]);
     }
 

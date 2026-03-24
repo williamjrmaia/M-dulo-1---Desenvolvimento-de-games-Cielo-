@@ -8,6 +8,8 @@ const PONTUACAO_PRODUTO = {
     CieloFlash2: 25,
 };
 
+
+
 export default class NegociacaoPedro extends CenaNegociacao {
     constructor() {
         super('NegociacaoPedro', {
