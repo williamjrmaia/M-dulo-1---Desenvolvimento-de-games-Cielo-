@@ -90,11 +90,28 @@ export default class CenaCasaGelo extends Phaser.Scene {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.4);
         this.cameras.main.fadeIn(500, 0, 0, 0);
+
+        // ── HUD ───────────────────────────────────────────────────────────────
+        // Inicia e traz o HUD para a frente da tela
+        this.scene.launch('HUDCenas');
+        this.scene.bringToTop('HUDCenas');
     }
 
     update() {
         if (this.fazendoTransicao) return;
         this.personagem.atualizar();
+
+        // ── Atualiza HUD do Balão ─────────────────────────────────────────────
+        const registry = this.registry.get('negociacoesVencidas') ?? {};
+        const pedroVencido = !!registry['pedro_vencido'];
+
+        // Se o Pedro ainda não foi vencido, mostra a missão
+        if (!pedroVencido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Negocie com Pedro', visivel: true });
+        } else {
+            // Se já foi vencido, esconde o balão
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        }
 
         //Se estiver na hitbox do pedro, pertoDoPedro = true
         const pertoDoPedro = this.personagem.temOverlap(this.zonaPedro);
@@ -110,6 +127,8 @@ export default class CenaCasaGelo extends Phaser.Scene {
 
         // Aperta E perto do Pedro → vai para NegociacaoPedro
         if (pertoDoPedro && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            // Limpa o balão ao interagir para ele não ficar flutuando
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false }); 
             this._trocarCena('NegociacaoPedro');
             return;
         }
@@ -120,9 +139,14 @@ export default class CenaCasaGelo extends Phaser.Scene {
             this._trocarCena('MapaGelo', { vindoDe: 'CenaCasaGelo' });
         }
     }
+    
     //Função pra trocar de cena com animações
     _trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
+        
+        // PARA o HUD antes de sair da cena
+        this.scene.stop('HUDCenas'); 
+
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             this.scene.start(nomeCena, dados);
