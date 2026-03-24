@@ -94,6 +94,18 @@ export default class CenaCasaGelo extends CenaMapa {
         if (super.update()) return;
         this.personagem.atualizar();
 
+        // ── Atualiza HUD do Balão ─────────────────────────────────────────────
+        const registry = this.registry.get('negociacoesVencidas') ?? {};
+        const pedroVencido = !!registry['pedro_vencido'];
+
+        // Se o Pedro ainda não foi vencido, mostra a missão
+        if (!pedroVencido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Negocie com Pedro', visivel: true });
+        } else {
+            // Se já foi vencido, esconde o balão
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        }
+
         //Se estiver na hitbox do pedro, pertoDoPedro = true
         const pertoDoPedro = this.personagem.temOverlap(this.zonaPedro);
 
@@ -108,6 +120,8 @@ export default class CenaCasaGelo extends CenaMapa {
 
         // Aperta E perto do Pedro → vai para NegociacaoPedro
         if (pertoDoPedro && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            // Limpa o balão ao interagir para ele não ficar flutuando
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false }); 
             this.trocarCena('NegociacaoPedro');
             return;
         }
