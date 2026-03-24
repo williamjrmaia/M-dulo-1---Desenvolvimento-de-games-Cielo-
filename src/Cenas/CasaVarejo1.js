@@ -30,7 +30,7 @@ export default class CasaVarejo1 extends Phaser.Scene {
 
         // 1. Posiciona o cenário e o sprite visual da porta de saída
         const fundo = this.add.image(750, 400, 'CasaVarejo1');
-        this.add.image(750, 510, 'PortaSaida').setScale(0.7);
+        this.add.image(750, 510, 'PortaSaida').setScale(1.5);
 
         // TRUQUE: Calcula o deslocamento para alinhar as hitboxes do Tiled ao centro da cena
         const offsetX = fundo.x - (fundo.width / 2);
@@ -104,9 +104,9 @@ export default class CasaVarejo1 extends Phaser.Scene {
         // Estética da câmera e fundo
         this.cameras.main.setBackgroundColor('#000000');
         this.cameras.main.centerOn(750, 400);
-
+        
         // Gatilho invisível para sair da casa
-        this.PortaCasaVarejo1 = this.add.zone(750, 510, 20, 10);
+        this.PortaCasaVarejo1 = this.add.zone(750, 510, 40, 10);
         this.physics.add.existing(this.PortaCasaVarejo1, true);
 
         this.teclas = this.personagem.configurarTeclas();
