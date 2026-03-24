@@ -1,7 +1,6 @@
 import Jogador from '../Classes/Jogador.js';
 import NPC     from '../Classes/NPC.js';
 
-// Falas da Cielita
 const FALAS_CIELITA = [
     { personagem: 'Cielita', texto: 'Eu sou Cielita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
     { personagem: 'Cielita', texto: 'Sinta-se à vontade para explorar e conversar comigo.' },
@@ -16,7 +15,6 @@ export default class CenaCasa extends Phaser.Scene {
     }
 
     init(data) {
-        // Recebe de qual cena o jogador veio
         this.origem = data?.vindoDe || null;
     }
 
@@ -59,6 +57,9 @@ export default class CenaCasa extends Phaser.Scene {
             distanciaInteracao: 80,
             grupoNPCs:          this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
+            onFimDialogo: () => {
+                this.dialogoConcluido = true;
+            },
         });
         this.cielita.setScale(2.3);
         this.cielita.setFalas(FALAS_CIELITA);
@@ -68,9 +69,10 @@ export default class CenaCasa extends Phaser.Scene {
         // Porta da Cielita
         this.add.image(750, 705, 'PortaCielita').setScale(2);
 
-        // Spawn do jogador conforme origem
-        // Vindo do MundoCasa: aparece em frente a porta (parte de baixo da cena)
-        // Caso contrario: posicao padrao no centro
+        // Controla se o diálogo já foi concluído
+        this.dialogoConcluido = false;
+
+        // Spawn do jogador
         const spawnY = this.origem === 'MundoCasa'
             ? limiteY + alturaMapa - 80
             : H / 2 + 80;
@@ -90,20 +92,32 @@ export default class CenaCasa extends Phaser.Scene {
         this.jogador.adicionarOverlap(this.gatilhoPorta, () => { this.naPorta = true; });
 
         if (this.origem === 'CenaIntroducao') {
-    this.time.delayedCall(700, () => {
-        this.scene.launch('TutorialOverlay');
-        this.scene.bringToTop('TutorialOverlay');
-        this.input.keyboard.enabled = false;
-    });
-}
+            this.time.delayedCall(700, () => {
+                this.scene.launch('TutorialOverlay');
+                this.scene.bringToTop('TutorialOverlay');
+                this.input.keyboard.enabled = false;
+            });
+        }
+
+        // Lança o HUD sempre, independente da origem
+        this.scene.launch('HUDCenas');
+        this.scene.bringToTop('HUDCenas');
 
         this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
         this.jogador.atualizar();
-
         this.cielita.atualizar(this.jogador.sprite, this.teclas.interagir);
+
+        // ✅ CORRIGIDO: usa this.game.events para comunicação entre cenas
+        if (this.cielita.dialogoAberto) {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        } else if (this.dialogoConcluido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Saia da Casa', visivel: true });
+        } else {
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        }
 
         // Porta
         if (!this.jogador.temOverlap(this.gatilhoPorta)) this.naPorta = false;
@@ -111,6 +125,7 @@ export default class CenaCasa extends Phaser.Scene {
         if (this.naPorta && !this.cielita.dialogoAberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                this.scene.stop('HUDCenas');
                 this.scene.start('MundoCasa', { vindoDe: 'CenaCasa' });
             });
         }
