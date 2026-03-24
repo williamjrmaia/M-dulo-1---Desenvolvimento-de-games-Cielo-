@@ -205,7 +205,11 @@ export default class CenaPersonagem extends Phaser.Scene {
         // transição para a primeira cena
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+<<<<<<< HEAD
+            this.scene.start('MapaGelo');
+=======
             this.scene.start('CasaVarejo2');
+>>>>>>> dev
         });
     }
 }

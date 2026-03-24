@@ -12,16 +12,19 @@ const FALAS_CIELITA_GELO = [
     { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
 ];
 
+// Construindo a cena do MapaGelo
 export default class MapaGelo extends Phaser.Scene {
     constructor() {
         super('MapaGelo');
     }
 
+    // Função de pegar a origem do mapa (usada para trocar de cena -> spawnar em um lugar específico)
     init(data) {
         this.origem = data?.vindoDe;
     }
 
     preload() {
+        // Carregando imagens do mapa
         this.load.image('Ponte',    './assets/CenarioCasa/ponte.png');
         this.load.image('MapaGelo', './assets/MapaGelo/MapaGelo.png');
         this.load.image('Placa',    './assets/MapaGelo/PlacaCasaPedro.png');
@@ -29,10 +32,10 @@ export default class MapaGelo extends Phaser.Scene {
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
 
         // LORENA
-        this.load.spritesheet('lorena_idle', 'assets/NPC/LORENA/spr_lorena_front_idl_strip.png', {frameWidth: 32, frameHeight: 32});
-        this.load.spritesheet('lorena_andar', 'assets/NPC/LORENA/spr_lorena_front_walk.png', {frameWidth: 32, frameHeight: 32});
-        this.load.spritesheet('lorena_lado', 'assets/NPC/LORENA/spr_lorena_side_walk.png', {frameWidth: 32, frameHeight: 32});
-        this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('lorena_idle',   'assets/NPC/LORENA/spr_lorena_front_idl_strip.png', { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('lorena_andar',  'assets/NPC/LORENA/spr_lorena_front_walk.png',      { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('lorena_lado',   'assets/NPC/LORENA/spr_lorena_side_walk.png',       { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png',       { frameWidth: 32, frameHeight: 32 });
 
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
@@ -42,31 +45,39 @@ export default class MapaGelo extends Phaser.Scene {
     }
 
     create() {
+        // Bloqueadores para evitar bugs (tipo o apertar E no meio da transição reinicia ela mesma)
         this.fazendoTransicao  = false;
         this._mensagemBloqueio = null;
 
-        //debug para coordenadas
+        // Controla se os diálogos já foram concluídos puxando do registro global
+        this.dialogoCielitaConcluido = this.registry.get('cielita_gelo_concluido') || false;
+        this.dialogoLorenaConcluido  = this.registry.get('lorena_gelo_concluido') || false;
+
+        // debug para coordenadas
         this.input.on('pointerdown', p => console.log(`x: ${p.worldX.toFixed(0)}, y: ${p.worldY.toFixed(0)}`));
 
         const larguraMapa = 1500;
         const alturaMapa  = 1200;
 
+        // Colocando o centro do limite + paredes
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
 
+        // Criando o tilemap (hitbox) do mapa de Gelo, cujo nome é 'mapa_dados'
         const mapa = this.make.tilemap({ key: 'mapa_dados' });
+        // Criando a imagem do mapa de gelo + a placa da casa do SeuPedro
         this.add.image(0, 0, 'MapaGelo').setOrigin(0, 0);
         this.add.image(655, 155, 'Placa').setScale(0.4);
 
-        
-        //Animações de NPCs
+        // Animações de NPCs
         NPC.criarAnimacoes(this, [
-            { key: 'cielitaparada', frameRate: 3},
+            { key: 'cielitaparada', frameRate: 3 },
             { key: 'lorena_idle',   frameRate: 3 },
             { key: 'lorena_andar',  frameRate: 4 },
             { key: 'lorena_lado',   frameRate: 4 },
             { key: 'lorena_costas', frameRate: 4 },
-            ]);
+        ]);
+
         // ── Grupo de NPCs ─────────────────────────────────────────────────────
         this.grupoNPCs = this.physics.add.group();
 
@@ -77,34 +88,47 @@ export default class MapaGelo extends Phaser.Scene {
             grupoNPCs:          this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
             scaleIndicador:     1.3,
+            onFimDialogo: () => {
+                this.dialogoCielitaConcluido = true;
+                this.registry.set('cielita_gelo_concluido', true); // Salva no registro
+            },
+
         });
+        // Proporções e ambientação da NPC Cielita
         this.cielita.setScale(1.1);
         this.cielita.setDepth(5);
         this.cielita.setFalas(FALAS_CIELITA_GELO);
-        // -- NPC: Lorena
+
+        // ── NPC: Lorena ───────────────────────────────────────────────────────
         this.lorena = new NPC(this, 300, 320, 'lorena_idle', {
             velocidade:         40,
             distanciaInteracao: 30,
             grupoNPCs:          this.grupoNPCs,
-            animacoes: { idle:  'lorena_idle',
-                         andar: 'lorena_andar',
-                         costa: 'lorena_costas',
-                         lado:  'lorena_lado',},
+            animacoes: {
+                idle:  'lorena_idle',
+                andar: 'lorena_andar',
+                costa: 'lorena_costas',
+                lado:  'lorena_lado',
+            },
             scaleIndicador: 1.3,
+            onFimDialogo: () => {
+                this.dialogoLorenaConcluido = true;
+                this.registry.set('lorena_gelo_concluido', true); // Salva no registro
+            },
             waypoints: [
-                {x: 0, y:0},
-                {x: 0, y:200},
-                {x: 315, y:200},
-                {x: 315, y: 0}
-            ]
+                { x: 0,   y: 0   },
+                { x: 0,   y: 200 },
+                { x: 315, y: 200 },
+                { x: 315, y: 0   },
+            ],
         });
         this.lorena.setFalas([
-            {personagem: 'Lorena', texto: 'Ai, não aguento mais ouvir o Seu Pedro reclamar que não consegue organizar direito o estoque...'}
-        ])
+            { personagem: 'Lorena', texto: 'Ai, não aguento mais ouvir o Seu Pedro reclamar que não consegue organizar direito o estoque...' },
+        ]);
         this.lorena.setScale(1.1);
         this.lorena.body.setSize(14, 19);
 
-
+        // Colisão NPC↔NPC
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
         // ── Jogador ───────────────────────────────────────────────────────────
@@ -136,7 +160,7 @@ export default class MapaGelo extends Phaser.Scene {
             });
         }
 
-        // ── Portais e Portas ──────────────────────────────────────────────────
+        // ── PORTAIS E PORTAS ──────────────────────────────────────────────────
         this.PortalGelo     = this.add.zone(10,  215,  10, 15);
         this.GeloPorta      = this.add.zone(622, 190,  17, 20);
         this.GeloPortaCasa2 = this.add.zone(400, 675,  20, 20);
@@ -161,7 +185,16 @@ export default class MapaGelo extends Phaser.Scene {
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         DialogoManager.configurarCameraUI(this, 2.6, [this.cielita]);
 
-        // ── Verifica e concede insígnia ao retornar da negociação ─────────────
+        // ── HUD ───────────────────────────────────────────────────────────────
+        this.scene.launch('HUDCenas');
+        this.scene.bringToTop('HUDCenas');
+        
+        // Exibe o indicativo inicial apenas se ainda não tiver falado com a Cielita
+        if (!this.dialogoCielitaConcluido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        }
+
+        // Verifica e concede a insígnia se o jogador já completou ambas as negociações
         this._verificarEConcederInsignia();
     }
 
@@ -169,18 +202,51 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.fazendoTransicao) return;
 
         this.personagem.atualizar();
+        // ── Atualiza NPCs (lida com indicador E, diálogo e proximidade) ───────
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
         this.lorena.atualizar(this.personagem.sprite, this.teclas.interagir);
 
-        // Portal de volta — livre
+        // ── Atualiza HUD conforme o progresso dos diálogos ───────────────────
+        const distLorena = Phaser.Math.Distance.Between(
+            this.personagem.sprite.x, this.personagem.sprite.y,
+            this.lorena.x,            this.lorena.y
+        );
+        const pertoLorena = distLorena <= this.lorena._cfg.distanciaInteracao;
+
+        // Puxa do registro se o Pedro já foi vencido
+        const registry = this.registry.get('negociacoesVencidas') ?? {};
+        const pedroVencido = !!registry['pedro_vencido'];
+
+        if (this.cielita.dialogoAberto || this.lorena.dialogoAberto) {
+            // Qualquer diálogo aberto: esconde o balão
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        } else if (!this.dialogoCielitaConcluido) {
+            // Ainda não falou com a Cielita
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        } else if (!this.dialogoLorenaConcluido && pertoLorena) {
+            // Perto da Lorena mas ainda não conversou
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Lorena', visivel: true });
+        } else if (!this.dialogoLorenaConcluido) {
+            // Já falou com a Cielita, ainda não encontrou a Lorena
+            this.game.events.emit('atualizarBalao', { texto: 'Procure por Lorena pelo mapa', visivel: true });
+        } else if (!pedroVencido) {
+            // Já falou com a Lorena E ainda não venceu o Pedro: indica para procurar o açougue!
+            this.game.events.emit('atualizarBalao', { texto: 'Procure o açougue de Pedro', visivel: true });
+        } else {
+            // Já venceu o Pedro: esconde o balão (ou você pode colocar outra missão aqui)
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        }
+
+        // ── Portal de volta — livre, sem verificação de insígnia ──────────────
         if (this.personagem.temOverlap(this.PortalGelo)) {
             this.trocarCena('CenaPonteh', { vindoDe: 'MapaGelo' });
             return;
         }
 
-        // Portal VilaDoVarejo — exige negociação completa
+        // ── Portal VilaDoVarejo — exige insígnia ──────────────────────────────
         if (this.personagem.temOverlap(this.PortalVarejo)) {
-            if (!this._negociacaoCompleta()) {
+            // Nota: Adicione a função _temInsignia() se ela não estiver na classe
+            if (typeof this._temInsignia === 'function' && !this._temInsignia()) {
                 this._mostrarMensagemBloqueio();
                 return;
             }
@@ -188,15 +254,16 @@ export default class MapaGelo extends Phaser.Scene {
             return;
         }
 
-        // Porta Casa do Pedro
+        // ── Porta Casa do Pedro — aperta E para entrar ────────────────────────
         const naPorta1 = this.personagem.temOverlap(this.GeloPorta);
         const naPorta2 = this.personagem.temOverlap(this.GeloPorta2);
+
         if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CenaCasaGelo');
             return;
         }
 
-        // Porta CasaGelo2
+        // ── Porta CasaGelo2 — LIVRE, sem verificação de insígnia ─────────────
         if (this.personagem.temOverlap(this.GeloPortaCasa2) &&
             Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CasaGelo2');
@@ -223,8 +290,7 @@ export default class MapaGelo extends Phaser.Scene {
         const W = this.scale.width;
         const H = this.scale.height;
 
-        const bg = this.add
-            .rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
+        const bg = this.add.rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
             .setStrokeStyle(2, 0xcc4444)
             .setDepth(200)
             .setScrollFactor(0);
@@ -254,6 +320,8 @@ export default class MapaGelo extends Phaser.Scene {
 
     trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
+        this.scene.stop('HUDCenas'); // Para o HUD antes de trocar de cena
+
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             this.scene.start(nomeCena, dados);
