@@ -1,5 +1,5 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
-import Insignia       from '../Classes/Insignia.js';
+import Insignia       from '../Classes/Insignias.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoThaina.js — Cliente da Vila do Varejo
