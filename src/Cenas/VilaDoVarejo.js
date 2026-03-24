@@ -33,13 +33,6 @@ export default class VilaDoVarejo extends Phaser.Scene {
 
     create() {
 
-        //debug para coordenadas
-        this.input.on('pointerdown', (pointer) => {
-    const worldX = pointer.worldX.toFixed(0);
-    const worldY = pointer.worldY.toFixed(0);
-    console.log(`x: ${worldX}, y: ${worldY}`);
-});
-
         this.fazendoTransicao = false;
 
         this.add.image(110, 0, 'fundoVila').setOrigin(0, 0).setScale(1);
@@ -168,7 +161,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        if (this.origem === 'MapaGelo') {
+        if (this.origem === 'QuebraGelo') {
             this.personagem.sprite.setPosition(270, 50);
         }
         if (this.origem === 'PraiaDosProveitos') {
@@ -180,7 +173,7 @@ export default class VilaDoVarejo extends Phaser.Scene {
         if (this.origem === 'CasaVarejo2') {
             this.personagem.sprite.setPosition(1125, 465);
         }
-        if (this.origem === 'CenaPonteV') {
+        if (this.origem === 'PonteQG_VV') {
             this.personagem.sprite.setPosition(270, 50);
         }
         

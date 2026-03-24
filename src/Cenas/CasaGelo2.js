@@ -124,7 +124,6 @@ export default class CasaGelo2 extends Phaser.Scene {
 
         // DEBUG TEMPORÁRIO
         const naPorta = this.physics.overlap(this.jogador.sprite, this.gatilhoPorta);
-        console.log('naPorta:', naPorta, '| jogador y:', this.jogador.sprite.y);
         if (naPorta && !this.sofia.dialogoAberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
