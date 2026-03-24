@@ -164,14 +164,12 @@ export default class MapaGelo extends Phaser.Scene {
         this.personagem.verificarInsigniaMapa('mapa_gelo');
     }
 
-
-
     update() {
         if (this.fazendoTransicao) return;
 
         
         this.personagem.atualizar();
-         // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
+        // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
         this.lorena.atualizar(this.personagem.sprite, this.teclas.interagir);
 
@@ -192,14 +190,11 @@ export default class MapaGelo extends Phaser.Scene {
             return;
         }
 
-        // Porta Casa do Pedro — exige insígnia, aperta E para entrar
+        // Porta Casa do Pedro — LIVRE, sem verificação de insígnia
+        // O jogador precisa entrar aqui para vencer a negociação e desbloquear os demais portais
         const naPorta1 = this.personagem.temOverlap(this.geloPorta);
         const naPorta2 = this.personagem.temOverlap(this.geloPorta2);
         if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            if (!this._temInsignia()) {
-                this._mostrarMensagemBloqueio();
-                return;
-            }
             this.trocarCena('CenaCasaGelo');
             return;
         }
