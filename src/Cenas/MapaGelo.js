@@ -31,6 +31,13 @@ export default class MapaGelo extends Phaser.Scene {
         Jogador.preloadInsignias(this);
         // Assets da Cielita (mesmos do CenaCasa)
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', { frameWidth: 16, frameHeight: 25 });
+
+        // LORENA
+        this.load.spritesheet('lorena_idle', 'assets/NPC/LORENA/spr_lorena_front_idl_strip.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('lorena_andar', 'assets/NPC/LORENA/spr_lorena_front_walk.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('lorena_lado', 'assets/NPC/LORENA/spr_lorena_side_walk.png', {frameWidth: 32, frameHeight: 32});
+        this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png', {frameWidth: 32, frameHeight: 32});
+
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
     }
@@ -40,7 +47,9 @@ export default class MapaGelo extends Phaser.Scene {
         this.fazendoTransicao  = false;
         this._mensagemBloqueio = null;
 
-        //Definindo a altura e largura do mapa (para hitbox e para a câmera)
+        //debug para coordenadas
+        this.input.on('pointerdown', p => console.log(`x: ${p.worldX.toFixed(0)}, y: ${p.worldY.toFixed(0)}`));
+
         const larguraMapa = 1500;
         const alturaMapa  = 1200; 
 
@@ -56,20 +65,19 @@ export default class MapaGelo extends Phaser.Scene {
         this.add.image(0, 0, 'MapaGelo').setOrigin(0, 0);
         this.add.image(655, 155, 'Placa').setScale(0.4);
 
-        // ── Animação da Cielita ───────────────────────────────────────────────
-        if (!this.anims.exists('cielitaparada')) {
-            this.anims.create({
-                key:       'cielitaparada',
-                frames:    this.anims.generateFrameNumbers('cielitaparada', { start: 0, end: -1 }),
-                frameRate: 3,
-                repeat:    -1,
-            });
-        }
-
+        
+        //Animações de NPCs
+        NPC.criarAnimacoes(this, [
+            { key: 'cielitaparada', frameRate: 3},
+            { key: 'lorena_idle',   frameRate: 3 },
+            { key: 'lorena_andar',  frameRate: 4 },
+            { key: 'lorena_lado',   frameRate: 4 },
+            { key: 'lorena_costas', frameRate: 4 },
+            ]);
         // ── Grupo de NPCs ─────────────────────────────────────────────────────
         this.grupoNPCs = this.physics.add.group();
 
-        // ── NPC: Cielita — posicionada perto do spawn do jogador (início do mapa) ──
+        // ── NPC: Cielita
         this.cielita = new NPC(this, 300, 190, 'cielitaparada', {
             velocidade:         0,
             distanciaInteracao: 60,
@@ -81,6 +89,29 @@ export default class MapaGelo extends Phaser.Scene {
         this.cielita.setScale(1.1);
         this.cielita.setDepth(5);
         this.cielita.setFalas(FALAS_CIELITA_GELO);
+        // -- NPC: Lorena
+        this.lorena = new NPC(this, 300, 320, 'lorena_idle', {
+            velocidade:         40,
+            distanciaInteracao: 30,
+            grupoNPCs:          this.grupoNPCs,
+            animacoes: { idle:  'lorena_idle',
+                         andar: 'lorena_andar',
+                         costa: 'lorena_costas',
+                         lado:  'lorena_lado',},
+            scaleIndicador: 1.3,
+            waypoints: [
+                {x: 0, y:0},
+                {x: 0, y:200},
+                {x: 315, y:200},
+                {x: 315, y: 0}
+            ]
+        });
+        this.lorena.setFalas([
+            {personagem: 'Lorena', texto: 'Ai, não aguento mais ouvir o Seu Pedro reclamar que não consegue organizar direito o estoque...'}
+        ])
+        this.lorena.setScale(1.1);
+        this.lorena.body.setSize(14, 19);
+
 
         // Colisão NPC↔NPC
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
@@ -91,7 +122,7 @@ export default class MapaGelo extends Phaser.Scene {
         this.personagem.sprite.setDepth(10);
 
         // Colisão Jogador↔Cielita
-        this.personagem.adicionarColisao(this.cielita);
+        this.personagem.adicionarColisao(this.grupoNPCs);
 
         // ── Hitboxes do Tiled ─────────────────────────────────────────────────
         const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
@@ -134,15 +165,7 @@ export default class MapaGelo extends Phaser.Scene {
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
         if (this.origem === 'CenaPonteV') this.personagem.sprite.setPosition(897, 990);
 
-        // ── Câmera UI para diálogos ───────────────────────────────────────────
-        const uiCam = this.cameras.add(0, 0, this.scale.width, this.scale.height);
-        const _dlg  = this.cielita._dialogo;
-        if (_dlg) {
-            const elementosDialogo = [_dlg._fundo, _dlg._textoNome, _dlg._textoFala, _dlg._indicador].filter(Boolean);
-            const objetosMundo     = this.children.list.filter(obj => !elementosDialogo.includes(obj));
-            uiCam.ignore(objetosMundo);
-            this.cameras.main.ignore(elementosDialogo);
-        }
+        DialogoManager.configurarCameraUI(this, 2.6, [this.cielita, this.lorena]);
 
         // Verifica e concede a insígnia se o jogador já completou ambas as negociações
         this._verificarEConcederInsignia();
@@ -151,10 +174,12 @@ export default class MapaGelo extends Phaser.Scene {
     update() {
         // IF para impedir bugs de repetição
         if (this.fazendoTransicao) return;
-        //Atualizando as animações e spritesheets do personagem
+
+        
         this.personagem.atualizar();
         // ── Atualiza Cielita (lida com indicador E, diálogo e proximidade) ────
         this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.lorena.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         // Portal de volta — livre, sem verificação de insígnia
         if (this.personagem.temOverlap(this.PortalGelo)) {
@@ -267,4 +292,3 @@ export default class MapaGelo extends Phaser.Scene {
         });
     }
 }
-
