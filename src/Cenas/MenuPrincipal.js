@@ -12,6 +12,10 @@ export default class MenuPrincipal extends Phaser.Scene {
             }
 
             create() {
+
+                // Toca música de fundo do menu
+                this.registry.get('audio').tocarMusica('musica_fundo_inicio', 0.5);
+
                 let tela = this.add.image(750, 400, 'menu_jogo')
 
                 // Logo centralizado no topo
@@ -67,6 +71,3 @@ export default class MenuPrincipal extends Phaser.Scene {
             }
                
         }
-
-
-        

@@ -76,10 +76,15 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('barra_metade',       'assets/objetos/barra/barra_metade.png');
         this.load.image('barra_metade_cheia', 'assets/objetos/barra/barra_metade_cheia.png');
         this.load.image('barra_cheia',        'assets/objetos/barra/barra_cheia.png');
-        
+
+        // ── Audio ──
+        this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
     }
 
     create() {
-        this.scene.start('MenuPrincipal');
+        this.scene.launch('AudioManager');
+        this.time.delayedCall(100, () => {
+            this.scene.start('MenuPrincipal');
+        });
     }
 }
