@@ -18,7 +18,6 @@ export default class CenaIntroducao extends Phaser.Scene {
 
         // ── Nome do jogador — lido aqui, quando a cena já está ativa ──────────
         const nomeJogador = this.game.registry.get('nomeJogador')
-                         || localStorage.getItem('nomeJogador')
                          || 'Jogador';
 
         // ── Falas narrativas com contexto de GN/vendas ────────────────────────

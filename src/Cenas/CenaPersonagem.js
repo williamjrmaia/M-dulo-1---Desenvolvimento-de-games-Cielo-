@@ -197,11 +197,6 @@ export default class CenaPersonagem extends Phaser.Scene {
         this.game.registry.set('spriteJogador', this.spriteSelecionado);
         this.game.registry.set('personagemConfigurado', true);
 
-        //garante que persista entre sessões de jogatina
-        localStorage.setItem('personagemConfigurado', 'true');
-        localStorage.setItem('nomeJogador', nome);
-        localStorage.setItem('spriteJogador', this.spriteSelecionado);
-
         // transição para a primeira cena
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
