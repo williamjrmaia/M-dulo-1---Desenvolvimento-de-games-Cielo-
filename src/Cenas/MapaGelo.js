@@ -62,7 +62,9 @@ export default class MapaGelo extends Phaser.Scene {
         
         //Animações de NPCs
         NPC.criarAnimacoes(this, [
+            // CIELITA ANIMS-----------------------
             { key: 'cielitaparada', frameRate: 3},
+            // LORENA ANIMS------------------------
             { key: 'lorena_idle',   frameRate: 3 },
             { key: 'lorena_andar',  frameRate: 4 },
             { key: 'lorena_lado',   frameRate: 4 },
