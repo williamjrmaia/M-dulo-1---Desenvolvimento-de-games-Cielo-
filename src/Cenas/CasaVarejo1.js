@@ -56,6 +56,8 @@ export default class CasaVarejo1 extends CenaMapa {
             distanciaInteracao: 80,
             grupoNPCs: this.grupoNPCs,
             onFimDialogo: () => {
+               // Evita balão ficar "preso" durante a negociação
+               this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
                // Inicia a cena de negociação assim que o papo acabar
                this.scene.start('NegociacaoThaina');
             },
@@ -119,6 +121,14 @@ export default class CasaVarejo1 extends CenaMapa {
         // Atualiza movimentos do player e lógica de proximidade da NPC
         this.personagem.atualizar();
         this.thaina.atualizar(this.personagem.sprite, this.teclas.interagir);
+
+        // ── HUD ─────────────────────────────────────────────────────────────
+        // Ao entrar na casa da Thainá, a missão passa a ser negociar com ela.
+        if (this.thaina.dialogoAberto) {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        } else {
+            this.game.events.emit('atualizarBalao', { texto: 'Negocie com a Thaina', visivel: true });
+        }
 
         // Se estiver na porta e apertar 'E', volta para a Vila
         if (this.personagem.temOverlap(this.PortaCasaVarejo1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {

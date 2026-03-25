@@ -113,7 +113,7 @@ export default class CasaCielita extends Phaser.Scene {
         if (this.cielita.dialogoAberto) {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
         } else if (this.dialogoConcluido) {
-            this.game.events.emit('atualizarBalao', { texto: 'Saia da Casa', visivel: true });
+            this.game.events.emit('atualizarBalao', { texto: 'Saia da casa', visivel: true });
         } else {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
