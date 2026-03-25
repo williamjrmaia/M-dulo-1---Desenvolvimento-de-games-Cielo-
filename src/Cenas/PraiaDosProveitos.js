@@ -38,7 +38,6 @@ export default class PraiaDosProveitos extends CenaMapa {
         
         // --- 3. CRIAÇÃO DO JOGADOR ---
         this.personagem = new Jogador(this, 630, 800, 1.2);
-        this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
         
         // --- 4. IMPORTAÇÃO DAS HITBOXES DO TILED ---
@@ -85,7 +84,7 @@ export default class PraiaDosProveitos extends CenaMapa {
     }
 
     update() {
-        if (this.fazendoTransicao) return;
+        if (super.update()) return;
 
         this.personagem.atualizar();
 
@@ -95,12 +94,4 @@ export default class PraiaDosProveitos extends CenaMapa {
         }
     }
 
-    // Método para transição de cena (mantenha como estava)
-    trocarCena(nomeCena, dados = {}) {
-        this.fazendoTransicao = true;
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start(nomeCena, dados);
-        });
-    }
 }

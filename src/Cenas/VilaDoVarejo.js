@@ -146,9 +146,9 @@ export default class VilaDoVarejo extends CenaMapa {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        if (this.origem === 'QuebraGelo') {
-            this.personagem.sprite.setPosition(270, 50);
-        }
+        //if (this.origem === 'QuebraGelo') {
+        //    this.personagem.sprite.setPosition(270, 50);
+        //}
         if (this.origem === 'PraiaDosProveitos') {
             this.personagem.sprite.setPosition(1260, 70);
         }
