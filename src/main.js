@@ -1,34 +1,32 @@
-import Preloader from './Cenas/Preloader.js';
-import MenuPrincipal from './Cenas/MenuPrincipal.js';
-import CenaConfig from './Cenas/CenaConfig.js';
+import Preloader        from './Cenas/Preloader.js';
+import MenuPrincipal    from './Cenas/MenuPrincipal.js';
+import CenaConfig       from './Cenas/CenaConfig.js';
 
-import HUDCenas from './Cenas/HUDCenas.js';
-import TutorialOverlay from './Cenas/TutorialOverlay.js';
-import CenaPersonagem from './Cenas/CenaPersonagem.js';
+import HUDCenas         from './Cenas/HUDCenas.js';
+import TutorialOverlay  from './Cenas/TutorialOverlay.js';
+import CenaPersonagem   from './Cenas/CenaPersonagem.js';
 
-import CenaIntroducao from './Cenas/CenaIntroducao.js';
+import CenaIntroducao   from './Cenas/CenaIntroducao.js';
 
-import CasaCielita from './Cenas/CasaCielita.js';
-import MundoDaCielita from './Cenas/MundoDaCielita.js';
+import CasaCielita      from './Cenas/CasaCielita.js';
+import MundoDaCielita   from './Cenas/MundoDaCielita.js';
 
-import QuebraGelo from './Cenas/QuebraGelo.js';
-import CenaCasaGelo from './Cenas/CenaCasaGelo.js';
-import CasaGelo2 from './Cenas/CasaGelo2.js';
-import NegociacaoPedro from './Cenas/NegociacaoPedro.js';
+import QuebraGelo       from './Cenas/QuebraGelo.js';
+import CenaCasaGelo     from './Cenas/CenaCasaGelo.js';
+import CasaGelo2        from './Cenas/CasaGelo2.js';
+import NegociacaoPedro  from './Cenas/NegociacaoPedro.js';
 
-import PonteMC_QG from './Cenas/PonteMC_QG.js';
-import PonteQG_VV from './Cenas/PonteQG_VV.js';
+import PonteMC_QG       from './Cenas/PonteMC_QG.js';
+import PonteQG_VV       from './Cenas/PonteQG_VV.js';
 
-import VilaDoVarejo from './Cenas/VilaDoVarejo.js'; 
-
-import CasaVarejo1 from './Cenas/CasaVarejo1.js';
-import CasaVarejo2 from './Cenas/CasaVarejo2.js';
+import VilaDoVarejo     from './Cenas/VilaDoVarejo.js';
+import CasaVarejo1      from './Cenas/CasaVarejo1.js';
+import CasaVarejo2      from './Cenas/CasaVarejo2.js';
 import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
 
-import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js'
+import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js';
 
-import HUDCenas from './Cenas/HUDCenas.js';
-
+import AudioManager     from './Classes/AudioManager.js';
 
 const config = {
     type: Phaser.AUTO,
@@ -40,18 +38,15 @@ const config = {
         height: 800,
     },
     backgroundColor: '#ffffff',
-    dom: {createContainer: true},
+    dom: { createContainer: true },
     physics: {
         default: 'arcade',
-        arcade: {
-            gravity: { y: 0 },
-            debug: false
-        }
+        arcade: { gravity: { y: 0 }, debug: false }
     },
 
     scene:[
         
-        Preloader, MenuPrincipal, CenaConfig,
+        Preloader, AudioManager, MenuPrincipal, CenaConfig,
 
         CenaPersonagem, CenaIntroducao, TutorialOverlay, HUDCenas,
 
@@ -63,12 +58,11 @@ const config = {
         VilaDoVarejo, CasaVarejo1, CasaVarejo2, 
         NegociacaoThaina, 
 
-        PraiaDosProveitos
-        ]            
-         
-        //Preloader carrega as sprites antes do jogo começar 
-        //para evitar redundância
+        PraiaDosProveitos,
+    ]
 
+    //Preloader carrega as sprites antes do jogo começar 
+    //para evitar redundância
 };
 
 const game = new Phaser.Game(config);
