@@ -33,7 +33,11 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('balao',      './assets/objetos/balao_dialogo.png');
         this.load.image('IndicadorE', './assets/objetos/botao_e.png');
 
-        this.load.image('Tutorial', 'assets/CenarioCasa/tutorial_andar.png');
+        this.load.image('Tutorial',       'assets/CenarioCasa/tutorial_andar.png');
+        
+        //assets de transicao das pontes
+        this.load.image('fundo_ponte',    'assets/CenarioCasa/ponte.png');
+        this.load.image('fundo_ponte_v',  'assets/CenarioCasa/ponte_transicao_vertical.png');
 
         // ABORDAGEM ---------------------------
         this.load.image('AntiPitch',             'assets/Cartas/Abordagem/AntiPitch.png');

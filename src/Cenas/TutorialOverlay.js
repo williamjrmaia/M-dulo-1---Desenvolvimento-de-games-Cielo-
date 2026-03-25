@@ -1,13 +1,19 @@
 export default class TutorialOverlay extends Phaser.Scene {
     constructor() { super('TutorialOverlay'); }
 
+    init(data) {
+        // recebe a chave da cena que abriu o overlay para reativar o teclado correto ao fechar
+        this.cenaOrigemKey = data?.cenaOrigem || null;
+    }
+
     create() {
         const { width, height } = this.cameras.main;
 
-        // guarda a cena que estava rodando antes do overlay para poder reativar o teclado dela ao fechar
-        this.cenaAnterior = this.scene.manager.scenes.find(s =>
-            s.scene.key !== 'TutorialOverlay' && s.scene.isActive()
-        );
+        // se a chave foi passada, busca a cena diretamente; caso contrário usa o find como fallback
+        // (o find era problemático pois HUDCenas também está ativa e poderia ser retornada antes da cena correta)
+        this.cenaAnterior = this.cenaOrigemKey
+            ? this.scene.get(this.cenaOrigemKey)
+            : this.scene.manager.scenes.find(s => s.scene.key !== 'TutorialOverlay' && s.scene.isActive());
 
         this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.6);
 

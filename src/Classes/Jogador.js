@@ -65,7 +65,8 @@ export default class Jogador {
 
         if (Phaser.Input.Keyboard.JustDown(teclas.tutorial)) {
             this.sprite.setVelocity(0);
-            this.cena.scene.launch('TutorialOverlay');
+            // passa a chave da cena atual para o overlay saber qual teclado reativar ao fechar
+            this.cena.scene.launch('TutorialOverlay', { cenaOrigem: this.cena.scene.key });
             this.cena.scene.bringToTop('TutorialOverlay');
             this.cena.input.keyboard.enabled = false;
         }

@@ -122,7 +122,7 @@ export default class MundoDaCielita extends CenaMapa {
         }
 
         if (this.personagem.temOverlap(this.portalGelo)) {
-            this.trocarCena('PonteCC_QG');
+            this.trocarCena('PonteMC_QG');
         }
         }
 }

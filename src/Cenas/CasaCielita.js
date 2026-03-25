@@ -92,7 +92,7 @@ export default class CasaCielita extends Phaser.Scene {
 
         if (this.origem === 'CenaIntroducao') {
             this.time.delayedCall(700, () => {
-                this.scene.launch('TutorialOverlay');
+                this.scene.launch('TutorialOverlay', { cenaOrigem: 'CasaCielita' });
                 this.scene.bringToTop('TutorialOverlay');
                 this.input.keyboard.enabled = false;
             });
