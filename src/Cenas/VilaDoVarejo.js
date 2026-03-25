@@ -107,7 +107,7 @@ export default class VilaDoVarejo extends CenaMapa {
         this.eric = new NPC(this, 515, 230, 'eric_idle', {
             velocidade: 40,
             distanciaInteracao: 30,
-            flipDireita: true,
+            flipDireita: false,
             grupoNPCs: this.grupoNPCs,
             animacoes: {
                 idle: 'eric_idle', andar: 'eric_andar', costa: 'eric_costas', lado: 'eric_lado',
