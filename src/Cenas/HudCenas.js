@@ -28,8 +28,26 @@ export default class HUDCenas extends Phaser.Scene {
         this.balaoInd.setVisible(false);
         this.textoBalao.setVisible(false);
 
+        // Controle de ativação/desativação das indicativas (tecla O)
+        this._indicativosAtivos = true;
+        this._ultimoBalao = { texto: '', visivel: false };
+
+        // Toggle: aperte O para ligar/desligar as indicativas
+        this._teclaToggleIndicativos = this.input.keyboard.addKey(
+            Phaser.Input.Keyboard.KeyCodes.O
+        );
+
         // ✅ Escuta no barramento global compartilhado por todas as cenas
         this._onAtualizarBalao = ({ texto, visivel }) => {
+            // Guarda o último estado para quando o usuário reativar.
+            this._ultimoBalao = { texto, visivel };
+
+            if (!this._indicativosAtivos) {
+                this.balaoInd.setVisible(false);
+                this.textoBalao.setVisible(false);
+                return;
+            }
+
             this.textoBalao.setText(texto);
             this.balaoInd.setVisible(visivel);
             this.textoBalao.setVisible(visivel);
@@ -41,5 +59,22 @@ export default class HUDCenas extends Phaser.Scene {
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             this.game.events.off('atualizarBalao', this._onAtualizarBalao, this);
         });
+    }
+
+    update() {
+        // Alterna o HUD indicativo com a tecla O
+        if (Phaser.Input.Keyboard.JustDown(this._teclaToggleIndicativos)) {
+            this._indicativosAtivos = !this._indicativosAtivos;
+
+            const { texto, visivel } = this._ultimoBalao;
+            if (this._indicativosAtivos && visivel) {
+                this.textoBalao.setText(texto);
+                this.balaoInd.setVisible(true);
+                this.textoBalao.setVisible(true);
+            } else {
+                this.balaoInd.setVisible(false);
+                this.textoBalao.setVisible(false);
+            }
+        }
     }
 }

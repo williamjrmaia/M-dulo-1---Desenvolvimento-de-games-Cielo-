@@ -213,6 +213,11 @@ export default class QuebraGelo extends CenaMapa {
         const registry = this.registry.get('negociacoesVencidas') ?? {};
         const pedroVencido = !!registry['pedro_vencido'];
 
+        // Porta do Pedro (acougue) - usado para trocar a missão quando o jogador se aproxima
+        const naPorta1 = this.personagem.temOverlap(this.GeloPorta);
+        const naPorta2 = this.personagem.temOverlap(this.GeloPorta2);
+        const pertoAcougue = naPorta1 || naPorta2;
+
         if (this.cielita.dialogoAberto || this.lorena.dialogoAberto) {
             // Qualquer diálogo aberto: esconde o balão
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
@@ -224,13 +229,17 @@ export default class QuebraGelo extends CenaMapa {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Lorena', visivel: true });
         } else if (!this.dialogoLorenaConcluido) {
             // Já falou com a Cielita, ainda não encontrou a Lorena
-            this.game.events.emit('atualizarBalao', { texto: 'Procure por Lorena pelo mapa', visivel: true });
+            this.game.events.emit('atualizarBalao', { texto: 'Procure por lorena pelo mapa', visivel: true });
         } else if (!pedroVencido) {
-            // Já falou com a Lorena E ainda não venceu o Pedro: indica para procurar o açougue!
-            this.game.events.emit('atualizarBalao', { texto: 'Procure o açougue de Pedro', visivel: true });
+            // Já falou com a Lorena E ainda não venceu o Pedro: indica a próxima etapa
+            if (pertoAcougue) {
+                this.game.events.emit('atualizarBalao', { texto: 'Entre no Acougue', visivel: true });
+            } else {
+                this.game.events.emit('atualizarBalao', { texto: 'Procure o acougue do Pedro', visivel: true });
+            }
         } else {
-            // Já venceu o Pedro: esconde o balão (ou você pode colocar outra missão aqui)
-            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+            // Já venceu o Pedro: próxima missão é ir para a Vila do Varejo
+            this.game.events.emit('atualizarBalao', { texto: 'Procure a ponte para ir a vila do varejo', visivel: true });
         }
 
         // ── Portal de volta — livre, sem verificação de insígnia ──────────────
@@ -251,10 +260,7 @@ export default class QuebraGelo extends CenaMapa {
         }
 
         // ── Porta Casa do Pedro — aperta E para entrar ────────────────────────
-        const naPorta1 = this.personagem.temOverlap(this.GeloPorta);
-        const naPorta2 = this.personagem.temOverlap(this.GeloPorta2);
-
-        if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+        if (pertoAcougue && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CenaCasaGelo');
             return;
         }
