@@ -10,6 +10,8 @@ export default class CenaIntroducao extends Phaser.Scene {
     }
 
     create() {
+        this.registry.get('audio').pararMusica();
+
         const W = this.scale.width;
         const H = this.scale.height;
 
@@ -133,19 +135,24 @@ export default class CenaIntroducao extends Phaser.Scene {
         if (this._timerDigitar) this._timerDigitar.remove();
 
         this._timerDigitar = this.time.addEvent({
-            delay:    40,
-            repeat:   fala.texto.length - 1,
+            delay:  40,
+            repeat: fala.texto.length - 1,
             callback: () => {
                 this.txtFala.setText(fala.texto.substring(0, charIndex + 1));
                 charIndex++;
+
+                if(charIndex % 2 === 0 && this.cache.audio.exists('blip_dialogo')) {
+                    this.sound.play('blip_dialogo', { volume: 0.2 });
+                }
+
                 if (charIndex >= fala.texto.length) {
                     this._digitando = false;
                     this.indicador.setVisible(true);
                     this.txtAvancar.setVisible(true);
                 }
-            },
-        });
-    }
+              },
+         });
+        }
 
     // ── Avança ou conclui o diálogo ──────────────────────────────────────────
     _avancar() {
@@ -158,7 +165,7 @@ export default class CenaIntroducao extends Phaser.Scene {
             this.txtAvancar.setVisible(true);
             return;
         }
-
+    
         this._falasIndex++;
 
         if (this._falasIndex < this._falas.length) {
