@@ -28,7 +28,7 @@ export default class CasaVarejo1 extends CenaMapa {
 
         // 1. Posiciona o cenário e o sprite visual da porta de saída
         const fundo = this.add.image(750, 400, 'CasaVarejo1');
-        this.add.image(750, 510, 'PortaSaida').setScale(1.5);
+        this.add.image(750, 510, 'portaSaida').setScale(1.5);
 
         // TRUQUE: Calcula o deslocamento para alinhar as hitboxes do Tiled ao centro da cena
         const offsetX = fundo.x - (fundo.width / 2);
