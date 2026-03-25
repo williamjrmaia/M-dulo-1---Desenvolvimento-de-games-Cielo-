@@ -22,6 +22,9 @@ export default class PraiaDosProveitos extends CenaMapa {
     create() {
         super.create();
 
+        this.registry.get('audio').tocarMusica('musica_praiadosproveitos', 0.5);
+        this.registry.get('audio').tocarAmbiente('ambiente_praiadosproveitos', 0.4);
+
         // --- 2. POSICIONAMENTO DO FUNDO ---
         // Definimos a imagem no canto superior esquerdo (0,0) para alinhar com o Tiled
         const fundo = this.add.image(0, 0, 'fundoPraia').setOrigin(0, 0);

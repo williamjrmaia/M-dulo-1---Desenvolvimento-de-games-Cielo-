@@ -43,6 +43,11 @@ export default class QuebraGelo extends CenaMapa {
         // debug para coordenadas
         this.input.on('pointerdown', p => console.log(`x: ${p.worldX.toFixed(0)}, y: ${p.worldY.toFixed(0)}`));
 
+        // Toca música do Quebra Gelo
+        this.registry.get('audio').tocarMusica('musica_quebragelo', 0.5);
+        // Toca som ambiente do Quebra Gelo
+        this.registry.get('audio').tocarAmbiente('ambiente_quebragelo', 0.6);
+
         const larguraMapa = 1500;
         const alturaMapa  = 1200;
 
