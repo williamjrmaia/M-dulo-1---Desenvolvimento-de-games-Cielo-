@@ -105,13 +105,7 @@ export default class MundoDaCielita extends CenaMapa {
         this.personagem.atualizar();
 
         // ✅ Lógica do balão indicativo
-        if (this.naPorta) {
-            this.game.events.emit('atualizarBalao', { texto: 'Atravesse a ponte', visivel: true });
-        } else if (this.personagem.temOverlap(this.portalGelo)) {
-            this.game.events.emit('atualizarBalao', { texto: 'Atravesse a ponte', visivel: true });
-        } else {
-            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
-        }
+        this.game.events.emit('atualizarBalao', { texto: 'Atravesse a ponte', visivel: true });
 
         if (!this.personagem.temOverlap(this.gatilhoPorta)) {
             this.naPorta = false;
