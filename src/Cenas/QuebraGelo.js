@@ -2,7 +2,7 @@ import Jogador        from '../Classes/Jogador.js';
 import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
-import CenaMapa from '../Classes/CenaMapa.js';
+import CenaMapa from       '../Classes/CenaMapa.js';
 
 export default class QuebraGelo extends CenaMapa {
     constructor() { 
