@@ -17,6 +17,13 @@ export default class VilaDoVarejo extends CenaMapa {
         // Assets do mapa e elementos de interface para diálogos
         this.load.image('fundoVila', 'assets/VilaDoVarejo/vila_do_varejo.png');
 
+        // Spritesheet da Cielita (guia inicial)
+        this.load.spritesheet(
+            'cielitaparada',
+            './assets/NPC/cielita/idlecielita.png',
+            { frameWidth: 16, frameHeight: 25 }
+        );
+
         // Spritesheets do Eric (o NPC informativo)
         this.load.spritesheet('eric_idle', 'assets/NPC/ERIC/spr_eric_front_idl.png', {frameWidth: 14, frameHeight: 19});
         this.load.spritesheet('eric_andar', 'assets/NPC/ERIC/spr_eric_front_walk.png', {frameWidth: 14, frameHeight: 19});
@@ -37,6 +44,9 @@ export default class VilaDoVarejo extends CenaMapa {
 
         super.create();
 
+        this.registry.get('audio').tocarMusica('musica_viladovarejo', 0.5);
+        this.registry.get('audio').tocarAmbiente('ambiente_viladovarejo', 0.3);
+
         // Ferramenta de debug: clica no mapa e vê a coordenada no console.
         this.input.on('pointerdown', (pointer) => {
             const worldX = pointer.worldX.toFixed(0);
@@ -50,6 +60,7 @@ export default class VilaDoVarejo extends CenaMapa {
         
         // Cria as animações de caminhada e idle para Eric e Jorge simultaneamente
         NPC.criarAnimacoes(this, [
+            { key: 'cielitaparada', frameRate: 3 },
             { key: 'eric_idle',    frameRate: 3 },
             { key: 'eric_andar',   frameRate: 4 },
             { key: 'eric_lado',    frameRate: 4 },
@@ -62,14 +73,48 @@ export default class VilaDoVarejo extends CenaMapa {
 
         this.grupoNPCs = this.physics.add.group();
 
+        // Controla se o diálogo inicial da Cielita já foi concluído
+        this.dialogoCielitaConcluido = this.registry.get('cielita_varejo_concluido') || false;
+        // Controla se o jogador já conversou com o Eric (próxima missão)
+        this.dialogoEricConcluido = this.registry.get('eric_varejo_concluido') || false;
+
+        // ── NPC: Cielita ─────────────────────────────────────────────────────
+        // Guia de introdução ao mapa da Vila do Varejo
+        this.cielita = new NPC(this, 270, 230, 'cielitaparada', {
+            velocidade: 0,
+            distanciaInteracao: 60,
+            grupoNPCs: this.grupoNPCs,
+            animacoes: { idle: 'cielitaparada' },
+            scaleIndicador: 1.3,
+            onFimDialogo: () => {
+                this.dialogoCielitaConcluido = true;
+                this.registry.set('cielita_varejo_concluido', true);
+            },
+        });
+        this.cielita.setScale(1.5);
+        // Ajuste: virar o sprite para a direção "frente" (evita ficar espelhado no idle)
+        this.cielita.setFlipX(true);
+        this.cielita.setDepth(5);
+        this.cielita.setFalas([
+            { personagem: 'Cielita', texto: 'Bem-vindo à Vila do Varejo! Aqui, cada esquina tem uma nova oportunidade.' },
+            { personagem: 'Cielita', texto: 'Fique de olho nas lojas e converse com a Thainá para entender como as negociações funcionam.' },
+            { personagem: 'Cielita', texto: 'Se precisar voltar, procure os portais: tem um para o mapa de gelo e outro para a praia.' },
+            { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar e conversar com todo mundo.' },
+            { personagem: 'Cielita', texto: 'Ótimo. Quando quiser, eu estarei por aqui para te orientar.' },
+        ]);
+
         // ── Configuração do Eric ─────────────────────────────────────────────
         this.eric = new NPC(this, 515, 230, 'eric_idle', {
             velocidade: 40,
             distanciaInteracao: 30,
-            flipDireita: true,
+            flipDireita: false,
             grupoNPCs: this.grupoNPCs,
             animacoes: {
                 idle: 'eric_idle', andar: 'eric_andar', costa: 'eric_costas', lado: 'eric_lado',
+            },
+            onFimDialogo: () => {
+                this.dialogoEricConcluido = true;
+                this.registry.set('eric_varejo_concluido', true);
             },
             waypoints: [ // Rota de patrulha do Eric
                 { x: 0, y: 0 }, { x: 390, y: 0 }, { x: 390, y: 300 },
@@ -143,9 +188,9 @@ export default class VilaDoVarejo extends CenaMapa {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        if (this.origem === 'QuebraGelo') {
-            this.personagem.sprite.setPosition(270, 50);
-        }
+        //if (this.origem === 'QuebraGelo') {
+        //    this.personagem.sprite.setPosition(270, 50);
+        //}
         if (this.origem === 'PraiaDosProveitos') {
             this.personagem.sprite.setPosition(1260, 70);
         }
@@ -163,7 +208,17 @@ export default class VilaDoVarejo extends CenaMapa {
             this.personagem.sprite.setPosition(400, 320);
         }
 
-        DialogoManager.configurarCameraUI(this, 1.7, [this.eric]);
+        DialogoManager.configurarCameraUI(this, 1.7, [this.eric, this.jorge, this.cielita]);
+
+        // Balão inicial (somente se ainda não falou com a Cielita)
+        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
+        const varejoVencido = !!vitorias['varejo_vencido'];
+
+        if (varejoVencido) {
+            this.game.events.emit('atualizarBalao', { texto: 'procure a ponte para a praia dos proveitos', visivel: true });
+        } else if (!this.dialogoCielitaConcluido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        }
     }
 
     update() {
@@ -173,6 +228,42 @@ export default class VilaDoVarejo extends CenaMapa {
         this.personagem.atualizar();
         this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
         this.jorge.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
+
+        // ── HUD (balão de orientação) ─────────────────────────────────────
+        const distEric = Phaser.Math.Distance.Between(
+            this.personagem.sprite.x, this.personagem.sprite.y,
+            this.eric.x,              this.eric.y
+        );
+        const pertoEric = distEric <= this.eric._cfg.distanciaInteracao;
+
+        // porta CasaVarejo1 representa a loja/casa da Thainá
+        const pertoLojaThaina = this.personagem.temOverlap(this.portaCasa1Varejo);
+
+        // Depois que vencer a negociação com a Thainá, a missão vira:
+        // "procure a ponte para a praia dos proveitos"
+        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
+        const varejoVencido = !!vitorias['varejo_vencido'];
+
+        if (this.cielita.dialogoAberto || this.eric.dialogoAberto || this.jorge.dialogoAberto) {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        } else if (varejoVencido) {
+            this.game.events.emit('atualizarBalao', {
+                texto: 'procure a ponte para a praia dos proveitos',
+                visivel: true,
+            });
+        } else if (!this.dialogoCielitaConcluido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        } else if (!this.dialogoEricConcluido) {
+            this.game.events.emit(
+                'atualizarBalao',
+                { texto: pertoEric ? 'fale com eric' : 'Procure por Eric pelo Mapa', visivel: true }
+            );
+        } else if (pertoLojaThaina) {
+            this.game.events.emit('atualizarBalao', { texto: 'Entre na casa da Thaina', visivel: true });
+        } else {
+            this.game.events.emit('atualizarBalao', { texto: 'Procure pela Loja da Thaina', visivel: true });
+        }
 
         // ── Verificação de Troca de Cena ──────────────────────────────────────
         if (this.personagem.temOverlap(this.portalGelo)) {

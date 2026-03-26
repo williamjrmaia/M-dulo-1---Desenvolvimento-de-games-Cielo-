@@ -141,8 +141,8 @@ export default class CenaIntroducao extends Phaser.Scene {
                 this.txtFala.setText(fala.texto.substring(0, charIndex + 1));
                 charIndex++;
 
-                if(charIndex % 2 === 0 && this.cache.audio.exists('blip_dialogo')) {
-                    this.sound.play('blip_dialogo', { volume: 0.2 });
+                if(charIndex % 2 === 0 && this.cache.audio.exists('blip_teclado')) {
+                    this.sound.play('blip_teclado', { volume: 0.05 });
                 }
 
                 if (charIndex >= fala.texto.length) {

@@ -26,7 +26,7 @@ export default class QuebraGelo extends CenaMapa {
         this.load.spritesheet('lorena_idle',   'assets/NPC/LORENA/spr_lorena_front_idl_strip.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('lorena_andar',  'assets/NPC/LORENA/spr_lorena_front_walk.png',      { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('lorena_lado',   'assets/NPC/LORENA/spr_lorena_side_walk.png',       { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png',       { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('lorena_costa', 'assets/NPC/LORENA/spr_lorena_back_walk.png',       { frameWidth: 32, frameHeight: 32 });
 
         // Carrega os assets de todas as insígnias
         Insignia.preload(this);
@@ -42,6 +42,11 @@ export default class QuebraGelo extends CenaMapa {
 
         // debug para coordenadas
         this.input.on('pointerdown', p => console.log(`x: ${p.worldX.toFixed(0)}, y: ${p.worldY.toFixed(0)}`));
+
+        // Toca música do Quebra Gelo
+        this.registry.get('audio').tocarMusica('musica_quebragelo', 0.5);
+        // Toca som ambiente do Quebra Gelo
+        this.registry.get('audio').tocarAmbiente('ambiente_quebragelo', 0.6);
 
         const larguraMapa = 1500;
         const alturaMapa  = 1200;
@@ -62,7 +67,7 @@ export default class QuebraGelo extends CenaMapa {
             { key: 'lorena_idle',   frameRate: 3 },
             { key: 'lorena_andar',  frameRate: 4 },
             { key: 'lorena_lado',   frameRate: 4 },
-            { key: 'lorena_costas', frameRate: 4 },
+            { key: 'lorena_costa', frameRate: 4 },
         ]);
 
         // ── Grupo de NPCs ─────────────────────────────────────────────────────
@@ -99,7 +104,7 @@ export default class QuebraGelo extends CenaMapa {
             animacoes: {
                 idle:  'lorena_idle',
                 andar: 'lorena_andar',
-                costa: 'lorena_costas',
+                costa: 'lorena_costa',
                 lado:  'lorena_lado',
             },
             scaleIndicador: 1.3,
@@ -208,6 +213,11 @@ export default class QuebraGelo extends CenaMapa {
         const registry = this.registry.get('negociacoesVencidas') ?? {};
         const pedroVencido = !!registry['pedro_vencido'];
 
+        // Porta do Pedro (acougue) - usado para trocar a missão quando o jogador se aproxima
+        const naPorta1 = this.personagem.temOverlap(this.GeloPorta);
+        const naPorta2 = this.personagem.temOverlap(this.GeloPorta2);
+        const pertoAcougue = naPorta1 || naPorta2;
+
         if (this.cielita.dialogoAberto || this.lorena.dialogoAberto) {
             // Qualquer diálogo aberto: esconde o balão
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
@@ -219,13 +229,17 @@ export default class QuebraGelo extends CenaMapa {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Lorena', visivel: true });
         } else if (!this.dialogoLorenaConcluido) {
             // Já falou com a Cielita, ainda não encontrou a Lorena
-            this.game.events.emit('atualizarBalao', { texto: 'Procure por Lorena pelo mapa', visivel: true });
+            this.game.events.emit('atualizarBalao', { texto: 'Procure por lorena pelo mapa', visivel: true });
         } else if (!pedroVencido) {
-            // Já falou com a Lorena E ainda não venceu o Pedro: indica para procurar o açougue!
-            this.game.events.emit('atualizarBalao', { texto: 'Procure o açougue de Pedro', visivel: true });
+            // Já falou com a Lorena E ainda não venceu o Pedro: indica a próxima etapa
+            if (pertoAcougue) {
+                this.game.events.emit('atualizarBalao', { texto: 'Entre no Acougue', visivel: true });
+            } else {
+                this.game.events.emit('atualizarBalao', { texto: 'Procure o acougue do Pedro', visivel: true });
+            }
         } else {
-            // Já venceu o Pedro: esconde o balão (ou você pode colocar outra missão aqui)
-            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+            // Já venceu o Pedro: próxima missão é ir para a Vila do Varejo
+            this.game.events.emit('atualizarBalao', { texto: 'Procure a ponte para ir a vila do varejo', visivel: true });
         }
 
         // ── Portal de volta — livre, sem verificação de insígnia ──────────────
@@ -246,10 +260,7 @@ export default class QuebraGelo extends CenaMapa {
         }
 
         // ── Porta Casa do Pedro — aperta E para entrar ────────────────────────
-        const naPorta1 = this.personagem.temOverlap(this.GeloPorta);
-        const naPorta2 = this.personagem.temOverlap(this.GeloPorta2);
-
-        if ((naPorta1 || naPorta2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+        if (pertoAcougue && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CenaCasaGelo');
             return;
         }

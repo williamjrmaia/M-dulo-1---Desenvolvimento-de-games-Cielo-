@@ -125,9 +125,27 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('barra_metade_cheia', 'assets/objetos/barra/barra_metade_cheia.png');
         this.load.image('barra_cheia',        'assets/objetos/barra/barra_cheia.png');
 
+
         // ── Audios ────────────────────────────────────────────────────────────
         this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
         this.load.audio('blip_dialogo',        'assets/Audio/blip_dialogo.wav');
+
+        // ── Músicas ──
+        this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
+        this.load.audio('musica_quebragelo', 'assets/Audio/musica_quebragelo.mp3');
+        this.load.audio('musica_viladovarejo', 'assets/Audio/musica_viladovarejo.mp3');
+        this.load.audio('musica_praiadosproveitos', 'assets/Audio/musica_praiadosproveitos.mp3');
+
+        // ── Áudio ambiente ──
+        this.load.audio('ambiente_quebragelo', 'assets/Audio/ambiente_quebragelo.mp3');
+        this.load.audio('ambiente_viladovarejo', 'assets/Audio/ambiente_viladovarejo.mp3');
+        this.load.audio('ambiente_praiadosproveitos', 'assets/Audio/ambiente_praiadosproveitos.mp3');
+
+
+        // ── Narração da Introdução ──
+        this.load.audio('blip_teclado', 'assets/Audio/blip_teclado.wav');
+
+
     }
 
     create() {

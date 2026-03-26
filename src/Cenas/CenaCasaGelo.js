@@ -129,7 +129,7 @@ export default class CenaCasaGelo extends CenaMapa {
         // Aperta E na porta de saída → volta para o MapaGelo
         const naPorta = this.physics.overlap(this.personagem.sprite, this.portaSaida);
         if (naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('MapaGelo');
+            this.trocarCena('QuebraGelo');
         }
     }
 }
