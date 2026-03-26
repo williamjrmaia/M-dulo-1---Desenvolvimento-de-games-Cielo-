@@ -88,6 +88,9 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.PortalPonte1 = this.add.zone(630, 830, 20, 20)
         this.physics.add.existing(this.PortalPonte1, true)
 
+        //Criando a PortaCasaPraia1
+        this.PortaCasaPraia1 = this.add.zone(675, 500, 30, 30);
+        this.physics.add.existing(this.PortaCasaPraia1, true)
         
         this.teclas = this.personagem.configurarTeclas();
 
@@ -130,6 +133,9 @@ export default class PraiaDosProveitos extends CenaMapa {
         if (!this.dialogoCielitaPraiaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
+
+        if (this.origem === 'CasaPraia1') this.personagem.sprite.setPosition(675, 530);
+        
     }
 
     update() {
@@ -149,6 +155,11 @@ export default class PraiaDosProveitos extends CenaMapa {
 
         if (this.personagem.temOverlap(this.PortalPonte1)) {
             this.trocarCena('VilaDoVarejo');
+            return;
+        }
+
+        if (this.personagem.temOverlap(this.PortaCasaPraia1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaPraia1');
             return;
         }
     }
