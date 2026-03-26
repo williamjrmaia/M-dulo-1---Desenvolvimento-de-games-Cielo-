@@ -44,9 +44,6 @@ export default class VilaDoVarejo extends CenaMapa {
 
         super.create();
 
-        this.registry.get('audio').tocarMusica('musica_viladovarejo', 0.5);
-        this.registry.get('audio').tocarAmbiente('ambiente_viladovarejo', 0.3);
-
         // Ferramenta de debug: clica no mapa e vê a coordenada no console.
         this.input.on('pointerdown', (pointer) => {
             const worldX = pointer.worldX.toFixed(0);
@@ -188,9 +185,9 @@ export default class VilaDoVarejo extends CenaMapa {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        //if (this.origem === 'QuebraGelo') {
-        //    this.personagem.sprite.setPosition(270, 50);
-        //}
+        if (this.origem === 'QuebraGelo') {
+            this.personagem.sprite.setPosition(270, 50);
+        }
         if (this.origem === 'PraiaDosProveitos') {
             this.personagem.sprite.setPosition(1260, 70);
         }
@@ -211,12 +208,7 @@ export default class VilaDoVarejo extends CenaMapa {
         DialogoManager.configurarCameraUI(this, 1.7, [this.eric, this.jorge, this.cielita]);
 
         // Balão inicial (somente se ainda não falou com a Cielita)
-        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
-        const varejoVencido = !!vitorias['varejo_vencido'];
-
-        if (varejoVencido) {
-            this.game.events.emit('atualizarBalao', { texto: 'procure a ponte para a praia dos proveitos', visivel: true });
-        } else if (!this.dialogoCielitaConcluido) {
+        if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
     }
@@ -240,18 +232,8 @@ export default class VilaDoVarejo extends CenaMapa {
         // porta CasaVarejo1 representa a loja/casa da Thainá
         const pertoLojaThaina = this.personagem.temOverlap(this.portaCasa1Varejo);
 
-        // Depois que vencer a negociação com a Thainá, a missão vira:
-        // "procure a ponte para a praia dos proveitos"
-        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
-        const varejoVencido = !!vitorias['varejo_vencido'];
-
         if (this.cielita.dialogoAberto || this.eric.dialogoAberto || this.jorge.dialogoAberto) {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
-        } else if (varejoVencido) {
-            this.game.events.emit('atualizarBalao', {
-                texto: 'procure a ponte para a praia dos proveitos',
-                visivel: true,
-            });
         } else if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         } else if (!this.dialogoEricConcluido) {
