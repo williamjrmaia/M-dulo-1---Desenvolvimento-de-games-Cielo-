@@ -180,10 +180,6 @@ export default class QuebraGelo extends CenaMapa {
 
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         DialogoManager.configurarCameraUI(this, 2.6, [this.cielita, this.lorena]);
-
-        // ── HUD ───────────────────────────────────────────────────────────────
-        this.scene.launch('HUDCenas');
-        this.scene.bringToTop('HUDCenas');
         
         // Exibe o indicativo inicial apenas se ainda não tiver falado com a Cielita
         if (!this.dialogoCielitaConcluido) {
