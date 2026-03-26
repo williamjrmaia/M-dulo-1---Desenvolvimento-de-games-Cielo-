@@ -14,14 +14,6 @@ export default class Jogador {
 
         this._criarAnimacoes();
         this._ultimaDirecao = 'frente';
-
-        const largura = cena.cameras.main.width;
-        this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
-            fontSize:        '11px',
-            fill:            '#FFD700',
-            backgroundColor: '#000000',
-            padding:         { x: 6, y: 3 },
-        }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
     }
 
     _criarAnimacoes() {

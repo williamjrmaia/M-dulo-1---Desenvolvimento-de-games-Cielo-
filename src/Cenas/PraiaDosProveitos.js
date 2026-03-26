@@ -23,6 +23,17 @@ export default class PraiaDosProveitos extends CenaMapa {
             './assets/NPC/cielita/idlecielita.png',
             { frameWidth: 16, frameHeight: 25 }
         );
+
+        // Spritesheets do Felipe (NPC que patrulha a praia)
+        // front_idl  → 4 frames (idle de frente)
+        // front_walk → 4 frames (andando de frente) — usado também como lateral
+        // back_walk  → 4 frames (andando de costas)
+        // Não existe sprite lateral para o Felipe!
+        // Dimensões reais medidas: 16x22px por frame
+        this.load.spritesheet('felipe_idle',   'assets/NPC/FELIPE/spr_felipe_front_idl.png',  { frameWidth: 16, frameHeight: 22 });
+        this.load.spritesheet('felipe_andar',  'assets/NPC/FELIPE/spr_felipe_front_walk.png', { frameWidth: 16, frameHeight: 22 });
+        this.load.spritesheet('felipe_costas', 'assets/NPC/FELIPE/spr_felipe_back_walk.png',  { frameWidth: 16, frameHeight: 22 });
+        this.load.spritesheet('felipe_lado',   'assets/NPC/FELIPE/spr_felipe_side_walk.png',  { frameWidth: 16, frameHeight: 22 });
         
         // Carrega o arquivo TMJ (JSON do Tiled) para as hitboxes
         this.load.json('hitboxesPraia', 'assets/PraiaDosProveitos/PraiaDosProveitos.tmj'); 
@@ -35,14 +46,11 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.registry.get('audio').tocarAmbiente('ambiente_praiadosproveitos', 0.4);
 
         // --- 2. POSICIONAMENTO DO FUNDO ---
-        // Definimos a imagem no canto superior esquerdo (0,0) para alinhar com o Tiled
         const fundo = this.add.image(0, 0, 'fundoPraia').setOrigin(0, 0);
         
-        // Dimensões da sua imagem (1264x842)
         const larguraMapa = fundo.width;
         const alturaMapa = fundo.height;
 
-        // Limites do mundo físico (para o personagem não sair da imagem)
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
         
         // --- 3. CRIAÇÃO DO JOGADOR ---
@@ -50,25 +58,19 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.personagem.sprite.setCollideWorldBounds(true);
         
         // --- 4. IMPORTAÇÃO DAS HITBOXES DO TILED ---
-        // Cria o grupo físico estático para os obstáculos
         this.obstaculos = this.physics.add.staticGroup();
 
-        // Pega os dados do JSON carregado
         const mapData = this.cache.json.get('hitboxesPraia');
 
-        // Como posicionamos o fundo em (0,0), não precisamos de offset!
         const offsetX = 3;
         const offsetY = 0;
 
-        // Loop para ler as camadas de objeto do Tiled e criar as zonas de colisão
         if (mapData && mapData.layers) {
             mapData.layers.forEach(layer => {
-                // Verifique se no Tiled você criou uma "Camada de Objetos" (Object Layer)
                 if (layer.type === 'objectgroup' && layer.objects) {
                     layer.objects.forEach(obj => {
-                        // Cria a zona física estática baseada nas coordenadas e tamanho do Tiled
                         let zona = this.add.zone(obj.x + offsetX, obj.y + offsetY, obj.width, obj.height).setOrigin(0, 0);
-                        this.physics.add.existing(zona, true); // true = estático
+                        this.physics.add.existing(zona, true);
                         this.obstaculos.add(zona);
                     });
                 }
@@ -76,17 +78,15 @@ export default class PraiaDosProveitos extends CenaMapa {
         }
 
         // --- 5. CONFIGURAÇÃO DAS COLISÕES E CÂMERA ---
-        // Adiciona a colisão entre o jogador e as hitboxes importadas
         this.physics.add.collider(this.personagem.sprite, this.obstaculos);
         
-        // Configura a câmera para seguir o personagem e travar nas bordas da imagem
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.4);
         this.cameras.main.setBounds(0, 0, larguraMapa, alturaMapa);
 
-        //Criando portais para transição
-        this.PortalPonte1 = this.add.zone(630, 830, 20, 20)
-        this.physics.add.existing(this.PortalPonte1, true)
+        // Portal de volta para a Vila do Varejo
+        this.PortalPonte1 = this.add.zone(630, 830, 20, 20);
+        this.physics.add.existing(this.PortalPonte1, true);
 
         //Criando a PortaCasaPraia1
         this.PortaCasaPraia1 = this.add.zone(675, 500, 30, 30);
@@ -94,14 +94,19 @@ export default class PraiaDosProveitos extends CenaMapa {
         
         this.teclas = this.personagem.configurarTeclas();
 
-        // ── NPC: Cielita (entrada da Praia dos Proveitos) ──────────────────
-        this.dialogoCielitaPraiaConcluido = this.registry.get('cielita_praia_concluida') || false;
-
+        // ── Animações (Cielita + Felipe) ────────────────────────────────────
         NPC.criarAnimacoes(this, [
             { key: 'cielitaparada', frameRate: 3 },
+            { key: 'felipe_idle',   frameRate: 4, start: 0, end: 3 }, // 4 frames de idle (frente)
+            { key: 'felipe_andar',  frameRate: 6, start: 0, end: 3 }, // 4 frames de walk (frente)
+            { key: 'felipe_costas', frameRate: 6, start: 0, end: 3 }, // 4 frames de walk (costas)
+            { key: 'felipe_lado',   frameRate: 6, start: 0, end: 3 }, // reutiliza back_walk para lateral
         ]);
 
         this.grupoNPCs = this.physics.add.group();
+
+        // ── NPC: Cielita ─────────────────────────────────────────────────────
+        this.dialogoCielitaPraiaConcluido = this.registry.get('cielita_praia_concluida') || false;
 
         this.cielita = new NPC(this, 630, 660, 'cielitaparada', {
             velocidade: 0,
@@ -124,11 +129,51 @@ export default class PraiaDosProveitos extends CenaMapa {
             { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar.' },
         ]);
 
-        // Colisão jogador ↔ Cielita
-        this.personagem.adicionarColisao(this.cielita);
+        // ── NPC: Felipe ───────────────────────────────────────────────────────
+        // Controla se o jogador já conversou com o Felipe
+        this.dialogoFelipeConcluido = this.registry.get('felipe_praia_concluido') || false;
 
-        // UI de diálogo
-        DialogoManager.configurarCameraUI(this, 2.4, [this.cielita]);
+        // Felipe patrulha horizontalmente sobre o deck em loop contínuo.
+        // Distância vertical: 0 (sem deslocamento vertical).
+        // Distância horizontal: 420px (metade dos 840px originais) para um loop mais curto.
+        this.felipe = new NPC(this, 370, 320, 'felipe_idle', {
+            velocidade: 45,
+            distanciaInteracao: 35,
+            flipDireita: true,
+            grupoNPCs: this.grupoNPCs,
+            animacoes: {
+                idle:  'felipe_idle',
+                andar: 'felipe_andar',  // frente
+                costa: 'felipe_costas', // costas
+                lado:  'felipe_lado',   // lateral (back_walk espelhado)
+            },
+            onFimDialogo: () => {
+                this.dialogoFelipeConcluido = true;
+                this.registry.set('felipe_praia_concluido', true);
+            },
+            loop: true, // repete os waypoints em loop contínuo
+            waypoints: [
+                { x:    0, y: 0 }, // ponto inicial — extremidade esquerda do deck
+                { x:  420, y: 0 }, // extremidade direita (metade do deck original)
+                { x:    0, y: 0 }, // retorna à esquerda (fecha o loop)
+            ],
+        });
+        this.felipe.setScale(1.3);
+        this.felipe.setFalas([
+            { personagem: 'Felipe', texto: 'Essa praia é incrível, né? Mas cuidado com as ondas — elas podem te surpreender!' },
+            { personagem: 'Jogador', texto: 'Obrigado pelo aviso, Felipe!' },
+            { personagem: 'Felipe', texto: 'Por nada! Se quiser dicas sobre a praia, é só me chamar.' },
+        ]);
+
+        // NPCs não se atravessam
+        this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
+
+        // Colisão jogador ↔ NPCs
+        this.personagem.adicionarColisao(this.cielita);
+        this.personagem.adicionarColisao(this.grupoNPCs);
+
+        // UI de diálogo (Cielita + Felipe)
+        DialogoManager.configurarCameraUI(this, 2.4, [this.cielita, this.felipe]);
 
         if (!this.dialogoCielitaPraiaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
@@ -143,16 +188,36 @@ export default class PraiaDosProveitos extends CenaMapa {
 
         this.personagem.atualizar();
 
+        // ── Atualiza NPCs ────────────────────────────────────────────────────
         if (this.cielita) {
             this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
-
-            if (this.cielita.dialogoAberto) {
-                this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
-            } else if (!this.dialogoCielitaPraiaConcluido) {
-                this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
-            }
+        }
+        if (this.felipe) {
+            this.felipe.atualizar(this.personagem.sprite, this.teclas.interagir);
         }
 
+        // ── HUD (balão de orientação) ─────────────────────────────────────────
+        const dialogoAberto = this.cielita?.dialogoAberto || this.felipe?.dialogoAberto;
+
+        if (dialogoAberto) {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        } else if (!this.dialogoCielitaPraiaConcluido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        } else if (!this.dialogoFelipeConcluido) {
+            const distFelipe = Phaser.Math.Distance.Between(
+                this.personagem.sprite.x, this.personagem.sprite.y,
+                this.felipe.x,            this.felipe.y
+            );
+            const pertoFelipe = distFelipe <= this.felipe._cfg.distanciaInteracao;
+            this.game.events.emit('atualizarBalao', {
+                texto: pertoFelipe ? 'Fale com o Felipe' : 'Procure pelo Felipe na Praia',
+                visivel: true,
+            });
+        } else {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        }
+
+        // ── Portal de saída ───────────────────────────────────────────────────
         if (this.personagem.temOverlap(this.PortalPonte1)) {
             this.trocarCena('VilaDoVarejo');
             return;
@@ -163,5 +228,4 @@ export default class PraiaDosProveitos extends CenaMapa {
             return;
         }
     }
-
 }
