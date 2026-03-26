@@ -182,6 +182,7 @@ export default class VilaDoVarejo extends CenaMapa {
         this.portaCasa2Varejo = this.add.zone(1126, 450, 40, 30);
         this.portalGelo       = this.add.zone(270, 20, 25, 15);
         this.portalparapraia  = this.add.zone(1260, 40, 20, 20);
+        
 
         [this.portaCasa1Varejo, this.portaCasa2Varejo, this.portalGelo, this.portalparapraia].forEach(p => this.physics.add.existing(p, true));
 

@@ -25,6 +25,7 @@ import CasaVarejo2      from './Cenas/CasaVarejo2.js';
 import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
 
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js';
+import CasaPraia1 from './Cenas/CasaPraia1.js';
 
 import AudioManager     from './Classes/AudioManager.js';
 
@@ -41,7 +42,7 @@ const config = {
     dom: { createContainer: true },
     physics: {
         default: 'arcade',
-        arcade: { gravity: { y: 0 }, debug: false }
+        arcade: { gravity: { y: 0 }, debug: true }
     },
 
     scene:[
@@ -58,7 +59,7 @@ const config = {
         VilaDoVarejo, CasaVarejo1, CasaVarejo2, 
         NegociacaoThaina, 
 
-        PraiaDosProveitos,
+        PraiaDosProveitos, CasaPraia1
     ]
 
     //Preloader carrega as sprites antes do jogo começar 
