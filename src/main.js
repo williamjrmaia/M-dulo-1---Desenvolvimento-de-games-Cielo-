@@ -18,6 +18,7 @@ import NegociacaoPedro  from './Cenas/NegociacaoPedro.js';
 
 import PonteMC_QG       from './Cenas/PonteMC_QG.js';
 import PonteQG_VV       from './Cenas/PonteQG_VV.js';
+import PonteVV_PP       from './Cenas/PonteVV_PP.js';
 
 import VilaDoVarejo     from './Cenas/VilaDoVarejo.js';
 import CasaVarejo1      from './Cenas/CasaVarejo1.js';
@@ -61,7 +62,7 @@ const config = {
         NegociacaoPedro, 
 
         VilaDoVarejo, CasaVarejo1, CasaVarejo2, 
-        NegociacaoThaina, 
+        NegociacaoThaina, PonteVV_PP,
 
         PraiaDosProveitos, CasaPraia1, CasaPraia2,
 

@@ -231,7 +231,7 @@ export default class PraiaDosProveitos extends CenaMapa {
 
         // ── Portal de saída ───────────────────────────────────────────────────
         if (this.personagem.temOverlap(this.PortalPonte1)) {
-            this.trocarCena('VilaDoVarejo');
+            this.trocarCena('PonteVV_PP');
             return;
         }
 
@@ -239,8 +239,6 @@ export default class PraiaDosProveitos extends CenaMapa {
             this.trocarCena('CasaPraia1');
             return;
         }
-    }
-}
 
         if (this.personagem.temOverlap(this.PortalCielo)) {
             this.trocarCena('CidadeCielo');
@@ -249,3 +247,7 @@ export default class PraiaDosProveitos extends CenaMapa {
             return;
         }
     }
+}
+
+        }
+    

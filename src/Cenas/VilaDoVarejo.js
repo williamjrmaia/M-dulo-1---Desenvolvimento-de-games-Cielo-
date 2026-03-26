@@ -193,8 +193,8 @@ export default class VilaDoVarejo extends CenaMapa {
         if (this.origem === 'QuebraGelo') {
             this.personagem.sprite.setPosition(270, 50);
         }
-        if (this.origem === 'PraiaDosProveitos') {
-            this.personagem.sprite.setPosition(1260, 70);
+        if (this.origem === 'PonteVV_PP') {
+            this.personagem.sprite.setPosition(1260, 60);
         }
         if (this.origem === 'CasaVarejo1') {
             this.personagem.sprite.setPosition(555, 245);
@@ -259,7 +259,7 @@ export default class VilaDoVarejo extends CenaMapa {
         }
 
         if (this.personagem.temOverlap(this.portalparapraia)) {
-            this.trocarCena('PraiaDosProveitos');
+            this.trocarCena('PonteVV_PP');
             return;
         }
 
