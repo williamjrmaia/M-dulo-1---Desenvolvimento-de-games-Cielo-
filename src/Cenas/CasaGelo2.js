@@ -3,15 +3,6 @@ import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
 import CenaMapa from '../Classes/CenaMapa.js';
 
-// Falas da Sofia
-const FALAS_SOFIA = [
-    { personagem: 'Sofia', texto: 'Olá, viajante! Bem-vindo à minha casa no mundo do gelo.' },
-    { personagem: 'Sofia', texto: 'Estas terras congeladas guardam segredos que poucos ousam descobrir.' },
-    { personagem: 'Jogador', texto: 'Sofia, o que você sabe sobre este lugar?' },
-    { personagem: 'Sofia', texto: 'Sei que o frio aqui não é apenas clima — é um teste. Apenas os mais determinados conseguem avançar.' },
-    { personagem: 'Sofia', texto: 'Se precisar de mim, estarei aqui. Boa sorte na sua jornada!' },
-];
-
 export default class CasaGelo2 extends CenaMapa {
 
     constructor() {
@@ -34,6 +25,22 @@ export default class CasaGelo2 extends CenaMapa {
 
     create() {
         super.create();
+
+        const nomeJogador = this.game.registry.get('nomeJogador')
+                 || localStorage.getItem('nomeJogador')
+                 || 'Jogador';
+                 
+// Falas da Sofia
+const FALAS_SOFIA = [
+    { personagem: 'Sofia', texto: 'Olá, viajante! Me chamo Sofia. Seja bem-vindo à minha casa.' },
+    { personagem: 'Sofia', texto: 'Estas terras congeladas guardam segredos que poucos ousam descobrir. Mas afinal, qual seu nome?' },
+    { personagem: 'Jogador', texto: `Prazer Sofia, me chamo ${nomeJogador}. O que você sabe sobre este lugar?` },
+    { personagem: 'Sofia', texto: 'Sei que o frio aqui não é apenas clima — é um teste. Apenas os mais determinados conseguem avançar.' },
+    { personagem: 'Sofia', texto: 'E que houveram problemas ao norte, sobre Sondagem. Os últimos viajantes não tem sido muito agradáveis.' },
+    { personagem: 'Sofia', texto: `${nomeJogador}, espero que você consiga resolver esses problemas. Algumas pessoas tem se mudado do Quebra Gelo devido toda essa confusão` },
+    { personagem: 'Jogador', texto: 'Entendo. Vou investigar esses problemas.' },
+    { personagem: 'Sofia', texto: 'Boa sorte, aventureiro! Se precisar de algo, estarei por aqui.' },
+];
 
         const centerX    = 750;
         const centerY    = 400;

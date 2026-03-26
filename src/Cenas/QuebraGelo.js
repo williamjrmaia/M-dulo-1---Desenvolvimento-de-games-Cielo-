@@ -36,6 +36,10 @@ export default class QuebraGelo extends CenaMapa {
         super.create();
         this._mensagemBloqueio = null;
 
+        const nomeJogador = this.game.registry.get('nomeJogador')
+                 || localStorage.getItem('nomeJogador')
+                 || 'Jogador';
+
         // Controla se os diálogos já foram concluídos puxando do registro global
         this.dialogoCielitaConcluido = this.registry.get('cielita_gelo_concluido') || false;
         this.dialogoLorenaConcluido  = this.registry.get('lorena_gelo_concluido') || false;
@@ -90,12 +94,14 @@ export default class QuebraGelo extends CenaMapa {
         this.cielita.setScale(1.1);
         this.cielita.setDepth(5);
         this.cielita.setFalas([
-            { personagem: 'Cielita', texto: 'Bem-vindo ao Mapa Gelo! Aqui o frio é intenso, mas as oportunidades são ainda maiores.' },
-            { personagem: 'Cielita', texto: 'Explore com cuidado — há lojas, igluus e portais escondidos por toda parte.' },
-            { personagem: 'Cielita', texto: 'Se quiser visitar o Seu Pedro, procure a porta marcada pela placa ao norte.' },
-            { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
-            { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
-        ]);
+    { personagem: 'Cielita', texto: 'Bem-vindo ao Mapa Gelo! Aqui o frio é intenso, mas as oportunidades são ainda maiores.' },
+    { personagem: 'Cielita', texto: 'Explore com cuidado — há lojas, iglus e moradores para conversar.' },
+    { personagem: 'Cielita', texto: 'Converse com todos para saber mais sobre a região e sua história.' },
+    { personagem: 'Cielita', texto: 'Algumas casas são interagiveis, desbrave toda a região' },
+    { personagem: 'Cielita', texto: 'Se quiser visitar o Seu Pedro, procure a porta marcada pela placa ao norte.' },
+    { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar tudo por aqui.' },
+    { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
+]);
         // -- NPC: Lorena
         this.lorena = new NPC(this, 300, 320, 'lorena_idle', {
             velocidade:         40,
@@ -119,8 +125,13 @@ export default class QuebraGelo extends CenaMapa {
                 { x: 315, y: 0   },
             ],
         });
+
         this.lorena.setFalas([
-            { personagem: 'Lorena', texto: 'Ai, não aguento mais ouvir o Seu Pedro reclamar que não consegue organizar direito o estoque...' },
+            { personagem: 'Lorena', texto: 'Olá! Me chamo Lorena, você é novo por aqui?' },
+            { personagem: 'Jogador', texto: `Sim, sou um(a) GN explorando o Cielo Verso, me chamo ${nomeJogador}. Prazer em conhecê-la!` },
+            { personagem: 'Lorena', texto: `Prazer, ${nomeJogador}! Aqui no Quebra Gelo ouvi boatos sobre problemas com Sondagem, nesses últimos dias o Seu Pedro esteve irritado com novos exploradores...` },
+            { personagem: 'Lorena', texto: `... que estavam sendo insistentes de uma forma irritante.` },
+            { personagem: 'Jogador', texto: `Obrigado, Lorena! Irei verificar isso.` },
         ]);
         this.lorena.setScale(1.1);
         this.lorena.body.setSize(14, 19);
