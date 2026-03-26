@@ -88,10 +88,11 @@ export default class VilaDoVarejo extends CenaMapa {
                 this.registry.set('cielita_varejo_concluido', true);
             },
         });
+        
         this.cielita.setScale(1.5);
         // Ajuste: virar o sprite para a direção "frente" (evita ficar espelhado no idle)
         this.cielita.setFlipX(true);
-        this.cielita.setDepth(5);
+        this.cielita.setDepth(1);
         this.cielita.setFalas([
             { personagem: 'Cielita', texto: 'Bem-vindo à Vila do Varejo! Aqui, cada esquina tem uma nova oportunidade.' },
             { personagem: 'Cielita', texto: 'Fique de olho nas lojas e converse com a Thainá para entender como as negociações funcionam.' },
@@ -104,7 +105,7 @@ export default class VilaDoVarejo extends CenaMapa {
         this.eric = new NPC(this, 515, 230, 'eric_idle', {
             velocidade: 40,
             distanciaInteracao: 30,
-            flipDireita: true,
+            flipDireita: false,
             grupoNPCs: this.grupoNPCs,
             animacoes: {
                 idle: 'eric_idle', andar: 'eric_andar', costa: 'eric_costas', lado: 'eric_lado',
@@ -118,6 +119,7 @@ export default class VilaDoVarejo extends CenaMapa {
                 { x: 135, y: 300 }, { x: 135, y: 270 }, { x: 0, y: 270 }
             ],
         });
+        
         this.eric.setScale(1.6);
         this.eric.setFalas([
             { personagem: 'Eric', texto: 'Eu ouvi que a loja de doces da Thainá estava com problemas na maquininha...' },
@@ -148,9 +150,11 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── Jogador e Física ─────────────────────────────────────────────────
         this.personagem = new Jogador(this, 400, 300, 1.5);
+        this.personagem.superficiePasso = 'passos_viladovarejo';
         this.teclas = this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.adicionarColisao(this.grupoNPCs);
+        this.personagem.sprite.setDepth(10);
         
         this.obstaculos = this.physics.add.staticGroup();
 
@@ -176,6 +180,7 @@ export default class VilaDoVarejo extends CenaMapa {
         this.portaCasa2Varejo = this.add.zone(1126, 450, 40, 30);
         this.portalGelo       = this.add.zone(270, 20, 25, 15);
         this.portalparapraia  = this.add.zone(1260, 40, 20, 20);
+        
 
         [this.portaCasa1Varejo, this.portaCasa2Varejo, this.portalGelo, this.portalparapraia].forEach(p => this.physics.add.existing(p, true));
 

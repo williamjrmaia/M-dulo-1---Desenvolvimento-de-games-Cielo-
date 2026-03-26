@@ -2,7 +2,7 @@ import Jogador        from '../Classes/Jogador.js';
 import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
-import CenaMapa from '../Classes/CenaMapa.js';
+import CenaMapa from       '../Classes/CenaMapa.js';
 
 export default class QuebraGelo extends CenaMapa {
     constructor() { 
@@ -26,7 +26,7 @@ export default class QuebraGelo extends CenaMapa {
         this.load.spritesheet('lorena_idle',   'assets/NPC/LORENA/spr_lorena_front_idl_strip.png', { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('lorena_andar',  'assets/NPC/LORENA/spr_lorena_front_walk.png',      { frameWidth: 32, frameHeight: 32 });
         this.load.spritesheet('lorena_lado',   'assets/NPC/LORENA/spr_lorena_side_walk.png',       { frameWidth: 32, frameHeight: 32 });
-        this.load.spritesheet('lorena_costas', 'assets/NPC/LORENA/spr_lorena_back_walk.png',       { frameWidth: 32, frameHeight: 32 });
+        this.load.spritesheet('lorena_costa', 'assets/NPC/LORENA/spr_lorena_back_walk.png',       { frameWidth: 32, frameHeight: 32 });
 
         // Carrega os assets de todas as insígnias
         Insignia.preload(this);
@@ -67,7 +67,7 @@ export default class QuebraGelo extends CenaMapa {
             { key: 'lorena_idle',   frameRate: 3 },
             { key: 'lorena_andar',  frameRate: 4 },
             { key: 'lorena_lado',   frameRate: 4 },
-            { key: 'lorena_costas', frameRate: 4 },
+            { key: 'lorena_costa', frameRate: 4 },
         ]);
 
         // ── Grupo de NPCs ─────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ export default class QuebraGelo extends CenaMapa {
             animacoes: {
                 idle:  'lorena_idle',
                 andar: 'lorena_andar',
-                costa: 'lorena_costas',
+                costa: 'lorena_costa',
                 lado:  'lorena_lado',
             },
             scaleIndicador: 1.3,
@@ -130,6 +130,7 @@ export default class QuebraGelo extends CenaMapa {
 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.personagem = new Jogador(this, 25, 212, 1.0);
+        this.personagem.superficiePasso = 'passos_quebragelo';
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.sprite.setDepth(10);
 
@@ -180,10 +181,6 @@ export default class QuebraGelo extends CenaMapa {
 
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         DialogoManager.configurarCameraUI(this, 2.6, [this.cielita, this.lorena]);
-
-        // ── HUD ───────────────────────────────────────────────────────────────
-        this.scene.launch('HUDCenas');
-        this.scene.bringToTop('HUDCenas');
         
         // Exibe o indicativo inicial apenas se ainda não tiver falado com a Cielita
         if (!this.dialogoCielitaConcluido) {
