@@ -220,6 +220,14 @@ export default class DialogoManager {
             callback: () => {
                 this._textoFala.setText(textoCompleto.substring(0, i + 1));
                 i++;
+                if (i % 2 === 0) {
+                    const audio = this._cena.game.registry.get('audio');
+                    if (audio) {
+                        audio.tocarBlipDialogo();
+                    } else if (this._cena.cache.audio.exists('blip_teclado')) {
+                        this._cena.sound.play('blip_teclado', { volume: 0.005 });
+                    }
+                }
                 if (i >= textoCompleto.length) {
                     this._digitando = false;
                     this._indicador.setVisible(true);

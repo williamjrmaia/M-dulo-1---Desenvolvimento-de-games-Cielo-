@@ -39,6 +39,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                 })
                 // troca de cena só ocorre após o fade terminar, evitando flash branco
                 botaoInicio.on('pointerdown', () => {
+                    this.registry.get('audio')?.tocarBotaoMenu();
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                     this.scene.start('CenaPersonagem');
@@ -54,6 +55,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                     botaoConfig.setTexture('botao_config');
                 })
                 botaoConfig.on('pointerdown', () => {
+                    this.registry.get('audio')?.tocarBotaoMenu();
                     this.scene.start('CenaConfig');
                 });
                 
@@ -65,6 +67,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                     botaoSair.setTexture('botao_sair')
                 })
                 botaoSair.on('pointerdown', () => {
+                    this.registry.get('audio')?.tocarBotaoMenu();
                     window.close();
                 });
             }

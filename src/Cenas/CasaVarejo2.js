@@ -40,6 +40,7 @@ export default class CasaVarejo2 extends CenaMapa {
 
         // Instancia o protagonista na posição de entrada (perto da porta)
         this.personagem = new Jogador(this, 750, 480, 1);
+        this.personagem.superficiePasso = 'passos_interiorcasas';
         this.teclas = this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
 

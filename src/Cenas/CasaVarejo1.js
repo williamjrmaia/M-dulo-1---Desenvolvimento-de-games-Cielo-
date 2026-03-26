@@ -73,6 +73,7 @@ export default class CasaVarejo1 extends CenaMapa {
         
         // 3. Cria o Personagem e configura a colisão com a NPC
         this.personagem = new Jogador(this, 750, 480, 1);
+        this.personagem.superficiePasso = 'passos_interiorcasas';
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.adicionarColisao(this.thaina);
 

@@ -98,7 +98,7 @@ export default class CenaConfig extends Phaser.Scene {
             barra.setFillStyle(0x2a3f6f); txtLabel.setColor('#8ab4cc');
             txtDesc.setColor('#4a6880');  txtSeta.setColor('#2a3f6f');
         });
-        zona.on('pointerdown', callback);
+        zona.on('pointerdown', () => { this._tocarBotao(); callback(); });
         container.add([sombra, fundo, borda, barra, txtLabel, txtDesc, txtIcone, txtSeta, zona]);
     }
 
@@ -162,7 +162,7 @@ export default class CenaConfig extends Phaser.Scene {
         zona.on('pointerout', () => {
             if (!fundo._ativo) { fundo.setFillStyle(0x0d1b33); borda.setStrokeStyle(3, 0x2a3f6f); }
         });
-        zona.on('pointerdown', callback);
+        zona.on('pointerdown', () => { this._tocarBotao(); callback(); });
         container.add([sombra, fundo, borda, indicador, txtLabel, txtDesc, txtIcone, zona]);
         return { fundo, borda, indicador, txtLabel, txtDesc };
     }
@@ -327,7 +327,7 @@ _criarBotaoResolucao(container, x, y, w, h, label, desc, ativo, callback) {
             borda.setStrokeStyle(3, 0x2a3f6f);
         }
     });
-    zona.on('pointerdown', callback);
+    zona.on('pointerdown', () => { this._tocarBotao(); callback(); });
 
     container.add([sombra, fundo, borda, indicador, txtLabel, txtDesc, txtCheck, zona]);
     return { fundo, borda, indicador, txtLabel, txtDesc, txtCheck };
@@ -466,6 +466,12 @@ _aplicarResolucao(w, h) {
         container.add([sombra, fundo, barra, trilhoBase, trilhoAtivo, icolMin, icolMax, handle, txtValor, zona]);
     }
 
+    // ─── Som de UI ────────────────────────────────────────────────────────────
+
+    _tocarBotao() {
+        this.registry.get('audio')?.tocarBotaoMenu();
+    }
+
     // ─── Botão genérico ───────────────────────────────────────────────────────
 
     _criarBotaoAcao(container, x, y, rotulo, callback) {
@@ -480,7 +486,7 @@ _aplicarResolucao(w, h) {
         const zona = this.add.zone(x, y, w, h).setOrigin(0.5).setInteractive({ useHandCursor: true });
         zona.on('pointerover', () => { fundo.setFillStyle(0x3377cc); txt.setColor('#5bc8f5'); });
         zona.on('pointerout',  () => { fundo.setFillStyle(0x2255aa); txt.setColor('#ffffff'); });
-        zona.on('pointerdown', callback);
+        zona.on('pointerdown', () => { this._tocarBotao(); callback(); });
         if (container) container.add([sombra, fundo, txt, zona]);
     }
 }

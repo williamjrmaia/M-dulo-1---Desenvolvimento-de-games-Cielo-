@@ -149,7 +149,14 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.mp3');
 
         // ── Narração da Introdução ──
-        this.load.audio('blip_teclado', 'assets/Audio/blip_teclado.wav');
+        this.load.audio('blip_teclado',           'assets/Audio/blip_teclado.wav');
+
+        // ── Transição entre mapas ──
+        this.load.audio('transicao_entre_mapas',  'assets/Audio/transicao_entre_mapas.mp3');
+
+        // ── Insígnias e UI ──
+        this.load.audio('insignia_sound',  'assets/Audio/insignia_sound.mp3');
+        this.load.audio('botoes_menu',     'assets/Audio/botoes_menu.wav');
 
 
     }

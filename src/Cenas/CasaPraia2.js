@@ -38,7 +38,8 @@ export default class CasaPraia2 extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, larguraImagem, alturaImagem);
 
         // ── Jogador ───────────────────────────────────────────────────────────
-        this.jogador = new Jogador(this, larguraImagem / 2, 330); 
+        this.jogador = new Jogador(this, larguraImagem / 2, 330);
+        this.jogador.superficiePasso = 'passos_interiorcasas';
         this.jogador.sprite.setCollideWorldBounds(true);
         this.jogador.sprite.setScale(1.5);
         

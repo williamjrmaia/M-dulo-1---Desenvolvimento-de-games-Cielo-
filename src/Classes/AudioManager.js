@@ -135,6 +135,32 @@ export default class AudioManager extends Phaser.Scene {
         });
     }
 
+    // ── Som de typewriter para diálogos ──────────────────────────────────────
+
+    tocarBlipDialogo() {
+        if (this.cache.audio.exists('blip_teclado')) {
+            this.sound.play('blip_teclado', { volume: 0.005 });
+        }
+    }
+
+    tocarTransicao() {
+        if (this.cache.audio.exists('transicao_entre_mapas')) {
+            this.sound.play('transicao_entre_mapas', { volume: 0.5 });
+        }
+    }
+
+    tocarInsignia() {
+        if (this.cache.audio.exists('insignia_sound')) {
+            this.sound.play('insignia_sound', { volume: 0.7 });
+        }
+    }
+
+    tocarBotaoMenu() {
+        if (this.cache.audio.exists('botoes_menu')) {
+            this.sound.play('botoes_menu', { volume: 2.5 });
+        }
+    }
+
     // ── Helpers de persistência ───────────────────────────────────────────────
 
     _salvarVolume(chave, valor) {

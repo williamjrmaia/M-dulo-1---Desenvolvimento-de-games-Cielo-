@@ -133,6 +133,9 @@ export default class Insignia {
     _mostrarNotificacao() {
         const cena  = this.cena;
         const dados = this.dados;
+
+        const audio = cena.game.registry.get('audio');
+        if (audio) audio.tocarInsignia();
         const W     = cena.scale.width;
         const cx    = W / 2;
         const cy    = 50;

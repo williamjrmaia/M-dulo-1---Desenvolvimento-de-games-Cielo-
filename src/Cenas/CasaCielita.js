@@ -80,6 +80,7 @@ export default class CasaCielita extends CenaMapa {
             : H / 2 + 80;
 
         this.jogador = new Jogador(this, W / 2, spawnY);
+        this.jogador.superficiePasso = 'passos_interiorcasas';
         this.teclas  = this.jogador.configurarTeclas();
 
         // Colisao Jogador x Cielita

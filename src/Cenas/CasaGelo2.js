@@ -97,6 +97,7 @@ export default class CasaGelo2 extends CenaMapa {
             : centerY + 100;
 
         this.jogador = new Jogador(this, centerX, spawnY);
+        this.jogador.superficiePasso = 'passos_interiorcasas';
         this.jogador.sprite.setCollideWorldBounds(true);
         this.jogador.sprite.setScale(1.3);
         this.jogador.sprite.setDepth(2);

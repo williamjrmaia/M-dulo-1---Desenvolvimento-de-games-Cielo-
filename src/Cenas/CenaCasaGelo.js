@@ -67,6 +67,7 @@ export default class CenaCasaGelo extends CenaMapa {
 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
+        this.personagem.superficiePasso = 'passos_interiorcasas';
         this.personagem.sprite.setScale(1.3);
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.sprite.setDepth(10);
