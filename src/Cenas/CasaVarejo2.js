@@ -21,22 +21,9 @@ export default class CasaVarejo2 extends CenaMapa {
 
     create() {
         super.create();
-
         // Renderiza o cenário centralizado e o sprite da porta de saída
-        const fundo = this.add.image(750, 400, 'CasaVarejo1');
+        const fundo = this.add.image(750, 400, 'CasaVarejo2');
         this.add.image(750, 510, 'portaSaida').setScale(0.7);
-        
-
-    }
-
-    create() {
-        // ── Configuração Visual ─────────────────────────────────────────────
-        
-        
-
-        this.fazendoTransicao = false;
-
-        // ── Implementação de Hitbox: Limites de Física e Offset ──────────────
         
         // Calcula o deslocamento para alinhar as hitboxes do Tiled ao centro da cena
         const offsetX = fundo.x - (fundo.width / 2);
@@ -50,8 +37,6 @@ export default class CasaVarejo2 extends CenaMapa {
 
         // Define os limites da física dentro da casa
         this.physics.world.setBounds(xInicialFisica, yInicialFisica, larguraMapa, alturaMapa);
-
-        // ── Configuração do Jogador ──────────────────────────────────────────
 
         // Instancia o protagonista na posição de entrada (perto da porta)
         this.personagem = new Jogador(this, 750, 480, 1);

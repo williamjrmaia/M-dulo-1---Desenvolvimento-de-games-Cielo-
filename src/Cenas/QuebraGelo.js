@@ -2,7 +2,7 @@ import Jogador        from '../Classes/Jogador.js';
 import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
-import CenaMapa from '../Classes/CenaMapa.js';
+import CenaMapa from       '../Classes/CenaMapa.js';
 
 export default class QuebraGelo extends CenaMapa {
     constructor() { 
@@ -180,10 +180,6 @@ export default class QuebraGelo extends CenaMapa {
 
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         DialogoManager.configurarCameraUI(this, 2.6, [this.cielita, this.lorena]);
-
-        // ── HUD ───────────────────────────────────────────────────────────────
-        this.scene.launch('HUDCenas');
-        this.scene.bringToTop('HUDCenas');
         
         // Exibe o indicativo inicial apenas se ainda não tiver falado com a Cielita
         if (!this.dialogoCielitaConcluido) {

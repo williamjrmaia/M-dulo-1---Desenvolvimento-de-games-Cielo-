@@ -24,6 +24,16 @@ export default class HUDCenas extends Phaser.Scene {
           .setDepth(11)
           .setScrollFactor(0); // ✅ Fixo na tela, ignora movimento de câmera
 
+        this.add.text(W - 10, 10, 'Aperte H para acessar o tutorial', {
+            fontSize:        '11px',
+            fill:            '#00e5ff',
+            backgroundColor: '#000000',
+            padding:         { x: 6, y: 3 },
+        })
+        .setOrigin(1, 0)
+        .setScrollFactor(0)
+        .setDepth(10);
+
         // Começa invisível
         this.balaoInd.setVisible(false);
         this.textoBalao.setVisible(false);
