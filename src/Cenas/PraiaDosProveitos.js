@@ -38,6 +38,7 @@ export default class PraiaDosProveitos extends CenaMapa {
         
         // --- 3. CRIAÇÃO DO JOGADOR ---
         this.personagem = new Jogador(this, 630, 800, 1.2);
+        this.personagem.superficiePasso = 'passos_praiadosproveitos';
         this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
         

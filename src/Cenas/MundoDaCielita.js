@@ -51,6 +51,7 @@ export default class MundoDaCielita extends CenaMapa {
         }
 
         this.personagem = new Jogador(this, spawnX, spawnY, 1.0);
+        this.personagem.superficiePasso = 'passos_casacielita';
         this.teclas = this.personagem.configurarTeclas();
 
         this.physics.add.collider(this.personagem.sprite, paredeEsq);

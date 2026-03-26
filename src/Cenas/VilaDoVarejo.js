@@ -109,6 +109,7 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── Jogador e Física ─────────────────────────────────────────────────
         this.personagem = new Jogador(this, 400, 300, 1.5);
+        this.personagem.superficiePasso = 'passos_viladovarejo';
         this.teclas = this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.adicionarColisao(this.grupoNPCs);

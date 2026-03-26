@@ -99,6 +99,12 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('ambiente_viladovarejo', 'assets/Audio/ambiente_viladovarejo.mp3');
         this.load.audio('ambiente_praiadosproveitos', 'assets/Audio/ambiente_praiadosproveitos.mp3');
 
+        // ── Passos do personagem ──
+        this.load.audio('passos_casacielita',        'assets/Audio/passos_casacielita.mp3');
+        this.load.audio('passos_quebragelo',         'assets/Audio/passos_quebragelo.mp3');
+        this.load.audio('passos_viladovarejo',       'assets/Audio/passos_viladovarejo.mp3');
+        this.load.audio('passos_praiadosproveitos',  'assets/Audio/passos_praiadosproveitos.mp3');
+        this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.mp3');
 
         // ── Narração da Introdução ──
         this.load.audio('blip_teclado', 'assets/Audio/blip_teclado.wav');
