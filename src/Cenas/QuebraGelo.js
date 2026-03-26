@@ -130,6 +130,7 @@ export default class QuebraGelo extends CenaMapa {
 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.personagem = new Jogador(this, 25, 212, 1.0);
+        this.personagem.superficiePasso = 'passos_quebragelo';
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.sprite.setDepth(10);
 
