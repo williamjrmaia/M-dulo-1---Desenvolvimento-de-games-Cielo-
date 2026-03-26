@@ -270,8 +270,10 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             this._playAnim('lado');
             // flipDireita: true  → sprite padrão aponta esquerda, espelha ao ir para direita
             // flipDireita: false → sprite padrão aponta direita,  espelha ao ir para esquerda
-            this.setFlipX(this._cfg.flipDireita ? dx > 0 : dx < 0);
+            this.setFlipX(this._cfg.flipDireita ? dx < 0 : dx > 0);
         } else {
+            // dy < 0 → NPC subindo na tela  → costas para a câmera
+            // dy > 0 → NPC descendo na tela → frente para a câmera
             this._playAnim(dy < 0 ? 'costa' : 'andar');
         }
     }
@@ -309,8 +311,6 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     // Registra animações no gerenciador de animações da cena de forma concisa.
     // O key da animação é usado também como key do spritesheet (padrão do projeto).
     // Ignora animações já registradas para evitar erros ao revisitar a cena.
-
-
 
     static criarAnimacoes(cena, definicoes) {
         definicoes.forEach(({ key, frameRate, start = 0, end = -1 }) => {

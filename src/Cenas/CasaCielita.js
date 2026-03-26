@@ -1,5 +1,6 @@
 import Jogador from '../Classes/Jogador.js';
 import NPC     from '../Classes/NPC.js';
+import CenaMapa from '../Classes/CenaMapa.js';
 
 const FALAS_CIELITA = [
     { personagem: 'Cielita', texto: 'Eu sou Cielita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
@@ -8,7 +9,7 @@ const FALAS_CIELITA = [
     { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },
 ];
 
-export default class CasaCielita extends Phaser.Scene {
+export default class CasaCielita extends CenaMapa {
 
     constructor() {
         super('CasaCielita');
@@ -26,6 +27,8 @@ export default class CasaCielita extends Phaser.Scene {
     }
 
     create() {
+        super.create();
+
         const W = this.scale.width;
         const H = this.scale.height;
 
@@ -97,15 +100,11 @@ export default class CasaCielita extends Phaser.Scene {
                 this.input.keyboard.enabled = false;
             });
         }
-
-        // Lança o HUD sempre, independente da origem
-        this.scene.launch('HUDCenas');
-        this.scene.bringToTop('HUDCenas');
-
-        this.cameras.main.fadeIn(500, 0, 0, 0);
     }
 
     update() {
+        if (super.update()) return;
+
         this.jogador.atualizar();
         this.cielita.atualizar(this.jogador.sprite, this.teclas.interagir);
 
@@ -113,7 +112,7 @@ export default class CasaCielita extends Phaser.Scene {
         if (this.cielita.dialogoAberto) {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
         } else if (this.dialogoConcluido) {
-            this.game.events.emit('atualizarBalao', { texto: 'Saia da Casa', visivel: true });
+            this.game.events.emit('atualizarBalao', { texto: 'Saia da casa', visivel: true });
         } else {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
@@ -122,11 +121,7 @@ export default class CasaCielita extends Phaser.Scene {
         if (!this.jogador.temOverlap(this.gatilhoPorta)) this.naPorta = false;
 
         if (this.naPorta && !this.cielita.dialogoAberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.stop('HUDCenas');
-                this.scene.start('MundoDaCielita', { vindoDe: 'CasaCielita' });
-            });
+            this.trocarCena('MundoDaCielita');
         }
     }
 }
