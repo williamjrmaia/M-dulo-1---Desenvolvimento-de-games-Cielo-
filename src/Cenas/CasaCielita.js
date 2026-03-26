@@ -3,9 +3,11 @@ import NPC     from '../Classes/NPC.js';
 import CenaMapa from '../Classes/CenaMapa.js';
 
 const FALAS_CIELITA = [
+    { personagem: 'Cielita', texto: 'Seja bem-vindo(a) ao Cielo Verso!' },
+    { personagem: 'Cielita', texto: 'Nesse mundo, você irá aprender muito sobre diferentes etapas do treinamento de um GN da Cielo!' },
+    { personagem: 'Cielita', texto: 'Cada região irá apresentar uma dessas etapas do treinamento por meio de diferentes problemas de negociação.' },
     { personagem: 'Cielita', texto: 'Eu sou Cielita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
     { personagem: 'Cielita', texto: 'Sinta-se à vontade para explorar e conversar comigo.' },
-    { personagem: 'Cielita', texto: 'Se precisar de algo, é só me chamar!' },
     { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },
 ];
 

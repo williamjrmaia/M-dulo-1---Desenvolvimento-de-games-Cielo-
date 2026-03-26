@@ -98,8 +98,8 @@ export default class VilaDoVarejo extends CenaMapa {
         this.cielita.setDepth(1);
         this.cielita.setFalas([
             { personagem: 'Cielita', texto: 'Bem-vindo à Vila do Varejo! Aqui, cada esquina tem uma nova oportunidade.' },
-            { personagem: 'Cielita', texto: 'Fique de olho nas lojas e converse com a Thainá para entender como as negociações funcionam.' },
-            { personagem: 'Cielita', texto: 'Se precisar voltar, procure os portais: tem um para o mapa de gelo e outro para a praia.' },
+            { personagem: 'Cielita', texto: 'Fique de olho nas lojas e converse com os moradores para entender o que está acontecendo na Vila.' },
+            { personagem: 'Cielita', texto: 'Se precisar voltar, procure as pontes: existe uma para o Quebra Gelo e outra para a Praia dos Proveitos.' },
             { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar e conversar com todo mundo.' },
             { personagem: 'Cielita', texto: 'Ótimo. Quando quiser, eu estarei por aqui para te orientar.' },
         ]);
@@ -125,8 +125,13 @@ export default class VilaDoVarejo extends CenaMapa {
         
         this.eric.setScale(1.6);
         this.eric.setFalas([
-            { personagem: 'Eric', texto: 'Eu ouvi que a loja de doces da Thainá estava com problemas na maquininha...' },
-            { personagem: 'Jogador', texto: 'Obrigado!' },
+            { personagem: 'Eric', texto: 'Olá, viajante! Me chamo Eric. Seja bem-vindo à Vila do Varejo. Qual seu nome?' },
+            { personagem: 'Jogador', texto: `Prazer, Eric! Me chamo ${nomeJogador}.` },
+            { personagem: 'Eric', texto: `Prazer, ${nomeJogador}! A Vila do Varejo é um lugar movimentado, cheio de lojas e moradores.` },
+            { personagem: 'Eric', texto: 'Ultimamente, tenho ouvido rumores sobre problemas com a loja de doces da Thainá...' },
+            { personagem: 'Eric', texto: '...parece que ela tem tido dificuldades para conseguir fazer vendas devido a problemas com a maquininha.' },
+            { personagem: 'Eric', texto: 'Se você gosta de desafios, talvez queira conversar com ela para ver se consegue ajuda-la.' },
+            { personagem: 'Jogador', texto: 'Obrigado pela dica, Eric! Vou procurar a loja da Thainá.' },
         ]);
 
         // ── Configuração do Jorge ────────────────────────────────────────────
@@ -146,7 +151,18 @@ export default class VilaDoVarejo extends CenaMapa {
             ]
         });
         this.jorge.setScale(1.6);
-        this.jorge.setFalas([{ personagem: 'Jorge', texto: 'Forsche...' }]);
+        this.jorge.setFalas([
+            { personagem: 'Jorge', texto: `Olá, você se chama ${nomeJogador}, não é?` },
+            { personagem: 'Jogador', texto: 'Sim, sou eu! Como você sabe meu nome?' },
+            { personagem: 'Jorge', texto: 'Ah, eu sei de tudo que acontece na Vila do Varejo. Sou como um detetive, sempre observando.' },
+            { personagem: 'Jorge', texto: 'Ultimamente, tenho notado que a Thainá tem tido muitos problemas com a maquininha de cartão.' },
+            { personagem: 'Jorge', texto: 'Ela tem ficado muito estressada, e isso tem afetado as vendas dela.' },
+            { personagem: 'Jorge', texto: 'Se você gosta de ajudar as pessoas, talvez queira conversar com ela para ver se consegue ajuda-la.' },
+            { personagem: 'Jogador', texto: 'Obrigado pela dica, Jorge! Vou procurar a loja da Thainá.' },
+            { personagem: 'Jorge', texto: 'Ah, e se você conseguir ajudar a Thainá, volte aqui para me contar! Adoro saber de tudo que acontece.' },
+            { personagem: 'Jogador', texto: 'Com certeza, Jorge! Vou ajudar a Thainá e depois volto para te contar.' },
+            { personagem: 'Jorge', texto: 'Forsche' },
+        ]);
 
         // Faz os NPCs colidirem entre si (ninguém atravessa ninguém)
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);

@@ -127,6 +127,8 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.cielita.setFlipX(true);
         this.cielita.setFalas([
             { personagem: 'Cielita', texto: 'Bem-vindo à Praia dos Proveitos! O mar esconde caminhos e oportunidades.' },
+            { personagem: 'Cielita', texto: 'Explore a praia, converse com os moradores e descubra seus segredos.' },
+            { personagem: 'Cielita', texto: 'E encontre a chefa, ela é responsável pela maior movimentação comercial da praia.' },
             { personagem: 'Cielita', texto: 'Se precisar de ajuda, estarei aqui na entrada. Boa sorte!' },
             { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar.' },
         ]);
@@ -163,8 +165,15 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.felipe.setScale(1.3);
         this.felipe.setFalas([
             { personagem: 'Felipe', texto: 'Essa praia é incrível, né? Mas cuidado com as ondas — elas podem te surpreender!' },
-            { personagem: 'Jogador', texto: 'Obrigado pelo aviso, Felipe!' },
-            { personagem: 'Felipe', texto: 'Por nada! Se quiser dicas sobre a praia, é só me chamar.' },
+            { personagem: 'Felipe', texto: 'Não só as ondas surpreendem, mas a chefa também.' },
+            { personagem: 'Jogador', texto: 'Chefa? Quem é essa? Aliás, como você se chama?' },
+            { personagem: 'Felipe', texto: 'Ah, me chamo Felipe. Sou um dos moradores daqui e conheço cada canto dessa praia. E você, como se chama?' },
+            { personagem: 'Jogador', texto: `Prazer, Felipe! Me chamo ${nomeJogador}.` },
+            { personagem: 'Felipe', texto: `Prazer, ${nomeJogador}! A Chefa é a dona do quiosque mais movimentado da praia, ela é uma figura e tanto!` },
+            { personagem: 'Felipe', texto: 'Boatos dizem que ela foi responsável por quase quebrar a grande pousada da praia.' },
+            { personagem: 'Felipe', texto: 'Ela é tão temida que até os vendedores ambulantes evitam se meter com ela.' },
+            { personagem: 'Jogador', texto: 'Nossa, parece uma pessoa e tanto! Vou procurar o quiosque dela para descobrir mais.' },
+            { personagem: 'Felipe', texto: 'Boa sorte! Se você gosta de desafios, a Chefa é a pessoa certa para conversar, agora vou ali dar uns mergulhos.' },
         ]);
 
         // NPCs não se atravessam
