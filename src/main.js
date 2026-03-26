@@ -27,6 +27,8 @@ import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js';
 import CasaPraia1 from './Cenas/CasaPraia1.js';
 
+import CidadeCielo from './Cenas/CidadeCielo.js';
+
 import AudioManager     from './Classes/AudioManager.js';
 
 const config = {
@@ -59,7 +61,9 @@ const config = {
         VilaDoVarejo, CasaVarejo1, CasaVarejo2, 
         NegociacaoThaina, 
 
-        PraiaDosProveitos, CasaPraia1
+        PraiaDosProveitos, CasaPraia1,
+
+        CidadeCielo
     ]
 
     //Preloader carrega as sprites antes do jogo começar 
