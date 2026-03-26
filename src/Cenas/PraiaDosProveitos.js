@@ -42,6 +42,10 @@ export default class PraiaDosProveitos extends CenaMapa {
     create() {
         super.create();
 
+        const nomeJogador = this.game.registry.get('nomeJogador')
+                 || localStorage.getItem('nomeJogador')
+                 || 'Jogador';
+
         this.registry.get('audio').tocarMusica('musica_praiadosproveitos', 0.5);
         this.registry.get('audio').tocarAmbiente('ambiente_praiadosproveitos', 0.4);
 
@@ -58,6 +62,7 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.personagem.superficiePasso = 'passos_praiadosproveitos';
         this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
+        this.personagem.sprite.setDepth(10);
         
         // --- 4. IMPORTAÇÃO DAS HITBOXES DO TILED ---
         this.obstaculos = this.physics.add.staticGroup();
@@ -131,7 +136,7 @@ export default class PraiaDosProveitos extends CenaMapa {
         });
 
         this.cielita.setScale(1.1);
-        this.cielita.setDepth(5);
+        this.cielita.setDepth(1);
         this.cielita.setFlipX(true);
         this.cielita.setFalas([
             { personagem: 'Cielita', texto: 'Bem-vindo à Praia dos Proveitos! O mar esconde caminhos e oportunidades.' },

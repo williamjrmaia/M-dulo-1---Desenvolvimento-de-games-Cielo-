@@ -44,6 +44,10 @@ export default class VilaDoVarejo extends CenaMapa {
 
         super.create();
 
+        const nomeJogador = this.game.registry.get('nomeJogador')
+                 || localStorage.getItem('nomeJogador')
+                 || 'Jogador';
+
         // Ferramenta de debug: clica no mapa e vê a coordenada no console.
         this.input.on('pointerdown', (pointer) => {
             const worldX = pointer.worldX.toFixed(0);
