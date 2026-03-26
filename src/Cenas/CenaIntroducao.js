@@ -142,7 +142,7 @@ export default class CenaIntroducao extends Phaser.Scene {
                 charIndex++;
 
                 if(charIndex % 2 === 0 && this.cache.audio.exists('blip_teclado')) {
-                    this.sound.play('blip_teclado', { volume: 0.05 });
+                    this.sound.play('blip_teclado', { volume: 0.005 });
                 }
 
                 if (charIndex >= fala.texto.length) {

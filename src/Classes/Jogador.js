@@ -14,6 +14,17 @@ export default class Jogador {
 
         this._criarAnimacoes();
         this._ultimaDirecao = 'frente';
+
+        this.superficiePasso  = 'passos_interiorcasas'; // padrão — cada cena sobrescreve
+        this._passoCooldown   = false;
+
+        const largura = cena.cameras.main.width;
+        this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
+            fontSize:        '11px',
+            fill:            '#FFD700',
+            backgroundColor: '#000000',
+            padding:         { x: 6, y: 3 },
+        }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
     }
 
     _criarAnimacoes() {
@@ -27,6 +38,19 @@ export default class Jogador {
         cena.anims.create({ key: `${s}_andar`,       frames: cena.anims.generateFrameNumbers(`${s}_front_walk`, { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
         cena.anims.create({ key: `${s}_costa`,       frames: cena.anims.generateFrameNumbers(`${s}_back_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
         cena.anims.create({ key: `${s}_lado`,        frames: cena.anims.generateFrameNumbers(`${s}_side_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
+    }
+
+    _tocarPasso() {
+        if (this._passoCooldown) return;
+        if (!this.cena.cache.audio.exists(this.superficiePasso)) return;
+
+        this.cena.sound.play(this.superficiePasso, { volume: 0.4 });
+        this._passoCooldown = true;
+
+        // Intervalo entre passos — ajusta o número (ms) se quiser mais rápido ou lento
+        this.cena.time.delayedCall(320, () => {
+            this._passoCooldown = false;
+        });
     }
 
     configurarTeclas() {
@@ -107,6 +131,7 @@ export default class Jogador {
         if (mag > 0) {
             sprite.setVelocityX((vx / mag) * velocidade);
             sprite.setVelocityY((vy / mag) * velocidade);
+            this._tocarPasso();
         }
     }
 
