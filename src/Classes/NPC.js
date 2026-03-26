@@ -105,6 +105,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             distanciaInteracao: 80,
             texturaIndicador:   'IndicadorE',
             scaleIndicador:     2,
+            offsetXIndicador:   0,
             waypoints:          [],   // array de { x, y } relativos ao spawn
             animacoes: {
                 idle:  null,          // chave da animação parado
@@ -191,7 +192,7 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
         this._indicadorE.setVisible(perto && !this._dialogo.aberto);
         if (perto) {
             this._indicadorE.setPosition(
-                this.x,
+                this.x + this._cfg.offsetXIndicador,
                 this.y - this.displayHeight / 2 - 14
             );
         }

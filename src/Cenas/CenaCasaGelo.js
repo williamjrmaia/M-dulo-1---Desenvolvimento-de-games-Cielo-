@@ -1,5 +1,7 @@
-import CenaMapa from '../Classes/CenaMapa.js';
-import Jogador from '../Classes/Jogador.js';
+import CenaMapa       from '../Classes/CenaMapa.js';
+import Jogador        from '../Classes/Jogador.js';
+import NPC            from '../Classes/NPC.js';
+import DialogoManager from '../Classes/DialogoManager.js';
 
 export default class CenaCasaGelo extends CenaMapa {
     constructor() {
@@ -13,12 +15,15 @@ export default class CenaCasaGelo extends CenaMapa {
     preload() {
         this.load.image('CasaPedro',    'assets/MapaGelo/CasaPedro.png');
         this.load.tilemapTiledJSON('mapa_casa', 'assets/MapaGelo/CasaPedroHitbox.tmj');
-        this.load.image('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl_stop.png');
+        this.load.spritesheet('seupedro_idl', 'assets/NPC/Pedro/spr_seupedro_front_idl.png', {frameWidth: 32, frameHeight: 32});
     }
 
     create() {
         super.create();
 
+        NPC.criarAnimacoes(this, [
+            { key: 'seupedro_idl',   frameRate: 3 },
+        ]);
         const centerX = 750;
         const centerY = 400;
 
@@ -40,44 +45,34 @@ export default class CenaCasaGelo extends CenaMapa {
             });
         }
 
-        // ── Sprite do Pedro com colisão ───────────────────────────────────────
-        // Usamos physics.add.staticImage para ter colisão no sprite
-        this.spritePedro = this.physics.add.staticImage(750, 460, 'seupedro_idl')
-            .setScale(1.5)
-            .setDepth(5);
-        // Ajusta o tamanho da hitbox para bater com o sprite visível
-        this.spritePedro.setSize(
-            this.spritePedro.width,
-            this.spritePedro.height
-        );
-        this.spritePedro.refreshBody();
+        // ── NPC: Pedro ────────────────────────────────────────────────────────
+        this.grupoNPCs = this.physics.add.group();
 
-        // ── Zona de interação do Pedro ────────────────────────────────────────
-        // Área um pouco maior que o sprite para o jogador conseguir interagir
-        this.zonaPedro = this.add.zone(750, 460, 80, 80);
-        this.physics.add.existing(this.zonaPedro, true);
+        this.pedro = new NPC(this, 750, 460, 'seupedro_idl', {
+            velocidade:         0,
+            distanciaInteracao: 50,
+            grupoNPCs:          this.grupoNPCs,
+            animacoes:          { idle: 'seupedro_idl' }, // sprite estático, sem animação
+            onFimDialogo: () => {
+                this.trocarCena('NegociacaoPedro');
+            },
+        });
+        this.pedro.setScale(1.5).setDepth(5);
+        this.pedro.body.setSize(16, 16);
 
-        // ── Indicador E ───────────────────────────────────────────────────────
-        // setScale(1.5) deixa o ícone maior — ajuste conforme preferir
-        this.indicadorE = this.add.image(
-            this.spritePedro.x,
-            this.spritePedro.y - 60,
-            'IndicadorE'
-        )
-            .setScale(1.5)
-            .setDepth(20)
-            .setVisible(false);
+        this.pedro.setFalas([
+            { personagem: 'Seu Pedro', texto: 'Bem-vindo!' },
+            { personagem: 'Jogador',   texto: 'Olá!'      },
+        ]);
 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
         this.personagem.sprite.setScale(1.3);
         this.personagem.sprite.setCollideWorldBounds(true);
-        this.personagem.sprite.setDepth(2);
+        this.personagem.sprite.setDepth(10);
         this.teclas = this.personagem.configurarTeclas();
         this.physics.add.collider(this.personagem.sprite, paredes);
-
-        // Colisão do jogador com o sprite do Pedro
-        this.physics.add.collider(this.personagem.sprite, this.spritePedro);
+        this.personagem.adicionarColisao(this.pedro);
 
         // ── Porta de saída ────────────────────────────────────────────────────
         this.portaSaida = this.add.zone(751, 530, 45, 15);
@@ -88,45 +83,28 @@ export default class CenaCasaGelo extends CenaMapa {
         // ── Câmera ────────────────────────────────────────────────────────────
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setZoom(2.4);
+        // ── Câmera UI para diálogos ───────────────────────────────────────────
+        DialogoManager.configurarCameraUI(this, 2.4, [this.pedro]);        
     }
 
     update() {
         if (super.update()) return;
         this.personagem.atualizar();
 
-        // ── Atualiza HUD do Balão ─────────────────────────────────────────────
-        const registry = this.registry.get('negociacoesVencidas') ?? {};
+        // Atualiza o indicador E do Pedro (mostra quando perto, esconde quando longe)
+        this.pedro.atualizar(this.personagem.sprite, this.teclas.interagir);
+
+        // ── HUD do Balão ──────────────────────────────────────────────────────
+        const registry    = this.registry.get('negociacoesVencidas') ?? {};
         const pedroVencido = !!registry['pedro_vencido'];
 
-        // Se o Pedro ainda não foi vencido, mostra a missão
         if (!pedroVencido) {
             this.game.events.emit('atualizarBalao', { texto: 'Negocie com Pedro', visivel: true });
         } else {
-            // Se já foi vencido, esconde o balão
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
         }
 
-        //Se estiver na hitbox do pedro, pertoDoPedro = true
-        const pertoDoPedro = this.personagem.temOverlap(this.zonaPedro);
-
-        // Mantém o indicador sempre acima do Pedro
-        this.indicadorE.setPosition(
-            this.spritePedro.x,
-            this.spritePedro.y - 60
-        );
-
-        //Criando o E em cima do Pedro quando estiver perto
-        this.indicadorE.setVisible(pertoDoPedro);
-
-        // Aperta E perto do Pedro → vai para NegociacaoPedro
-        if (pertoDoPedro && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            // Limpa o balão ao interagir para ele não ficar flutuando
-            this.game.events.emit('atualizarBalao', { texto: '', visivel: false }); 
-            this.trocarCena('NegociacaoPedro');
-            return;
-        }
-
-        // Aperta E na porta de saída → volta para o MapaGelo
+        // ── Porta de saída ────────────────────────────────────────────────────
         const naPorta = this.physics.overlap(this.personagem.sprite, this.portaSaida);
         if (naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('QuebraGelo');

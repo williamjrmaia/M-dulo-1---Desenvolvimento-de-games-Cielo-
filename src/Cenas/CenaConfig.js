@@ -365,14 +365,105 @@ _aplicarResolucao(w, h) {
 
     _criarTelaSom(CX, CY) {
         const c = this._containerSom;
-        c.add(this.add.text(CX, CY - 168, 'SOM', {
-            fontFamily: '"Press Start 2P", monospace', fontSize: '11px', color: '#5bc8f5',
+
+        
+        // Slider de Música
+        c.add(this.add.text(CX, CY - 160, '🎵  MÚSICA', {
+            fontFamily: '"Press Start 2P", monospace',
+            fontSize: '10px', color: '#8ab4cc',
         }).setOrigin(0.5));
-        c.add(this.add.text(CX, CY - 40, '🔊', { fontSize: '48px' }).setOrigin(0.5));
-        c.add(this.add.text(CX, CY + 20, 'Em breve...', {
-            fontFamily: '"Press Start 2P", monospace', fontSize: '13px', color: '#4a6880',
+        this._criarSliderSom(c, CX, CY - 108, 'cielo_vol_musica', 0.5,
+            (v) => {
+                const audio = this.registry.get('audio');
+                if (audio) audio.setVolumeMusica(v);
+            }
+        );
+
+        // Linha separadora
+        c.add(this.add.rectangle(CX, CY - 48, 560, 2, 0x2a3f6f).setOrigin(0.5));
+
+        // Slider de Ambiente
+        c.add(this.add.text(CX, CY - 12, '🌿  SOM AMBIENTE', {
+            fontFamily: '"Press Start 2P", monospace',
+            fontSize: '10px', color: '#8ab4cc',
         }).setOrigin(0.5));
+        this._criarSliderSom(c, CX, CY + 44, 'cielo_vol_ambiente', 0.3,
+            (v) => {
+                const audio = this.registry.get('audio');
+                if (audio) audio.setVolumeAmbiente(v);
+            }
+        );
+
         this._criarBotaoAcao(c, CX, CY + 210, '◀  VOLTAR', () => this._mostrarTela('menu'));
+    }
+
+    /**
+     * Slider de volume reutilizável para a tela de Som.
+     * @param {Phaser.GameObjects.Container} container
+     * @param {number} x  centro horizontal
+     * @param {number} y  centro vertical
+     * @param {string} storageKey  chave no localStorage
+     * @param {number} padrao      valor padrão (0–1)
+     * @param {Function} onChange  callback(v) chamado ao arrastar
+     */
+    _criarSliderSom(container, x, y, storageKey, padrao, onChange) {
+        const sliderW = 560, sliderH = 54;
+
+        const sombra = this.add.rectangle(x + 3, y + 3, sliderW, sliderH, 0x000000, 0.4).setOrigin(0.5);
+        const fundo  = this.add.rectangle(x, y, sliderW, sliderH, 0x0d1b33).setOrigin(0.5);
+        fundo.setStrokeStyle(3, 0x2a3f6f);
+        const barra  = this.add.rectangle(x - sliderW / 2 + 8, y, 6, sliderH - 16, 0x2a3f6f).setOrigin(0.5);
+
+        const trilhoX = x - sliderW / 2 + 60;
+        const trilhoW = sliderW - 120;
+        const trilhoY = y + 10;
+
+        const trilhoBase  = this.add.rectangle(trilhoX + trilhoW / 2, trilhoY, trilhoW, 6, 0x1a3a6a).setOrigin(0.5);
+        const trilhoAtivo = this.add.rectangle(trilhoX, trilhoY, 1, 6, 0x5bc8f5).setOrigin(0, 0.5);
+
+        const icolMin = this.add.text(trilhoX - 18, trilhoY, '🔈', { fontSize: '13px' }).setOrigin(0.5);
+        const icolMax = this.add.text(trilhoX + trilhoW + 18, trilhoY, '🔊', { fontSize: '18px' }).setOrigin(0.5);
+
+        const handle = this.add.rectangle(0, trilhoY, 14, 22, 0x5bc8f5)
+            .setOrigin(0.5).setStrokeStyle(2, 0xffffff);
+
+        const txtValor = this.add.text(x + sliderW / 2 - 36, y + 10, '100%', {
+            fontFamily: '"Press Start 2P", monospace',
+            fontSize: '9px', color: '#5bc8f5',
+        }).setOrigin(0.5);
+
+        // ── Leitura do valor salvo ────────────────────────────────────────────
+        const valorSalvo = (() => {
+            try { const s = localStorage.getItem(storageKey); return s !== null ? parseFloat(s) : padrao; }
+            catch { return padrao; }
+        })();
+        let valorAtual = Phaser.Math.Clamp(valorSalvo, 0, 1);
+
+        const xParaValor  = (v)  => trilhoX + v * trilhoW;
+        const pxParaValor = (px) => Phaser.Math.Clamp((Math.min(Math.max(px, trilhoX), trilhoX + trilhoW) - trilhoX) / trilhoW, 0, 1);
+
+        const aplicar = (v) => {
+            valorAtual = Phaser.Math.Clamp(v, 0, 1);
+            const hx = xParaValor(valorAtual);
+            handle.setX(hx);
+            trilhoAtivo.width = hx - trilhoX;
+            txtValor.setText(Math.round(valorAtual * 100) + '%');
+            try { localStorage.setItem(storageKey, valorAtual); } catch {}
+            onChange(valorAtual);
+        };
+
+        aplicar(valorAtual);
+
+        // ── Interatividade ────────────────────────────────────────────────────
+        const zona = this.add.zone(x, y, sliderW, sliderH)
+            .setOrigin(0.5).setInteractive({ useHandCursor: true });
+
+        let arrastando = false;
+        zona.on('pointerdown', (ptr) => { arrastando = true; aplicar(pxParaValor(ptr.x)); });
+        this.input.on('pointermove', (ptr) => { if (arrastando) aplicar(pxParaValor(ptr.x)); });
+        this.input.on('pointerup', () => { arrastando = false; });
+
+        container.add([sombra, fundo, barra, trilhoBase, trilhoAtivo, icolMin, icolMax, handle, txtValor, zona]);
     }
 
     // ─── Botão genérico ───────────────────────────────────────────────────────
