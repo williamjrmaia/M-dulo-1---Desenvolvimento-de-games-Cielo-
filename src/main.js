@@ -32,6 +32,7 @@ import AudioManager     from './Classes/AudioManager.js';
 
 const config = {
     type: Phaser.AUTO,
+    pixelArt: true,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,

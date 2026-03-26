@@ -56,14 +56,16 @@ export default class CasaCielita extends CenaMapa {
         // NPC: Cielita
         this.cielita = new NPC(this, W / 2, H / 2, 'cielitaparada', {
             velocidade:         0,
-            distanciaInteracao: 80,
+            distanciaInteracao: 100,
+            scaleIndicador:     4,
+            offsetXIndicador:   -2,
             grupoNPCs:          this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
             onFimDialogo: () => {
                 this.dialogoConcluido = true;
             },
         });
-        this.cielita.setScale(2.3);
+        this.cielita.setScale(4);
         this.cielita.setFalas(FALAS_CIELITA);
 
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
@@ -79,7 +81,8 @@ export default class CasaCielita extends CenaMapa {
             ? limiteY + alturaMapa - 80
             : H / 2 + 80;
 
-        this.jogador = new Jogador(this, W / 2, spawnY);
+        this.jogador = new Jogador(this, W / 2, spawnY, 4);
+        this.jogador.velocidade = 160;
         this.teclas  = this.jogador.configurarTeclas();
 
         // Colisao Jogador x Cielita
