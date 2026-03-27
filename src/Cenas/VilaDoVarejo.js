@@ -48,6 +48,9 @@ export default class VilaDoVarejo extends CenaMapa {
                  || localStorage.getItem('nomeJogador')
                  || 'Jogador';
 
+        this.registry.get('audio').tocarMusica('musica_viladovarejo', 0.5);
+        this.registry.get('audio').tocarAmbiente('passos_viladovarejo', 0.5);
+
         // Ferramenta de debug: clica no mapa e vê a coordenada no console.
         this.input.on('pointerdown', (pointer) => {
             const worldX = pointer.worldX.toFixed(0);
