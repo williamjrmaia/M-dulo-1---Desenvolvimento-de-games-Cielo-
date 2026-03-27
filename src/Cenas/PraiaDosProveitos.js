@@ -156,7 +156,7 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.felipe = new NPC(this, 370, 320, 'felipe_idle', {
             velocidade: 45,
             distanciaInteracao: 35,
-            flipDireita: true,
+            flipDireita: false,
             grupoNPCs: this.grupoNPCs,
             animacoes: {
                 idle:  'felipe_idle',

@@ -21,7 +21,7 @@ export default class Preloader extends Phaser.Scene {
                 this.load.spritesheet(
                     `${skin}_${anim}`,
                     `assets/PLAYER/${pasta}/spr_player_${gen}_${anim}_${cor}.png`,
-                    { frameWidth: 64, frameHeight: 64 } // tamanho padrao de todos os sprites do jogador
+                    { frameWidth: 64, frameHeight: 64 }
                 );
             });
         });
@@ -40,9 +40,6 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('fundo_ponte_v',  'assets/CenarioCasa/ponte_transicao_vertical.png');
 
         // ── ABORDAGEM (12 cartas) ─────────────────────────────────────────────
-        // Cartas positivas: DiretoAoPonto, GanchoSocial, Proatividade, AntiPitch,
-        //   CuriosidadeDespertada, ReferenciaLocal, GatilhoDeEscassez, ParceriaEstrategica
-        // Cartas negativas: DesarmeElegante, ComparacaoInteligente, Problematica, QuebradePadrao
         this.load.image('AntiPitch',              'assets/Cartas/Abordagem/AntiPitch.png');
         this.load.image('ComparacaoInteligente',  'assets/Cartas/Abordagem/ComparacaoInteligente.png');
         this.load.image('CuriosidadeDespertada',  'assets/Cartas/Abordagem/CuriosidadeDespertada.png');
@@ -57,9 +54,6 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('ReferenciaLocal',        'assets/Cartas/Abordagem/ReferenciaLocal.png');
 
         // ── SONDAGEM (12 cartas) ──────────────────────────────────────────────
-        // Cartas que revelam dor de falha tecnica de Thaina:
-        //   GanchoDaDor e PontoDeDorTecnico
-        // As demais exploram outros angulos de necessidade do cliente
         this.load.image('AutoridadeImplicita',   'assets/Cartas/Sondagem/AutoridadeImplicita.png');
         this.load.image('ChaveDeExclusividade',  'assets/Cartas/Sondagem/ChaveDeExclusividade.png');
         this.load.image('Cliffhanger',           'assets/Cartas/Sondagem/Cliffhanger.png');
@@ -74,9 +68,6 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('SondagemDePrazo',       'assets/Cartas/Sondagem/SondagemDePrazo.png');
 
         // ── PRODUTOS / DEMONSTRACAO (12 cartas) ───────────────────────────────
-        // CieloFlash2 e o produto correto para o problema de Thaina
-        // (multiconexao + IA anti-falhas). Os demais sao penalizados quando
-        // a dor de falha tecnica foi revelada na sondagem.
         this.load.image('Antecipacao',      'assets/Cartas/Produtos/Antecipacao.png');
         this.load.image('CrediarioDigital', 'assets/Cartas/Produtos/CrediarioDigital.png');
         this.load.image('CVBA',             'assets/Cartas/Produtos/CVBA.png');
@@ -109,11 +100,14 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Pedro_satisfeito','assets/NPC/Pedro/feliz.png');
         this.load.image('Pedro_bravo',     'assets/NPC/Pedro/BossPedro.png');
 
+        this.load.image('Chefa_feliz',    'assets/NPC/JULIA/CHEFE_FELIZ.png');
+        this.load.image('Chefa_neutro',   'assets/NPC/JULIA/CHEFE_NEUTRA.png');
+        this.load.image('Chefa_brava',    'assets/NPC/JULIA/CHEFE_IRRITADA.png'); // ← corrigido de Chefa_brava
+        this.load.image('Chefa',   'assets/NPC/JULIA/spr_chefe_front_idl.png');
+
         this.load.image('Sofia', 'assets/NPC/Sofia/sofia.png');
 
         // ── Insignias ─────────────────────────────────────────────────────────
-        // InsigniaAbordagem1: concedida em negociacoes de abordagem (ex: Pedro)
-        // InsigniaProduto1:   concedida ao vencer NegociacaoThaina
         this.load.image('InsigniaAbordagem1', 'assets/Insignias/InsigniaAbordagem1.png');
         this.load.image('InsigniaProduto1',   'assets/Insignias/InsigniaProduto1.png');
 
@@ -125,10 +119,9 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('barra_metade_cheia', 'assets/objetos/barra/barra_metade_cheia.png');
         this.load.image('barra_cheia',        'assets/objetos/barra/barra_cheia.png');
 
-
         // ── Audios ────────────────────────────────────────────────────────────
         this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
-        this.load.audio('blip_dialogo',        'assets/Audio/blip_dialogo.wav');
+        this.load.audio('blip_dialogo',        'assets/Audio/blip_teclado.wav');
 
         // ── Músicas ──
         this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
@@ -139,8 +132,8 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('musica_batalha', 'assets/Audio/musica_batalha.mp3');
 
         // ── Áudio ambiente ──
-        this.load.audio('ambiente_quebragelo', 'assets/Audio/ambiente_quebragelo.mp3');
-        this.load.audio('ambiente_viladovarejo', 'assets/Audio/ambiente_viladovarejo.mp3');
+        this.load.audio('ambiente_quebragelo',        'assets/Audio/ambiente_quebragelo.mp3');
+        this.load.audio('ambiente_viladovarejo',      'assets/Audio/ambiente_viladovarejo.mp3');
         this.load.audio('ambiente_praiadosproveitos', 'assets/Audio/ambiente_praiadosproveitos.mp3');
 
         // ── Passos do personagem ──
