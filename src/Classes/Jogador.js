@@ -7,6 +7,10 @@ export default class Jogador {
         const skin = cena.game.registry.get('spriteJogador') || 'man_whi';
         this.skin = skin;
 
+        this.nome = cena.game.registry.get('nomeJogador')
+            || localStorage.getItem('nomeJogador')
+            || 'Jogador';
+
         this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
         this.sprite.setCollideWorldBounds(true);
         this.sprite.body.setSize(10, 5);

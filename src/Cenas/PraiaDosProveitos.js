@@ -24,12 +24,7 @@ export default class PraiaDosProveitos extends CenaMapa {
             { frameWidth: 16, frameHeight: 25 }
         );
 
-        // Spritesheets do Felipe (NPC que patrulha a praia)
-        // front_idl  → 4 frames (idle de frente)
-        // front_walk → 4 frames (andando de frente) — usado também como lateral
-        // back_walk  → 4 frames (andando de costas)
-        // Não existe sprite lateral para o Felipe!
-        // Dimensões reais medidas: 16x22px por frame
+        // Spritesheets do Felipe 
         this.load.spritesheet('felipe_idle',   'assets/NPC/FELIPE/spr_felipe_front_idl.png',  { frameWidth: 16, frameHeight: 22 });
         this.load.spritesheet('felipe_andar',  'assets/NPC/FELIPE/spr_felipe_front_walk.png', { frameWidth: 16, frameHeight: 22 });
         this.load.spritesheet('felipe_costas', 'assets/NPC/FELIPE/spr_felipe_back_walk.png',  { frameWidth: 16, frameHeight: 22 });
@@ -41,10 +36,6 @@ export default class PraiaDosProveitos extends CenaMapa {
 
     create() {
         super.create();
-
-        const nomeJogador = this.game.registry.get('nomeJogador')
-                 || localStorage.getItem('nomeJogador')
-                 || 'Jogador';
 
         this.registry.get('audio').tocarMusica('musica_praiadosproveitos', 0.5);
         this.registry.get('audio').tocarAmbiente('ambiente_praiadosproveitos', 0.4);
@@ -181,8 +172,8 @@ export default class PraiaDosProveitos extends CenaMapa {
             { personagem: 'Felipe', texto: 'Não só as ondas surpreendem, mas a chefa também.' },
             { personagem: 'Jogador', texto: 'Chefa? Quem é essa? Aliás, como você se chama?' },
             { personagem: 'Felipe', texto: 'Ah, me chamo Felipe. Sou um dos moradores daqui e conheço cada canto dessa praia. E você, como se chama?' },
-            { personagem: 'Jogador', texto: `Prazer, Felipe! Me chamo ${nomeJogador}.` },
-            { personagem: 'Felipe', texto: `Prazer, ${nomeJogador}! A Chefa é a dona do quiosque mais movimentado da praia, ela é uma figura e tanto!` },
+            { personagem: 'Jogador', texto: `Prazer, Felipe! Me chamo ${this.personagem.nome}.` },
+            { personagem: 'Felipe', texto: `Prazer, ${this.personagem.nome}! A Chefa é a dona do quiosque mais movimentado da praia, ela é uma figura e tanto!` },
             { personagem: 'Felipe', texto: 'Boatos dizem que ela foi responsável por quase quebrar a grande pousada da praia.' },
             { personagem: 'Felipe', texto: 'Ela é tão temida que até os vendedores ambulantes evitam se meter com ela.' },
             { personagem: 'Jogador', texto: 'Nossa, parece uma pessoa e tanto! Vou procurar o quiosque dela para descobrir mais.' },
