@@ -178,6 +178,8 @@ export default class CenaPonte extends Phaser.Scene {
             this.game.registry.set('origemCena', this._cfg.registryOrigem);
         }
 
+        this.sound.play('transicao_ponte', { volume: 0.7 });
+
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => {
             this.scene.start(cena, { vindoDe: this.scene.key, ...dados });

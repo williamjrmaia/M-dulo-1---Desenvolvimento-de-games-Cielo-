@@ -124,10 +124,12 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('blip_dialogo',        'assets/Audio/blip_teclado.wav');
 
         // ── Músicas ──
-        this.load.audio('musica_fundo_inicio',       'assets/Audio/musica_fundo_inicio.mp3');
-        this.load.audio('musica_quebragelo',          'assets/Audio/musica_quebragelo.mp3');
-        this.load.audio('musica_viladovarejo',        'assets/Audio/musica_viladovarejo.mp3');
-        this.load.audio('musica_praiadosproveitos',   'assets/Audio/musica_praiadosproveitos.mp3');
+        this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
+        this.load.audio('musica_quebragelo', 'assets/Audio/musica_quebragelo.mp3');
+        this.load.audio('musica_viladovarejo', 'assets/Audio/musica_viladovarejo.mp3');
+        this.load.audio('musica_praiadosproveitos', 'assets/Audio/musica_praiadosproveitos.mp3');
+        this.load.audio('musica_cidadecielo', 'assets/Audio/musica_cidadecielo.mp3');
+        this.load.audio('musica_batalha', 'assets/Audio/musica_batalha.mp3');
 
         // ── Áudio ambiente ──
         this.load.audio('ambiente_quebragelo',        'assets/Audio/ambiente_quebragelo.mp3');
@@ -139,10 +141,21 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('passos_quebragelo',         'assets/Audio/passos_quebragelo.mp3');
         this.load.audio('passos_viladovarejo',       'assets/Audio/passos_viladovarejo.mp3');
         this.load.audio('passos_praiadosproveitos',  'assets/Audio/passos_praiadosproveitos.mp3');
-        this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.mp3');
+        this.load.audio('passos_cidadecielo',        'assets/Audio/passos_cidadecielo.mp3');
+        this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.wav')
 
         // ── Narração da Introdução ──
         this.load.audio('blip_teclado', 'assets/Audio/blip_teclado.wav');
+
+        // ── Áudio de clique ──
+        this.load.audio('som_clique', 'assets/Audio/botoes_menu.wav');
+
+        // ── Transições entre Mapas ──
+        this.load.audio('transicao_ponte', 'assets/Audio/transicao_entre_mapas.wav');
+
+        // ── Som de conquista de insígnia ──
+        this.load.audio('som_insignia', 'assets/Audio/insignia_sound.mp3');
+
     }
 
     create() {
