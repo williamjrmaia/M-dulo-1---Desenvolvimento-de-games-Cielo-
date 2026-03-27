@@ -137,6 +137,11 @@ export default class Insignia {
         const cx    = W / 2;
         const cy    = 50;
 
+    // Toca o som da insígnia ao conquistar
+        if (cena.cache.audio.exists('som_insignia')) {
+            cena.sound.play('som_insignia', { volume: 0.7 });
+    }
+
         const fundo = cena.add
             .rectangle(cx, cy, 280, 64, 0x060e14, 0.92)
             .setStrokeStyle(2, 0x2a4a6a)

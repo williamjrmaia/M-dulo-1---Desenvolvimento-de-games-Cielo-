@@ -10,7 +10,6 @@ export default class CenaIntroducao extends Phaser.Scene {
     }
 
     create() {
-        this.registry.get('audio').pararMusica();
 
         const W = this.scale.width;
         const H = this.scale.height;

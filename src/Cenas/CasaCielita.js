@@ -3,9 +3,11 @@ import NPC     from '../Classes/NPC.js';
 import CenaMapa from '../Classes/CenaMapa.js';
 
 const FALAS_CIELITA = [
+    { personagem: 'Cielita', texto: 'Seja bem-vindo(a) ao Cielo Verso!' },
+    { personagem: 'Cielita', texto: 'Nesse mundo, você irá aprender muito sobre diferentes etapas do treinamento de um GN da Cielo!' },
+    { personagem: 'Cielita', texto: 'Cada região irá apresentar uma dessas etapas do treinamento por meio de diferentes problemas de negociação.' },
     { personagem: 'Cielita', texto: 'Eu sou Cielita, sua guia, e estarei ao seu lado para que cada passo desta jornada se transforme em maestria.' },
     { personagem: 'Cielita', texto: 'Sinta-se à vontade para explorar e conversar comigo.' },
-    { personagem: 'Cielita', texto: 'Se precisar de algo, é só me chamar!' },
     { personagem: 'Jogador', texto: 'Obrigado! Vou desbravar por todo o cielo verso.' },
 ];
 
@@ -56,14 +58,16 @@ export default class CasaCielita extends CenaMapa {
         // NPC: Cielita
         this.cielita = new NPC(this, W / 2, H / 2, 'cielitaparada', {
             velocidade:         0,
-            distanciaInteracao: 80,
+            distanciaInteracao: 100,
+            scaleIndicador:     4,
+            offsetXIndicador:   -2,
             grupoNPCs:          this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
             onFimDialogo: () => {
                 this.dialogoConcluido = true;
             },
         });
-        this.cielita.setScale(2.3);
+        this.cielita.setScale(4);
         this.cielita.setFalas(FALAS_CIELITA);
 
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
@@ -79,7 +83,8 @@ export default class CasaCielita extends CenaMapa {
             ? limiteY + alturaMapa - 80
             : H / 2 + 80;
 
-        this.jogador = new Jogador(this, W / 2, spawnY);
+        this.jogador = new Jogador(this, W / 2, spawnY, 4);
+        this.jogador.velocidade = 160;
         this.teclas  = this.jogador.configurarTeclas();
 
         // Colisao Jogador x Cielita

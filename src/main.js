@@ -18,6 +18,7 @@ import NegociacaoPedro  from './Cenas/NegociacaoPedro.js';
 
 import PonteMC_QG       from './Cenas/PonteMC_QG.js';
 import PonteQG_VV       from './Cenas/PonteQG_VV.js';
+import PonteVV_PP       from './Cenas/PonteVV_PP.js';
 
 import VilaDoVarejo     from './Cenas/VilaDoVarejo.js';
 import CasaVarejo1      from './Cenas/CasaVarejo1.js';
@@ -28,10 +29,13 @@ import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js';
 import CasaPraia1 from './Cenas/CasaPraia1.js';
 import CasaPraia2 from './Cenas/CasaPraia2.js';
 
+import CidadeCielo from './Cenas/CidadeCielo.js';
+
 import AudioManager     from './Classes/AudioManager.js';
 
 const config = {
     type: Phaser.AUTO,
+    pixelArt: true,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -43,7 +47,7 @@ const config = {
     dom: { createContainer: true },
     physics: {
         default: 'arcade',
-        arcade: { gravity: { y: 0 }, debug: true }
+        arcade: { gravity: { y: 0 }, debug: false }
     },
 
     scene:[
@@ -58,9 +62,12 @@ const config = {
         NegociacaoPedro, 
 
         VilaDoVarejo, CasaVarejo1, CasaVarejo2, 
-        NegociacaoThaina, 
+        NegociacaoThaina, PonteVV_PP,
 
-        PraiaDosProveitos, CasaPraia1, CasaPraia2
+        PraiaDosProveitos, CasaPraia1, CasaPraia2,
+
+        CidadeCielo
+        
     ]
 
     //Preloader carrega as sprites antes do jogo começar 
