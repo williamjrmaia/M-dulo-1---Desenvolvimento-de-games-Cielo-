@@ -15,8 +15,9 @@ export default class Jogador {
         this._criarAnimacoes();
         this._ultimaDirecao = 'frente';
 
-        this.superficiePasso  = 'passos_interiorcasas'; // padrão — cada cena sobrescreve
-        this._passoCooldown   = false;
+        this._passoCooldown  = false;
+        this.superficiePasso = 'passos_interiorcasas'; // padrão — cada cena sobrescreve
+        this._passoTimer     = null; // guarda referência do timer para cancelar ao parar
 
         const largura = cena.cameras.main.width;
         this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
@@ -48,9 +49,18 @@ export default class Jogador {
         this._passoCooldown = true;
 
         // Intervalo entre passos — ajusta o número (ms) se quiser mais rápido ou lento
-        this.cena.time.delayedCall(320, () => {
+        this._passoTimer = this.cena.time.delayedCall(320, () => {
             this._passoCooldown = false;
         });
+    }
+
+    // Cancela o timer de passo quando o jogador para de se mover
+    _pararPassos() {
+        if (this._passoTimer) {
+            this._passoTimer.remove();
+            this._passoTimer = null;
+        }
+        this._passoCooldown = false;
     }
 
     configurarTeclas() {
@@ -96,6 +106,7 @@ export default class Jogador {
         if (nenhumaTecla) {
             const idleAnim = this._ultimaDirecao === 'costas' ? `${s}_idle_costas` : `${s}_idle`;
             sprite.play(idleAnim, true);
+            this._pararPassos(); // cancela o timer ao parar de andar
             return;
         }
 
@@ -131,7 +142,15 @@ export default class Jogador {
         if (mag > 0) {
             sprite.setVelocityX((vx / mag) * velocidade);
             sprite.setVelocityY((vy / mag) * velocidade);
-            this._tocarPasso();
+
+            // Só toca passo se o jogador realmente está pressionando uma tecla
+            const algumaTeclaPressionada =
+                teclas.left.isDown || teclas.right.isDown ||
+                teclas.up.isDown   || teclas.down.isDown;
+
+            if (algumaTeclaPressionada) {
+                this._tocarPasso();
+            }
         }
     }
 
