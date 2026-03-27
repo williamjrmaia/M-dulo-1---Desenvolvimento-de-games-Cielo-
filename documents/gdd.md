@@ -140,7 +140,7 @@ Consolidar-se como uma solução digital escalável e inovadora de desenvolvimen
 
 O canvas de proposta de valor a seguir foi estruturado com base no framework de Alexander Osterwalder, composto por dois blocos: o Perfil do Cliente — dividido em tarefas, dores e ganhos — e o Mapa de Valor — dividido em produtos e serviços, aliviadores de dor e criadores de ganho.
 
-![Canvas Proposta de Valor](../../assets/GDD/canvas-proposta-valor.png)
+![Canvas Proposta de Valor](assets/canvas-proposta-valor.png)
 
 #### A proposta central
 
