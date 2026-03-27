@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Avaliação do GDD — Cielo Verso</title>
+  <style>
+    :root {
+      --azul:    #1a56db;
+      --verde:   #057a55;
+      --amarelo: #b45309;
+      --vermelho:#c81e1e;
+      --fundo:   #f9fafb;
+      --card:    #ffffff;
+      --borda:   #e5e7eb;
+      --texto:   #111827;
+      --sub:     #6b7280;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--fundo);
+      color: var(--texto);
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #1d4ed8 60%, #2563eb 100%);
+      color: white;
+      padding: 48px 32px 40px;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px;
+      padding: 4px 16px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+    header p  { font-size: 1rem; opacity: 0.85; }
+
+    /* ── PAINEL DE RESUMO ── */
+    .resumo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      max-width: 900px;
+      margin: -28px auto 0;
+      padding: 0 24px;
+    }
+    .resumo-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.09);
+      padding: 20px 16px;
+      text-align: center;
+    }
+    .resumo-card .valor {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .resumo-card .label { font-size: 0.78rem; color: var(--sub); }
+    .verde  { color: var(--verde); }
+    .amarelo{ color: var(--amarelo); }
+    .vermelho{color: var(--vermelho);}
+    .azul   { color: var(--azul); }
+
+    /* ── LEGENDA ── */
+    .legenda {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 40px auto 0;
+      max-width: 900px;
+      padding: 0 24px;
+    }
+    .legenda-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+    .dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── SEÇÃO CARD ── */
+    .secao {
+      background: var(--card);
+      border-radius: 14px;
+      border: 1px solid var(--borda);
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .secao-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+    }
+    .secao-header:hover { background: #f3f4f6; }
+    .secao-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex: 1;
+      min-width: 0;
+    }
+    .secao-numero {
+      background: #e0e7ff;
+      color: #3730a3;
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .secao-nome {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .secao-right { display: flex; align-items: center; gap: 12px; }
+
+    /* Nota badge */
+    .nota-badge {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .nota-alta   { background:#d1fae5; color:#065f46; }
+    .nota-media  { background:#fef3c7; color:#92400e; }
+    .nota-baixa  { background:#fee2e2; color:#991b1b; }
+    .nota-vazia  { background:#f3f4f6; color:#6b7280; }
+
+    .chevron {
+      transition: transform 0.25s;
+      color: var(--sub);
+      font-size: 1rem;
+    }
+    .secao.aberta .chevron { transform: rotate(180deg); }
+
+    /* corpo colapsável */
+    .secao-corpo {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px solid var(--borda);
+    }
+    .secao.aberta .secao-corpo { display: block; }
+
+    /* blocos internos */
+    .bloco { margin-top: 16px; }
+    .bloco-titulo {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bloco-bom    .bloco-titulo { color: var(--verde); }
+    .bloco-melhorar .bloco-titulo { color: var(--amarelo); }
+    .bloco-falta  .bloco-titulo { color: var(--vermelho); }
+    .bloco-nota   .bloco-titulo { color: var(--azul); }
+
+    ul.lista { padding-left: 20px; }
+    ul.lista li {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      margin-bottom: 6px;
+      color: #374151;
+    }
+
+    .nota-final-box {
+      margin-top: 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      color: #1e40af;
+    }
+    .nota-final-box strong { display: block; font-size: 1.05rem; margin-bottom: 4px; }
+
+    /* ── BARRA DE NOTA ── */
+    .barra-wrap { margin-top: 12px; }
+    .barra-fundo {
+      background: #e5e7eb;
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .barra-fill {
+      height: 8px;
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+    .fill-alta   { background: #10b981; }
+    .fill-media  { background: #f59e0b; }
+    .fill-baixa  { background: #ef4444; }
+    .fill-vazia  { background: #d1d5db; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      color: var(--sub);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Avaliação do GDD</div>
+  <h1>Cielo Verso — Game Design Document</h1>
+  <p>Análise seção por seção · O que está bom · O que melhorar · O que falta para o 10</p>
+</header>
+
+<!-- RESUMO -->
+<div class="resumo">
+  <div class="resumo-card">
+    <div class="valor verde">5</div>
+    <div class="label">Seções fortes ✔</div>
+  </div>
+  <div class="resumo-card">
+    <div class="valor amarelo">5</div>
+    <div class="label">Precisam atenção ⚠</div>
+  </div>
+  <div class="resumo-card">
+    <div class="valor vermelho">8</div>
+    <div class="label">Vazias / placeholder</div>
+  </div>
+  <div class="resumo-card">
+    <div class="valor azul">~6.5</div>
+    <div class="label">Nota estimada atual</div>
+  </div>
+</div>
+
+<!-- LEGENDA -->
+<div class="legenda">
+  <div class="legenda-item"><div class="dot" style="background:#10b981"></div> Nota alta (8–10)</div>
+  <div class="legenda-item"><div class="dot" style="background:#f59e0b"></div> Nota média (5–7)</div>
+  <div class="legenda-item"><div class="dot" style="background:#ef4444"></div> Nota baixa (0–4)</div>
+  <div class="legenda-item"><div class="dot" style="background:#d1d5db"></div> Não avaliável (vazio)</div>
+</div>
+
+<main>
+<!-- GDD_STATUS_START -->
+<div id="gdd-status-panel" style="
+  background:#fff;border:2px solid #e0e7ff;border-radius:14px;
+  padding:24px;margin-bottom:28px;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+    <div>
+      <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;
+                  letter-spacing:0.07em;color:#6b7280;margin-bottom:4px;">
+        📡 Monitoramento automático · atualizado em 16/03/2026 às 12:59
+      </div>
+      <div style="font-size:1rem;font-weight:700;color:#111827;">
+        Progresso de preenchimento do GDD
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:2rem;font-weight:800;color:#ef4444;line-height:1;">
+        0%
+      </div>
+      <div style="font-size:0.75rem;color:#6b7280;">
+        0/14 seções · 9,708 palavras
+      </div>
+    </div>
+  </div>
+
+  <div style="background:#e5e7eb;border-radius:999px;height:10px;margin-bottom:20px;overflow:hidden;">
+    <div style="height:10px;border-radius:999px;background:#ef4444;
+                width:0%;transition:width 0.5s ease;"></div>
+  </div>
+
+  <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;
+              letter-spacing:0.06em;color:#6b7280;margin-bottom:10px;">
+    Status das seções pendentes
+  </div>
+  
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 1.1.4 Proposta de Valor</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 1.1.5 Descrição da Solução</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 1.1.6 Matriz de Riscos</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 1.1.7 Objetivos e Metas</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 2.2.5 Tempo estimado</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 3.3.5 Trilha sonora</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 3.4.1 Inventário (real)</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 3.4.2 Bestiário (real)</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 3.8 Implementação Matemática</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 4.4 MVP Final</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 4.5 Revisão do MVP</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 5.2.2 Melhorias</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ 6. Conclusões</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    padding:7px 12px;border-radius:8px;background:#fef3c7;margin-bottom:6px;">
+          <span style="font-size:0.82rem;color:#92400e;font-weight:500;">⬜ Nome do Grupo</span>
+          <span style="font-size:0.75rem;color:#92400e;font-weight:700;">
+            Pendente
+          </span>
+        </div>
+</div>
+<!-- GDD_STATUS_END -->
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- 1. INTRODUÇÃO -->
+  <!-- ─────────────────────────────────────────────── -->
+
+  <div class="secao" id="s1">
+    <div class="secao-header" onclick="toggle('s1')">
+      <div class="secao-title">
+        <span class="secao-numero">1.1.1</span>
+        <span class="secao-nome">Contexto da Indústria & 5 Forças de Porter</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">9/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:90%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está muito bom</div>
+        <ul class="lista">
+          <li>Análise das 5 forças extremamente detalhada e embasada em fontes primárias de peso (Banco Central, CADE, Resolução BCB nº 80/2021, BCB nº 246/2022).</li>
+          <li>Cada força tem título em negrito, parágrafo de contexto e conclusão classificatória — estrutura muito profissional.</li>
+          <li>SWOT Cruzada com tabela SO/ST/WO/WT é um diferencial raro e demonstra maturidade estratégica.</li>
+          <li>Referências citadas diretamente no texto (inline), o que facilita a verificação.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que pode melhorar</div>
+        <ul class="lista">
+          <li>As fontes estão misturadas em dois formatos: algumas inline no texto e outras na seção 7 — padronize tudo em ABNT na seção de referências.</li>
+          <li>A conclusão das 5 Forças repete pontos que já foram ditos nas análises individuais; pode ser mais sintética.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Incluir uma imagem/diagrama visual das 5 Forças para tornar o GDD mais visual e escaneável.</li>
+          <li>Conectar explicitamente como a análise de mercado influenciou decisões de design do jogo (por que o Pix virou obstáculo? Por que o boss representa o poder de barganha do cliente?).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s2">
+    <div class="secao-header" onclick="toggle('s2')">
+      <div class="secao-title">
+        <span class="secao-numero">1.1.2</span>
+        <span class="secao-nome">Análise SWOT</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">8.5/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:85%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está muito bom</div>
+        <ul class="lista">
+          <li>Todos os 4 quadrantes preenchidos com pontos concretos e referenciados.</li>
+          <li>SWOT Cruzada é um dos melhores elementos do documento — vai além do básico pedido.</li>
+          <li>Linguagem estratégica correta (não confunde fraquezas com ameaças).</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que pode melhorar</div>
+        <ul class="lista">
+          <li>Nenhum visual: uma tabela 2×2 com ícones ou cores tornaria a leitura muito mais rápida.</li>
+          <li>A formatação usa headings nível 3 dentro de outra seção nível 3 (colisão de hierarquia no markdown).</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Imagem da matriz SWOT visual (pode ser gerada no Canva ou similar).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s3">
+    <div class="secao-header" onclick="toggle('s3')">
+      <div class="secao-title">
+        <span class="secao-numero">1.1.3</span>
+        <span class="secao-nome">Missão / Visão / Valores</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">9/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:90%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está muito bom</div>
+        <ul class="lista">
+          <li>Missão muito bem escrita — específica, narrativa e conectada diretamente ao jogo (menciona Quebra Gelo, Vila do Varejo, Floresta dos Proveitos).</li>
+          <li>Tabela de valores com descrição para cada um — apresentação limpa e profissional.</li>
+          <li>Visão objetiva e com visão de escala ("solução digital escalável").</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>A hierarquia de headings está incorreta: "Missão", "Visão" e "Valores" estão em <code>###</code> mas deveriam ser <code>####</code> por estarem dentro de 1.1.3. Isso quebra a navegação pelo sumário.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s4">
+    <div class="secao-header" onclick="toggle('s4')">
+      <div class="secao-title">
+        <span class="secao-numero">1.1.4 – 1.1.7</span>
+        <span class="secao-nome">Proposta de Valor · Solução · Riscos · Metas</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-vazia">Vazio</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-vazia" style="width:5%"></div></div></div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ Tudo ainda é placeholder</div>
+        <ul class="lista">
+          <li><strong>1.1.4 Proposta de Valor:</strong> ainda mostra o texto de instrução em itálico — precisa de um Value Proposition Canvas preenchido com os pains/gains dos Gerentes de Negócios e as cartas/funcionalidades do jogo como gain creators.</li>
+          <li><strong>1.1.5 Descrição da Solução:</strong> vazio — deve resumir o jogo em 2–3 parágrafos claros voltados ao parceiro (Cielo), explicando o que ele recebe.</li>
+          <li><strong>1.1.6 Matriz de Riscos:</strong> não foi preenchida — é um dos itens mais cobrados. Deve ter pelo menos 5 riscos com probabilidade, impacto e plano de resposta.</li>
+          <li><strong>1.1.7 Metas SMART:</strong> completamente ausente. Inclua metas mensuráveis como "80% dos jogadores completam a sprint 1 sem abandono" ou "tempo médio de sessão de 15 min".</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s5">
+    <div class="secao-header" onclick="toggle('s5')">
+      <div class="secao-title">
+        <span class="secao-numero">1.2</span>
+        <span class="secao-nome">Requisitos do Projeto</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">8.5/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:85%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está muito bom</div>
+        <ul class="lista">
+          <li>9 requisitos claros, numerados e com coluna de explicação detalhada.</li>
+          <li>Requisitos funcionais bem definidos (movimentação WASD, cartas, barra de satisfação, tutorial).</li>
+          <li>Escopo realista para o módulo.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que pode melhorar</div>
+        <ul class="lista">
+          <li>Não há separação entre Requisitos Funcionais (RF) e Não-Funcionais (RNF) — adicionar pelo menos 2–3 RNFs (ex: "o jogo deve carregar em menos de 5 segundos", "compatível com Chrome versão X+").</li>
+          <li>A tabela usa <code>\#</code> em vez de <code>#</code> na primeira linha — erro de formatação que aparece como texto bruto.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Adicionar coluna de "Sprint" ou "Status" na tabela para mostrar o que foi implementado vs. planejado.</li>
+          <li>Incluir RNFs (desempenho, usabilidade, acessibilidade).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s6">
+    <div class="secao-header" onclick="toggle('s6')">
+      <div class="secao-title">
+        <span class="secao-numero">1.3</span>
+        <span class="secao-nome">Público-alvo</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">8/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:80%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está muito bom</div>
+        <ul class="lista">
+          <li>Dados concretos: idade média de 44 anos, 35% com ensino superior — mostra pesquisa real.</li>
+          <li>Contextualiza os desafios regionais do público, conectando com a proposta do jogo.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Uma persona visual (card com foto/ícone, nome fictício, rotina, dores) tornaria esta seção muito mais impactante.</li>
+          <li>Mencionar nível de letramento digital do público e como isso influenciou decisões de UX do jogo.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- 2. VISÃO GERAL -->
+  <!-- ─────────────────────────────────────────────── -->
+
+  <div class="secao" id="s7">
+    <div class="secao-header" onclick="toggle('s7')">
+      <div class="secao-title">
+        <span class="secao-numero">2.1</span>
+        <span class="secao-nome">Objetivos do Jogo</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-media">6.5/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-media" style="width:65%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está bom</div>
+        <ul class="lista">
+          <li>Progressão bem explicada — 5 áreas, boss por área, desbloqueio sequencial.</li>
+          <li>A lógica de consolidação na fase final (3 baralhos reunidos) é coesa com a narrativa de aprendizado.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que precisa melhorar (urgente)</div>
+        <ul class="lista">
+          <li><strong>Formatação quebrada:</strong> vários bullet points foram escritos como parágrafos soltos sem o caractere <code>-</code> ou <code>*</code>, o que faz a lista aparecer sem marcadores. Exemplo: "Clientes específicos e perfis variados" não tem marcador de lista.</li>
+          <li>Isso ocorre em pelo menos 4 blocos da seção — vale uma revisão completa de markdown aqui.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Um diagrama de progressão visual (fluxograma das 5 áreas) tornaria esta seção muito mais clara.</li>
+          <li>Corrigir a formatação markdown dos bullet points.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s8">
+    <div class="secao-header" onclick="toggle('s8')">
+      <div class="secao-title">
+        <span class="secao-numero">2.2</span>
+        <span class="secao-nome">Características do Jogo (Gênero, Plataforma, Inspirações)</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-media">7/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-media" style="width:70%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está bom</div>
+        <ul class="lista">
+          <li>Referências de inspiração bem escolhidas e variadas (Zelda, Pokémon, Undertale, Balatro) — demonstra pesquisa de referencial.</li>
+          <li>Plataforma clara: web/Chrome, desktop e mobile.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que pode melhorar</div>
+        <ul class="lista">
+          <li>Seção 2.2.2 (Plataforma) tem os itens como parágrafos soltos em vez de lista formatada.</li>
+          <li>Para cada jogo de inspiração, explique o que especificamente foi adaptado para o Cielo Verso — hoje a conexão é superficial.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li><strong>2.2.5 Tempo estimado de jogo</strong> ainda tem o placeholder do template — precisa ser preenchido com uma estimativa real baseada nos playtests.</li>
+          <li>Screenshots ou imagens dos jogos de inspiração com anotações do que foi adaptado.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- 3. GAME DESIGN -->
+  <!-- ─────────────────────────────────────────────── -->
+
+  <div class="secao" id="s9">
+    <div class="secao-header" onclick="toggle('s9')">
+      <div class="secao-title">
+        <span class="secao-numero">3.1</span>
+        <span class="secao-nome">Enredo do Jogo</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">9.5/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:95%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está excepcional</div>
+        <ul class="lista">
+          <li>Narrativa coesa, com começo, meio e fim bem estruturados e alinhados ao objetivo educacional.</li>
+          <li>Cada mundo tem identidade visual e metafórica clara (Quebra-Gelo = objeções; Floresta = diferenciação estratégica).</li>
+          <li>Tom narrativo rico e envolvente — leitura fluida, não parece um documento técnico seco.</li>
+          <li>O conceito de "transformação do vendedor em parceiro estratégico" é uma proposta de valor pedagógica bem articulada.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Um diagrama de arco narrativo ou storyboard de alto nível completaria esta seção perfeitamente.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s10">
+    <div class="secao-header" onclick="toggle('s10')">
+      <div class="secao-title">
+        <span class="secao-numero">3.2</span>
+        <span class="secao-nome">Personagens</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">8.5/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:85%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está bom</div>
+        <ul class="lista">
+          <li>Tabela de NPCs com papel claro para cada categoria (tutora, vilões, clientes).</li>
+          <li>Seção de Diversidade e Representatividade (3.2.3) é um dos pontos mais fortes do GDD — conecta regionalismo brasileiro às mecânicas do jogo de forma original.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que pode melhorar</div>
+        <ul class="lista">
+          <li>A seção 3.2.1 (Controláveis) é descritiva mas não mostra os sprites dos 4 avatares — adicionar as imagens aqui é essencial.</li>
+          <li>Os NPCs da tabela (3.2.2) descrevem categorias, não personagens individuais. Falta pelo menos uma entrada para Pedro (NPC já implementado no código).</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Imagens dos sprites de cada avatar jogável.</li>
+          <li>Expandir a tabela de NPCs com os personagens nomeados (Pedro, Cielita + clientes de cada região) e suas respectivas imagens.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s11">
+    <div class="secao-header" onclick="toggle('s11')">
+      <div class="secao-title">
+        <span class="secao-numero">3.3</span>
+        <span class="secao-nome">Mundo do Jogo (Mapas, Navegação, Concept Art)</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-media">7/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-media" style="width:70%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está bom</div>
+        <ul class="lista">
+          <li>Descrição das locações (3.3.1) é excelente — cada área tem atmosfera, conflito e função pedagógica bem definidos.</li>
+          <li>Imagens de Concept Art presentes em 3.3.4 (mapa, casa, menu).</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que pode melhorar</div>
+        <ul class="lista">
+          <li>3.3.2 (Navegação) é muito curto e repete informações já ditas em 2.1 — precisa de um diagrama de navegação (flowchart de mapas).</li>
+          <li>3.3.3 (Condições climáticas) tem apenas "O tempo não possui relevância no jogo" — mesmo sendo verdade, explique brevemente a decisão de design.</li>
+          <li>Concept Art (3.3.4) mostra apenas 3 imagens e sem legenda adequada — falta imagens dos outros mapas (Quebra-Gelo, Vila do Varejo, etc.).</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li><strong>3.3.5 Trilha sonora</strong> — ainda é placeholder. Preencher com a tabela de músicas do jogo.</li>
+          <li>Concept art dos outros 3 mapas principais.</li>
+          <li>Diagrama de navegação entre cenas/mapas.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s12">
+    <div class="secao-header" onclick="toggle('s12')">
+      <div class="secao-title">
+        <span class="secao-numero">3.4</span>
+        <span class="secao-nome">Inventário e Bestiário</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-baixa">2/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-baixa" style="width:20%"></div></div></div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ Problema crítico</div>
+        <ul class="lista">
+          <li>Ambas as subseções ainda exibem <strong>o exemplo padrão do template</strong> (moedas, madeira, robô terrestre, robô voador) — que não têm nada a ver com o Cielo Verso.</li>
+          <li>O jogo tem um sistema de cartas bem desenvolvido (documentado em 4.3). Essas cartas devem ser o inventário real do jogo: Abordagem, Sondagem, Demonstração, Negociação, Fechamento — com imagem, função e como obter cada uma.</li>
+          <li>O "Bestiário" pode ser adaptado para descrever os <strong>clientes/NPCs oponentes</strong>: Pedro, boss de cada região — com dificuldade, comportamento e estratégia de derrota.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s13">
+    <div class="secao-header" onclick="toggle('s13')">
+      <div class="secao-title">
+        <span class="secao-numero">3.5 – 3.7</span>
+        <span class="secao-nome">Gameflow · Regras · Mecânicas</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">8/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:80%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está bom</div>
+        <ul class="lista">
+          <li>Gameflow tem imagem do diagrama — visual e direto.</li>
+          <li>Mecânicas (3.7) bem documentadas: tabelas de controles, explicação do sistema de combate com cartas, barra de satisfação.</li>
+          <li>Sistema de seleção de personagem e personalização de nome detalhados.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que precisa corrigir</div>
+        <ul class="lista">
+          <li><strong>Problema grave de formatação:</strong> seções 3.6 e 3.7 usam <code>#</code> (heading nível 1) para subtítulos como "Objetivo do jogo", "Sistema de Combate" — isso quebra a hierarquia do documento inteiro e aparece com tamanho errado no navegador.</li>
+          <li>Substituir todos os <code>#</code> soltos dentro dessas seções por <code>####</code> ou <code>#####</code>.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li><strong>3.8 Implementação Matemática</strong> está completamente vazio — é um requisito do módulo. Deve descrever a fórmula por trás da movimentação, da barra de satisfação ou do sistema de pontuação com notação matemática.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- 4. DESENVOLVIMENTO -->
+  <!-- ─────────────────────────────────────────────── -->
+
+  <div class="secao" id="s14">
+    <div class="secao-header" onclick="toggle('s14')">
+      <div class="secao-title">
+        <span class="secao-numero">4.1 – 4.3</span>
+        <span class="secao-nome">Desenvolvimento das Sprints 1–3</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">9/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:90%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está excepcional</div>
+        <ul class="lista">
+          <li>Sprint 3 (4.3) é a seção mais completa do documento — documentação técnica de alto nível com código comentado, explicações de decisões de arquitetura e trade-offs.</li>
+          <li>Cada sistema (transição, colisão, diálogo, negociação, carregamento) tem explicação do "o que foi feito" + "por que foi feito assim".</li>
+          <li>Tabela de funcionalidades do DialogoManager é muito bem organizada.</li>
+          <li>Sprint 1 tem imagens e seção de dificuldades/próximos passos — estrutura exemplar.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-melhorar">
+        <div class="bloco-titulo">⚠ O que pode melhorar</div>
+        <ul class="lista">
+          <li>Sprint 2 (4.2) está escrito mas não tem imagens/prints de tela — adicionar screenshots da versão entregue.</li>
+          <li>Header <code>###Ilustrações</code> em 4.1 está sem espaço após <code>###</code>, o que pode não renderizar como heading em todos os renderizadores.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Adicionar prints de tela na Sprint 2.</li>
+          <li>Corrigir o <code>###Ilustrações</code> para <code>### Ilustrações</code>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s15">
+    <div class="secao-header" onclick="toggle('s15')">
+      <div class="secao-title">
+        <span class="secao-numero">4.4 – 4.5</span>
+        <span class="secao-nome">MVP Final · Revisão do MVP (Sprints 4–5)</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-vazia">Vazio</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-vazia" style="width:5%"></div></div></div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ Ambas as seções são placeholder</div>
+        <ul class="lista">
+          <li>Seguir o mesmo padrão excelente da Sprint 3: descrever o que foi entregue, incluir prints, documentar sistemas novos com código e explicar dificuldades.</li>
+          <li>4.5 deve detalhar os refinamentos finais com base nos playtests — conectar diretamente com a seção 5.2.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- 5. TESTES -->
+  <!-- ─────────────────────────────────────────────── -->
+
+  <div class="secao" id="s16">
+    <div class="secao-header" onclick="toggle('s16')">
+      <div class="secao-title">
+        <span class="secao-numero">5.1</span>
+        <span class="secao-nome">Casos de Teste</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-alta">9/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-alta" style="width:90%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está muito bom</div>
+        <ul class="lista">
+          <li>12 casos de teste bem estruturados com pré-condição, descrição e pós-condição esperada.</li>
+          <li>Cobre o "Caminho Crítico" completo: menu → mapa → casa → diálogo — abordagem técnica madura.</li>
+          <li>Linguagem precisa e objetiva, fácil de executar por qualquer membro do time.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Adicionar casos de teste para o <strong>sistema de negociação por cartas</strong> (a mecânica central do jogo não tem testes documentados).</li>
+          <li>Incluir uma coluna de "Resultado" (✅ Passou / ❌ Falhou) para mostrar que os testes foram executados.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="secao" id="s17">
+    <div class="secao-header" onclick="toggle('s17')">
+      <div class="secao-title">
+        <span class="secao-numero">5.2</span>
+        <span class="secao-nome">Testes de Jogabilidade (Playtests)</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-media">5/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-media" style="width:50%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está bom</div>
+        <ul class="lista">
+          <li>Existe ao menos 1 playtest registrado com template completo e nota do jogador (9.0).</li>
+          <li>O feedback capturado é específico (atraso na responsividade dos controles) — útil para o desenvolvimento.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li>Apenas 1 playtest é insuficiente — o ideal são pelo menos 3–5 registros com perfis variados de jogadores.</li>
+          <li><strong>5.2.2 Melhorias</strong> está completamente vazio — precisa de um plano de ação baseado nos feedbacks recebidos.</li>
+          <li>Diversificar perfis: jogador experiente, iniciante em games, alguém do público-alvo real (Gerente de Negócios da Cielo).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- 6–8 -->
+  <!-- ─────────────────────────────────────────────── -->
+
+  <div class="secao" id="s18">
+    <div class="secao-header" onclick="toggle('s18')">
+      <div class="secao-title">
+        <span class="secao-numero">6 – 8</span>
+        <span class="secao-nome">Conclusões · Referências · Anexos</span>
+      </div>
+      <div class="secao-right">
+        <span class="nota-badge nota-media">5/10</span>
+        <span class="chevron">▾</span>
+      </div>
+    </div>
+    <div class="secao-corpo">
+      <div class="barra-wrap"><div class="barra-fundo"><div class="barra-fill fill-media" style="width:50%"></div></div></div>
+      <div class="bloco bloco-bom">
+        <div class="bloco-titulo">✅ O que está bom</div>
+        <ul class="lista">
+          <li>Referências parcialmente preenchidas com fontes de qualidade (Porter, Banco Central, ABECS, CADE).</li>
+          <li>Mistura de formatos ABNT e Vancouver — mas o conteúdo das fontes é sólido.</li>
+        </ul>
+      </div>
+      <div class="bloco bloco-falta">
+        <div class="bloco-titulo">❌ O que falta para o 10</div>
+        <ul class="lista">
+          <li><strong>Seção 6 (Conclusões)</strong> está completamente vazia — é uma das seções mais importantes para a nota final. Deve responder: o jogo atingiu seus objetivos? O que aprendemos? Que melhorias futuras propomos?</li>
+          <li>Padronizar todas as referências em ABNT (algumas estão em formato diferente).</li>
+          <li>Adicionar referências que faltam (Phaser.js, Tiled Map Editor, fontes visuais utilizadas).</li>
+          <li><strong>Anexos</strong> está vazio — incluir diagramas, wireframes, imagens extras ou documentos de apoio.</li>
+          <li>Preencher o Nome do Grupo e nomes dos integrantes no cabeçalho do documento.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────────────────────────────────────── -->
+  <!-- RESUMO FINAL -->
+  <!-- ─────────────────────────────────────────────── -->
+
+  <div style="background:#1e3a8a;border-radius:14px;padding:28px 28px 24px;margin-top:40px;color:white;">
+    <h2 style="font-size:1.2rem;margin-bottom:16px;opacity:0.9;">📊 Resumo Geral & Prioridades</h2>
+
+    <p style="font-size:0.92rem;opacity:0.85;margin-bottom:20px;">
+      O GDD tem pontos <strong>muito fortes</strong> — especialmente a análise estratégica (Porter/SWOT), o enredo, a documentação técnica da Sprint 3 e os casos de teste. O problema principal é que <strong>~8 seções ainda são placeholder</strong>, e algumas correções de formatação críticas quebram a aparência do documento.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:16px;">
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;opacity:0.7;">🔥 Fazer AGORA (maior impacto)</div>
+        <ul style="font-size:0.85rem;padding-left:18px;line-height:1.7;opacity:0.9;">
+          <li>Preencher seções 1.1.4 a 1.1.7</li>
+          <li>Substituir inventário/bestiário com conteúdo real</li>
+          <li>Corrigir headings <code>#</code> em 3.6 e 3.7</li>
+          <li>Escrever Conclusões (seção 6)</li>
+          <li>Preencher 4.4 e 4.5 com prints</li>
+        </ul>
+      </div>
+      <div style="background:rgba(255,255,255,0.1);border-radius:10px;padding:16px;">
+        <div style="font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;opacity:0.7;">📈 Para chegar no 10</div>
+        <ul style="font-size:0.85rem;padding-left:18px;line-height:1.7;opacity:0.9;">
+          <li>Adicionar 3.8 (Matemática de animação)</li>
+          <li>Adicionar mais playtests (5.2)</li>
+          <li>Preencher 5.2.2 Melhorias</li>
+          <li>Trilha sonora (3.3.5)</li>
+          <li>Padronizar referências em ABNT</li>
+          <li>Nome do grupo no cabeçalho</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Avaliação gerada em março de 2026 · Projeto Cielo Verso — Inteli
+</footer>
+
+<script>
+  function toggle(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('aberta');
+  }
+  // Abre a primeira seção por padrão
+  document.getElementById('s1').classList.add('aberta');
+</script>
+</body>
+</html>

@@ -1,17 +1,25 @@
 export default class MenuPrincipal extends Phaser.Scene {
             constructor() { super('MenuPrincipal'); }
             preload() {
-             this.load.image('menu_jogo', 'assets/Menu/menu_fundo.png');
-             this.load.image('botao_iniciar', 'assets/Menu/botoes/iniciar_02.png');
-             this.load.image('botao_iniciar_hover', 'assets/Menu//botoes/iniciar_01.png');
-             this.load.image('botao_sair', 'assets/Menu/botoes/sair_02.png');
-             this.load.image('botao_sair_hover', 'assets/Menu/botoes/sair_01.png');
-             this.load.image('botao_config', 'assets/Menu/botoes/configuracao_02.png');
-             this.load.image('botao_config_hover', 'assets/Menu/botoes/configuracao_01.png');
+             this.load.image('menu_jogo', 'assets/menu/menu_fundo.png');
+             this.load.image('logo', 'assets/menu/logo.png');
+             this.load.image('botao_iniciar', 'assets/menu/botoes/iniciar_02.png');
+             this.load.image('botao_iniciar_hover', 'assets/menu/botoes/iniciar_01.png');
+             this.load.image('botao_sair', 'assets/menu/botoes/sair_02.png');
+             this.load.image('botao_sair_hover', 'assets/menu/botoes/sair_01.png');
+             this.load.image('botao_config', 'assets/menu/botoes/configuracao_02.png');
+             this.load.image('botao_config_hover', 'assets/menu/botoes/configuracao_01.png');
             }
 
             create() {
+                // Toca música de fundo do menu
+                this.registry.get('audio').tocarMusica('musica_fundo_inicio', 0.5);
+
                 let tela = this.add.image(750, 400, 'menu_jogo')
+
+                // Logo centralizado no topo
+                let logo = this.add.image(750, 100, 'logo').setOrigin(0.5, 0.5).setScale(0.6);
+
                 let botaoInicio = this.add.image(748, 340, 'botao_iniciar').setScale(1.1)
                 let botaoConfig = this.add.image(750, 396, 'botao_config').setScale(1.1)
                 let botaoSair = this.add.image(750, 454, 'botao_sair').setScale(1.1)
@@ -31,6 +39,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                 })
                 // troca de cena só ocorre após o fade terminar, evitando flash branco
                 botaoInicio.on('pointerdown', () => {
+                    this.sound.play('som_clique', { volume: 2.5 });
                     this.cameras.main.fadeOut(1000, 0, 0, 0);
                     this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                     this.scene.start('CenaPersonagem');
@@ -46,6 +55,7 @@ export default class MenuPrincipal extends Phaser.Scene {
                     botaoConfig.setTexture('botao_config');
                 })
                 botaoConfig.on('pointerdown', () => {
+                    this.sound.play('som_clique', { volume: 2.5 });
                     this.scene.start('CenaConfig');
                 });
                 
@@ -57,11 +67,9 @@ export default class MenuPrincipal extends Phaser.Scene {
                     botaoSair.setTexture('botao_sair')
                 })
                 botaoSair.on('pointerdown', () => {
+                    this.sound.play('som_clique', { volume: 2.5 });
                     window.close();
                 });
             }
                
         }
-
-
-        

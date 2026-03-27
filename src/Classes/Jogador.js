@@ -4,30 +4,67 @@ export default class Jogador {
         this.cena = cena;
         this.velocidade = 100;
 
-        // Lê o personagem escolhido — fallback para man_whi
         const skin = cena.game.registry.get('spriteJogador') || 'man_whi';
         this.skin = skin;
 
-        // Usa a chave correta do Preloader
+        this.nome = cena.game.registry.get('nomeJogador')
+            || localStorage.getItem('nomeJogador')
+            || 'Jogador';
+
         this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
         this.sprite.setCollideWorldBounds(true);
-        // Hitbox reduzida para colisão ao nível dos pés
         this.sprite.body.setSize(10, 5);
         this.sprite.setOffset(27, 40);
 
         this._criarAnimacoes();
+        this._ultimaDirecao = 'frente';
+
+        this._passoCooldown  = false;
+        this.superficiePasso = 'passos_interiorcasas'; // padrão — cada cena sobrescreve
+        this._passoTimer     = null; // guarda referência do timer para cancelar ao parar
+
+        const largura = cena.cameras.main.width;
+        this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
+            fontSize:        '11px',
+            fill:            '#FFD700',
+            backgroundColor: '#000000',
+            padding:         { x: 6, y: 3 },
+        }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
     }
 
     _criarAnimacoes() {
         const cena = this.cena;
-        const s = this.skin;
+        const s    = this.skin;
 
-    if (cena.anims.exists(`${s}_idle`)) return;
+        if (cena.anims.exists(`${s}_idle`)) return;
 
-        cena.anims.create({ key: `${s}_idle`,  frames: cena.anims.generateFrameNumbers(`${s}_front_idl`,  { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
-        cena.anims.create({ key: `${s}_andar`, frames: cena.anims.generateFrameNumbers(`${s}_front_walk`, { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
-        cena.anims.create({ key: `${s}_costa`, frames: cena.anims.generateFrameNumbers(`${s}_back_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
-        cena.anims.create({ key: `${s}_lado`,  frames: cena.anims.generateFrameNumbers(`${s}_side_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_idle`,        frames: cena.anims.generateFrameNumbers(`${s}_front_idl`,  { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_idle_costas`, frames: cena.anims.generateFrameNumbers(`${s}_back_idl`,   { start: 0, end: 11 }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_andar`,       frames: cena.anims.generateFrameNumbers(`${s}_front_walk`, { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_costa`,       frames: cena.anims.generateFrameNumbers(`${s}_back_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
+        cena.anims.create({ key: `${s}_lado`,        frames: cena.anims.generateFrameNumbers(`${s}_side_walk`,  { start: 0, end: 5  }), frameRate: 10, repeat: -1 });
+    }
+
+    _tocarPasso() {
+        if (this._passoCooldown) return;
+        if (!this.cena.cache.audio.exists(this.superficiePasso)) return;
+
+        this.cena.sound.play(this.superficiePasso, { volume: 0.4 });
+        this._passoCooldown = true;
+
+        // Intervalo entre passos — ajusta o número (ms) se quiser mais rápido ou lento
+        this._passoTimer = this.cena.time.delayedCall(320, () => {
+            this._passoCooldown = false;
+        });
+    }
+
+    // Cancela o timer de passo quando o jogador para de se mover
+    _pararPassos() {
+        if (this._passoTimer) {
+            this._passoTimer.remove();
+            this._passoTimer = null;
+        }
+        this._passoCooldown = false;
     }
 
     configurarTeclas() {
@@ -39,49 +76,31 @@ export default class Jogador {
             interagir: Phaser.Input.Keyboard.KeyCodes.E,
             tutorial:  Phaser.Input.Keyboard.KeyCodes.H,
         });
-        const largura = this.cena.cameras.main.width;
-    this.cena.add.text(largura - 10, 10, 'Aperte H para acessar o tutorial', {
-        fontSize: '11px',
-        fill: '#FFD700',
-        backgroundColor: '#000000',
-        padding: { x: 6, y: 3 }
-    }).setOrigin(1, 0).setScrollFactor(0).setDepth(10);
         return this.teclas;
     }
-   
 
     atualizar() {
         const { sprite, teclas, velocidade } = this;
         const s = this.skin;
         if (!sprite || !teclas) return;
-        
-        // Tecla H: abre/fecha o tutorial. Desabilita o teclado da cena enquanto
-        // o overlay está ativo para evitar movimento em segundo plano.
+
+        if (this.cena.scene.isActive('TutorialOverlay')) {
+            this.sprite.setVelocity(0);
+            if (Phaser.Input.Keyboard.JustDown(teclas.tutorial)) {
+                this.cena.scene.stop('TutorialOverlay');
+                this.cena.input.keyboard.enabled = true;
+            }
+            return;
+        }
+
         if (Phaser.Input.Keyboard.JustDown(teclas.tutorial)) {
-    if (this.cena.scene.isActive('TutorialOverlay')) {
-        this.cena.scene.stop('TutorialOverlay');
-        this.cena.input.keyboard.enabled = true;
-    } else {
-        this.sprite.setVelocity(0);
-        this.cena.scene.launch('TutorialOverlay');
-        this.cena.scene.bringToTop('TutorialOverlay');
-        this.cena.input.keyboard.enabled = false;
-    }
-}
+            this.sprite.setVelocity(0);
+            // passa a chave da cena atual para o overlay saber qual teclado reativar ao fechar
+            this.cena.scene.launch('TutorialOverlay', { cenaOrigem: this.cena.scene.key });
+            this.cena.scene.bringToTop('TutorialOverlay');
+            this.cena.input.keyboard.enabled = false;
+        }
 
-// Guarda extra: se o tutorial foi aberto de outra forma (ex: automático na
-// primeira vez), garante que o jogador fique parado de qualquer jeito.
-if (this.cena.scene.isActive('TutorialOverlay')) {
-    this.sprite.setVelocity(0);
-    return; // impede qualquer movimentação
-}
-   
-
-
-
-       
-    
-       
         sprite.setVelocity(0);
 
         const nenhumaTecla =
@@ -89,31 +108,57 @@ if (this.cena.scene.isActive('TutorialOverlay')) {
             !teclas.up.isDown   && !teclas.down.isDown;
 
         if (nenhumaTecla) {
-            sprite.play(`${s}_idle`, true);
+            const idleAnim = this._ultimaDirecao === 'costas' ? `${s}_idle_costas` : `${s}_idle`;
+            sprite.play(idleAnim, true);
+            this._pararPassos(); // cancela o timer ao parar de andar
             return;
         }
 
+        let vx = 0, vy = 0;
+
         if (teclas.left.isDown) {
-            sprite.setVelocityX(-velocidade);
+            vx = -velocidade;
             sprite.play(`${s}_lado`, true);
             sprite.setFlipX(false);
+            this._ultimaDirecao = 'lado';
         } else if (teclas.right.isDown) {
-            sprite.setVelocityX(velocidade);
+            vx = velocidade;
             sprite.play(`${s}_lado`, true);
             sprite.setFlipX(true);
+            this._ultimaDirecao = 'lado';
         }
 
-        // animação vertical só toca se não há tecla horizontal (evita conflito)
         if (teclas.up.isDown) {
-            sprite.setVelocityY(-velocidade);
-            if (!teclas.left.isDown && !teclas.right.isDown)
+            vy = -velocidade;
+            if (!teclas.left.isDown && !teclas.right.isDown) {
                 sprite.play(`${s}_costa`, true);
+                this._ultimaDirecao = 'costas';
+            }
         } else if (teclas.down.isDown) {
-            sprite.setVelocityY(velocidade);
-            if (!teclas.left.isDown && !teclas.right.isDown)
+            vy = velocidade;
+            if (!teclas.left.isDown && !teclas.right.isDown) {
                 sprite.play(`${s}_andar`, true);
+                this._ultimaDirecao = 'frente';
+            }
+        }
+
+        const mag = Math.sqrt(vx * vx + vy * vy);
+        if (mag > 0) {
+            sprite.setVelocityX((vx / mag) * velocidade);
+            sprite.setVelocityY((vy / mag) * velocidade);
+
+            // Só toca passo se o jogador realmente está pressionando uma tecla
+            const algumaTeclaPressionada =
+                teclas.left.isDown || teclas.right.isDown ||
+                teclas.up.isDown   || teclas.down.isDown;
+
+            if (algumaTeclaPressionada) {
+                this._tocarPasso();
+            }
         }
     }
+
+    // ── Colisão e overlap ─────────────────────────────────────────────────────
 
     adicionarColisao(objeto) {
         return this.cena.physics.add.collider(this.sprite, objeto);
@@ -130,4 +175,3 @@ if (this.cena.scene.isActive('TutorialOverlay')) {
     get x() { return this.sprite.x; }
     get y() { return this.sprite.y; }
 }
-

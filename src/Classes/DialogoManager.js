@@ -244,4 +244,37 @@ export default class DialogoManager {
         this._textoFala.setVisible(visivel);
         if (!visivel) this._indicador.setVisible(false);
     }
+
+    // -------------------------------------------------------------------------
+    // Câmera UI
+    // -------------------------------------------------------------------------
+
+    // Deve ser chamado no FINAL do create() da cena, após todos os objetos e NPCs
+    // terem sido criados. Com zoom alto, o Phaser limita o clip region da câmera
+    // principal (ex: zoom=3.5 → worldView de ~428×228px), ocultando elementos
+    // scrollFactor(0) como os diálogos. Uma câmera UI separada com zoom=1 resolve
+    // isso: a câmera principal ignora os elementos de diálogo; a câmera UI ignora
+    // todos os objetos do mundo.
+    //
+    // PARÂMETROS:
+    //   cena  — referência à cena Phaser (this)
+    //   zoom  — valor de zoom da câmera principal
+    //   npcs  — array de instâncias NPC com diálogo
+    static configurarCameraUI(cena, zoom, npcs = []) {
+        cena.cameras.main.setZoom(zoom);
+
+        const uiCam = cena.cameras.add(0, 0, cena.scale.width, cena.scale.height);
+
+        const elementosDialogo = npcs
+            .map(npc => npc._dialogo)
+            .filter(Boolean)
+            .flatMap(dlg => [dlg._fundo, dlg._textoNome, dlg._textoFala, dlg._indicador])
+            .filter(Boolean);
+
+        if (elementosDialogo.length === 0) return;
+
+        const objetosMundo = cena.children.list.filter(obj => !elementosDialogo.includes(obj));
+        uiCam.ignore(objetosMundo);
+        cena.cameras.main.ignore(elementosDialogo);
+    }
 }

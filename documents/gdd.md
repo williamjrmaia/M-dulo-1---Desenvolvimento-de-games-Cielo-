@@ -1,13 +1,13 @@
-<img src="../assets/GDD/logointeli.png">
+<img src="assets/logointeli.png">
 
 
 # GDD - Game Design Document - Módulo 1 - Inteli
 
-**_Os trechos em itálico servem apenas como guia para o preenchimento da seção. Por esse motivo, não devem fazer parte da documentação final_**
+## O Octeto Fantástico
 
-## Nome do Grupo
+### Nomes dos integrantes do grupo
 
-#### Nomes dos integrantes do grupo
+Arthur Augusto Proença Gonçalves, Eric Pimentel Ferraz, Felipe Menossi Estrada, Jorge Nader, Júlia Silva Sales, Rafael Sleumer Hamacek Succi, Thainá Camilly Alves de Lima e William Junior dos Santos.
 
 
 
@@ -78,37 +78,36 @@ A análise SWOT é uma ferramenta de planejamento estratégico utilizada para id
 
 No caso da Cielo, a análise dos fatores internos e externos evidencia os seguintes elementos estratégicos:
 
-### Forças (Strengths)
+#### Forças (Strengths)
  
 - Marca consolidada com alta capilaridade — presente em mais de 1 milhão de estabelecimentos comerciais no Brasil (Cielo, 2023).
 - Relacionamento preferencial com os maiores bancos emissores do país, criando barreiras de entrada para novos concorrentes.
 - Infraestrutura própria de captura e processamento de transações, com expertise regulatória acumulada.
 - Reconhecimento institucional no ecossistema de pagamentos digitais (Abecs, 2023).
  
-### Fraquezas (Weaknesses)
+#### Fraquezas (Weaknesses)
  
 - Elevada concentração das operações no mercado brasileiro, ampliando exposição a oscilações econômicas e regulatórias locais.
 - Perda contínua de participação de mercado para concorrentes como Stone e PagSeguro desde 2018 (Cielo, 2023).
 - Estrutura de custos elevada frente a fintechs nativas digitais, pressionando margens financeiras.
 - Dependência significativa do modelo tradicional de adquirência, com baixa agilidade de desenvolvimento de novos produtos.
  
-### Oportunidades (Opportunities)
+#### Oportunidades (Opportunities)
  
 - Digitalização de micro e pequenos negócios — segmento ainda sub-penetrado em soluções de gestão financeira (Vial, 2019).
 - Expansão do comércio eletrônico e dos pagamentos recorrentes como novos fluxos de receita.
 - Potencial de cross-sell de serviços financeiros (crédito, antecipação de recebíveis) via base instalada.
 - Open Finance como canal de dados para personalização de ofertas e ampliação do portfólio.
  
-### Ameaças (Threats)
+#### Ameaças (Threats)
  
 - Crescimento do Pix como substituto de pagamentos no varejo físico, reduzindo a dependência de terminais de captura (Banco Central do Brasil, 2023).
 - Compressão regulatória das taxas de intercâmbio, impactando margens financeiras.
 - Entrada de BigTechs (Mercado Pago, Google Pay) com modelos de negócio de margem zero em adquirência.
 - Saturação competitiva com fintechs de baixo custo no mercado de adquirência (Banco Central do Brasil, 2023).
  
----
  
-### SWOT Cruzada
+#### SWOT Cruzada
  
 A partir da identificação desses fatores, é possível elaborar estratégias combinando elementos internos e externos, transformando o diagnóstico em direcionamento estratégico.
  
@@ -120,15 +119,15 @@ A partir da identificação desses fatores, é possível elaborar estratégias c
 
 ### 1.1.3. Missão / Visão / Valores (sprint 2)
 
-### Missão
+#### Missão
  
-Promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva. Os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Floresta dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil.
+Promover equidade no ensino dos Gerentes de Negócios da Cielo por meio de uma jornada gamificada que transforma o treinamento corporativo em uma experiência imersiva. Os jogadores percorrem o Quebra Gelo, a Vila do Varejo e a Praia dos Proveitos para conquistar os Medalhões que representam os pilares essenciais da atuação comercial. Ao reunir esses conhecimentos e aplicá-los na Cidade Cielo, onde a teoria se transforma em prática nas negociações, o jogo democratiza o acesso ao aprendizado, reduz desigualdades regionais e padroniza a capacitação em todo o Brasil.
 
-### Visão
+#### Visão
  
 Consolidar-se como uma solução digital escalável e inovadora de desenvolvimento comercial, fortalecendo uma cultura de aprendizado contínuo e estratégico na força de vendas da Cielo.
 
-### Valores
+#### Valores
  
 | Valor | Descrição |
 |---|---|
@@ -139,19 +138,97 @@ Consolidar-se como uma solução digital escalável e inovadora de desenvolvimen
 
 ### 1.1.4. Proposta de Valor (sprint 4)
 
-*Posicione aqui o canvas de proposta de valor. Descreva os aspectos essenciais para a criação de valor da ideia do produto com o objetivo de ajudar a entender melhor a realidade do cliente e entregar uma solução que está alinhado com o que ele espera.*
+O canvas de proposta de valor a seguir foi estruturado com base no framework de Alexander Osterwalder, composto por dois blocos: o Perfil do Cliente — dividido em tarefas, dores e ganhos — e o Mapa de Valor — dividido em produtos e serviços, aliviadores de dor e criadores de ganho.
+
+![Canvas Proposta de Valor](assets/canvas-proposta-valor.png)
+
+#### A proposta central
+
+No contexto deste projeto, desenvolvido no âmbito do curso de tecnologia do Inteli, o jogo digital foi adotado como formato de solução, unindo a demanda da Cielo por capacitação escalável à proposta pedagógica de aprendizado por experiência. O Cielo Verso existe para resolver um problema concreto: reduzir o custo de capacitação da força de vendas da Cielo, garantindo que qualquer Gerente de Vendas (GN) no Brasil — independente de onde esteja — tenha acesso ao mesmo treinamento de qualidade, em um formato que engaja e que prepara para situações reais de venda.
+
+#### O problema que justifica o produto
+
+O modelo atual de capacitação da Cielo é presencial. Isso cria duas consequências diretas: um custo logístico significativo para deslocar GNs de todo o Brasil, e uma desigualdade estrutural de acesso — profissionais de regiões remotas recebem menos treinamento do que os de grandes centros, simplesmente por uma questão geográfica. Além disso, o formato presencial e expositivo resulta em baixo engajamento e limitada retenção do conteúdo, sem oferecer ao GN qualquer prática simulada antes de enfrentar situações reais de venda.
+
+#### A transformação que o produto entrega
+
+O Cielo Verso elimina a barreira geográfica: um GN no Acre acessa exatamente o mesmo conteúdo que um GN em São Paulo, sem deslocamento, sem custo adicional e no seu próprio ritmo. A experiência gamificada substitui o formato passivo por simulações ativas de abordagem, negociação e apresentação de produtos — aumentando o engajamento e a retenção do conteúdo de forma mensurável.
+
+#### Como o valor é medido
+
+O desempenho de cada GN é acompanhado por duas métricas: o tempo total de conclusão do jogo, que indica a fluência do aprendizado ao longo da jornada, e o mapeamento de erros — incluindo a identificação de erros críticos ao final da experiência. Essas métricas permitem identificar lacunas de conhecimento individuais e regionais, transformando o Cielo Verso em um instrumento de diagnóstico além de capacitação.
 
 ### 1.1.5. Descrição da Solução Desenvolvida (sprint 4)
 
-*Descreva brevemente a solução desenvolvida para o parceiro de negócios. Descreva os aspectos essenciais para a criação de valor da ideia do produto com o objetivo de ajudar a entender melhor a realidade do cliente e entregar uma solução que está alinhado com o que ele espera. Observe a seção 2 e verifique que ali é possível trazer mais detalhes, portanto seja objetivo aqui. Atualize esta descrição até a entrega final, conforme desenvolvimento.*
+O Cielo Verso é um jogo 2D de treinamento corporativo desenvolvido em Phaser 3, que simula a jornada real de um Gerente de Vendas da Cielo — da primeira abordagem ao cliente até o fechamento da negociação. A solução capacita GNs de qualquer região do Brasil de forma remota e engajante, sem depender de treinamentos presenciais.
+
+A experiência é estruturada em quatro mundos temáticos sequenciais — Quebra-Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo — cada um cobrindo uma área essencial do treinamento: abordagem, produtos, benefícios e negociação. Em cada mundo, o jogador enfrenta um mini game diretamente relacionado ao conteúdo daquele mapa. Ao concluir os quatro mundos, uma fase final integra todas as habilidades desenvolvidas em um único desafio, avaliando se o aprendizado foi absorvido de forma completa.
+
+O desempenho é medido pelo tempo de conclusão e pelo mapeamento de erros críticos ao final da jornada, gerando dados que permitem identificar lacunas de conhecimento individuais. Os detalhes técnicos e narrativos da solução estão descritos na seção 2 deste documento.
+
 
 ### 1.1.6. Matriz de Riscos (sprint 4)
 
-*Registre na matriz os riscos identificados no projeto, visando avaliar situações que possam representar ameaças e oportunidades, bem como os impactos relevantes sobre o projeto. Apresente os riscos, ressaltando, para cada um, impactos e probabilidades com plano de ação e respostas.*
+A matriz de riscos do Cielo Verso foi elaborada a partir da análise do escopo entregue, dos sistemas implementados e das dependências identificadas ao longo do desenvolvimento. Os itens estão classificados por probabilidade de ocorrência e nível de impacto no projeto, separados entre ameaças — fatores que podem comprometer a entrega ou a qualidade do produto — e oportunidades — fatores que, se aproveitados, ampliam o valor da solução para o parceiro.
+
+<img src="assets/matriz_risco_cieloverso.png">
+
+#### Ameaças
+
+| Risco | Probabilidade | Impacto | Plano de ação |
+| :--- | :---: | :---: | :--- |
+| Bugs no reset de estado das cartas entre tentativas de negociação | Muito Alta | Médio | Corrigir a limpeza do grupo de cartas em `CenaNegociacao.js` antes da entrega final da sprint 5, garantindo que o estado seja reinicializado corretamente a cada nova tentativa. |
+| Entrega da negociação do Rafael (Cidade Cielo) incompleta | Alta | Muito Alto | Priorizar o desenvolvimento e os testes da cena do boss final na sprint 5. Validar o fluxo completo de fases e a concessão da insígnia final antes da entrega. |
+| Adição de funcionalidades fora do escopo do MVP | Alta | Alto | Registrar novas ideias como backlog pós-MVP e manter o escopo da sprint controlado, priorizando apenas o que está previsto na definição de pronto. |
+| Falhas nas mecânicas principais do sistema de negociação | Alta | Médio | Executar casos de teste de regressão a cada nova implementação, cobrindo o fluxo completo de fases, a barra de satisfação e os modais de carta. |
+| Falha na lógica de progressão entre regiões e diálogos com NPCs | Média | Alto | Validar as chaves de registry (`pedro_vencido`, `varejo_vencido`, `cielita_gelo_concluido`) em todos os mapas após cada entrega, garantindo que insígnias e desbloqueios funcionem corretamente. |
+| Assets e roteiro da negociação com Julia incompletos | Média | Muito Alto | Concluir os sprites de estados (satisfeita, neutra, brava) e as falas definitivas da Julia até o final da sprint atual, tornando a cena visualmente e narrativamente completa. |
+| Indicador de fase não sincronizado com a lógica interna da negociação | Média | Médio | Revisar o método `_atualizarIndicadoresFase()` e garantir que o avanço visual dos círculos de fase ocorra em sincronia com a lógica de `_avancarOuVencer()`. |
+| Atrasos na entrega por subestimação do esforço técnico | Média | Médio | Registrar impedimentos no início de cada sprint e priorizar as entregas essenciais ao MVP, postergando melhorias estéticas para o backlog. |
+| Interface e HUD desatualizados em relação às cenas mais recentes | Alta | Baixo | Realizar revisão visual ao final de cada sprint para garantir consistência entre menus, HUD e novas cenas adicionadas. |
+| Desbalanceamento das pontuações de satisfação na negociação | Baixa | Alto | Realizar testes de jogabilidade com usuários externos e ajustar as constantes `GANHO_SATISFACAO` e `PERDA_SATISFACAO` em `CenaNegociacao.js` conforme o feedback coletado. |
+| Erros gráficos e conflito de texturas no Phaser | Baixa | Baixo | Monitorar o console do navegador a cada build. O Preloader centralizado já mitiga o erro `Texture key already in use`; manter esse padrão em todas as cenas novas. |
+| Mecânicas de movimentação e colisão instáveis após novas implementações | Baixa | Alto | Executar os casos de teste de movimentação e colisão (categorias 1 e 2 da seção 5.1) a cada nova cena ou mapa adicionado ao projeto. |
+
+#### Oportunidades
+
+| Oportunidade | Probabilidade | Impacto | Plano de aproveitamento |
+| :--- | :---: | :---: | :--- |
+| Escalabilidade da solução para toda a força de vendas da Cielo | Alta | Muito Alto | A arquitetura de herança de `CenaNegociacao` permite adicionar novos clientes e regiões com custo mínimo. Documentar o padrão de extensão para facilitar a continuidade do projeto por outras equipes ou sprints futuras. |
+| Adoção corporativa como ferramenta oficial de treinamento | Média | Muito Alto | Apresentar o jogo à Cielo com foco nas métricas de desempenho por GN. Se validado internamente, o Cielo Verso pode substituir parte do treinamento presencial, reduzindo custo logístico e padronizando a capacitação nacional. |
+| Modo daltônico como diferencial de acessibilidade e inclusão | Média | Alto | Destacar o `ColorblindManager` (deuteranopia, protanopia e tritanopia) na apresentação ao parceiro como evidência de design inclusivo — argumento relevante para uma empresa com força de vendas geograficamente diversa. |
+| Sistema de métricas de desempenho individual do GN | Baixa | Alto | O registro de vitórias e derrotas já existe no `game.registry`. Com a implementação do sistema de métricas previsto para a sprint 5, o jogo se torna um instrumento de diagnóstico — permitindo que gestores identifiquem lacunas de competência por região e por colaborador. |
+| Expansão do baralho com cartas desbloqueáveis por desempenho | Baixa | Alto | O sistema de cartas é modular e extensível. A adição de novas cartas como recompensa por desempenho aprofundaria a progressão do jogador e aumentaria o engajamento com a plataforma de treinamento a longo prazo. |
+
+A análise evidencia que os riscos de maior criticidade estão concentrados na entrega final da sprint 5 — especialmente a negociação do Rafael e a finalização da Julia — e na estabilidade do sistema de cartas. As oportunidades de maior impacto estão diretamente relacionadas à escalabilidade da arquitetura desenvolvida, que permite à Cielo expandir o jogo como plataforma de treinamento contínuo sem necessidade de reconstrução do núcleo técnico.
 
 ### 1.1.7. Objetivos, Metas e Indicadores (sprint 4)
 
-*Definição de metas SMART (específicas, mensuráveis, alcançáveis, relevantes e temporais) para seu projeto, com indicadores claros para mensuração*
+As metas SMART do projeto foram definidas com base nos objetivos estratégicos identificados junto à Cielo: padronizar a capacitação dos Gerentes de Negócios entre regiões e garantir a cobertura completa das etapas do Funil de Vendas por meio de uma experiência gamificada.
+
+#### Meta 1 — Entregar o MVP do jogo educacional
+
+- **Específica:** Desenvolver um jogo RPG 2D com quatro regiões temáticas e sistema de negociação por cartas cobrindo as cinco etapas do Funil de Vendas.
+- **Mensurável:** Número de regiões e fases implementadas a cada sprint, com meta final de 4 regiões e 5 fases funcionais.
+- **Atingível:** Regiões e mecânicas já definidas, com Quebra-Gelo e Casa da Cielita implementadas na sprint 3 e sistema de cartas validado.
+- **Relevante:** Garante que o Gerente de Negócios seja capacitado em toda a jornada comercial, independentemente de sua região.
+- **Temporal:** Entrega do MVP até a sprint 4 (27/03/2025).
+
+#### Meta 2 — Monitorar desempenho nas negociações
+
+- **Específica:** Registrar taxa de acerto, taxa de erros normais e taxa de erros críticos por sessão de jogo para avaliar a absorção do conteúdo de vendas pelo Gerente de Negócios.
+- **Mensurável:** Taxas comparadas entre sessões de playtest para identificar evolução do jogador, com valores de referência a serem definidos pela Cielo.
+- **Atingível:** Os playtests da sprint 5 fornecerão os dados necessários para calibrar e validar os valores de referência junto à Cielo.
+- **Relevante:** Permite à Cielo avaliar objetivamente se o GN está absorvendo o conteúdo de vendas proposto pelo jogo.
+- **Temporal:** Coleta iniciada na sprint 5 (10/04/2025), com valores de referência validados com a Cielo até o final da sprint 5.
+
+#### Meta 3 — Monitorar fluidez da experiência de treinamento
+
+- **Específica:** Registrar o tempo médio que o jogador leva para concluir cada negociação ao longo das sessões de playtest.
+- **Mensurável:** Tempo médio comparado entre sessões para identificar evolução da fluência do jogador, com valor de referência a ser definido pela Cielo.
+- **Atingível:** Os playtests da sprint 5 fornecerão os dados necessários para calibrar e validar o tempo de referência junto à Cielo.
+- **Relevante:** Indica se a experiência está fluida e adequada ao contexto corporativo de treinamento da Cielo.
+- **Temporal:** Coleta iniciada na sprint 5 (10/04/2025), com valor de referência validado com a Cielo até o final da sprint 5.
 
 ## 1.2. Requisitos do Projeto (sprints 1 e 2)
 
@@ -159,17 +236,22 @@ Os requisitos do projeto são as peças identitárias, tanto fundamentais para o
 
 Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 
-\# | Requisito | Explicação
---- | --- | ---
-1 | Introdução narrativa | O jogo deve apresentar uma introdução narrativa na Casa da Cielita, na qual a NPC Cielita contextualiza o universo do jogo e apresenta suas regras básicas por meio de caixas de diálogo.
-2 | Configuração Inicial do Avatar | O jogo deverá disponibilizar quatro (4) opções de avatares jogáveis para seleção do jogador em uma tela específica no início da partida. Após a escolha do avatar, o jogador deverá definir o nome do personagem, que será utilizado para sua identificação ao longo da experiência. A seleção do avatar e do nome poderá ser alterada posteriormente por meio das configurações do jogo.
-3 | Mapa geral | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielta, Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
-4 | Regiões principais | O jogo deve conter a primeira região, Quebra-Gelo, que abordará proposta de valor, conceitos fundamentais e superação de objeções; a segunda, Vila do Varejo, que deverá contemplar a aplicação prática de produtos e soluções conforme o perfil do cliente; a terceira, Floresta dos Proveitos, que deverá tratar da identificação e argumentação de benefícios e diferenciais competitivos; e a quarta e última, Cidade da Negociação, que deverá consolidar os conhecimentos adquiridos nas regiões anteriores por meio de desafios de estratégia, negociação e fechamento.
-5 | Movimentação e interação do jogador | A movimentação do personagem será realizada por meio das teclas W, A, S e D do teclado, responsáveis pelo deslocamento direcional. A tecla E será destinada à interação do jogador com NPCs e objetos presentes no mapa.
-6 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface que, durante a negociação com o vendedor, aumenta ou diminui de acordo com a resposta do GN. Os sprites do cliente mudarão de acordo com a negociação (por exemplo: nervoso ou feliz).
-7 | Cartas | O jogo irá implementar um sistema de respostas à base de cartas aconselhadoras de fundamentos típicos em negociações, como: abordagem, sondagem, negociação, demonstração e fechamento.
-8 | Combate | O nosso sistema de combate consistirá nas negociações entre os GNs e os comerciantes durante as missões nos mapas, alinhado com o nosso sistema de cartas.
-9 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento das mecânicas gerais e das mecânicas de combate.
+\# | Requisito | Explicação | Critérios de Aceitação
+--- | --- | --- | ---
+1 | Menu principal | O jogo deve apresentar uma tela inicial com os botões de Iniciar, Configurações e Sair. | O botão Iniciar deve redirecionar para a tela de seleção de personagem; o botão Configurações deve abrir a tela de configurações; o botão Sair deve fechar a aba do navegador; todos os botões devem apresentar feedback visual de hover.
+2 | Configurações e filtro de daltonismo | A tela de configurações deve permitir que o jogador ative um filtro de daltonismo que será aplicado globalmente em todo o jogo. | O filtro deve ser aplicado em todas as cenas do jogo sem exceção; a ativação e desativação do filtro deve ocorrer imediatamente, sem necessidade de reiniciar o jogo.
+3 | Configuração inicial do avatar | O jogo deverá disponibilizar quatro (4) opções de avatares jogáveis para seleção do jogador em uma tela específica no início da partida. Após a escolha do avatar, o jogador deverá definir o nome do personagem, que será utilizado para sua identificação ao longo da experiência. | As 4 opções de avatar devem ser exibidas simultaneamente na tela de seleção; o nome deve aceitar entre 1 e 16 caracteres; caso nenhum nome seja digitado, o valor padrão "Jogador" deve ser utilizado.
+4 | Salvamento de configuração do jogador | O jogo deve preservar o nome e o avatar escolhidos pelo jogador entre sessões utilizando localStorage. O progresso de regiões desbloqueadas não é persistido no MVP atual. | O nome e o avatar devem ser recuperados corretamente ao recarregar a página, desde que o jogador tenha concluído a tela de seleção.
+5 | Introdução narrativa | O jogo deve apresentar uma cutscene narrativa com a Cielita contextualizando o universo do jogo e o papel do jogador antes de entrar no mapa. O jogador deve apertar E para avançar cada etapa do diálogo. | Todas as falas devem ser exibidas na ordem correta; o jogador deve conseguir avançar e pular o texto com a tecla E; ao fim do diálogo o jogador deve ser redirecionado automaticamente para a Casa da Cielita.
+6 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento das mecânicas de movimentação e interação ao entrar na Casa da Cielita pela primeira vez. | O tutorial deve aparecer automaticamente ao entrar na Casa da Cielita; deve ser acessível a qualquer momento pela tecla H; deve fechar e reabrir corretamente sem travar o jogo.
+7 | Movimentação e interação do jogador | A movimentação do personagem será realizada por meio das teclas W, A, S e D do teclado, responsáveis pelo deslocamento direcional. A tecla E será destinada à interação do jogador com NPCs e objetos presentes no mapa. | O personagem deve responder ao comando de movimentação em até 100ms; a tecla E deve iniciar o diálogo ou interação em até 1 segundo quando o jogador estiver no raio de alcance do NPC ou objeto.
+8 | Mapa geral e regiões principais | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielita, Quebra-Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo. Cada região cobre etapas específicas do funil de vendas da Cielo. | As 5 regiões devem estar presentes e acessíveis conforme a progressão; a progressão entre regiões só deve ser liberada após o jogador concluir o desafio da região anterior; nenhuma região deve apresentar falha de carregamento ou tela preta durante a transição.
+9 | Diálogo de transição da Cielita | Ao se aproximar da ponte de transição entre regiões, a Cielita deve apresentar um breve diálogo explicando o objetivo da próxima fase antes de o jogador avançar. | O diálogo deve ser exibido antes de cada transição de região; o jogador deve poder avançar o diálogo com a tecla E; a transição para a próxima região só deve ocorrer após o fim do diálogo.
+10 | Introdução narrativa da Cielita na Casa | A NPC Cielita deve estar presente na Casa da Cielita como guia, oferecendo diálogo de orientação ao jogador. | O diálogo deve ser iniciado ao pressionar E dentro do raio de interação da Cielita; o texto deve ser exibido com efeito typewriter; o jogador deve conseguir avançar e pular o texto com a tecla E.
+11 | Combate e progressão pelo funil de vendas | O sistema de negociação por cartas é estruturado em fases que espelham o funil de vendas da Cielo: o Quebra-Gelo aborda Abordagem e Sondagem; a Vila do Varejo aborda Abordagem, Sondagem e Demonstração de Produtos; a Praia dos Proveitos abordará os Benefícios da Cielo; e a Cidade Cielo consolida todas as etapas em um desafio completo. | Cada região deve conter apenas as cartas correspondentes às etapas do funil que ela cobre; a Cidade Cielo deve disponibilizar cartas de todas as fases anteriores; o resultado final deve ser exibido ao término da última fase de cada negociação.
+12 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface que aumenta ou diminui de acordo com as escolhas do GN durante a negociação. Os sprites do cliente mudarão conforme o estado da negociação. | A barra deve atualizar visualmente em até 400ms após cada jogada de carta; o sprite do cliente deve alternar corretamente entre os 3 estados (satisfeito, neutro, bravo) conforme o valor da barra.
+13 | Cartas | O jogo deve implementar um sistema de cartas que representam as etapas do funil de vendas, distribuídas conforme a região e fase atual da negociação. | As cartas corretas para cada fase devem ser exibidas sem repetição; a seleção de uma carta deve gerar resposta visual e alterar a barra de satisfação em até 500ms.
+14 | Acessibilidade | O jogo deve ser jogável por pessoas com diferentes níveis de familiaridade com jogos digitais. | Todos os textos devem ter tamanho mínimo de 14px e contraste suficiente para leitura; nenhuma mecânica deve exigir mais de 2 teclas simultâneas; as instruções de controle devem estar disponíveis a qualquer momento pela tecla H.
 
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
@@ -181,58 +263,58 @@ O público-alvo do projeto é composto pelos Gerentes de Negócios da Cielo, com
 ## 2.1. Objetivos do Jogo (sprint 2)
 
 O jogo será dividido em 5 áreas principais, estruturadas de forma progressiva tanto na narrativa quanto na complexidade das mecânicas.
+
 A jornada começa na área inicial, desbloqueada logo após uma cutscene de contextualização da história. Nessa introdução, o jogador compreende seu papel dentro do universo do jogo e seus objetivos como participante do treinamento. Ao surgir no mapa, ele se encontra próximo à Casa da Cielita, personagem guia que o acompanhará durante toda a experiência.
+
 Cielita atua como mentora, explicando as mecânicas básicas, orientando sobre o uso das cartas e /direcionando o jogador para as próximas áreas. Essa primeira região funciona como um hub central, preparando o jogador para os desafios seguintes.
+
 Após essa etapa introdutória, o jogador avança para as demais áreas do jogo. Cada uma delas representa um estágio do treinamento, com:
 
-Clientes específicos e perfis variados;
+- Clientes específicos e perfis variados;
 
 
-Um número mínimo de vendas necessárias para progressão;
+- Um número mínimo de vendas necessárias para progressão;
 
 
-Cartas próprias daquela fase;
+- Cartas próprias daquela fase;
 
 
-Aumento gradual da dificuldade estratégica.
+- Aumento gradual da dificuldade estratégica.
 
 
-**Progressão por Fases**
+#### Progressão por Fases
 Nas três primeiras áreas de desafio, o jogador deve utilizar corretamente o baralho disponibilizado para atingir a meta mínima de vendas. A progressão depende da aplicação estratégica das cartas de acordo com o perfil de cada cliente, simulando situações reais de negociação.
+
 Ao final de cada área, o jogador enfrentará um “boss”, que representa o maior desafio conceitual daquela região. Esse boss:
-Possui maior resistência e complexidade;
 
+- Possui maior resistência e complexidade;
 
-Exige combinações estratégicas mais elaboradas;
+- Exige combinações estratégicas mais elaboradas;
 
-
-Testa o domínio completo das técnicas aprendidas na fase.
+- Testa o domínio completo das técnicas aprendidas na fase.
 
 
 A derrota do boss libera a próxima área.
+
 Na quarta área de progressão, o nível de exigência aumenta, demandando maior eficiência na leitura de cliente, combinação de cartas e tomada de decisão.
+
 Na quinta e última área, o jogador passa a ter acesso aos três baralhos utilizados anteriormente, consolidando todo o aprendizado adquirido. O objetivo final é convencer todos os clientes da cidade a adotarem as maquininhas Cielo, aplicando corretamente as técnicas desenvolvidas desde o início do jogo. A conclusão ocorre após derrotar o boss final e completar todas as metas de vendas.
+
 **Para avançar de área, o jogador deve:**
-Atingir a meta mínima de vendas estabelecida;
+- Atingir a meta mínima de vendas estabelecida;
 
+- Utilizar corretamente as cartas conforme o perfil do cliente;
 
-Utilizar corretamente as cartas conforme o perfil do cliente;
-
-
-Derrotar o boss da região.
-
+- Derrotar o boss da região.
 
 **Para concluir o jogo, o jogador deve:**
-Utilizar estrategicamente todos os baralhos desbloqueados;
+- Utilizar estrategicamente todos os baralhos desbloqueados;
 
+- Convencer todos os clientes da cidade final;
 
-Convencer todos os clientes da cidade final;
+- Superar o boss final;
 
-
-Superar o boss final;
-
-
-Demonstrar domínio completo das técnicas aprendidas ao longo das 5 áreas.
+- Demonstrar domínio completo das técnicas aprendidas ao longo das 5 áreas.
 
 
 ## 2.2. Características do Jogo (sprint 2)
@@ -245,14 +327,11 @@ RPG 2D com visão Top View, combinando exploração de mapa, interação com NPC
 ### 2.2.2. Plataforma do Jogo (sprint 2)
 
 O jogo será desenvolvido para:
-Dispositivos Desktop
+- Dispositivos Desktop
 
+- Dispositivos Mobile
 
-Dispositivos Mobile
-
-
-Execução via navegador Google Chrome
-
+- Execução via navegador Google Chrome
 
 A proposta multiplataforma garante maior acessibilidade e facilidade de uso como ferramenta de treinamento.
 
@@ -260,25 +339,24 @@ A proposta multiplataforma garante maior acessibilidade e facilidade de uso como
 
 **1 jogador (Single Player)**
 
-
 A experiência é individual, focada no desenvolvimento estratégico e no aprendizado progressivo.
 
 
 ### 2.2.4. Títulos semelhantes e inspirações (sprint 2)
 
-**The Legend of Zelda: A Link to the Past**
+#### The Legend of Zelda: A Link to the Past
  Inspiração na ambientação, movimentação em visão superior e construção de mapas interconectados.
 
 
-**Pokémon FireRed**
+#### Pokémon FireRed
  Referência na exploração por regiões, interação com NPCs e progressão por áreas.
 
 
-**Undertale**
+#### Undertale
  Inspiração na estética em pixel art e no design narrativo.
 
 
-**Balatro**
+#### Balatro
  Base para as mecânicas estratégicas de cartas e combinações táticas.
 
 
@@ -293,8 +371,11 @@ A experiência é individual, focada no desenvolvimento estratégico e no aprend
 ## 3.1. Enredo do Jogo (sprints 2 e 3)
 
 O Cielo Verso é uma dimensão digital estratégica desenvolvida em pixel art 2D, onde o conhecimento técnico da companhia ganha forma, desafios e vida. O enredo coloca o jogador no papel de um Gerente de Negócios em busca de especialização, iniciando sua jornada em uma tela inicial que serve como um Hub Central tecnológico. É neste ponto de encontro que o protagonista conhece a Cielita, mentora e guia do universo Cielo, que revela a missão principal: desbravar os três domínios do conhecimento para obter as ferramentas necessárias e enfrentar o desafio final na Cidade Cielo, o centro pulsante das decisões reais.
-A narrativa desenrola-se através da exploração de três mundos fundamentais de aprendizagem. No mapa Quebra-Gelo, um cenário de neve e ventos cortantes, o jogador aprende acerca da cultura e valores da empresa, construindo o alicerce para efetuar boas negociações. Na Vila do Varejo, uma área caracterizada por diversos comércios, o foco narrativo está no domínio do portfólio de produtos, transformando informação técnica em segurança para o dia a dia comercial. Por fim, na Floresta dos Proveitos, o jogador deve encontrar o caminho estratégico para apresentar os benefícios durante as negociações, forjando argumentos de valor como uma de suas principais ferramentas de trabalho. Em cada território, o sucesso nas negociações recompensa o vendedor com insígnias, cartas de habilidade e itens colecionáveis que representam o seu amadurecimento técnico e argumentativo.
+
+A narrativa desenrola-se através da exploração de três mundos fundamentais de aprendizagem. No mapa Quebra-Gelo, um cenário de neve e ventos cortantes, o jogador aprende acerca da cultura e valores da empresa, construindo o alicerce para efetuar boas negociações. Na Vila do Varejo, uma área caracterizada por diversos comércios, o foco narrativo está no domínio do portfólio de produtos, transformando informação técnica em segurança para o dia a dia comercial. Por fim, na Praia dos Proveitos, o jogador deve encontrar o caminho estratégico para apresentar os benefícios durante as negociações, forjando argumentos de valor como uma de suas principais ferramentas de trabalho. Em cada território, o sucesso nas negociações recompensa o vendedor com insígnias, cartas de habilidade e itens colecionáveis que representam o seu amadurecimento técnico e argumentativo.
+
 O ciclo narrativo reforça o conceito de aperfeiçoamento contínuo, permitindo que o vendedor retorne aos domínios de aprendizado a qualquer momento para refinar as suas estratégias e coletar recursos mais poderosos. O ápice da história acontece na Cidade Cielo, onde o "Mundo de Negociação" coloca o aprendizado à prova. Utilizando o deck de cartas acumulado, o jogador deve gerenciar a Barra de Satisfação do Cliente, provando que o domínio sobre os pilares da Cielo é a chave para transformar desafios em parcerias de sucesso.
+
 Portanto, muito além de uma sequência de desafios, o Cielo Verso é a jornada de transformação de um vendedor em um parceiro estratégico. Ao final da experiência, o protagonista não apenas domina conhecimento acerca dos produtos e pilares da Cielo, mas compreende que seu verdadeiro poder reside em simplificar a vida de quem empreende. O rito de passagem final, compreendido na aventura pela Cidade Cielo, representa quando  o jogador deixa de ser um aprendiz para se tornar o rosto da inovação e da confiança que a marca representa. No Cielo Verso, a jornada do vendedor é uma evolução constante, onde cada mundo superado o prepara para ser um protagonista no mercado real.
 
 ## 3.2. Personagens (sprints 2 e 3)
@@ -302,6 +383,7 @@ Portanto, muito além de uma sequência de desafios, o Cielo Verso é a jornada 
 ### 3.2.1. Controláveis
 
 Os personagens jogáveis são representados por quatro avatares, que contemplam dois modelos femininos e dois modelos masculinos, ambos com características diferentes, estilizados em Pixel Art 2D. Além disso, o jogador poderá inserir seu próprio nome para o avatar que o representa, buscando uma maior identificação do jogador com seu personagem. Os avatares serão de caracterização única, sendo sua única diferença os modelos fornecidos para a escolha.
+
 Ademais, as habilidades do avatar serão compreendidas através do desempenho do jogador, pois, a ideia central é o personagem como uma representação do usuário dentro do Cielo Verso, portanto, as aptidões atribuídas serão ligadas ao desenvolvimento do jogador, garantindo assim uma trilha de aprendizado espelhada no avatar. Dessa forma, os controláveis do jogo estarão enquadrados de uma forma a produzir identificação entre usuário e gameplay.
 
 ### 3.2.2. Non-Playable Characters (NPC)
@@ -317,12 +399,19 @@ Ademais, as habilidades do avatar serão compreendidas através do desempenho do
 ### 3.2.3. Diversidade e Representatividade dos Personagens
 
 O Cielo Verso opta por um elenco de personagens fixos estrategicamente desenhados para representar a pluralidade do povo brasileiro. Ao invés de avatares genéricos, o jogo apresenta o protagonista e diversos NPCs (personagens não jogáveis) que abrangem as diversas etnias, faixas etárias, gêneros e identidades do nosso país. Essa escolha garante que a diversidade seja uma característica intrínseca do design, onde o jogador interage com figuras que refletem o quadro real da companhia e o mercado consumidor nacional. Ao encontrar NPCs que representam essa pluralidade, o jogador é treinado para oferecer um  atendimento inclusivo e personalizado, reconhecendo no ambiente virtual os mesmos perfis humanos que encontrará no dia a dia real.
-A diversidade no jogo também se manifesta através do regionalismo, onde cada um dos cenários principais é inspirado em uma faceta cultural e geográfica do Brasil, influenciando diretamente o visual e o comportamento dos personagens:
-Como exemplo:
-Mapa 1: Quebra-Gelo (Região Sul): Sob uma estética de neve e ventos cortantes, o mapa integra elementos como o Chimarrão e vestimentas típicas de frio. O cenário humaniza a teoria da cultura corporativa ao conectá-la a hábitos tradicionais, demonstrando que a Cielo entende o comportamento específico do lojista e do cliente sulista.
-Mapa 2: Vila do Varejo (Região Sudeste/Centro-Oeste): Um centro comercial dinâmico que remete às grandes metrópoles e polos de distribuição. Os NPCs possuem um perfil focado em soluções ágeis e cotidiano urbano. Elementos visuais como o "cafézinho" e a arquitetura familiar conectam o jogador ao coração financeiro do país.
-Mapa 3: Floresta dos Proveitos (Região Norte/Nordeste): Uma trilha rica em biodiversidade que utiliza a natureza brasileira como metáfora para o valor agregado. Os NPCs e produtos remetem à economia criativa e ao turismo, exigindo que o vendedor identifique ganhos reais para negócios baseados nessas riquezas regionais.
-Mapa 4: Cidade Cielo (O Brasil Integrado): A fase final ocorre em uma metrópole moderna que sintetiza todas as regiões. É o ponto de encontro de todos os perfis de NPCs apresentados anteriormente, onde a diversidade brasileira se manifesta em sua totalidade nos desafios finais de negociação.
+
+A diversidade no jogo também se manifesta através do regionalismo, onde cada um dos cenários principais é inspirado em uma faceta cultural e geográfica do Brasil, influenciando diretamente o visual e o comportamento dos personagens.
+
+**Como exemplo:**
+
+**Mapa 1:** Quebra-Gelo (Região Sul): Sob uma estética de neve e ventos cortantes, o mapa integra elementos como o Chimarrão e vestimentas típicas de frio. O cenário humaniza a teoria da cultura corporativa ao conectá-la a hábitos tradicionais, demonstrando que a Cielo entende o comportamento específico do lojista e do cliente sulista.
+
+**Mapa 2:** Vila do Varejo (Região Sudeste/Centro-Oeste): Um centro comercial dinâmico que remete às grandes metrópoles e polos de distribuição. Os NPCs possuem um perfil focado em soluções ágeis e cotidiano urbano. Elementos visuais como o "cafézinho" e a arquitetura familiar conectam o jogador ao coração financeiro do país.
+
+**Mapa 3:** Praia dos Proveitos (Região Norte/Nordeste): Uma trilha rica em biodiversidade que utiliza a natureza brasileira como metáfora para o valor agregado. Os NPCs e produtos remetem à economia criativa e ao turismo, exigindo que o vendedor identifique ganhos reais para negócios baseados nessas riquezas regionais.
+
+**Mapa 4:** Cidade Cielo (O Brasil Integrado): A fase final ocorre em uma metrópole moderna que sintetiza todas as regiões. É o ponto de encontro de todos os perfis de NPCs apresentados anteriormente, onde a diversidade brasileira se manifesta em sua totalidade nos desafios finais de negociação.
+
 O impacto esperado é o fortalecimento da empatia e da eficácia no atendimento. Ao unir o protagonista a NPCs diversos em cenários que respeitam o regionalismo, a Cielo demonstra que o sucesso de uma negociação depende do respeito às diferenças. Essa abordagem garante que o jogador reconheça no ambiente virtual os mesmos rostos e culturas que encontrará no mercado real, consolidando a imagem da Cielo como uma empresa que entende, valoriza e capacita a pluralidade do Brasil para gerar melhores negócios.
 
 
@@ -331,11 +420,17 @@ O impacto esperado é o fortalecimento da empatia e da eficácia no atendimento.
 ### 3.3.1. Locações Principais e/ou Mapas (sprints 2 e 3)
 
 O jogo se passa nas Terras da Negociação, um mundo fictício dividido em cinco grandes regiões, cada uma representando um desafio real enfrentado por grandes negociadores. O ambiente é construído de forma simbólica, onde clima, cores e arquitetura refletem o tipo de aprendizado que o jogador desenvolverá em cada etapa da jornada.
+
 A aventura começa na Casa da Cielita. O cenário transmite tranquilidade e base sólida, com céu claro e paisagem aberta, simbolizando clareza de propósito. É nesse local que habita Cielita, a guardiã das Terras de Aprendizado, responsável por apresentar ao jogador o verdadeiro significado da jornada. Ali funciona como a fase introdutória do jogo, onde o Player aprende valores, postura e propósito, entendendo que negociar não é apenas vender, mas gerar valor.
+
 Seguindo pelo mapa, o jogador chega ao Quebra-Gelo, uma ilha congelada cercada por águas frias e ventos intensos. O ambiente é dominado por cristais de gelo que representam desinformação e dúvidas. Os habitantes parecem presos ao frio das objeções e dos mitos, e o cenário transmite resistência e incerteza. Nessa fase, o jogador precisa investigar confusões, dialogar com moradores e reconstruir o entendimento sobre conceitos e proposta de valor. Ao enfrentar o Guardião da Resistência, formado por objeções comuns, o gelo começa a derreter, e o ambiente gradualmente se transforma, simbolizando o domínio do conhecimento e da argumentação.
+
 Depois, o caminho leva à Vila do Varejo, uma região quente, vibrante e movimentada. Pequenos comércios, barracas e lojas compõem o cenário, demonstrando esforço e potencial de crescimento. O problema ali não é falta de trabalho, mas ausência de soluções adequadas. O jogador assume um papel estratégico, diagnosticando as necessidades de cada comerciante e conectando os produtos certos ao perfil correto. Conforme as escolhas são feitas de maneira assertiva, a vila evolui visualmente: lojas se expandem, o comércio cresce e o ambiente se torna mais próspero. Essa fase reforça o domínio de produtos, maquininhas, soluções financeiras e benefícios.
-A jornada continua na Floresta dos Proveitos, uma mata densa e estratégica, com caminhos ramificados e símbolos escondidos entre as árvores. O ambiente é mais complexo e exige atenção. Guardiões antigos protegem o Medalhão dos Benefícios, enquanto criaturas chamadas “Comparadores” tentam confundir o jogador com ofertas ilusórias. A progressão nessa fase depende da capacidade de identificar vantagens competitivas e destacar diferenciais reais. À medida que o jogador escolhe os caminhos corretos, trilhas se iluminam e a floresta se torna menos ameaçadora, simbolizando clareza estratégica e domínio da diferenciação.
+
+A jornada continua na Praia dos Proveitos, uma mata densa e estratégica, com caminhos ramificados e símbolos escondidos entre as árvores. O ambiente é mais complexo e exige atenção. Guardiões antigos protegem o Medalhão dos Benefícios, enquanto criaturas chamadas “Comparadores” tentam confundir o jogador com ofertas ilusórias. A progressão nessa fase depende da capacidade de identificar vantagens competitivas e destacar diferenciais reais. À medida que o jogador escolhe os caminhos corretos, trilhas se iluminam e a praia se torna menos ameaçadora, simbolizando clareza estratégica e domínio da diferenciação.
+
 Por fim, o Player alcança a Cidade da Negociação, a maior e mais imponente região do mapa. Trata-se de uma metrópole vibrante, com prédios altos, movimento intenso e decisões acontecendo a todo momento. No centro da cidade ergue-se a Torre dos Acordos, onde ocorre o desafio final: uma grande negociação estratégica que reúne todos os conhecimentos adquiridos nas fases anteriores. Nessa etapa, o jogador precisa aplicar leitura de perfil, superar objeções, estruturar estratégia e realizar um fechamento assertivo. Ao vencer esse confronto final, recebe o título de Mestre dos Negócios, consolidando sua evolução completa.
+
 Assim, o ambiente do jogo evolui junto com o aprendizado do jogador: começa em um campo aberto e simples, passa por gelo e resistência, avança por crescimento comercial e estratégia competitiva, e culmina em uma cidade onde decisões moldam resultados. Cada local não é apenas um cenário, mas uma representação visual e simbólica do desenvolvimento das habilidades de negociação ao longo da jornada.
 
 
@@ -344,7 +439,9 @@ Assim, o ambiente do jogo evolui junto com o aprendizado do jogador: começa em 
 ### 3.3.2. Navegação pelo mundo (sprints 2 e 3)
 
 Os personagens se movem pelo mapa principal de forma progressiva, desbloqueando novas áreas conforme concluem os desafios da fase anterior.
-Após o aprendizado inicial na Casa da Cielita, o caminho para o Quebra-Gelo é liberado se você tiver usado certo as mecânicas das cartas e perceber se você está desenvolvido para passar pela fase. Ao superar o Guardião da Resistência, a passagem para a Vila do Varejo se abre. Quando o jogador demonstra domínio sobre produtos e soluções, surge a rota para a Floresta dos Proveitos. Ao conquistar o Medalhão dos Benefícios, é liberado o acesso à Cidade da Negociação.
+
+Após o aprendizado inicial na Casa da Cielita, o caminho para o Quebra-Gelo é liberado se você tiver usado certo as mecânicas das cartas e perceber se você está desenvolvido para passar pela fase. Ao superar o Guardião da Resistência, a passagem para a Vila do Varejo se abre. Quando o jogador demonstra domínio sobre produtos e soluções, surge a rota para a Praia dos Proveitos. Ao conquistar o Medalhão dos Benefícios, é liberado o acesso à Cidade da Negociação.
+
 Cada área só é acessada após a comprovação de competência na anterior, simbolizando a evolução do jogador até o desafio final na Torre dos Acordos.
 
 ### 3.3.3. Condições climáticas e temporais (sprints 2 e 3)
@@ -353,12 +450,26 @@ O tempo não possui relevância no jogo
 
 ### 3.3.4. Concept Art (sprint 2)
 
-<img src="../assets/GDD/Mapa Introdução.jpeg"> 
-<img src="../assets/GDD/Casa celita.jpeg">
-<img src="../assets/GDD/Menu Inicial.jpeg">
-Figura 1: Mapa de Introdução
-Figura 2: Casa Celita
-Figura 3: Menu Inicial
+
+<div align="center">
+  <sub>Menu Inicial</sub><br>
+  <img src="assets/tela_inicial.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+
+<div align="center">
+  <sub>Mapa de Introdução</sub><br>
+  <img src="assets/mapa_introducao.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+<div align="center">
+  <sub>Casa da Cielita</sub><br>
+  <img src="assets/casa_cielita.png" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
 
 
 
@@ -373,50 +484,26 @@ Figura 3: Menu Inicial
 2 | tema de combate | cena de combate com inimigos comuns | Hans Zimmer
 3 | ... 
 
-## 3.4. Inventário e Bestiário (sprint 3)
-
-### 3.4.1. Inventário
-
-*\<opcional\> Caso seu jogo utilize itens ou poderes para os personagens obterem, descreva-os aqui, indicando títulos, imagens, meios de obtenção e funções no jogo. Utilize listas ou tabelas para organizar esta seção. Caso utilize material de terceiros em licença Creative Commons, não deixe de citar os autores/fontes.* 
-
-*Exemplo de tabela*
-\# | item |  | como obter | função | efeito sonoro
---- | --- | --- | --- | --- | ---
-1 | moeda | <img src="../assets/GDD/coin.png"> | há muitas espalhadas em todas as fases | acumula dinheiro para comprar outros itens | som de moeda
-2 | madeira | <img src="../assets/GDD/wood.png"> | há muitas espalhadas em todas as fases | acumula madeira para construir casas | som de madeiras
-3 | ... 
-
-### 3.4.2. Bestiário
-
-*\<opcional\> Caso seu jogo tenha inimigos, descreva-os aqui, indicando nomes, imagens, momentos de aparição, funções e impactos no jogo. Utilize listas ou tabelas para organizar esta seção. Caso utilize material de terceiros em licença Creative Commons, não deixe de citar os autores/fontes.* 
-
-*Exemplo de tabela*
-\# | inimigo |  | ocorrências | função | impacto | efeito sonoro
---- | --- | --- | --- | --- | --- | ---
-1 | robô terrestre | <img src="../assets/GDD/inimigo2.PNG"> |  a partir da fase 1 | ataca o personagem vindo pelo chão em sua direção, com velocidade constante, atirando parafusos | se encostar no inimigo ou no parafuso arremessado, o personagem perde 1 ponto de vida | sons de tiros e engrenagens girando
-2 | robô voador | <img src="../assets/GDD/inimigo1.PNG"> | a partir da fase 2 | ataca o personagem vindo pelo ar, fazendo movimento em 'V' quando se aproxima | se encostar, o personagem perde 3 pontos de vida | som de hélice
-3 | ... 
-
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
 
 <img src="../assets/GDD/Gameflow.jpeg">
 
 ## 3.6. Regras do jogo (sprint 3)
 
-# Objetivo do jogo
+#### Objetivo do jogo
 O principal objetivo do jogador é interagir com os NPCs presentes em cada região do jogo até achar o CPC (Contato com pessoa certa) e convencê-lo a se tornarem clientes da empresa. Para isso, o jogador deverá utilizar estratégias de abordagem, compreender as necessidades do personagem e apresentar soluções adequadas durante a interação.
-# Desafios e decisões 
+#### Desafios e decisões 
 Durante o jogo, o jogador enfrentará situações de negociação com um NPC específico em cada região. Ao iniciar a interação, serão apresentadas opções de diálogo e escolhas que representam diferentes formas de abordagem e argumentação. O jogador deverá analisar cada situação e selecionar as respostas mais adequadas para convencer o personagem.
 Essas decisões influenciam diretamente o resultado da negociação, podendo aumentar ou diminuir as chances de o NPC aceitar a proposta apresentada.
-# Progressão no jogo
+#### Progressão no jogo
 A progressão do jogador ocorre por meio da conversão de um NPC principal em cada região do jogo. Cada área possui um personagem que representa o desafio daquela fase. O jogador deverá interagir com esse NPC e conduzir a negociação de forma adequada para convencê-lo a se tornar cliente da empresa.
 Ao conseguir converter o NPC daquela região, o jogador conquista a insígnia da área, que representa o sucesso da negociação. Após obter essa insígnia, o jogador desbloqueia a próxima região do jogo, podendo avançar para novos ambientes e desafios.
-# Consequências das escolhas
+#### Consequências das escolhas
 As decisões tomadas durante a interação com o NPC podem influenciar o resultado da negociação. Escolhas adequadas aumentam as chances de sucesso, enquanto decisões inadequadas podem fazer com que o personagem fique irritado ou descrente com o jogador e acabe recusando a proposta. Nesse caso, o jogador deverá tentar novamente até conseguir concluir a negociação e avançar para a próxima área do jogo.
 
 ## 3.7. Mecânicas do jogo (sprint 3)
 
-# Interface e Menu Inicial (HUD)
+### Interface e Menu Inicial (HUD)
 O jogo possui um menu inicial que apresenta as principais opções para o jogador antes de iniciar a partida.
 Opção do Menu | Função
 --- | ---
@@ -426,7 +513,7 @@ Sair | Encerra o jogo
 
 A interface foi projetada para ser clara e simples, permitindo que o jogador compreenda rapidamente as opções disponíveis e inicie a experiência de forma intuitiva.
 
-# Seleção de Personagem
+### Seleção de Personagem
 O jogador pode escolher entre quatro personagens jogáveis, buscando representar diversidade entre os avatares disponíveis. As opções incluem:
 
 - Homem branco
@@ -436,7 +523,7 @@ O jogador pode escolher entre quatro personagens jogáveis, buscando representar
 
 Essa escolha permite que o jogador selecione o personagem com o qual mais se identifica, contribuindo para uma experiência mais personalizada.
 
-# Personalização do Nome
+### Personalização do Nome
 Após escolher o personagem, o jogador pode definir o nome do seu avatar. Esse nome será utilizado durante o jogo, especialmente em interações com NPCs e em elementos da interface.
 
 O nome do personagem não é permanente, podendo ser alterado posteriormente através do menu de Configurações, garantindo maior flexibilidade ao jogador.
@@ -479,27 +566,217 @@ Clique do mouse | Confirmar ações ou escolhas
 
 ## 3.8. Implementação Matemática de Animação/Movimento (sprint 4)
 
-*Descreva aqui a função que implementa a movimentação/animação de personagens ou elementos gráficos no seu jogo. Sua função deve se basear em alguma formulação matemática (e.g. fórmula de aceleração). A explicação do funcionamento desta função deve conter notação matemática formal de fórmulas/equações. Se necessário, crie subseções para sua descrição.*
+Esta seção descreve os modelos matemáticos que fundamentam os sistemas de movimentação e animação de personagens no jogo. Dois subsistemas distintos são abordados: a movimentação do jogador por entrada de teclado e a navegação autônoma dos NPCs por waypoints.
+
+
+
+### Movimentação do Jogador (Jogador.js)
+
+#### Fundamentos: Vetores no Plano 2D
+
+Antes de descrever as fórmulas, é importante compreender o conceito de **vetor**. No contexto de um jogo 2D, um vetor é um par ordenado $(v_x, v_y)$ que representa simultaneamente uma direção e uma intensidade (magnitude). Visualmente, pode-se imaginar uma seta: ela aponta para onde algo está indo e seu comprimento indica quão rápido.
+
+O motor Phaser representa cada objeto no mundo por suas coordenadas $(x, y)$ no plano cartesiano. A cada quadro (*frame*) de animação, o motor atualiza a posição de cada objeto somando sua velocidade ao longo do tempo:
+
+$$x_{t+1} = x_t + v_x \cdot \Delta t$$
+
+$$y_{t+1} = y_t + v_y \cdot \Delta t$$
+
+onde:
+
+| Símbolo | Descrição |
+|---|---|
+| $x_t,\ y_t$ | Posição do personagem no frame $t$ (em pixels) |
+| $v_x,\ v_y$ | Componentes do vetor velocidade (em pixels por segundo) |
+| $\Delta t$ | Intervalo de tempo entre dois frames consecutivos (em segundos) |
+
+> **Nota:** Este é o modelo de cinemática de posição com velocidade constante: a posição varia linearmente com o tempo, sem aceleração.
+
+#### Decomposição Vetorial — Teclas WASD
+
+Cada tecla pressionada define o sinal de uma das componentes do vetor velocidade, onde $V = 100$ px/s é a velocidade escalar configurada na classe `Jogador`:
+
+| Tecla | Componente | Valor atribuído |
+|---|---|---|
+| A | $v_x$ | $-V$ (esquerda) |
+| D | $v_x$ | $+V$ (direita) |
+| W | $v_y$ | $-V$ (cima — eixo invertido) |
+| S | $v_y$ | $+V$ (baixo) |
+
+> **Convenção de eixos:** Em Phaser, o eixo $y$ cresce **para baixo** — diferente do plano cartesiano tradicional. Por isso, pressionar W (mover para cima na tela) resulta em $v_y = -V$.
+
+Quando apenas uma tecla é pressionada, a magnitude do vetor resultante é simplesmente $V$:
+
+$$\|\vec{v}\| = \sqrt{v_x^2 + v_y^2} = \sqrt{V^2 + 0^2} = V$$
+
+#### Movimento Diagonal com Velocidade Constante
+
+Quando dois eixos são ativados simultaneamente — por exemplo, as teclas D e W pressionadas ao mesmo tempo —, o vetor de entrada passa a ter componentes em ambos os eixos. Sem tratamento, a magnitude desse vetor cresceria:
+
+$$\|\vec{v}_{\text{diagonal}}\|_{\text{sem normalização}} = \sqrt{V^2 + V^2} = \sqrt{2} \cdot V \approx 1{,}414 \cdot V$$
+
+Para garantir que o personagem se desloque sempre à mesma velocidade escalar $V$ independentemente da direção, o sistema aplica a **normalização** do vetor de entrada antes de escaloná-lo pela velocidade desejada. Normalizar significa dividir cada componente pela magnitude total do vetor, produzindo um **vetor unitário** $\hat{v}$ de comprimento exatamente igual a 1:
+
+$$\hat{v} = \frac{\vec{v}}{\|\vec{v}\|} = \left(\frac{v_x}{\|\vec{v}\|},\ \frac{v_y}{\|\vec{v}\|}\right)$$
+
+O vetor velocidade final aplicado ao personagem é então:
+
+$$\vec{v}_{\text{final}} = V \cdot \hat{v} = \left(\frac{v_x \cdot V}{\|\vec{v}\|},\ \frac{v_y \cdot V}{\|\vec{v}\|}\right)$$
+
+#### Verificação Formal
+
+Para o caso diagonal onde $v_x = V$ e $v_y = -V$, demonstra-se que a magnitude resultante é sempre $V$:
+
+$$\|\vec{v}\| = \sqrt{V^2 + V^2} = V\sqrt{2}$$
+
+$$\vec{v}_{\text{final}} = \left(\frac{V}{\sqrt{2}},\ \frac{-V}{\sqrt{2}}\right)$$
+
+$$\|\vec{v}_{\text{final}}\| = \sqrt{\left(\frac{V}{\sqrt{2}}\right)^2 + \left(\frac{V}{\sqrt{2}}\right)^2} = \sqrt{\frac{V^2}{2} + \frac{V^2}{2}} = \sqrt{V^2} = V \checkmark$$
+
+A magnitude é $V$ em qualquer direção — eixos ortogonais e diagonais.
+
+A implementação correspondente em `Jogador.js`:
+```javascript
+// Vetor de entrada — leitura das teclas
+let vx = 0, vy = 0;
+if (teclas.left.isDown)  vx -= velocidade;
+if (teclas.right.isDown) vx += velocidade;
+if (teclas.up.isDown)    vy -= velocidade;
+if (teclas.down.isDown)  vy += velocidade;
+
+//  garante ‖v⃗_final‖ = V em qualquer direção
+const mag = Math.sqrt(vx * vx + vy * vy);
+if (mag > 0) {
+    sprite.setVelocityX((vx / mag) * velocidade);
+    sprite.setVelocityY((vy / mag) * velocidade);
+} else {
+    sprite.setVelocity(0);
+}
+```
+
+
+### Movimentação Autônoma dos NPCs — Patrulha por Waypoints (NPC.js)
+
+#### Visão Geral
+
+Os NPCs do jogo navegam autonomamente entre uma sequência de pontos predefinidos chamados **waypoints** — coordenadas absolutas no mapa que definem o caminho de patrulha. A cada frame, o sistema executa quatro etapas:
+
+1. Identificar o waypoint atual $\mathbf{w} = (w_x, w_y)$
+2. Calcular a distância euclidiana até ele
+3. Se a distância for menor que o limiar $\varepsilon = 4$ px, avançar para o próximo waypoint
+4. Caso contrário, mover o NPC em direção ao waypoint com velocidade constante $V_{\text{NPC}}$
+
+#### Distância Euclidiana
+
+A distância entre a posição atual do NPC $\mathbf{p} = (p_x, p_y)$ e o waypoint $\mathbf{w} = (w_x, w_y)$ é calculada pela **distância euclidiana**, derivada diretamente do Teorema de Pitágoras. Ela mede o comprimento do segmento de reta que conecta dois pontos no plano — a menor distância possível entre eles:
+
+$$d(\mathbf{p},\ \mathbf{w}) = \sqrt{(w_x - p_x)^2 + (w_y - p_y)^2}$$
+
+| Símbolo | Descrição |
+|---|---|
+| $\mathbf{p} = (p_x, p_y)$ | Posição atual do NPC no mundo (em pixels) |
+| $\mathbf{w} = (w_x, w_y)$ | Coordenadas do waypoint alvo (em pixels) |
+| $d(\mathbf{p}, \mathbf{w})$ | Distância euclidiana entre os dois pontos (em pixels) |
+
+#### Vetor Direção e Normalização
+
+O vetor deslocamento $\vec{d}$ aponta da posição atual do NPC até o waypoint alvo:
+
+$$\vec{d} = \mathbf{w} - \mathbf{p} = (w_x - p_x,\ w_y - p_y)$$
+
+Note que $\|\vec{d}\| = d(\mathbf{p}, \mathbf{w})$. Para que o NPC se mova com velocidade constante independentemente da distância ao alvo, normaliza-se $\vec{d}$ para obter o vetor unitário $\hat{d}$:
+
+$$\hat{d} = \frac{\vec{d}}{\|\vec{d}\|} = \left(\frac{w_x - p_x}{\|\vec{d}\|},\ \frac{w_y - p_y}{\|\vec{d}\|}\right)$$
+
+O vetor velocidade final aplicado ao NPC é:
+
+$$\vec{v}_{\text{NPC}} = V_{\text{NPC}} \cdot \hat{d} = \left(\frac{(w_x - p_x) \cdot V_{\text{NPC}}}{\|\vec{d}\|},\ \frac{(w_y - p_y) \cdot V_{\text{NPC}}}{\|\vec{d}\|}\right)$$
+
+Esta é exatamente a formulação implementada em `NPC.js`:
+```javascript
+const dx  = alvo.x - this.x;           // componente x do vetor d⃗
+const dy  = alvo.y - this.y;           // componente y do vetor d⃗
+const mag = Math.sqrt(dx*dx + dy*dy);  // ‖d⃗‖ — distância euclidiana
+
+this.setVelocityX((dx / mag) * vel);   // vₓ = (dx / ‖d⃗‖) · V
+this.setVelocityY((dy / mag) * vel);   // vᵧ = (dy / ‖d⃗‖) · V
+```
+
+#### Condição de Chegada ao Waypoint
+
+O NPC é considerado como tendo alcançado o waypoint quando a distância euclidiana cai abaixo de um limiar $\varepsilon$:
+
+$$d(\mathbf{p},\ \mathbf{w}) < \varepsilon, \quad \varepsilon = 4 \text{ px}$$
+
+O limiar $\varepsilon$ é necessário porque, com velocidade discreta frame a frame, o NPC pode nunca pousar exatamente sobre o waypoint. Ao detectar a chegada, o NPC é teleportado para a posição exata do waypoint — eliminando deriva acumulada — e o índice é avançado.
+
+#### Progressão Cíclica dos Waypoints
+
+A patrulha é cíclica e infinita. O índice do waypoint atual avança utilizando a operação de módulo:
+
+$$i_{\text{próximo}} = (i_{\text{atual}} + 1) \bmod N$$
+
+| Símbolo | Descrição |
+|---|---|
+| $i_{\text{atual}}$ | Índice do waypoint que o NPC acabou de alcançar |
+| $N$ | Número total de waypoints definidos na patrulha |
+| $\bmod$ | Operação de módulo (resto da divisão inteira) |
+
+> **Nota:** A operação $\bmod\ N$ garante que, ao atingir o último waypoint (índice $N-1$), o próximo índice calculado seja $0$ — reiniciando a patrulha ciclicamente.
+
+#### Seleção de Animação por Eixo Dominante
+
+Após definir o vetor velocidade, o sistema determina qual animação reproduzir comparando os valores absolutos das componentes $d_x$ e $d_y$. O eixo com maior deslocamento absoluto é considerado o **eixo dominante**:
+
+$$\text{animação}(d_x, d_y) = \begin{cases} \textit{lado} & \text{se } |d_x| \geq |d_y| \\ \textit{costas} & \text{se } |d_x| < |d_y| \text{ e } d_y < 0 \\ \textit{frente} & \text{se } |d_x| < |d_y| \text{ e } d_y \geq 0 \end{cases}$$
+
+A condição $|d_x| \geq |d_y|$ seleciona o eixo de maior deslocamento como eixo dominante, produzindo uma animação coerente com a direção percebida pelo jogador mesmo em movimentos diagonais. Quando o eixo horizontal domina, o flip horizontal (`setFlipX`) evita a necessidade de um spritesheet separado para a direção oposta.
 
 # <a name="c4"></a>4. Desenvolvimento do Jogo
 
 ## 4.1. Desenvolvimento preliminar do jogo (sprint 1)
 
-A primeira versão do jogo foi desenvolvida com foco na implementação das mecânicas essenciais, garantindo que a estrutura básica estivesse funcional. Durante essa fase inicial, foram trabalhados o design do personagem principal, a criação de suas animações de movimentação e a construção de seu storytelling, estabelecendo a identidade visual e narrativa do projeto. Paralelamente, foi elaborada uma versão inicial do mapa, dividido em regiões temáticas: Quebra Gelo, Vila do Varejo, Floresta dos Proveitos e Cidade Cielo.
+A primeira versão do jogo foi desenvolvida com foco na implementação das mecânicas essenciais, garantindo que a estrutura básica estivesse funcional. Durante essa fase inicial, foram trabalhados o design do personagem principal, a criação de suas animações de movimentação e a construção de seu storytelling, estabelecendo a identidade visual e narrativa do projeto. Paralelamente, foi elaborada uma versão inicial do mapa, dividido em regiões temáticas: Quebra Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo.
 
 Em termos de código, foi implementado um sistema de movimentação utilizando as teclas WASD, permitindo que o jogador explore o ambiente. O personagem é inserido no mundo do jogo com um corpo físico (hitbox), garantindo a colisão com os limites do mapa e impedindo que ultrapasse as áreas definidas ou saia da tela. Além disso, foi desenvolvido o sistema responsável por carregar a imagem de fundo do mapa e posicionar os objetos estáticos na tela, compondo o cenário inicial do jogo.
 
 A câmera foi configurada com zoom dinâmico e programada para acompanhar o personagem constantemente, reforçando a sensação de exploração e imersão. As animações foram integradas ao sistema de movimentação, tornando a experiência mais natural e visualmente coerente. A estrutura do mapa foi pensada para incentivar a progressão do jogador entre as diferentes regiões, promovendo uma exploração organizada e alinhada aos objetivos do jogo.
 
 
-###Ilustrações e prints de tela
-<img src="../assets/GDD/sprite1principal.jpeg">
-<img src="../assets/GDD/sprite2principal.jpeg">
-<img src="../assets/GDD/direitaCastelo.jpeg">
-<img src="../assets/GDD/noroeste.jpeg">
-<img src="../assets/GDD/frenteCastelo.jpeg">
+#### Ilustrações e prints de tela
 
-## Dificuldades encontradas e próximos passos
+<div align="center">
+  <sub>Imagem 1 - Sprite do personagem jogável — homem (idle)</sub><br>
+  <img src="assets/sprite1principal.jpeg" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+<div align="center">
+  <sub>Imagem 2 - Sprite do personagem jogável — homem (animação lateral)</sub><br>
+  <img src="assets/sprite2principal.jpeg" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+<div align="center">
+  <sub>Imagem 3 - Mapa introdutório - Visão geral</sub><br>
+  <img src="assets/direitaCastelo.jpeg" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+<div align="center">
+  <sub>Imagem 4 - Esboço da região do Quebra Gelo</sub><br>
+  <img src="assets/noroeste.jpeg" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+<div align="center">
+  <sub>Imagem 5 - Torre de negociação</sub><br>
+  <img src="assets/frenteCastelo.jpeg" width="100%" alt="Descrição breve"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+
+#### Dificuldades encontradas e próximos passos
 Durante o desenvolvimento inicial, foram identificadas dificuldades relacionadas principalmente à definição e segmentação do processo de negociação, de modo que ele pudesse ser estruturado e aplicado ao formato de cartas dentro da mecânica do jogo. Transformar situações reais de negociação em elementos sistematizados exigiu equilíbrio entre clareza conceitual, jogabilidade e coerência com os objetivos do projeto. 
 
 Além disso, o design do personagem principal representou um desafio, pois foi necessário alinhar identidade visual, proposta narrativa e viabilidade técnica para animações e implementação.
@@ -522,11 +799,525 @@ A fase final ocorre no Mundo de Negociação, onde o jogo transita para um siste
 
 ## 4.3. Desenvolvimento intermediário do jogo (sprint 3)
 
-*Descreva e ilustre aqui o desenvolvimento da versão intermediária do jogo, explicando brevemente o que foi entregue em termos de código e jogo. Utilize prints de tela para ilustrar. Indique as eventuais dificuldades e próximos passos.*
+O projeto **Cielo Verso** é estruturado sobre um conjunto de sistemas integrados que garantem a experiência central do jogo: navegação pelo mundo, interação com NPCs e realização de negociações por meio de cartas. Esta seção documenta a implementação técnica desses sistemas, descrevendo as decisões de arquitetura, os padrões de código adotados e as soluções encontradas para os desafios de desenvolvimento. O documento será atualizado conforme novos sistemas forem incorporados ao jogo.
+
+
+### Sistema de transição com fadeOut/fadeIn
+
+Todas as trocas de cena utilizam um padrão consistente de fade para evitar cortes abruptos. O evento `FADE_OUT_COMPLETE` garante que a nova cena só carrega após a animação terminar:
+
+```javascript
+// MundoCasa.js — transição para o MapaGelo
+this.cameras.main.fadeOut(500, 0, 0, 0);
+this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+    this.scene.start('MapaGelo');
+});
+```
+
+### Preservação de origem entre cenas
+
+Para evitar que o personagem reapareça na posição padrão ao retornar de uma cena, todas as cenas que recebem o jogador de outra utilizam o parâmetro `init(data)` para verificar a origem e reposicionar corretamente:
+
+```javascript
+// MapaGelo.js
+init(data) {
+    this.origem = data.vindoDe;
+}
+
+create() {
+    // ...
+    if (this.origem === 'CenaCasaGelo') {
+        this.personagem.sprite.setPosition(655, 210);
+    }
+}
+```
+
+Sem esse mecanismo, o jogador sofreria "spawn incorreto" ao retornar da Casa do Pedro para o Mapa de Gelo.
+
+
+
+### Sistema de Personagem e Movimentação (Jogador.js)
+
+### O que foi implementado
+
+A classe `Jogador` encapsula toda a lógica de movimentação, animação e colisão do personagem jogável. Ela lê o personagem escolhido na tela de seleção via `registry` e aplica automaticamente as animações corretas:
+
+```javascript
+// Jogador.js
+const skin = cena.game.registry.get('spriteJogador') || 'man_whi';
+this.sprite = cena.physics.add.sprite(x, y, `${skin}_front_idl`).setScale(scale);
+
+// Hitbox reduzida ao nível dos pés para colisão realista
+this.sprite.body.setSize(10, 5);
+this.sprite.setOffset(27, 40);
+```
+
+### Animações direcionais
+
+O sistema define quatro animações por skin (idle, andar frente, andar de costas, andar de lado) e controla qual toca com base nas teclas pressionadas. O flip horizontal (`setFlipX`) evita a necessidade de um spritesheet separado para a direção oposta:
+
+```javascript
+// Movimento para a esquerda
+if (teclas.left.isDown) {
+    sprite.setVelocityX(-velocidade);
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(false);
+} else if (teclas.right.isDown) {
+    sprite.setVelocityX(velocidade);
+    sprite.play(`${s}_lado`, true);
+    sprite.setFlipX(true); // espelha o sprite — sem asset duplicado
+}
+```
+
+### Tutorial integrado (tecla H)
+
+O tutorial pode ser aberto a qualquer momento com a tecla **H**. Ao abrir, o input da cena ativa é desabilitado para evitar movimento em segundo plano; ao fechar, é reativado automaticamente via evento `shutdown`:
+
+```javascript
+// TutorialOverlay.js
+this.events.on('shutdown', () => {
+    if (this.cenaAnterior) {
+        this.cenaAnterior.input.keyboard.enabled = true;
+    }
+});
+```
+
+---
+
+## Sistema de Colisão com Hitboxes do Tiled
+
+### O que foi implementado
+
+As colisões do **Mapa de Gelo** e da **Casa do Pedro** são definidas visualmente na ferramenta **Tiled Map Editor** e exportadas como arquivo `.tmj`. O Phaser lê a camada de objetos em tempo de execução e cria colisores físicos dinamicamente:
+
+```javascript
+// MapaGelo.js — leitura das hitboxes do Tiled
+const mapa = this.make.tilemap({ key: 'mapa_dados' });
+const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
+
+camadaObjetos.objects.forEach(obj => {
+    if (obj.polygon) {
+        // Rochas e objetos irregulares: Polygon Collider
+        const poly = this.add.polygon(obj.x, obj.y, obj.polygon, 0x0000ff, 0);
+        this.physics.add.existing(poly, true);
+        this.personagem.adicionarColisao(poly);
+    } else {
+        // Casas e objetos retangulares: Box Collider (mais eficiente)
+        let zona = this.add.zone(
+            obj.x + (obj.width / 2),
+            obj.y + (obj.height / 2),
+            obj.width, obj.height
+        );
+        this.physics.add.existing(zona, true);
+        this.personagem.adicionarColisao(zona);
+    }
+});
+```
+
+**Decisão de design:** objetos retangulares (casas) usam `zone` (Box Collider) por ser mais leve computacionalmente. Polígonos são reservados para geometria irregular (rochas), onde um Box Collider criaria "paredes invisíveis" no ar.
+
+**Correção implementada:** O Tiled exporta coordenadas com origem no **canto superior esquerdo**, mas o Phaser posiciona zones pelo **centro**. O offset `obj.width / 2` e `obj.height / 2` corrige esse deslocamento, evitando que as colisões apareçam com posição errada no mapa.
+
+---
+
+## Sistema de Diálogo com Typewriter (DialogoManager.js)
+
+### O que foi implementado
+
+A classe `DialogoManager` é reutilizável e gerencia caixas de diálogo com efeito typewriter para qualquer NPC do jogo. O sistema funciona com uma fila de falas e avança via tecla **E**:
+
+```javascript
+// DialogoManager.js — efeito typewriter
+this._timer = this._cena.time.addEvent({
+    delay:    35, // 35ms por caractere
+    repeat:   textoCompleto.length - 1,
+    callback: () => {
+        this._textoFala.setText(textoCompleto.substring(0, i + 1));
+        i++;
+        if (i >= textoCompleto.length) {
+            this._digitando = false;
+            this._indicador.setVisible(true); // mostra ▼ ao terminar
+        }
+    },
+});
+```
+
+### Funcionalidades implementadas
+
+| Funcionalidade | Descrição |
+|---|---|
+| **Skip do typewriter** | Apertar E durante a digitação exibe o texto completo instantaneamente |
+| **Cores por personagem** | Cada NPC tem cor de nome configurável via `CORES_PERSONAGEM` |
+| **Fechamento por distância** | Se o jogador se afastar durante o diálogo, ele fecha automaticamente |
+| **Substituição de nome** | Falas do `Jogador` exibem o nome real digitado na tela de seleção |
+| **Callback de fim** | Ao terminar todas as falas, executa uma função opcional (ex: iniciar negociação) |
+
+### Fechamento por distância (CenaCasa.js)
+
+```javascript
+// update() — fecha o diálogo se o jogador se afastar da Cielita
+if (!perto && this.dialogo.aberto) {
+    this.dialogo.fechar();
+}
+```
+
+### Integração com NegociacaoPedro
+
+A classe `DialogoPedro` estende `DialogoManager` com as falas específicas do NPC. Ao terminar o último diálogo, o callback inicia automaticamente a cena de negociação:
+
+```javascript
+// CenaCasaGelo.js
+this.dialogoPedro.abrir(() => {
+    this.cameras.main.fadeOut(500, 0, 0, 0);
+    this.cameras.main.once('camerafadeoutcomplete', () => {
+        this.scene.start('NegociacaoPedro');
+    });
+});
+```
+
+---
+
+## Sistema de Negociação por Cartas (CenaNegociacao.js / NegociacaoPedro.js)
+
+### O que foi implementado
+
+O sistema de negociação é a mecânica central do jogo. A classe `CenaNegociacao` é uma **classe base abstrata** que define toda a lógica da UI e do fluxo de jogo. Cada cliente é implementado como uma subclasse (ex: `NegociacaoPedro`) que sobrescreve apenas o conteúdo específico daquele cliente.
+
+### Estrutura das 5 fases
+
+```javascript
+// CenaNegociacao.js
+static FASES = ['abordagem', 'sondagem', 'demonstracao', 'negociacao', 'fechamento'];
+```
+
+Cada fase tem um conjunto de cartas exigidas e uma quantidade de cartas distribuídas na mão do jogador:
+
+```javascript
+// NegociacaoPedro.js
+cartasExigidas: {
+    abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
+    sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor'],
+    demonstracao: [], // qualquer produto vale — pontuação varia
+    negociacao:   ['carta_desconto'],
+    fechamento:   ['carta_contrato'],
+},
+cartasPorFase: {
+    abordagem: 5, sondagem: 6, demonstracao: 4,
+    negociacao: 3, fechamento: 3,
+},
+```
+
+### Barra de satisfação com 3 estados
+
+O cliente reage visualmente às jogadas do jogador. A satisfação vai de 0 a 100 e determina o sprite exibido e a cor da barra:
+
+```javascript
+// CenaNegociacao.js
+static SATISFACAO_ESTADOS = [
+    { min: 67, max: 100, estado: 'satisfeito', cor: 0x44cc88 },
+    { min: 34, max: 66,  estado: 'neutro',     cor: 0xccaa44 },
+    { min: 0,  max: 33,  estado: 'bravo',      cor: 0xcc4444 },
+];
+
+static GANHO_SATISFACAO = 20;
+static PERDA_SATISFACAO = 30;
+```
+
+A barra anima suavemente via `tween` ao receber ou perder satisfação:
+
+```javascript
+this.tweens.add({
+    targets:  this.barraSatisfacaoFill,
+    width:    larguraTotal * (this.satisfacao / 100),
+    duration: 400,
+    ease:     'Quad.easeOut',
+});
+```
+
+### Sistema de pontuação na fase de Demonstração
+
+Na fase de demonstração, cada produto Cielo tem uma pontuação diferente. O jogador escolhe qual produto apresentar e a satisfação aumenta de acordo:
+
+```javascript
+// NegociacaoPedro.js
+const PONTUACAO_PRODUTO = {
+    CieloLioOn:  10,
+    CieloFlash:  15,
+    CVBA:        20,
+    CieloFlash2: 25,
+};
+
+// A satisfação ganha = GANHO_BASE (20) + pontuação do produto
+this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
+```
+
+### Paginação na fase de Sondagem
+
+Como a fase de Sondagem tem 6 cartas (acima do limite visual de 3), o sistema divide automaticamente as cartas em páginas navegáveis com botões `<` e `>`:
+
+```javascript
+// CenaNegociacao.js
+if (fase === 'sondagem' && cartasDaFase.length > 3) {
+    Phaser.Utils.Array.Shuffle(cartasDaFase);
+    this._paginas = [];
+    for (let i = 0; i < cartasDaFase.length; i += 3) {
+        this._paginas.push(cartasDaFase.slice(i, i + 3));
+    }
+    this._paginaAtual = 0;
+    this._mostrarPaginaSondagem();
+}
+```
+
+### Modal de detalhes da carta
+
+Ao clicar em uma carta, um overlay exibe a imagem ampliada com botões de "Voltar" e "Selecionar". Na fase de Demonstração, selecionar a carta já aciona o avanço de fase automaticamente, sem precisar do botão CONFIRMAR:
+
+```javascript
+// NegociacaoPedro.js
+if (fase === 'demonstracao') {
+    this.time.delayedCall(300, () => {
+        fecharModal();
+        const soma = PONTUACAO_PRODUTO[carta.key] ?? 0;
+        this._mostrarDialogo(this._falaAcertoFase(fase));
+        this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + soma);
+        this.time.delayedCall(4000, () => this._avancarOuVencer());
+    });
+}
+```
+
+### Indicador de progresso de fases
+
+A barra de fases no topo da tela usa tweens para animar o indicador da fase atual:
+
+```javascript
+// CenaNegociacao.js — indicador pulsa ao entrar em nova fase
+this.tweens.add({
+    targets: circulo, scaleX: 1.2, scaleY: 1.2,
+    duration: 200, yoyo: true,
+});
+```
+
+
+
+## Carregamento de Assets (Preloader.js / BootScene.js)
+
+### O que foi implementado
+
+Para evitar o erro **"Texture key already in use"**, todos os assets do jogo são carregados uma única vez no `Preloader`, que roda antes de qualquer cena de gameplay. O `BootScene` possui uma barra de progresso visual que reflete o carregamento em tempo real:
+
+```javascript
+// BootScene.js
+this.load.on('progress', (value) => {
+    fill.width = barraW * value;
+    textoPorc.setText(`${Math.floor(value * 100)}%`);
+});
+```
+
+Os assets de cartas carregados nesta sprint incluem 5 cartas de Abordagem, 6 de Sondagem e 4 Produtos Cielo (`CieloLioOn`, `CieloFlash`, `CieloFlash2`, `CVBA`), além de 4 skins de jogador com 5 animações cada (total de 20 spritesheets).
+
+
+
+## Tela de Seleção de Personagem (CenaPersonagem.js)
+
+### O que foi implementado
+
+Antes de entrar no jogo, o jogador escolhe entre **4 skins** (homem/mulher × branco/negro) e digita seu nome. As escolhas são persistidas via `game.registry` para durar durante toda a sessão:
+
+```javascript
+// CenaPersonagem.js
+this.game.registry.set('nomeJogador', nome);
+this.game.registry.set('spriteJogador', this.spriteSelecionado);
+```
+
+O input de nome é feito diretamente via `input.keyboard`, com limite de 16 caracteres, suporte a Backspace e confirmação por Enter ou pelo botão "COMEÇAR". As skins são exibidas com animação idle em loop e efeito de hover com `tween` de escala.
 
 ## 4.4. Desenvolvimento final do MVP (sprint 4)
 
-*Descreva e ilustre aqui o desenvolvimento da versão final do jogo, explicando brevemente o que foi entregue em termos de MVP. Utilize prints de tela para ilustrar. Indique as eventuais dificuldades e planos futuros.*
+A sprint 4 representa a entrega do Cielo Verso como produto jogável de ponta a ponta. O MVP consolidado vai além de um protótipo navegável: é um ciclo completo de aprendizado e aplicação comercial, no qual o jogador parte do menu inicial, atravessa todos os mundos interligados com seus respectivos NPCs e negociações, conquista insígnias por vitória e avança até a negociação final na Cidade Cielo. O que resta para a sprint 5 é a tela de fim de jogo global e o sistema de métricas de desempenho.
+
+### Escopo entregue — visão sistêmica
+
+| Sistema | Status |
+| :--- | :---: |
+| Menu principal (Iniciar / Configurações / Sair) | Entregue |
+| Cena de introdução narrativa com Cielita (texto animado) | Entregue |
+| Seleção de personagem — 4 skins, input de nome | Entregue |
+| Configurações: modo daltônico (3 tipos), troca de skin e nome | Entregue |
+| Mapa Introdutório — Mundo da Cielita | Entregue |
+| Casa da Cielita (interior) | Entregue |
+| Ponte MC→QG (transição Mundo da Cielita ↔ Quebra Gelo) | Entregue |
+| Mapa Quebra Gelo — exterior com Cielita + Lorena (NPCs) | Entregue |
+| Casa do Pedro — interior com diálogo introdutório | Entregue |
+| Negociação com Seu Pedro — 5 fases completas | Entregue |
+| Insígnia "Mestre do Gelo" com animação de notificação | Entregue |
+| Ponte QG→VV (transição Quebra Gelo ↔ Vila do Varejo) | Entregue |
+| Mapa Vila do Varejo — exterior com Cielita + Eric + Jorge | Entregue |
+| Casas do Varejo (2 interiores navegáveis) | Entregue |
+| Negociação com Thainá — 3 fases com demonstração múltipla | Entregue |
+| Insígnia "Rei do Varejo" com animação de notificação | Entregue |
+| Mapa Praia dos Proveitos — exterior com Cielita | Entregue |
+| Negociação com Julia — 5 fases completas | Entregue |
+| HUD global de indicações (tecla O para toggle) | Entregue |
+| AudioManager — trilha + som ambiente com fade por região | Entregue |
+| Sistema de colisão via Tiled (polígonos e retângulos) | Entregue |
+| Transições fadeOut/fadeIn com guard de input (`CenaMapa`) | Entregue |
+| Preservação de spawn entre cenas (`init(data)` + `vindoDe`) | Entregue |
+| Preloader centralizado com barra de progresso | Entregue |
+| Tutorial sobreposição (tecla H, toggle) | Entregue |
+| Modo daltônico via SVG filter (deuteranopia, protanopia, tritanopia) | Entregue |
+| Cidade Cielo — negociação final | Entregue |
+| Tela de fim de jogo e métricas de desempenho | Previsto para sprint 5 |
+
+---
+
+### Fluxo completo do jogador no MVP
+
+O percurso jogável entregue percorre as seguintes cenas em sequência:
+
+```
+MenuPrincipal
+  └─► CenaIntroducao (narrativa da Cielita, personalizada com nome do jogador)
+        └─► CenaPersonagem (seleção de skin + input de nome)
+              └─► MundoDaCielita (Mapa Introdutório)
+                    ├─► CasaCielita (interior — diálogo com Cielita)
+                    └─► PonteMC_QG (ponte de transição horizontal)
+                          └─► QuebraGelo (Mapa Quebra Gelo)
+                                ├─► CasaGelo2 (interior — diálogo com Seu Pedro)
+                                │     └─► NegociacaoPedro (5 fases)
+                                │           └─► [Insígnia: Mestre do Gelo]
+                                └─► PonteQG_VV (ponte de transição vertical)
+                                      └─► VilaDoVarejo (Mapa Vila do Varejo)
+                                            ├─► CasaVarejo1 / CasaVarejo2 (interiores)
+                                            │     └─► NegociacaoThaina (3 fases)
+                                            │           └─► [Insígnia: Rei do Varejo]
+                                            └─► [Portal] → PraiaDosProveitos
+                                                  └─► NegociacaoJulia (5 fases completas)
+                                                        └─► [Insígnia: Praia dos Proveitos]
+                                                              └─► [Portal] → CidadeCielo
+                                                                    └─► NegociacaoRafael (boss final — todas as competências)
+                                                                          └─► [Insígnia: Mestre Cielo]
+```
+
+A **Cena de Introdução** é um diferencial narrativo que muitos projetos não entregam: antes de o jogador ver o mapa, a Cielita o recebe com um monólogo animado que usa seu nome diretamente (`"É aí que entram os escolhidos, [nome]."`) — personalizando a experiência desde o primeiro segundo.
+
+> **[INSERIR PRINT — Cena de Introdução: balão da Cielita com texto animado e fundo escuro]**
+
+> **[INSERIR PRINT — Tela de seleção de personagem: 4 skins com animação idle e campo de nome]**
+
+> **[INSERIR PRINT — Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem]**
+
+---
+
+### Sistema de negociação por cartas — arquitetura e NPCs
+
+O núcleo estratégico do jogo é a negociação. A decisão de arquitetura mais importante do projeto foi criar `CenaNegociacao` como **classe-base** e especializar cada cliente por herança — cada NPC é uma subclasse com suas próprias falas, cartas exigidas, curva de satisfação e regras de pontuação, sem duplicar nenhuma lógica de UI ou de fluxo de fases.
+
+#### Clientes implementados no MVP
+
+| NPC | Região | Fases |
+| :--- | :--- | :--- |
+| **Seu Pedro** | Quebra Gelo | 5 fases completas |
+| **Thainá** | Vila do Varejo | 3 fases (abordagem → sondagem → demonstração) |
+| **Julia** | Praia dos Proveitos | 5 fases completas |
+| **Rafael** | Cidade Cielo | Boss final — todas as competências |
+
+As quatro negociações formam uma jornada de aprendizado progressiva: cada cliente aborda um conjunto específico de competências comerciais, e o conhecimento acumulado em uma negociação é pressuposto para a seguinte. O design segue uma lógica de complexidade crescente — Pedro introduz o funil completo de vendas, Thainá aprofunda a coerência narrativa entre fases, Julia consolida o repertório, e o Rafael representa o clímax dessa progressão: uma negociação de complexidade significativamente maior, que pressupõe o domínio de tudo que foi aprendido nas regiões anteriores e exige do jogador o desempenho completo de um Gerente de Negócios Cielo.
+
+#### As 5 fases do funil de vendas
+
+| Fase | Representação comercial | Observação técnica |
+| :--- | :--- | :--- |
+| **Abordagem** | Primeiro contato e quebra de gelo | 5 cartas disponíveis |
+| **Sondagem** | Identificação das necessidades do cliente | 6 cartas; excede o limite visual → paginação automática com botões `<` e `>` |
+| **Demonstração** | Apresentação de produtos Cielo | Pedro: 1 produto; Thainá: seleção múltipla de 3 |
+| **Negociação** | Superação de objeções de preço | 3 cartas (Pedro e Julia) |
+| **Fechamento** | Confirmação da venda | 5 cartas (Pedro e Julia) |
+
+A **barra de satisfação** vai de 0 a 100 e muda de cor e expressão do NPC em tempo real:
+
+- **Satisfeito** (67–100): cliente receptivo — barra verde
+- **Neutro** (34–66): cliente hesitante — barra amarela
+- **Bravo** (0–33): cliente prestes a encerrar — barra vermelha
+
+> **[INSERIR PRINT — Tela de negociação com Pedro: barra de satisfação, cartas na mão e NPC]**
+
+> **[INSERIR PRINT — Modal de detalhe de carta aberto com imagem ampliada]**
+
+> **[INSERIR PRINT — Notificação de insígnia animada no topo da tela ("INSÍGNIA CONQUISTADA! — Mestre do Gelo")]**
+
+---
+
+### Sistemas de suporte entregues na sprint 4
+
+**AudioManager — trilha sonora por região com fade cruzado**
+
+Cada mapa tem sua própria trilha musical e som ambiente. O `AudioManager` roda como cena paralela persistente e gerencia as trocas com fade de 800ms entre faixas — nenhuma música corta abruptamente. O som ambiente (ruído de fundo) é tratado em canal separado da música principal, permitindo que os dois coexistam com volumes independentes.
+
+```
+QuebraGelo   → musica_quebragelo + ambiente_quebragelo
+VilaDoVarejo → musica_viladovarejo + ambiente_viladovarejo
+PraiaDosProveitos → musica_praiadosproveitos + ambiente_praiadosproveitos
+```
+
+**ColorblindManager — acessibilidade para daltonismo**
+
+O jogo implementa suporte a três tipos de daltonismo via filtro SVG aplicado sobre o canvas inteiro, configurável no menu de opções:
+
+| Modo | Tipo de daltonismo |
+| :--- | :--- |
+| Deuteranopia | Dificuldade com verde |
+| Protanopia | Dificuldade com vermelho |
+| Tritanopia | Dificuldade com azul |
+
+Essa feature posiciona o Cielo Verso como uma solução de treinamento genuinamente inclusiva — relevante para uma empresa com força de vendas nacional e diversa.
+
+**CenaMapa — classe-base para todos os mapas**
+
+Para eliminar a duplicação de código de transição presente nas sprints anteriores, foi criada a classe `CenaMapa`, da qual todos os mapas herdam. Ela centraliza três responsabilidades: lançar e encerrar o HUD automaticamente, executar o fade de entrada, e injetar o parâmetro `vindoDe` em toda transição de cena — sem que a cena de destino precise saber de onde o jogador veio para reposicioná-lo corretamente.
+
+**HUDCenas — indicador global sobreposто**
+
+O HUD corre como cena paralela em todas as telas de mapa, exibindo balões de missão ("Fale com a Cielita", "Encontre o cliente") que guiam o jogador sem interromper o gameplay. A tecla **O** ativa/desativa os indicadores a qualquer momento, respeitando jogadores que preferem explorar sem assistência.
+
+> **[INSERIR PRINT — Mapa Vila do Varejo com HUD de indicação visível no topo]**
+
+> **[INSERIR PRINT — Menu de configurações com opções de modo daltônico]**
+
+---
+
+### Dificuldades encontradas
+
+**Curva de entrada no desenvolvimento de jogos**
+
+A principal dificuldade do grupo foi a ausência de experiência prévia com Phaser 3 e com desenvolvimento de jogos em geral. O ciclo de vida de cenas (`preload → create → update`), o sistema de câmera com zoom e bounds, o gerenciamento de física arcade e a lógica de `registry` para compartilhar estado entre cenas foram conceitos aprendidos durante o próprio desenvolvimento — e não antes dele. A adaptação foi rápida, como evidencia a progressão de complexidade entre as sprints: o que era código linear na sprint 1 tornou-se arquitetura orientada a objetos com herança na sprint 4. Ainda assim, partes do código das primeiras sprints precisaram ser refatoradas à medida que o grupo amadureceu as abstrações corretas (como a criação tardia das classes `CenaMapa` e `CenaNegociacao`).
+
+**Coerência narrativa no sistema de cartas**
+
+Traduzir o processo real de vendas em mecânica de jogo exigiu múltiplas iterações. A decisão de fazer as escolhas da Sondagem afetarem a pontuação da Demonstração (como na Thainá) foi o maior desafio de design: é necessário manter estado entre fases dentro de uma mesma negociação, validar qual carta foi usada previamente e aplicar tabelas de pontuação condicionais — tudo sem interromper o fluxo visual da jogabilidade.
+
+**Bugs conhecidos — pendentes para sprint 5**
+
+- Estado de cartas não é limpo corretamente em alguns reinícios de negociação, causando duplicação de cartas na mão
+- O indicador de fase no topo da tela, em casos específicos, não avança visualmente em sincronia com a lógica interna
+
+---
+
+### Planos futuros
+
+**Sprint 5 — obrigatório**
+
+- Criar a tela de fim de jogo com resumo de desempenho por negociação
+- Integrar o sistema de métricas: tempo total de conclusão e mapeamento de erros críticos por fase
+- Corrigir os bugs conhecidos de reset de estado das cartas e sincronização do indicador de fase
+
+**Melhorias de produto — pós-MVP**
+
+- Expandir o catálogo de insígnias para cobrir todas as regiões (Praia dos Proveitos e Cidade Cielo)
+- Implementar sistema de replay com contador de tentativas por negociação — dado valioso para o gestor de RH da Cielo avaliar onde cada GN tem dificuldade
+- Ampliar o baralho com cartas desbloqueáveis por desempenho, aprofundando a progressão
+- Melhorar a responsividade dos controles de movimentação (latência entre comando e animação, apontada nos testes de jogabilidade)
+- Adicionar feedback sonoro às ações de carta (acerto, erro, virada de página) para reforço imediato do aprendizado
+- Adicionar cinemáticas de transição entre regiões para reforçar a narrativa da jornada do GN
 
 ## 4.5. Revisão do MVP (sprint 5)
 
@@ -536,25 +1327,86 @@ A fase final ocorre no Mundo de Negociação, onde o jogo transita para um siste
 
 ## 5.1. Casos de Teste (sprints 2 a 4)
 
-Esta seção detalha os procedimentos de teste fundamentais para garantir a integridade técnica e a fluidez da experiência do jogador em Cielo. O foco aqui é validar o "Caminho Crítico": a transição entre a interface inicial, a navegação pelo ambiente e a funcionalidade dos gatilhos de interação. Esses testes devem ser executados de forma cíclica a cada nova implementação para assegurar que as partes do sistema (menus, mapas e eventos) 
-continuem integradas corretamente.
+Esta seção detalha os procedimentos de teste fundamentais para garantir a integridade técnica e a fluidez da experiência do jogador no Cielo Verso. Os testes cobrem cinco categorias do caminho crítico do jogo: navegação e menus, exploração e movimentação, sistema de diálogo com NPCs, sistema de negociação por cartas e sistemas de suporte. Esses testes devem ser executados de forma cíclica a cada nova implementação para assegurar que todos os sistemas permaneçam integrados corretamente.
+
+### Categoria 1 — Navegação e Menus
+
 | # | Pré-condição | Descrição do Teste | Pós-condição |
 | :--- | :--- | :--- | :--- |
-| **1** | Tela de abertura ativa | Clicar no botão INICIAR | O jogo deve carregar o Mapa Introdutório e exibir automaticamente a imagem de Tutorial. |
-| **2** | Imagem de Tutorial ativa na tela | Pressionar a tecla **H** | A imagem de tutorial deve fechar, liberando a movimentação do personagem. |
-| **3** | Personagem em qualquer mapa | Pressionar a tecla **H** durante a exploração | A imagem de tutorial deve abrir (se fechada) ou fechar (se aberta) a qualquer momento. |
-| **4** | Personagem no Mapa Introdutório | Caminhar em direção à porta da Casa da Cielita e pressionar a tecla **E** | O sistema deve teletransportar o personagem para o interior da casa. |
-| **5** | Personagem no interior da Casa da Cielita | Caminhar em direção à porta de saída e pressionar a tecla **E** | O personagem deve retornar ao Mapa Introdutório, posicionado do lado de fora da casa. |
-| **6** | Personagem no Mapa Introdutório | Atravessar a ponte de conexão entre os mapas | O sistema deve carregar o Mapa "Quebra-Gelo" e posicionar o jogador na nova área (funciona para ida e volta). |
-| **7** | Personagem no Mapa Quebra-Gelo | Caminhar contra as Casas de Gelo, Pedras e limites do cenário | O sistema de colisão deve impedir o personagem de atravessar os objetos ou sair do mapa. |
-| **8** | Personagem no Mapa Quebra-Gelo | Aproximar-se da porta da Casa das Carnes Congeladas e pressionar a tecla **E** | O sistema deve carregar o interior da casa das carnes; o mesmo deve ocorrer ao pressionar **E** para sair. |
-| **9** | Personagem próximo à NPC Cielita | Entrar no raio de distância de interação | Um indicador visual (Botão **E**) deve aparecer flutuando sobre a NPC. |
-| **10** | Diálogo com Cielita ativo | Afastar-se da NPC para fora do raio de interação | A caixa de texto e o ícone de interação devem desaparecer e o diálogo deve ser encerrado. |
-| **11** | Diálogo iniciado (Texto em movimento) | Pressionar a tecla **E** enquanto o texto aparece letra por letra | O efeito "máquina de escrever" deve ser ignorado e o texto atual deve aparecer completo na tela. |
-| **12** | Texto da fala atual completo na tela | Pressionar a tecla **E** após a conclusão do texto | O sistema deve avançar para a próxima fala da Cielita ou encerrar o diálogo caso seja a última fala. |
+| **1** | Jogo recém-carregado no navegador | Aguardar o carregamento da barra de progresso do Preloader | A barra de progresso deve avançar de 0% a 100% e o Menu Principal deve ser exibido automaticamente ao término. |
+| **2** | Menu Principal ativo | Clicar no botão INICIAR | A Cena de Introdução deve ser carregada, exibindo o monólogo animado da Cielita. |
+| **3** | Menu Principal ativo | Clicar no botão CONFIGURAÇÕES | A tela de Configurações deve ser exibida com as opções de Visão, Resolução e Som. |
+| **4** | Menu Principal ativo | Clicar no botão SAIR | O jogo deve encerrar ou exibir confirmação de saída. |
+| **5** | Tela de Configurações ativa | Selecionar o modo de daltonismo "Deuteranopia" | O filtro SVG de deuteranopia deve ser aplicado sobre o canvas do jogo imediatamente, alterando a paleta de cores visível. |
+| **6** | Filtro de daltonismo ativo | Selecionar o modo "Nenhum" nas configurações | O filtro deve ser removido e a paleta de cores padrão do jogo deve ser restaurada. |
+| **7** | Tela de Configurações ativa | Clicar no botão VOLTAR | O sistema deve retornar à tela anterior sem perder as configurações salvas. |
 
-A execução consistente dos casos de teste listados acima garante que o núcleo fundamental de CIELO permaneça estável durante todo o processo de desenvolvimento. Ao validar a transição bem-sucedida entre o Mapa Introdutório e a Casa da Celita, asseguramos que os sistemas de colisão, gatilhos de cena e interações com NPCs estejam operando em harmonia. 
+---
 
+### Categoria 2 — Exploração e Movimentação
+
+| # | Pré-condição | Descrição do Teste | Pós-condição |
+| :--- | :--- | :--- | :--- |
+| **8** | Cena de Introdução ativa | Aguardar ou avançar todas as falas da Cielita | A tela de Seleção de Personagem deve ser carregada ao término da última fala. |
+| **9** | Tela de Seleção de Personagem ativa | Clicar em cada uma das 4 skins disponíveis | A skin selecionada deve ser destacada e a animação idle correspondente deve tocar em loop. |
+| **10** | Tela de Seleção de Personagem ativa | Digitar um nome no campo de texto e pressionar ENTER ou clicar em COMEÇAR | O jogo deve carregar o Mapa Introdutório com o nome e a skin selecionados persistidos via registry. |
+| **11** | Personagem em qualquer mapa | Pressionar **W**, **A**, **S**, **D** | O personagem deve se mover para cima, esquerda, baixo e direita respectivamente, com a animação direcional correta tocando em cada caso. |
+| **12** | Personagem em qualquer mapa | Pressionar **H** | O tutorial deve abrir como overlay. Pressionar **H** novamente deve fechá-lo, e o input do mapa deve ser bloqueado enquanto o tutorial estiver aberto. |
+| **13** | Personagem no Mapa Introdutório | Caminhar em direção à porta da Casa da Cielita e pressionar **E** | O personagem deve ser teletransportado para o interior da casa com transição fadeIn. |
+| **14** | Personagem no interior da Casa da Cielita | Caminhar em direção à porta de saída e pressionar **E** | O personagem deve retornar ao Mapa Introdutório posicionado corretamente do lado de fora, sem spawn na posição padrão. |
+| **15** | Personagem no Mapa Introdutório | Caminhar em direção à Ponte MC→QG e atravessá-la | O sistema deve carregar o Mapa Quebra Gelo com transição fadeOut/fadeIn e posicionar o jogador na entrada correta. O mesmo deve ocorrer ao retornar. |
+| **16** | Personagem no Mapa Quebra Gelo | Caminhar contra as casas de gelo, pedras e limites do cenário | O sistema de colisão via Tiled deve impedir o personagem de atravessar qualquer obstáculo ou sair dos limites do mapa. |
+| **17** | Personagem no Mapa Quebra Gelo | Caminhar em direção à Ponte QG→VV e atravessá-la | O sistema deve carregar o Mapa Vila do Varejo com transição correta e spawn na posição correspondente à origem. |
+| **18** | Personagem no Mapa Vila do Varejo | Caminhar em direção ao portal para a Praia dos Proveitos | O sistema deve carregar o Mapa Praia dos Proveitos corretamente. |
+| **19** | Personagem em qualquer mapa de exploração | Pressionar **O** | O indicador de missão do HUD deve alternar entre visível e oculto a cada acionamento da tecla. |
+
+---
+
+### Categoria 3 — Sistema de Diálogo com NPCs
+
+| # | Pré-condição | Descrição do Teste | Pós-condição |
+| :--- | :--- | :--- | :--- |
+| **20** | Personagem próximo a qualquer NPC | Entrar no raio de interação do NPC | O indicador visual do botão **E** deve aparecer flutuando sobre o NPC e o balão de missão do HUD deve ser atualizado. |
+| **21** | Personagem próximo a qualquer NPC | Afastar-se do NPC para fora do raio de interação | O indicador visual e a caixa de diálogo devem desaparecer automaticamente e o diálogo deve ser encerrado. |
+| **22** | Indicador de interação visível | Pressionar **E** para iniciar o diálogo | A caixa de diálogo deve aparecer e o texto da primeira fala deve ser exibido com efeito de máquina de escrever. |
+| **23** | Diálogo ativo com texto sendo digitado | Pressionar **E** durante o efeito de máquina de escrever | O efeito deve ser interrompido e o texto completo da fala atual deve aparecer imediatamente na tela. |
+| **24** | Texto da fala atual completo na tela | Pressionar **E** para avançar | O sistema deve exibir a próxima fala ou encerrar o diálogo caso seja a última, com o indicador de interação desaparecendo. |
+| **25** | Diálogo com a Cielita concluído | Verificar o registry do jogo | A chave correspondente ao diálogo concluído (ex.: `cielita_gelo_concluido`) deve estar marcada como `true`, impedindo que o diálogo se repita ao reentrar na cena. |
+
+---
+
+### Categoria 4 — Sistema de Negociação por Cartas
+
+| # | Pré-condição | Descrição do Teste | Pós-condição |
+| :--- | :--- | :--- | :--- |
+| **26** | Personagem no interior da Casa do Pedro, diálogo introdutório concluído | Sair da casa pela porta | A cena de negociação com Seu Pedro deve ser carregada com fadeIn, exibindo a barra de satisfação, as cartas na mão e o indicador de fases. |
+| **27** | Negociação ativa na fase de Abordagem | Passar o cursor sobre uma carta | A carta deve se elevar levemente (efeito hover) indicando que é interativa. |
+| **28** | Negociação ativa | Clicar em uma carta | O modal de detalhe da carta deve aparecer com a imagem ampliada e os botões "Voltar" e "Selecionar". |
+| **29** | Modal de detalhe da carta aberto | Clicar em "Voltar" | O modal deve fechar e as cartas originais devem permanecer na mão sem alteração. |
+| **30** | Modal de detalhe aberto com carta correta | Clicar em "Selecionar" | A satisfação do cliente deve aumentar, a barra deve animar para o novo valor, o sprite do cliente deve atualizar conforme o estado (satisfeito/neutro/bravo) e a carta deve ser removida da mão. |
+| **31** | Modal de detalhe aberto com carta incorreta | Clicar em "Selecionar" | A satisfação deve diminuir em 10 pontos, o sprite do cliente deve atualizar para um estado mais negativo e uma fala de erro deve ser exibida no balão de diálogo. |
+| **32** | Negociação ativa com satisfação em 1–10 | Jogar uma carta incorreta | A satisfação deve chegar a zero, a mensagem de derrota deve ser exibida e o sistema deve retornar à cena de origem após 2 segundos. |
+| **33** | Negociação ativa na fase de Sondagem | Verificar a área de cartas | As 6 cartas da fase de Sondagem devem estar divididas em páginas de 3, com os botões de navegação "<" e ">" visíveis e funcionais. |
+| **34** | Paginação ativa na fase de Sondagem | Clicar no botão ">" | A segunda página de cartas deve ser exibida e o botão "<" deve se tornar visível. Clicar em "<" deve retornar à primeira página e ocultá-lo novamente. |
+| **35** | Número de acertos necessários na fase atingido | Verificar o indicador de progresso de fases | O círculo da fase atual deve ser destacado com animação de pulso, os círculos das fases concluídas devem mudar de cor para verde e a próxima fase deve ser iniciada automaticamente. |
+| **36** | Todas as fases da negociação concluídas com satisfação acima de 0 | Concluir a última fase | O modal de insígnia deve aparecer sobre a tela com animação de entrada (escala de 0 para 1) e o botão "CONTINUAR" deve estar visível. |
+| **37** | Modal de insígnia exibido | Clicar em "CONTINUAR" | O modal deve fechar, a insígnia deve ser salva no registry e o sistema deve retornar à cena de origem com transição fadeOut. |
+| **38** | Negociação vencida anteriormente | Retornar ao mapa e entrar novamente na casa do NPC | A negociação não deve reiniciar — a chave de vitória no registry (`pedro_vencido`, `varejo_vencido`) deve impedir nova execução da cena de negociação. |
+
+---
+
+### Categoria 5 — Sistemas de Suporte
+
+| # | Pré-condição | Descrição do Teste | Pós-condição |
+| :--- | :--- | :--- | :--- |
+| **39** | Personagem transitando entre dois mapas | Observar o áudio durante a transição | A trilha do mapa de origem deve diminuir gradualmente (fade out de 800ms) e a trilha do novo mapa deve aumentar progressivamente (fade in de 800ms), sem corte abrupto entre faixas. |
+| **40** | Mapa com som ambiente ativo | Transitar para outro mapa | O som ambiente do mapa anterior deve encerrar com fade de 600ms e o som ambiente do novo mapa deve iniciar em seguida, sem sobreposição. |
+| **41** | Personagem retornando de uma cena interior para o mapa externo | Verificar a posição de spawn do personagem | O personagem deve reaparecer na posição correta correspondente à porta pela qual saiu, não na posição padrão do mapa. |
+| **42** | Jogo em execução com qualquer cena de mapa ativa | Recarregar a página do navegador e iniciar novamente | O Preloader deve executar o carregamento de todos os assets sem erros de "Texture key already in use" no console do navegador. |
+
+---
+
+A execução consistente dos casos de teste acima garante que o Cielo Verso permaneça estável ao longo de todo o desenvolvimento. A cobertura vai desde o carregamento inicial e a navegação entre mapas até a lógica central de negociação e os sistemas de suporte — assegurando que cada componente funcione de forma isolada e em integração com os demais.
 
 
 
