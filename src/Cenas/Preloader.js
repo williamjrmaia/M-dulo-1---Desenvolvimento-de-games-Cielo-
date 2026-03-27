@@ -156,6 +156,9 @@ export default class Preloader extends Phaser.Scene {
         // ── Áudio de clique ──
         this.load.audio('som_clique', 'assets/Audio/botoes_menu.wav');
 
+        // ── Transições entre Mapas ──
+        this.load.audio('transicao_ponte', 'assets/Audio/transicao_entre_mapas.wav');
+
     }
 
     create() {
