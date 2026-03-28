@@ -475,14 +475,34 @@ O tempo não possui relevância no jogo
 
 ### 3.3.5. Trilha sonora (sprint 4)
 
-*Descreva a trilha sonora do jogo, indicando quais músicas serão utilizadas no mundo e nas fases. Utilize listas ou tabelas para organizar esta seção. Caso utilize material de terceiros em licença Creative Commons, não deixe de citar os autores/fontes.*
+A identidade sonora dos efeitos (SFX) foi desenvolvida para reforçar a estética RPG e assegurar uma navegação responsiva, convertendo cada interação do usuário em um feedback tátil-auditivo. No Menu Principal, a trilha temática define o tom tecnológico e introduz o jogador à experiência de aprendizado. Nas cutscenes, o aparecimento do texto é sincronizado com um efeito de digitação que direciona a atenção do jogador, assegurando que o contexto narrativo seja absorvido de maneira dinâmica. Em todas as ações de clique, "blips" sintéticos fornecem confirmação imediata de comando, mantendo o usuário engajado através de respostas sonoras breves e precisas que previnem a fadiga auditiva e consolidam a sensação de controle sobre a interface.
 
-*Exemplo de tabela*
-\# | titulo | ocorrência | autoria
---- | --- | --- | ---
-1 | tema de abertura | tela de início | própria
-2 | tema de combate | cena de combate com inimigos comuns | Hans Zimmer
-3 | ... 
+A movimentação do personagem é acompanhada por sons de passos distintos por superfície e localização, com variações dedicadas ao Mundo da Cielita, ao Quebra-Gelo, à Vila do Varejo, à Praia dos Proveitos e aos interiores das casas, assegurando que a movimentação seja sonoramente coerente com cada ambiente. A cena de negociação dispõe de uma música específica que será utilizada em todo o contato com o suposto cliente
+
+Cada cenário explorável conta com trilha musical temática e sons de ambiente particulares. O Mundo da Cielita (Área Inicial), o Quebra-Gelo (Primeira Fase), a Vila do Varejo (Segunda Fase), Praia dos Proveitos (Terceira Fase) e Cidade Cielo (Última Fase) apresentam composições que complementam a identidade visual e narrativa de cada espaço, enquanto os sons ambientes, vento das áreas nevadas, som da natureza e vila, do murmúrio do litoral, movimento urbano acabam intensificam a sensação de imersão. As transições entre mapas são indicadas por um efeito sonoro exclusivo, demarcando os espaços narrativos de forma clara e fluida.
+
+## Tabela Trilha Sonora
+
+| Título | Ocorrência | Nome da Música e Autoria |
+|---|---|---|
+| Música de Fundo | Menu Principal/Tela de Início/Mundo Cielita | High Tide - Laura Platt |
+| Música Quebra-Gelo | Cena: Quebra-Gelo/Casas Quebra Gelo | Mainden Voyage - Helmut Schenker |
+| Música Vila do Varejo | Cena: Vila do Varejo/Casas Vila do Varejo | Barefoot Adventures - Adriel Fair |
+| Música Praia dos Proveitos | Cena: Praia dos Proveitos/Casas Praia dos Proveitos | Beach Goer - Frook |
+| Música Cidade Cielo | Cena: Cidade Cielo, e posteriormente Casas Cidade Cielo | slow down - Loyae |
+| Música Negociação | Cena: Negociação | The Only Way Out - Dian Shuai |
+| Passos | Movimentação na Casa da Cielita | By Epidemic Sound |
+| Passos | Movimentação no Quebra-Gelo | By Epidemic Sound |
+| Passos | Movimentação na Vila do Varejo | By Epidemic Sound |
+| Passos | Movimentação na Praia dos Proveitos | By Epidemic Sound |
+| Passos | Movimentação no Interior das Casas | By Epidemic Sound |
+| Ambiente | Som ambiente: Quebra-Gelo | By Epidemic Sound |
+| Ambiente | Som ambiente: Vila do Varejo | By Epidemic Sound |
+| Ambiente | Som ambiente: Praia dos Proveitos | By Epidemic Sound |
+| Ambiente | Som ambiente: Cidade Cielo | By Epidemic Sound |
+| Transição | Transição entre mapas/cenas | By Epidemic Sound |
+| Botão UI | Cliques nos botões | By Epidemic Sound |
+| Teclado | Exibição de texto nas Cutscenes | (CherryMX Red - ABS keycaps) - By Mechvibes |
 
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
 
