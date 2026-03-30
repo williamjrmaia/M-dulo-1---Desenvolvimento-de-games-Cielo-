@@ -5,6 +5,7 @@ import CenaConfig       from './Cenas/CenaConfig.js';
 import HUDCenas         from './Cenas/HUDCenas.js';
 import TutorialOverlay  from './Cenas/TutorialOverlay.js';
 import CenaPersonagem   from './Cenas/CenaPersonagem.js';
+import PauseMenu        from './Cenas/Pausaoverlay.js';
 
 import CenaIntroducao   from './Cenas/CenaIntroducao.js';
 
@@ -54,7 +55,7 @@ const config = {
         
         Preloader, AudioManager, MenuPrincipal, CenaConfig,
 
-        CenaPersonagem, CenaIntroducao, TutorialOverlay, HUDCenas,
+        CenaPersonagem, CenaIntroducao, TutorialOverlay, HUDCenas,PauseMenu,
 
         CasaCielita, MundoDaCielita, PonteMC_QG,
 
