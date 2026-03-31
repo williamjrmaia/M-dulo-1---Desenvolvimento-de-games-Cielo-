@@ -171,7 +171,9 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
 
     // Deve ser chamado no update() da cena a cada frame.
     // jogadorSprite: Phaser.GameObjects.Sprite — sprite físico do jogador
-    // teclaInteragir: Phaser.Input.Keyboard.Key — tecla E (ou outra)
+    // teclaInteragir: Phaser.Input.Keyboard.Key | Key[] — tecla(s) de interação
+    //   Aceita uma única tecla OU um array de teclas — qualquer uma aciona o diálogo.
+    //   Retrocompatível: chamadas antigas com uma só tecla continuam funcionando.
     atualizar(jogadorSprite, teclaInteragir) {
         // NPCs não-interativos só patrulham — sem checagem de proximidade
         if (!this._cfg.interativo) {
@@ -202,11 +204,12 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
             this._dialogo.fechar();
         }
 
-        // ── Tecla E ───────────────────────────────────────────────────────────
-        // JustDown resets the flag on first call, so only consume it when
-        // the player is near or the dialog is already open — otherwise other
-        // scenes/zones won't see the keypress this frame.
-        if ((perto || this._dialogo.aberto) && Phaser.Input.Keyboard.JustDown(teclaInteragir)) {
+        // ── Tecla(s) de interação ─────────────────────────────────────────────
+        // _justDown() aceita uma tecla única ou um array — retorna true se
+        // qualquer uma delas foi pressionada neste frame (JustDown).
+        // JustDown consome o flag na primeira checagem, então só verificamos
+        // quando o jogador está perto ou o diálogo já está aberto.
+        if ((perto || this._dialogo.aberto) && this._justDown(teclaInteragir)) {
             if (perto && !this._dialogo.aberto) {
                 this._dialogo.abrir(this._falas, this._cfg.onFimDialogo);
                 return;
@@ -282,6 +285,18 @@ export default class NPC extends Phaser.Physics.Arcade.Sprite {
     // ─────────────────────────────────────────────────────────────────────────
     // Helpers internos
     // ─────────────────────────────────────────────────────────────────────────
+
+    /**
+     * Retorna true se qualquer uma das teclas informadas foi pressionada neste frame.
+     * Aceita uma única Phaser.Input.Keyboard.Key ou um array delas.
+     * Retrocompatível: chamadas antigas com uma só tecla continuam funcionando.
+     */
+    _justDown(tecla) {
+        if (Array.isArray(tecla)) {
+            return tecla.some(t => t && Phaser.Input.Keyboard.JustDown(t));
+        }
+        return tecla && Phaser.Input.Keyboard.JustDown(tecla);
+    }
 
     /**
      * Toca uma animação sem reiniciá-la se já estiver rodando.

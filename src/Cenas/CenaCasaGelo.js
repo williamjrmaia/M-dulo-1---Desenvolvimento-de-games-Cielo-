@@ -92,7 +92,7 @@ export default class CenaCasaGelo extends CenaMapa {
         this.personagem.atualizar();
 
         // Atualiza o indicador E do Pedro (mostra quando perto, esconde quando longe)
-        this.pedro.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.pedro.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── HUD do Balão ──────────────────────────────────────────────────────
         const registry    = this.registry.get('negociacoesVencidas') ?? {};

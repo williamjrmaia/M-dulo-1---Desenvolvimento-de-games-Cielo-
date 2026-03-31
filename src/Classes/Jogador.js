@@ -74,6 +74,7 @@ export default class Jogador {
             left:      Phaser.Input.Keyboard.KeyCodes.A,
             right:     Phaser.Input.Keyboard.KeyCodes.D,
             interagir: Phaser.Input.Keyboard.KeyCodes.E,
+            interagir2: Phaser.Input.Keyboard.KeyCodes.SPACE,
             tutorial:  Phaser.Input.Keyboard.KeyCodes.H,
         });
         return this.teclas;

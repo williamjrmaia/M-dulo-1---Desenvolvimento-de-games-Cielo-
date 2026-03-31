@@ -111,7 +111,7 @@ export default class CasaCielita extends CenaMapa {
         if (super.update()) return;
 
         this.jogador.atualizar();
-        this.cielita.atualizar(this.jogador.sprite, this.teclas.interagir);
+        this.cielita.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ✅ CORRIGIDO: usa this.game.events para comunicação entre cenas
         if (this.cielita.dialogoAberto) {

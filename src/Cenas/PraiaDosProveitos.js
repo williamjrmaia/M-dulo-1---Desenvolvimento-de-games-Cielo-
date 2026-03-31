@@ -207,10 +207,10 @@ export default class PraiaDosProveitos extends CenaMapa {
 
         // ── Atualiza NPCs ────────────────────────────────────────────────────
         if (this.cielita) {
-            this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
+            this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
         }
         if (this.felipe) {
-            this.felipe.atualizar(this.personagem.sprite, this.teclas.interagir);
+            this.felipe.atualizar(twwhis.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
         }
 
         // ── HUD (balão de orientação) ─────────────────────────────────────────

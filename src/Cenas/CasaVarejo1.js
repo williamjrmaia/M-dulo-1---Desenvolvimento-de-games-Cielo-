@@ -120,7 +120,7 @@ export default class CasaVarejo1 extends CenaMapa {
 
         // Atualiza movimentos do player e lógica de proximidade da NPC
         this.personagem.atualizar();
-        this.thaina.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.thaina.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── HUD ─────────────────────────────────────────────────────────────
         // Ao entrar na casa da Thainá, a missão passa a ser negociar com ela.

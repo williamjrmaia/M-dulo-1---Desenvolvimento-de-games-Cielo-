@@ -51,7 +51,7 @@ export default class CidadeCielo extends CenaMapa {
 
         // ── NPC: Cielita (introdução no início do mapa) ───────────────────────
         // Posicionada bem no início, perto de onde o jogador aparece (y ≈ 830)
-        this.cielita = new NPC(this, larguraImagem / 1.93- 20, 700, 'cielitaparada', {
+        this.cielita = new NPC(this, larguraImagem / 1.93 - 20, 750, 'cielitaparada', {
             velocidade:         0,
             distanciaInteracao: 60,
             grupoNPCs:          this.grupoNPCs,
@@ -157,7 +157,7 @@ export default class CidadeCielo extends CenaMapa {
         this.jogador.atualizar();
 
         // ── Atualiza NPC Cielita ──────────────────────────────────────────────
-        this.cielita.atualizar(this.jogador.sprite, this.teclas.interagir);
+        this.cielita.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── HUD dinâmico ──────────────────────────────────────────────────────
         if (this.cielita.dialogoAberto) {
