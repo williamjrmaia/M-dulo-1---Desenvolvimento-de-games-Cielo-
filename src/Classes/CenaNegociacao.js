@@ -175,27 +175,34 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _criarIconesPIFE(barraX, barraW, barraY) {
         const letras      = [...CenaNegociacao.LETRAS_PIFE, 'CPC'];
-        const iconeW      = 44;
-        const espaco      = 10;
-        const totalW      = letras.length * iconeW + (letras.length - 1) * espaco;
-        const startX      = barraX - totalW / 2 + iconeW / 2;
-        const y           = barraY + 68;
+        const iconeH      = 28;
+        const largura     = iconeH * 2;
+        const espaco      = 6;
+        const totalW      = letras.length * largura + (letras.length - 1) * espaco;
+        const startX      = barraX - totalW / 2 + largura / 2;
+        const y           = barraY + 43;
+
+        const pad = 8;
+        this.add.rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+            .setStrokeStyle(1, 0x555555)
+            .setDepth(49);
 
         this._iconesPIFE = {};
 
         letras.forEach((letra, i) => {
-            const x        = startX + i * (iconeW + espaco);
+            const x        = startX + i * (largura + espaco);
             const chaveOff = `pife_${letra.toLowerCase()}_off`;
             const chaveOn  = `pife_${letra.toLowerCase()}_on`;
 
             const icone = this.textures.exists(chaveOff)
-                ? this.add.image(x, y, chaveOff).setDisplaySize(iconeW, iconeW)
-                : this.add.rectangle(x, y, iconeW, iconeW, 0x333333).setStrokeStyle(1, 0x555555);
+                ? this.add.image(x, y, chaveOff).setDisplaySize(largura, iconeH).setDepth(50)
+                : this.add.rectangle(x, y, largura, iconeH, 0x333333).setStrokeStyle(1, 0x555555).setDepth(50);
 
             this._iconesPIFE[letra] = { obj: icone, chaveOff, chaveOn };
         });
 
         this._setPIFEVisivel(false);
+
     }
 
     _setPIFEVisivel(visivel) {
@@ -222,21 +229,22 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _criarIconesAspectos(barraX, barraW, barraY) {
         const aspectos = CenaNegociacao.ASPECTOS_SONDAGEM;
-        const iconeW   = 44;
-        const espaco   = 10;
-        const totalW   = aspectos.length * iconeW + (aspectos.length - 1) * espaco;
-        const startX   = barraX - totalW / 2 + iconeW / 2;
-        const y        = barraY + 68;
+        const iconeH   = 28;
+        const largura  = iconeH * 2;
+        const espaco   = 6;
+        const totalW   = aspectos.length * largura + (aspectos.length - 1) * espaco;
+        const startX   = barraX - totalW / 2 + largura / 2;
+        const y        = barraY + 43;
 
         this._iconesAspectos = {};
 
         aspectos.forEach((aspecto, i) => {
-            const x     = startX + i * (iconeW + espaco);
+            const x     = startX + i * (largura + espaco);
             const chave = `sondagem_${aspecto}_interrogacao`;
 
             const icone = this.textures.exists(chave)
-                ? this.add.image(x, y, chave).setDisplaySize(iconeW, iconeW)
-                : this.add.rectangle(x, y, iconeW, iconeW, 0x333333).setStrokeStyle(1, 0x555555);
+                ? this.add.image(x, y, chave).setDisplaySize(largura, iconeH).setDepth(50)
+                : this.add.rectangle(x, y, largura, iconeH, 0x333333).setStrokeStyle(1, 0x555555).setDepth(50);
 
             this._iconesAspectos[aspecto] = { obj: icone };
         });
@@ -327,13 +335,14 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._letrasPreenchidas = new Set();
         this._cpcDisponivel     = false;
         this._setPIFEVisivel(true);
+                console.log('PIFE visível:', Object.values(this._iconesPIFE).map(d => d.obj.visible));
         this._distribuirCartasAbordagem(this._getCartasAbordagem());
     }
 
     _distribuirCartasAbordagem(cartas) {
         const W = this.scale.width;
         const H = this.scale.height;
-        const { CARD_WIDTH, CARD_HEIGHT, CARD_SPACING, ANIM_FADE_DURATION, ANIM_HOVER_OFFSET } = CenaNegociacao;
+        const { CARD_WIDTH, CARD_SPACING, ANIM_FADE_DURATION, ANIM_HOVER_OFFSET } = CenaNegociacao;
         const totalW = cartas.length * CARD_WIDTH + (cartas.length - 1) * CARD_SPACING;
         const startX = (W - totalW) / 2;
         const y      = H * 0.78;
@@ -344,20 +353,15 @@ export default class CenaNegociacao extends Phaser.Scene {
             const x  = startX + i * (CARD_WIDTH + CARD_SPACING) + CARD_WIDTH / 2;
             const bg = this._criarFundoCarta(x, y, carta.key);
 
-            const chaveIcone = `pife_${carta.letra.toLowerCase()}_off`;
-            const iconeLetra = this.textures.exists(chaveIcone)
-                ? this.add.image(x, y - CARD_HEIGHT / 2 + 20, chaveIcone).setDisplaySize(32, 32)
-                : this.add.text(x, y - CARD_HEIGHT / 2 + 20, carta.letra, { fontFamily: '"Courier New", monospace', fontSize: '14px', color: '#aaaaaa' }).setOrigin(0.5);
-
             bg.setAlpha(0);
             this.tweens.add({ targets: bg, alpha: 1, duration: ANIM_FADE_DURATION, delay: i * 80 });
             bg.on('pointerover', () => this.tweens.add({ targets: bg, y: `-=${ANIM_HOVER_OFFSET}`, duration: 100 }));
             bg.on('pointerout',  () => this.tweens.add({ targets: bg, y: `+=${ANIM_HOVER_OFFSET}`, duration: 100 }));
             bg.on('pointerdown', () => this._mostrarDetalheCartaAbordagem(carta));
 
-            if (carta.isCPC) { bg.setAlpha(0.4).disableInteractive(); iconeLetra.setAlpha(0.4); }
+            if (carta.isCPC) { bg.setAlpha(0.4).disableInteractive(); }
 
-            carta._objetos = { bg, iconeLetra };
+            carta._objetos = { bg };
             this.cartasNaMao.push(carta);
             this.grupoCartas.add(bg);
         });
@@ -408,7 +412,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         const cpc = this.cartasNaMao.find(c => c.isCPC);
         if (!cpc?._objetos) return;
 
-        this.tweens.add({ targets: [cpc._objetos.bg, cpc._objetos.iconeLetra], alpha: 1, duration: 300 });
+        this.tweens.add({ targets: cpc._objetos.bg, alpha: 1, duration: 300 });
         cpc._objetos.bg.setInteractive({ useHandCursor: true });
         this._acenderIconePIFE('CPC');
         this.tweens.add({ targets: cpc._objetos.bg, scaleX: 1.05, scaleY: 1.05, duration: 400, yoyo: true, repeat: 2, ease: 'Sine.easeInOut' });
@@ -426,7 +430,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     _distribuirCartasSondagem(cartas) {
         const W = this.scale.width;
         const H = this.scale.height;
-        const { CARD_WIDTH, CARD_HEIGHT, CARD_SPACING, ANIM_FADE_DURATION, ANIM_HOVER_OFFSET } = CenaNegociacao;
+        const { CARD_WIDTH, CARD_SPACING, ANIM_FADE_DURATION, ANIM_HOVER_OFFSET } = CenaNegociacao;
         const totalW = cartas.length * CARD_WIDTH + (cartas.length - 1) * CARD_SPACING;
         const startX = (W - totalW) / 2;
         const y      = H * 0.78;
@@ -437,18 +441,13 @@ export default class CenaNegociacao extends Phaser.Scene {
             const x  = startX + i * (CARD_WIDTH + CARD_SPACING) + CARD_WIDTH / 2;
             const bg = this._criarFundoCarta(x, y, carta.key);
 
-            const chaveIcone   = `sondagem_${carta.aspecto}_interrogacao`;
-            const iconeAspecto = this.textures.exists(chaveIcone)
-                ? this.add.image(x, y - CARD_HEIGHT / 2 + 20, chaveIcone).setDisplaySize(32, 32)
-                : this.add.text(x, y - CARD_HEIGHT / 2 + 20, carta.aspecto[0].toUpperCase(), { fontFamily: '"Courier New", monospace', fontSize: '14px', color: '#aaaaaa' }).setOrigin(0.5);
-
             bg.setAlpha(0);
             this.tweens.add({ targets: bg, alpha: 1, duration: ANIM_FADE_DURATION, delay: i * 80 });
             bg.on('pointerover', () => this.tweens.add({ targets: bg, y: `-=${ANIM_HOVER_OFFSET}`, duration: 100 }));
             bg.on('pointerout',  () => this.tweens.add({ targets: bg, y: `+=${ANIM_HOVER_OFFSET}`, duration: 100 }));
             bg.on('pointerdown', () => this._mostrarDetalheCartaSondagem(carta));
 
-            carta._objetos = { bg, iconeAspecto };
+            carta._objetos = { bg };
             this.cartasNaMao.push(carta);
             this.grupoCartas.add(bg);
         });
@@ -577,9 +576,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     _removerCartaVisual(carta) {
-        if (carta._objetos?.bg)           carta._objetos.bg.destroy();
-        if (carta._objetos?.iconeLetra)   carta._objetos.iconeLetra.destroy();
-        if (carta._objetos?.iconeAspecto) carta._objetos.iconeAspecto.destroy();
+        if (carta._objetos?.bg) carta._objetos.bg.destroy();
         this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
     }
 
