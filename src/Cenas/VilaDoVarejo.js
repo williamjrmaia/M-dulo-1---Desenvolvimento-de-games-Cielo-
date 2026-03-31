@@ -44,8 +44,12 @@ export default class VilaDoVarejo extends CenaMapa {
 
         super.create();
 
+        const nomeJogador = this.game.registry.get('nomeJogador')
+                 || localStorage.getItem('nomeJogador')
+                 || 'Jogador';
+
         this.registry.get('audio').tocarMusica('musica_viladovarejo', 0.5);
-        this.registry.get('audio').tocarAmbiente('ambiente_viladovarejo', 0.3);
+        this.registry.get('audio').tocarAmbiente('passos_viladovarejo', 0.5);
 
         // Ferramenta de debug: clica no mapa e vê a coordenada no console.
         this.input.on('pointerdown', (pointer) => {
@@ -98,8 +102,8 @@ export default class VilaDoVarejo extends CenaMapa {
         this.cielita.setDepth(1);
         this.cielita.setFalas([
             { personagem: 'Cielita', texto: 'Bem-vindo à Vila do Varejo! Aqui, cada esquina tem uma nova oportunidade.' },
-            { personagem: 'Cielita', texto: 'Fique de olho nas lojas e converse com a Thainá para entender como as negociações funcionam.' },
-            { personagem: 'Cielita', texto: 'Se precisar voltar, procure os portais: tem um para o mapa de gelo e outro para a praia.' },
+            { personagem: 'Cielita', texto: 'Fique de olho nas lojas e converse com os moradores para entender o que está acontecendo na Vila.' },
+            { personagem: 'Cielita', texto: 'Se precisar voltar, procure as pontes: existe uma para o Quebra Gelo e outra para a Praia dos Proveitos.' },
             { personagem: 'Jogador', texto: 'Obrigado, Cielita! Vou explorar e conversar com todo mundo.' },
             { personagem: 'Cielita', texto: 'Ótimo. Quando quiser, eu estarei por aqui para te orientar.' },
         ]);
@@ -125,8 +129,13 @@ export default class VilaDoVarejo extends CenaMapa {
         
         this.eric.setScale(1.6);
         this.eric.setFalas([
-            { personagem: 'Eric', texto: 'Eu ouvi que a loja de doces da Thainá estava com problemas na maquininha...' },
-            { personagem: 'Jogador', texto: 'Obrigado!' },
+            { personagem: 'Eric', texto: 'Olá, viajante! Me chamo Eric. Seja bem-vindo à Vila do Varejo. Qual seu nome?' },
+            { personagem: 'Jogador', texto: `Prazer, Eric! Me chamo ${nomeJogador}.` },
+            { personagem: 'Eric', texto: `Prazer, ${nomeJogador}! A Vila do Varejo é um lugar movimentado, cheio de lojas e moradores.` },
+            { personagem: 'Eric', texto: 'Ultimamente, tenho ouvido rumores sobre problemas com a loja de doces da Thainá...' },
+            { personagem: 'Eric', texto: '...parece que ela tem tido dificuldades para conseguir fazer vendas devido a problemas com a maquininha.' },
+            { personagem: 'Eric', texto: 'Se você gosta de desafios, talvez queira conversar com ela para ver se consegue ajuda-la.' },
+            { personagem: 'Jogador', texto: 'Obrigado pela dica, Eric! Vou procurar a loja da Thainá.' },
         ]);
 
         // ── Configuração do Jorge ────────────────────────────────────────────
@@ -146,7 +155,18 @@ export default class VilaDoVarejo extends CenaMapa {
             ]
         });
         this.jorge.setScale(1.6);
-        this.jorge.setFalas([{ personagem: 'Jorge', texto: 'Forsche...' }]);
+        this.jorge.setFalas([
+            { personagem: 'Jorge', texto: `Olá, você se chama ${nomeJogador}, não é?` },
+            { personagem: 'Jogador', texto: 'Sim, sou eu! Como você sabe meu nome?' },
+            { personagem: 'Jorge', texto: 'Ah, eu sei de tudo que acontece na Vila do Varejo. Sou como um detetive, sempre observando.' },
+            { personagem: 'Jorge', texto: 'Ultimamente, tenho notado que a Thainá tem tido muitos problemas com a maquininha de cartão.' },
+            { personagem: 'Jorge', texto: 'Ela tem ficado muito estressada, e isso tem afetado as vendas dela.' },
+            { personagem: 'Jorge', texto: 'Se você gosta de ajudar as pessoas, talvez queira conversar com ela para ver se consegue ajuda-la.' },
+            { personagem: 'Jogador', texto: 'Obrigado pela dica, Jorge! Vou procurar a loja da Thainá.' },
+            { personagem: 'Jorge', texto: 'Ah, e se você conseguir ajudar a Thainá, volte aqui para me contar! Adoro saber de tudo que acontece.' },
+            { personagem: 'Jogador', texto: 'Com certeza, Jorge! Vou ajudar a Thainá e depois volto para te contar.' },
+            { personagem: 'Jorge', texto: 'Forsche' },
+        ]);
 
         // Faz os NPCs colidirem entre si (ninguém atravessa ninguém)
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
@@ -193,11 +213,11 @@ export default class VilaDoVarejo extends CenaMapa {
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(110, 0, 1264, 842);
 
-        //if (this.origem === 'QuebraGelo') {
-        //    this.personagem.sprite.setPosition(270, 50);
-        //}
-        if (this.origem === 'PraiaDosProveitos') {
-            this.personagem.sprite.setPosition(1260, 70);
+        if (this.origem === 'QuebraGelo') {
+            this.personagem.sprite.setPosition(270, 50);
+        }
+        if (this.origem === 'PonteVV_PP') {
+            this.personagem.sprite.setPosition(1260, 60);
         }
         if (this.origem === 'CasaVarejo1') {
             this.personagem.sprite.setPosition(555, 245);
@@ -216,12 +236,7 @@ export default class VilaDoVarejo extends CenaMapa {
         DialogoManager.configurarCameraUI(this, 1.7, [this.eric, this.jorge, this.cielita]);
 
         // Balão inicial (somente se ainda não falou com a Cielita)
-        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
-        const varejoVencido = !!vitorias['varejo_vencido'];
-
-        if (varejoVencido) {
-            this.game.events.emit('atualizarBalao', { texto: 'procure a ponte para a praia dos proveitos', visivel: true });
-        } else if (!this.dialogoCielitaConcluido) {
+        if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
     }
@@ -245,18 +260,8 @@ export default class VilaDoVarejo extends CenaMapa {
         // porta CasaVarejo1 representa a loja/casa da Thainá
         const pertoLojaThaina = this.personagem.temOverlap(this.portaCasa1Varejo);
 
-        // Depois que vencer a negociação com a Thainá, a missão vira:
-        // "procure a ponte para a praia dos proveitos"
-        const vitorias = this.registry.get('negociacoesVencidas') ?? {};
-        const varejoVencido = !!vitorias['varejo_vencido'];
-
         if (this.cielita.dialogoAberto || this.eric.dialogoAberto || this.jorge.dialogoAberto) {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
-        } else if (varejoVencido) {
-            this.game.events.emit('atualizarBalao', {
-                texto: 'procure a ponte para a praia dos proveitos',
-                visivel: true,
-            });
         } else if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         } else if (!this.dialogoEricConcluido) {
@@ -277,7 +282,7 @@ export default class VilaDoVarejo extends CenaMapa {
         }
 
         if (this.personagem.temOverlap(this.portalparapraia)) {
-            this.trocarCena('PraiaDosProveitos');
+            this.trocarCena('PonteVV_PP');
             return;
         }
 

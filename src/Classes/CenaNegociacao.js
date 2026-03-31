@@ -77,6 +77,9 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     create() {
+
+        this.registry.get('audio').tocarMusica('musica_batalha', 0.5);
+        
         const W = this.scale.width;
         const H = this.scale.height;
 

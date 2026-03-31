@@ -256,9 +256,6 @@ export default class DialogoManager {
     // isso: a câmera principal ignora os elementos de diálogo; a câmera UI ignora
     // todos os objetos do mundo.
     //
-    // USO:
-    //   DialogoManager.configurarCameraUI(this, 3.5, [this.thaina, this.eric]);
-    //
     // PARÂMETROS:
     //   cena  — referência à cena Phaser (this)
     //   zoom  — valor de zoom da câmera principal
