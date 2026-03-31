@@ -29,6 +29,15 @@ export default class CidadeCielo extends CenaMapa {
 
         this.physics.world.setBounds(0, 0, larguraImagem, alturaImagem);
 
+        // ── Portas ───────────────────────────────────────────────────────────
+        // Porta para o prédio principal
+        this.PortaCasaCidade1 = this.add.zone(546, 567, 50, 25);
+        this.physics.add.existing(this.PortaCasaCidade1, true);
+
+        //Porta para a loja secundária
+        this.PortaLojaCidade1 = this.add.zone(835, 150, 35, 25);
+        this.physics.add.existing(this.PortaLojaCidade1, true);
+
         // ── Jogador ───────────────────────────────────────────────────────────
         this.jogador = new Jogador(this, larguraImagem / 2, 830); 
         this.jogador.sprite.setCollideWorldBounds(true);
@@ -86,10 +95,16 @@ export default class CidadeCielo extends CenaMapa {
         this.cameras.main.setBounds(0, 0, larguraImagem, alturaImagem);
 
         // ── Posição Inicial baseada na origem ─────────────────────────────────
-        // IMPORTANTE: Se o jogador vier da Praia, coloca ele um pouco longe do portal
-        // para ele não bater no portal e voltar instantaneamente.
         if (this.origem === 'PraiaDosProveitos') {
             this.jogador.sprite.setPosition(540, 840); 
+        }
+
+        if (this.origem === 'CasaCidade1') {
+            this.jogador.sprite.setPosition(546, 595); 
+        }
+
+         if (this.origem === 'CasaCidade2') {
+            this.jogador.sprite.setPosition(835, 150); 
         }
     }
 
@@ -101,6 +116,16 @@ export default class CidadeCielo extends CenaMapa {
         // Verifica o portal usando a variável correta (this.jogador)
         if (this.jogador.temOverlap(this.PortalCielo)) {
             this.trocarCena('PraiaDosProveitos');
+            return;
+        }
+
+        if (this.jogador.temOverlap(this.PortaCasaCidade1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaCidade1');
+            return;
+        }
+
+         if (this.jogador.temOverlap(this.PortaLojaCidade1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaCidade2');
             return;
         }
     }
