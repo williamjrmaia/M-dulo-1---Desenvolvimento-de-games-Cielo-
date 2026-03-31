@@ -264,6 +264,12 @@ export default class CenaNegociacao extends Phaser.Scene {
                 this._mostrarDialogo(this._falaAcertoFase(fase));
                 this.negociacaoAtiva = false;
 
+                // Toca o efeito sonoro de acerto após um breve delay para dar tempo do jogador perceber o feedback visual
+                this.time.delayedCall(1000, () => {
+                this.registry.get('audio').tocarEfeito('carta_certa');
+            });
+
+
                 this.time.delayedCall(4000, () => {
                     this.negociacaoAtiva = true;
                     this._avancarOuVencer();
@@ -271,6 +277,11 @@ export default class CenaNegociacao extends Phaser.Scene {
             } else {
                 // Ainda faltam cartas — mostra progresso e aguarda próxima escolha
                 this._mostrarDialogo(`✅ Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
+
+                // Toca o efeito sonoro de acerto após um breve delay para dar tempo do jogador perceber o feedback visual
+                this.time.delayedCall(500, () => {
+                this.registry.get('audio').tocarEfeito('carta_certa');
+            });
             }
 
         } else {
@@ -278,6 +289,12 @@ export default class CenaNegociacao extends Phaser.Scene {
             this._mostrarDialogo(this._falaErroFase(fase));
             this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
             this.negociacaoAtiva = false;
+
+            // Toca o efeito sonoro de erro após um breve delay para dar tempo do jogador perceber o feedback visual
+            this.time.delayedCall(800, () => {
+            this.registry.get('audio').tocarEfeito('carta_errada');
+            });
+
 
             this.time.delayedCall(2000, () => {
                 if (this.satisfacao <= 0) {
@@ -444,6 +461,9 @@ export default class CenaNegociacao extends Phaser.Scene {
             .rectangle(W / 2, H / 2, 420, 480, 0x0a1a2a)
             .setStrokeStyle(3, 0xf0c040)
             .setDepth(LAYERS.MODAL);
+
+            // Toca o efeito sonoro de conquista de insígnia
+            this.registry.get('audio').tocarEfeito('insignia_sound', 0.9);
 
         // Título
         const titulo = this.add.text(W / 2, H / 2 - 190, '🏅 INSÍGNIA DESBLOQUEADA!', {
@@ -614,6 +634,9 @@ export default class CenaNegociacao extends Phaser.Scene {
         btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
         btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
         btnSelecionar.on('pointerdown', () => {
+
+            // Toca o efeito sonoro de clique na carta após um breve delay para dar tempo do jogador perceber o feedback visual
+            this.registry.get('audio').tocarEfeito('carta_negociacao');
             fecharModal();
             this._resolverCarta(carta);
         });

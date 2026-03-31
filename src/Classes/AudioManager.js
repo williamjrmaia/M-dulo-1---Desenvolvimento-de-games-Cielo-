@@ -94,4 +94,9 @@ export default class AudioManager extends Phaser.Scene {
             }
         });
     }
+
+    tocarEfeito(chave, volume = 0.8) {
+        if (!this.cache.audio.exists(chave)) return;
+        this.sound.play(chave, { volume });
+    }
 }

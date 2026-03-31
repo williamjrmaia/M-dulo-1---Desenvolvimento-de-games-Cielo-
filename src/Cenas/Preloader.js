@@ -148,8 +148,16 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('passos_praiadosproveitos',  'assets/Audio/passos_praiadosproveitos.mp3');
         this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.mp3');
 
-        // ── Narração da Introdução ──
+        // ── Narração do diálogo ──
         this.load.audio('blip_teclado', 'assets/Audio/blip_teclado.wav');
+
+        // ── Efeitos sonoros de cartas ──
+        this.load.audio('carta_certa',      'assets/Audio/carta_certa.wav');
+        this.load.audio('carta_errada',     'assets/Audio/carta_errada.wav');
+        this.load.audio('carta_negociacao', 'assets/Audio/carta_negociacao.wav');
+
+        // ── Efeitos sonoros de conquista de insignias ──
+        this.load.audio('insignia_sound',   'assets/Audio/insignia_sound.mp3');
 
 
     }
