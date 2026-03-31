@@ -58,7 +58,7 @@ export default class CenaNegociacao extends Phaser.Scene {
             fases:             clienteConfig.fases              ?? CenaNegociacao.FASES,
             cartasPorFase:     clienteConfig.cartasPorFase      ?? {
                 abordagem:    5,
-                sondagem:     6,
+                sondagem:     5,
                 demonstracao: 4,
                 negociacao:   3,
                 fechamento:   3,
@@ -305,19 +305,11 @@ export default class CenaNegociacao extends Phaser.Scene {
         const numCartas    = this.clienteConfig.cartasPorFase[fase] || 3;
         const cartasDaFase = this._getCartasDaFase(fase, numCartas);
 
-        if (fase === 'sondagem' && cartasDaFase.length > 3) {
-            this._paginas = [];
-            for (let i = 0; i < cartasDaFase.length; i += 3) {
-                this._paginas.push(cartasDaFase.slice(i, i + 3));
-            }
-            this._paginaAtual = 0;
-            this._mostrarPaginaSondagem();
-        } else {
-            this._paginas = null;
-            this._distribuirCartas(cartasDaFase);
-            if (this.btnPrevPage) this.btnPrevPage.setVisible(false);
-            if (this.btnProxPage) this.btnProxPage.setVisible(false);
-        }
+        // Paginação desativada: todas as cartas são exibidas de uma vez
+        this._paginas = null;
+        this._distribuirCartas(cartasDaFase);
+        if (this.btnPrevPage) this.btnPrevPage.setVisible(false);
+        if (this.btnProxPage) this.btnProxPage.setVisible(false);
     }
 
     // ── Abordagem: lógica PIFE+CPC ────────────────────────────────────────────
@@ -563,37 +555,6 @@ export default class CenaNegociacao extends Phaser.Scene {
         } else {
             this._vencerNegociacao();
         }
-    }
-
-    // ── Paginação ─────────────────────────────────────────────────────────────
-
-    _mostrarPaginaSondagem() {
-        if (!this._paginas) return;
-        this._limparCartas();
-        this._distribuirCartas(this._paginas[this._paginaAtual]);
-        this._atualizarSetaNavegacao();
-    }
-
-    _atualizarSetaNavegacao() {
-        const hasPrev = this._paginaAtual > 0;
-        const hasNext = this._paginas && this._paginaAtual < this._paginas.length - 1;
-        const y       = this.scale.height * 0.78;
-
-        if (!this.btnPrevPage) {
-            this.btnPrevPage = this.add.text(50, y, '<', {
-                fontFamily: 'Courier', fontSize: '32px', color: '#ffffff',
-            }).setInteractive({ useHandCursor: true }).setDepth(900);
-            this.btnPrevPage.on('pointerdown', () => { this._paginaAtual--; this._mostrarPaginaSondagem(); });
-        }
-        if (!this.btnProxPage) {
-            this.btnProxPage = this.add.text(this.scale.width - 50, y, '>', {
-                fontFamily: 'Courier', fontSize: '32px', color: '#ffffff',
-            }).setInteractive({ useHandCursor: true }).setDepth(900);
-            this.btnProxPage.on('pointerdown', () => { this._paginaAtual++; this._mostrarPaginaSondagem(); });
-        }
-
-        this.btnPrevPage.setVisible(hasPrev);
-        this.btnProxPage.setVisible(hasNext);
     }
 
     // ── Satisfação ────────────────────────────────────────────────────────────

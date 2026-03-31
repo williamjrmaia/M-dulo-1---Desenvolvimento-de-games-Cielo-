@@ -1,4 +1,5 @@
 import Jogador from '../Classes/Jogador.js';
+import NPC from '../Classes/NPC.js';
 
 export default class CasaPraia1 extends Phaser.Scene {
 
@@ -37,23 +38,29 @@ export default class CasaPraia1 extends Phaser.Scene {
         this.jogador.sprite.setScale(1.5);
 
         // ── NPC Chefa ─────────────────────────────────────────────────────────
+        // ── NPC Chefa ─────────────────────────────────────────────────────────
         const npcX = larguraImagem / 2;
         const npcY = alturaImagem  / 2;
 
-        this.npcChefa = this.add.image(npcX, npcY, 'Chefa', 0).setScale(1.5);
+        this.npcChefa = new NPC(this, npcX, npcY, 'Chefa', {
+        interativo:         true,
+        distanciaInteracao: 80,
+        velocidade:         0,
+        waypoints:          [],       // sem patrulha
+        animacoes:          {},       // sem animações — fica no frame 0 estático
+        onFimDialogo: () => {
+        this.cameras.main.fadeOut(500, 0, 0, 0);
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+            this.scene.start('NegociacaoJulia');
+        });
+    },
+});
 
-        // Zona de interação ao redor do NPC
-        this.zonaChefa = this.add.zone(npcX, npcY, 80, 80);
-        this.physics.add.existing(this.zonaChefa, true);
+this.npcChefa.setFalas([
+    { personagem: 'Chefa', texto: 'Olá!' }, // substitua pelas falas reais
+]);
 
-        // Balão de "aperte E" — aparece só quando jogador está perto
-        this.balaoChefa = this.add.text(npcX, npcY - 60, '[E]', {
-            fontFamily: '"Courier New", monospace',
-            fontSize:   '14px',
-            color:      '#ffffff',
-            stroke:     '#000000',
-            strokeThickness: 3,
-        }).setOrigin(0.5).setVisible(false);
+this.npcChefa.setScale(1.5);
 
         // ── Hitboxes do Tiled ─────────────────────────────────────────────────
         const mapa          = this.make.tilemap({ key: 'mapaCasaPraia1' });

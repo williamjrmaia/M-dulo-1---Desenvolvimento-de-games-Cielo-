@@ -14,12 +14,15 @@ export default class NegociacaoPedro extends CenaNegociacao {
         super('NegociacaoPedro', {
             nomeCliente:       'Pedro',
             satisfacaoInicial: 0,
-            fases:             ['abordagem', 'sondagem'],
+            fases:             ['abordagem', 'sondagem', 'fechamento'],
             cartasExigidas: {
-                sondagem: ['PerguntaDeImpacto', 'GanchoDaDor'],
+                sondagem:  ['PerguntaDeImpacto', 'GanchoDaDor'],
+                fechamento: ['PropostaDeValor', 'CallToAction'],
             },
             cartasPorFase: {
-                sondagem: 6,
+                abordagem: 5,
+                sondagem:  5,
+                fechamento: 5,
             },
         });
     }
