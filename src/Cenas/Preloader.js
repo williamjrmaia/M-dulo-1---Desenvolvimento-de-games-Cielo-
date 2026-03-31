@@ -39,6 +39,18 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('fundo_ponte',    'assets/CenarioCasa/ponte.png');
         this.load.image('fundo_ponte_v',  'assets/CenarioCasa/ponte_transicao_vertical.png');
 
+        // Ícones PIFE+CPC — abordagem
+        this.load.image('pife_p_off',   'assets/Cartas/Icones/pife_p_off.png');
+        this.load.image('pife_p_on',    'assets/Cartas/Icones/pife_p_on.png');
+        this.load.image('pife_i_off',   'assets/Cartas/Icones/pife_i_off.png');
+        this.load.image('pife_i_on',    'assets/Cartas/Icones/pife_i_on.png');
+        this.load.image('pife_f_off',   'assets/Cartas/Icones/pife_f_off.png');
+        this.load.image('pife_f_on',    'assets/Cartas/Icones/pife_f_on.png');
+        this.load.image('pife_e_off',   'assets/Cartas/Icones/pife_e_off.png');
+        this.load.image('pife_e_on',    'assets/Cartas/Icones/pife_e_on.png');
+        this.load.image('pife_cpc_off', 'assets/Cartas/Icones/pife_cpc_off.png');
+        this.load.image('pife_cpc_on',  'assets/Cartas/Icones/pife_cpc_on.png');
+
         // ── ABORDAGEM (12 cartas) ─────────────────────────────────────────────
         this.load.image('AntiPitch',              'assets/Cartas/Abordagem/AntiPitch.png');
         this.load.image('ComparacaoInteligente',  'assets/Cartas/Abordagem/ComparacaoInteligente.png');
