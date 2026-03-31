@@ -20,7 +20,7 @@ export default class CasaVarejo1 extends CenaMapa {
         this.load.tilemapTiledJSON('mapaCasaVarejo1', 'assets/VilaDoVarejo/CasaVarejo1/CasaVarejo1.tmj');
 
         // Assets da Thainá e elementos visuais do balão de diálogo
-        this.load.spritesheet('thaina_idl', 'assets/NPC/THAINA/spr_thaina_front_idl.png', {frameWidth: 14, frameHeight: 19});
+        this.load.spritesheet('thaina_idl', 'assets/NPC/Thaina/spr_thaina_front_idl.png', {frameWidth: 14, frameHeight: 19});
     }
 
     create() {

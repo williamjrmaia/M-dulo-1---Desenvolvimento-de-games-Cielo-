@@ -21,6 +21,9 @@ export default class CidadeCielo extends CenaMapa {
     create() {
         super.create(); // 2. Chama a configuração de fade/câmera da CenaMapa AQUI!
 
+        this.registry.get('audio').tocarMusica('musica_cidadecielo', 0.5);
+        this.registry.get('audio').tocarAmbiente('passos_cidadecielo', 0.8);
+
         const escalaCenario = 1.5;
 
         const cenario = this.add.image(0, 0, 'CidadeCielo').setOrigin(0, 0).setScale(escalaCenario);

@@ -1,20 +1,20 @@
 // =============================================================================
-// cenaMapa.js
+// CenaMapa.js
 // Classe base para todas as cenas de mapa do jogo.
 //
 // FORNECE:
 //   - fazendoTransicao — flag para bloquear input durante transições
 //   - trocarCena()     — fade out + stop HUD + scene.start com vindoDe automático
-//   - create()         — lança o HUD e faz fadeIn
+//   - create()         — lança o HUD, faz fadeIn e registra ESC para o PauseMenu
 //   - update()         — guard contra transição em andamento
 //
 // USO:
-//   import CenaMapa from '../Classes/cenaMapa.js';
+//   import CenaMapa from '../Classes/CenaMapa.js';
 //
 //   export default class QuebraGelo extends CenaMapa {
 //
 //       create() {
-//           super.create(); // lança HUD + fadeIn
+//           super.create(); // lança HUD + fadeIn + registra ESC
 //           // ... seu código aqui
 //       }
 //
@@ -25,15 +25,16 @@
 //   }
 //
 // TROCAR DE CENA:
-//   // vindoDe é injetado automaticamente — não precisa passar
 //   this.trocarCena('VilaDoVarejo');
+//   this.trocarCena('CenaCasaGelo', { chave: 'valor' }); // dados extras
 //
-//   // dados extras ainda funcionam normalmente
-//   this.trocarCena('CenaCasaGelo', { chave: 'valor' });
+// PAUSE (ESC):
+//   Automático — pressionar ESC abre o PauseMenu como overlay,
+//   pausando a cena atual. ESC novamente (ou "CONTINUAR") fecha o menu.
+//   Certifique-se de que 'PauseMenu' está registrado na lista de cenas do jogo.
 //
 // HUD:
 //   O HUD é lançado no create() e parado no trocarCena().
-//   Não é necessário chamar scene.launch ou scene.stop manualmente.
 // =============================================================================
 
 export default class CenaMapa extends Phaser.Scene {
@@ -45,6 +46,16 @@ export default class CenaMapa extends Phaser.Scene {
         this.scene.bringToTop('HUDCenas');
 
         this.cameras.main.fadeIn(500, 0, 0, 0);
+
+        // ── ESC → PauseMenu ───────────────────────────────────────────────────
+        this.input.keyboard.on('keydown-ESC', () => {
+            // Não abre o pause se já estiver em transição ou se o pause já estiver ativo
+            if (this.fazendoTransicao) return;
+            if (this.scene.isActive('PauseMenu')) return;
+
+            this.scene.launch('PauseMenu', { cenaOrigem: this.scene.key });
+            this.scene.bringToTop('PauseMenu');
+        });
     }
 
     // Retorna true se estiver em transição — use como guard no update()
@@ -52,7 +63,7 @@ export default class CenaMapa extends Phaser.Scene {
         return this.fazendoTransicao;
     }
 
-    trocarCena(nomeCena, dados = {}) { //método para fazer 
+    trocarCena(nomeCena, dados = {}) {
         this.fazendoTransicao = true;
         this.cameras.main.fadeOut(500, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
