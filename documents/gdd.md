@@ -1220,11 +1220,24 @@ MenuPrincipal
 
 A **Cena de Introdução** é um diferencial narrativo que muitos projetos não entregam: antes de o jogador ver o mapa, a Cielita o recebe com um monólogo animado que usa seu nome diretamente (`"É aí que entram os escolhidos, [nome]."`) — personalizando a experiência desde o primeiro segundo.
 
-> **[INSERIR PRINT — Cena de Introdução: balão da Cielita com texto animado e fundo escuro]**
+> <div align="center">
+  <sub>Cena de Introdução: balão da Cielita </sub><br>
+  <img src="assets/Balao_dialogo.png" width="100%" alt="Cena de Introdução: balão da Cielita "><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Tela de seleção de personagem: 4 skins com animação idle e campo de nome]**
+> <div align="center">
+  <sub>Tela de seleção de personagem: 4 skins com animação idle e campo de nome</sub><br>
+  <img src="assets/Personagens.png" width="100%" alt="Tela de seleção de personagem: 4 skins com animação idle e campo de nome"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem]**
+> <div align="center">
+  <sub>Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem</sub><br>
+  <img src="assets/CasaInternaCielita.png" width="100%" alt="Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
 
 ---
 
@@ -1259,11 +1272,17 @@ A **barra de satisfação** vai de 0 a 100 e muda de cor e expressão do NPC em 
 - **Neutro** (34–66): cliente hesitante — barra amarela
 - **Bravo** (0–33): cliente prestes a encerrar — barra vermelha
 
-> **[INSERIR PRINT — Tela de negociação com Pedro: barra de satisfação, cartas na mão e NPC]**
+> <div align="center">
+  <sub>Tela de negociação com o NPC Pedro</sub><br>
+  <img src="assets/negociacao_pedro.png" width="100%" alt="Tela de negociação com Pedro"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Modal de detalhe de carta aberto com imagem ampliada]**
-
-> **[INSERIR PRINT — Notificação de insígnia animada no topo da tela ("INSÍGNIA CONQUISTADA! — Mestre do Gelo")]**
+> <div align="center">
+  <sub>Carta de abordagem ampliada</sub><br>
+  <img src="assets/modal.png" width="100%" alt="Carta de abordagem ampliada"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
 ---
 
@@ -1299,9 +1318,19 @@ Para eliminar a duplicação de código de transição presente nas sprints ante
 
 O HUD corre como cena paralela em todas as telas de mapa, exibindo balões de missão ("Fale com a Cielita", "Encontre o cliente") que guiam o jogador sem interromper o gameplay. A tecla **O** ativa/desativa os indicadores a qualquer momento, respeitando jogadores que preferem explorar sem assistência.
 
-> **[INSERIR PRINT — Mapa Vila do Varejo com HUD de indicação visível no topo]**
+> <div align="center">
+  <sub>Mapa Vila do Varejo com HUD de indicação</sub><br>
+  <img src="assets/hud_viladovarejo.png" width="100%" alt="Mapa Vila do Varejo com HUD de indicação"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Menu de configurações com opções de modo daltônico]**
+
+> <div align="center">
+  <sub>Menu de configurações com opções de modo daltônico</sub><br>
+  <img src="assets/menu_daltonismo.png" width="100%" alt="Menu de configurações com opções de modo daltônico"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
 
 ---
 
