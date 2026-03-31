@@ -465,14 +465,28 @@ O tempo não possui relevância no jogo
 
 ### 3.3.5. Trilha sonora (sprint 4)
 
-*Descreva a trilha sonora do jogo, indicando quais músicas serão utilizadas no mundo e nas fases. Utilize listas ou tabelas para organizar esta seção. Caso utilize material de terceiros em licença Creative Commons, não deixe de citar os autores/fontes.*
+A identidade sonora dos efeitos (SFX) foi projetada para reforçar a estética Sci-Fi e garantir uma navegação responsiva, transformando cada interação do usuário em um feedback tátil-auditivo. No Menu Principal, a trilha temática estabelece o tom tecnológico e prepara o jogador para a experiência de aprendizado. Durante as Cutscenes, o surgimento do texto é sincronizado com um efeito de digitação, que atua como um guia de atenção, garantindo que o contexto do jogo seja assimilado de forma dinâmica. Complementando a interatividade, o uso de "blips" sintéticos em todas as ações de clique serve como uma confirmação imediata de comando, mantendo o usuário engajado através de respostas sonoras curtas e limpas que evitam a fadiga auditiva e reforçam a sensação de controle sobre a interface. A movimentação do personagem é acompanhada por som de passos, criando presença espacial nas cenas exploráveis. Os minigames possuem camada sonora própria de feedback — sons distintos para acerto, erro e conclusão, reforçando o aprendizado por recompensa auditiva. Cada token coletável nas cenas emite um som específico no momento da coleta, sinalizando claramente ao jogador que o objetivo foi cumprido. Os diálogos com personagens são pontuados por uma voz sintética do BotsonX, reforçando sua identidade como robô.
 
-*Exemplo de tabela*
-\# | titulo | ocorrência | autoria
---- | --- | --- | ---
-1 | tema de abertura | tela de início | própria
-2 | tema de combate | cena de combate com inimigos comuns | Hans Zimmer
-3 | ... 
+## Tabela Trilha Sonora
+
+| Título | Ocorrência | Autoria |
+|---|---|---|
+| Música de Fundo | Menu Principal/Tela de Início | |
+| Música Praia dos Proveitos | Cena: Praia dos Proveitos | |
+| Música Quebra-Gelo | Cena: Quebra-Gelo | |
+| Música Vila do Varejo | Cena: Vila do Varejo | |
+| Passos | Movimentação na Praia dos Proveitos | |
+| Passos | Movimentação no Quebra-Gelo | |
+| Passos | Movimentação na Vila do Varejo | |
+| Passos | Movimentação na Casa da Cielita | |
+| Passos | Movimentação no Interior das Casas | |
+| Ambiente | Som ambiente: Praia dos Proveitos | |
+| Ambiente | Som ambiente: Quebra-Gelo | |
+| Ambiente | Som ambiente: Vila do Varejo | |
+| Transição | Transição entre mapas/cenas | |
+| Insígnia | Conquista/coleta de insígnia | |
+| Teclado | Exibição de texto nas Cutscenes | |
+| Botão UI | Cliques nos botões | |
 
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
 
