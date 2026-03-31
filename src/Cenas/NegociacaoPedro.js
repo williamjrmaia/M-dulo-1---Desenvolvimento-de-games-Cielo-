@@ -1,7 +1,7 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
+import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
 import Insignia       from '../Classes/Insignias.js';
 
-// Pontuação extra por produto — somada ao GANHO_SATISFACAO base
 const PONTUACAO_PRODUTO = {
     CieloLioOn:  10,
     CieloFlash:  15,
@@ -16,12 +16,10 @@ export default class NegociacaoPedro extends CenaNegociacao {
             satisfacaoInicial: 0,
             fases:             ['abordagem', 'sondagem'],
             cartasExigidas: {
-                abordagem: ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
-                sondagem:  ['PerguntaDeImpacto', 'GanchoDaDor'],
+                sondagem: ['PerguntaDeImpacto', 'GanchoDaDor'],
             },
             cartasPorFase: {
-                abordagem: 5,
-                sondagem:  6,
+                sondagem: 6,
             },
         });
     }
@@ -29,12 +27,9 @@ export default class NegociacaoPedro extends CenaNegociacao {
     preload() {
         super.preload();
         this.load.image('Pedro_fundo', 'assets/MapaGelo/Cena01_house1.png');
-
-        // Carrega os assets de todas as insígnias
         Insignia.preload(this);
     }
 
-    // Chamado internamente por CenaNegociacao ao vencer a negociação
     _aoVencer() {
         const insignia = new Insignia(this, 'mapa_gelo');
         insignia.conceder();
@@ -48,6 +43,80 @@ export default class NegociacaoPedro extends CenaNegociacao {
         return PONTUACAO_PRODUTO[key] ?? 0;
     }
 
+    // ── Cartas da abordagem ───────────────────────────────────────────────────
+    //
+    // COMO ADICIONAR UMA CARTA NOVA:
+    //
+    //   Copie um dos blocos abaixo e ajuste os campos:
+    //
+    //   new CartaAbordagem({
+    //       key:          'NomeDaCartaNoAsset',  // arquivo em assets/cartas/
+    //       letra:        'P',                   // 'P', 'I', 'F', 'E' ou 'CPC'
+    //       correta:      true,                  // false = carta errada (perde satisfação)
+    //       dialogoAcerto: 'Fala do Pedro ao acertar esta carta específica',
+    //       dialogoErro:   'Fala do Pedro ao errar esta carta específica',
+    //   }),
+    //
+    //   Regras:
+    //   - Pode ter várias cartas da mesma letra (P, I, F ou E)
+    //   - Só pode haver UMA carta com letra: 'CPC', e ela deve ter correta: true
+    //   - A carta CPC só fica disponível após P, I, F e E estarem todos preenchidos
+    //   - Cartas com correta: false sempre tiram satisfação ao serem jogadas,
+    //     independente da letra
+    // ─────────────────────────────────────────────────────────────────────────
+
+    _getCartasAbordagem() {
+        return [
+            // ── P: Proximidade ──
+            new CartaAbordagem({
+                key:           'DiretoAoPonto',
+                letra:         'P',
+                correta:       true,
+                dialogoAcerto: 'Claro! Sou o Pedro, dono do estabelecimento. Me conta mais.',
+                dialogoErro:   'Não entendi o que você veio fazer aqui.',
+            }),
+
+            // ── I: Interesse ──
+            new CartaAbordagem({
+                key:           'GanchoSocial',
+                letra:         'I',
+                correta:       true,
+                dialogoAcerto: 'Ah, conheço sim! Boa referência.',
+                dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
+            }),
+
+            // ── F: Familiaridade ──
+            new CartaAbordagem({
+                key:           'AntiPitch',
+                letra:         'F',
+                correta:       true,
+                dialogoAcerto: 'Interessante, você não está aqui só pra vender. Pode continuar.',
+                dialogoErro:   'Parece que você só quer me vender algo.',
+            }),
+
+            // ── E: Empatia ──
+            new CartaAbordagem({
+                key:           'ComparacaoInteligente',
+                letra:         'E',
+                correta:       true,
+                dialogoAcerto: 'Faz sentido. Você entende a minha situação.',
+                dialogoErro:   'Isso não se aplica ao meu caso.',
+            }),
+
+            // ── CPC: Contato com Pessoa Certa ──
+            // Só fica disponível após P, I, F e E estarem preenchidos
+            new CartaAbordagem({
+                key:           'CartaCPC',
+                letra:         'CPC',
+                correta:       true,
+                dialogoAcerto: 'Ótimo! Você falou com a pessoa certa. Vamos continuar.',
+                dialogoErro:   '', // CPC correto não tem erro
+            }),
+        ];
+    }
+
+    // ── Fases restantes ───────────────────────────────────────────────────────
+
     _falaInicioFase(fase) {
         const falas = {
             abordagem: 'Olá, boa tarde! Em que posso ajudar?',
@@ -58,24 +127,21 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     _falaAcertoFase(fase) {
         const falas = {
-            abordagem: 'Claro, sou o dono do estabelecimento! Me chamo Pedro.',
-            sondagem:  'Entendi, isso faz bastante sentido. Continue...',
+            sondagem: 'Entendi, isso faz bastante sentido. Continue...',
         };
         return falas[fase] ?? 'Pode continuar.';
     }
 
     _falaErroFase(fase) {
         const falas = {
-            abordagem: 'Não estou interessado nisso. Obrigado.',
-            sondagem:  'Hm, isso não responde à minha situação.',
+            sondagem: 'Hm, isso não responde à minha situação.',
         };
         return falas[fase] ?? 'Não entendi sua estratégia.';
     }
 
     _getCartasDaFase(fase, quantidade) {
         const todasCartas = {
-            abordagem: ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch', 'ComparacaoInteligente', 'DesarmeElegante'],
-            sondagem:  ['PerguntaDeImpacto', 'GanchoDaDor', 'AutoridadeImplicita', 'ChaveDeExclusividade', 'Cliffhanger', 'LoboCurioso'],
+            sondagem: ['PerguntaDeImpacto', 'GanchoDaDor', 'AutoridadeImplicita', 'ChaveDeExclusividade', 'Cliffhanger', 'LoboCurioso'],
         };
 
         const exigidas     = this.clienteConfig.cartasExigidas[fase] ?? [];

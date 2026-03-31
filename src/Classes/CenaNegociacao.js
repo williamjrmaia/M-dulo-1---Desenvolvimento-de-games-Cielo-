@@ -1,3 +1,14 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// CenaNegociacao.js — Classe base para todas as cenas de negociação
+//
+// MUDANÇAS nesta versão:
+//   - Fase de abordagem usa lógica PIFE+CPC via _resolverAbordagem()
+//   - Ícones PIFE+CPC abaixo da barra de satisfação
+//   - _resolverCarta() detecta a fase e roteia para o handler correto
+//   - Subclasses implementam _getCartasAbordagem() em vez de _getCartasDaFase()
+//     para a fase de abordagem. _getCartasDaFase() permanece para as demais fases.
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default class CenaNegociacao extends Phaser.Scene {
 
     static FASES = ['abordagem', 'sondagem', 'demonstracao', 'negociacao', 'fechamento'];
@@ -34,6 +45,9 @@ export default class CenaNegociacao extends Phaser.Scene {
         MODAL_BTN: 102,
     };
 
+    // Letras do PIFE na ordem de exibição dos ícones
+    static LETRAS_PIFE = ['P', 'I', 'F', 'E'];
+
     constructor(key, clienteConfig = {}) {
         super(key);
 
@@ -62,6 +76,11 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._paginaAtual = 0;
         this.btnPrevPage  = null;
         this.btnProxPage  = null;
+
+        // Estado da fase de abordagem
+        this._letrasPreenchidas = new Set(); // quais letras do PIFE já foram acertadas
+        this._cpcDisponivel     = false;     // CPC só fica clicável após PIFE completo
+        this._iconesPIFE        = {};        // refs dos objetos visuais dos ícones
     }
 
     preload() {
@@ -69,7 +88,6 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.load.image('reacao_neutro', 'assets/objetos/reacoes/reacao_neutro.png');
         this.load.image('reacao_feliz',  'assets/objetos/reacoes/reacao_feliz.png');
 
-        // Carrega a insígnia definida pela subclasse, se houver
         const insignia = this._getInsignia();
         if (insignia) {
             this.load.image(insignia.key, insignia.path);
@@ -77,9 +95,8 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     create() {
-
         this.registry.get('audio').tocarMusica('musica_batalha', 0.5);
-        
+
         const W = this.scale.width;
         const H = this.scale.height;
 
@@ -153,6 +170,64 @@ export default class CenaNegociacao extends Phaser.Scene {
             fontSize: '12px',
             color: '#7aaabb',
         }).setOrigin(0.5);
+
+        // Ícones PIFE+CPC — criados aqui mas só visíveis na abordagem
+        this._criarIconesPIFE(W, H, x, barraW, y);
+    }
+
+    // Cria os 5 ícones (P, I, F, E, CPC) abaixo da barra de satisfação.
+    // Cada ícone tem dois assets: <letra>_off (P&B) e <letra>_on (colorido).
+    // Convenção de nomes:  pife_p_off, pife_p_on, pife_i_off, ..., pife_cpc_off, pife_cpc_on
+    _criarIconesPIFE(W, H, barraX, barraW, barraY) {
+        const letras   = [...CenaNegociacao.LETRAS_PIFE, 'CPC'];
+        const iconeW   = 44;
+        const espacamento = 10;
+        const totalW   = letras.length * iconeW + (letras.length - 1) * espacamento;
+        const startX   = barraX - totalW / 2 + iconeW / 2;
+        const y        = barraY + 68; // abaixo do texto de porcentagem
+
+        this._iconesPIFE = {};
+
+        letras.forEach((letra, i) => {
+            const x       = startX + i * (iconeW + espacamento);
+            const chaveOff = `pife_${letra.toLowerCase()}_off`;
+            const chaveOn  = `pife_${letra.toLowerCase()}_on`;
+
+            // Fallback: retângulo cinza se o asset não existir ainda
+            const icone = this.textures.exists(chaveOff)
+                ? this.add.image(x, y, chaveOff).setDisplaySize(iconeW, iconeW)
+                : this.add.rectangle(x, y, iconeW, iconeW, 0x333333).setStrokeStyle(1, 0x555555);
+
+            this._iconesPIFE[letra] = { obj: icone, chaveOff, chaveOn, x, y, w: iconeW };
+        });
+
+        // Começa invisível — só aparece na fase de abordagem
+        this._setPIFEVisivel(false);
+    }
+
+    _setPIFEVisivel(visivel) {
+        for (const letra of Object.keys(this._iconesPIFE)) {
+            this._iconesPIFE[letra].obj.setVisible(visivel);
+        }
+    }
+
+    // Acende o ícone de uma letra (troca para a versão colorida)
+    _acenderIcone(letra) {
+        const dados = this._iconesPIFE[letra];
+        if (!dados) return;
+
+        if (this.textures.exists(dados.chaveOn) && dados.obj.setTexture) {
+            dados.obj.setTexture(dados.chaveOn);
+        } else if (dados.obj.setFillStyle) {
+            // fallback retângulo — fica verde
+            dados.obj.setFillStyle(0x22cc66);
+        }
+
+        // Animação de pulso ao acender
+        this.tweens.add({
+            targets: dados.obj, scaleX: 1.3, scaleY: 1.3,
+            duration: 150, yoyo: true, ease: 'Back.easeOut',
+        });
     }
 
     _criarBarraFases(W, H) {
@@ -211,16 +286,23 @@ export default class CenaNegociacao extends Phaser.Scene {
     // ── Fluxo de fases ────────────────────────────────────────────────────────
 
     _iniciarFase() {
-        const fase      = this.clienteConfig.fases[this.faseAtual];
-        const numCartas = this.clienteConfig.cartasPorFase[fase] || 3;
+        const fase = this.clienteConfig.fases[this.faseAtual];
 
         this.acertosNaFase = 0;
-
         this._atualizarIndicadoresFase();
         this._mostrarDialogo(this._falaInicioFase(fase));
         this._limparCartas();
         this.cartaEmDetalhes = null;
 
+        if (fase === 'abordagem') {
+            this._iniciarAbordagem();
+            return;
+        }
+
+        // Esconde os ícones PIFE nas outras fases
+        this._setPIFEVisivel(false);
+
+        const numCartas    = this.clienteConfig.cartasPorFase[fase] || 3;
         const cartasDaFase = this._getCartasDaFase(fase, numCartas);
 
         if (fase === 'sondagem' && cartasDaFase.length > 3) {
@@ -238,7 +320,192 @@ export default class CenaNegociacao extends Phaser.Scene {
         }
     }
 
-    // ── Lógica central ────────────────────────────────────────────────────────
+    // ── Abordagem: lógica PIFE+CPC ────────────────────────────────────────────
+
+    _iniciarAbordagem() {
+        // Reseta estado PIFE
+        this._letrasPreenchidas = new Set();
+        this._cpcDisponivel     = false;
+
+        // Mostra ícones PIFE
+        this._setPIFEVisivel(true);
+
+        // Obtém as cartas da subclasse e distribui
+        const cartas = this._getCartasAbordagem();
+        this._distribuirCartasAbordagem(cartas);
+    }
+
+    // Distribui as cartas de abordagem. Cartas CPC ficam bloqueadas até PIFE completo.
+    _distribuirCartasAbordagem(cartas) {
+        const W = this.scale.width;
+        const H = this.scale.height;
+        const { CARD_WIDTH, CARD_HEIGHT, CARD_SPACING, ANIM_FADE_DURATION, ANIM_HOVER_OFFSET } = CenaNegociacao;
+
+        const totalW = cartas.length * CARD_WIDTH + (cartas.length - 1) * CARD_SPACING;
+        const startX = (W - totalW) / 2;
+        const y      = H * 0.78;
+
+        this.cartasNaMao = [];
+
+        cartas.forEach((carta, i) => {
+            const x  = startX + i * (CARD_WIDTH + CARD_SPACING) + CARD_WIDTH / 2;
+            const bg = this._criarFundoCarta(x, y, carta.key);
+
+            // Ícone da letra em cima da carta
+            const chaveIcone = `pife_${carta.letra.toLowerCase()}_off`;
+            const iconeLetra = this.textures.exists(chaveIcone)
+                ? this.add.image(x, y - CARD_HEIGHT / 2 + 20, chaveIcone).setDisplaySize(32, 32)
+                : this.add.text(x, y - CARD_HEIGHT / 2 + 20, carta.letra, {
+                    fontFamily: '"Courier New", monospace',
+                    fontSize: '14px',
+                    color: '#aaaaaa',
+                }).setOrigin(0.5);
+
+            bg.setAlpha(0);
+            this.tweens.add({ targets: bg, alpha: 1, duration: ANIM_FADE_DURATION, delay: i * 80 });
+
+            bg.on('pointerover', () => this.tweens.add({ targets: bg, y: `-=${ANIM_HOVER_OFFSET}`, duration: 100 }));
+            bg.on('pointerout',  () => this.tweens.add({ targets: bg, y: `+=${ANIM_HOVER_OFFSET}`, duration: 100 }));
+            bg.on('pointerdown', () => this._mostrarDetalheCartaAbordagem(carta));
+
+            // Cartas CPC começam semi-transparentes e sem interação
+            if (carta.isCPC) {
+                bg.setAlpha(0.4).disableInteractive();
+                iconeLetra.setAlpha(0.4);
+            }
+
+            carta._objetos = { bg, iconeLetra };
+            this.cartasNaMao.push(carta);
+            this.grupoCartas.add(bg);
+        });
+    }
+
+    // Modal de detalhe para cartas de abordagem (sem botão SELECIONAR bloqueado para CPC)
+    _mostrarDetalheCartaAbordagem(carta) {
+        if (!this.negociacaoAtiva) return;
+        if (this.cartaEmDetalhes) return;
+        if (carta.isCPC && !this._cpcDisponivel) return;
+
+        this.cartaEmDetalhes = carta;
+
+        const W = this.scale.width;
+        const H = this.scale.height;
+        const { LAYERS } = CenaNegociacao;
+
+        const overlay = this.add
+            .rectangle(0, 0, W, H, 0x000000, 0.7)
+            .setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
+
+        const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
+        cartaZoom.setDepth(LAYERS.MODAL);
+
+        const { btn: btnVoltar,     texto: textoVoltar     } = this._criarBotao(40, 40, 100, 50, '◀ VOLTAR',   0x1a3a5a, 0xcc4444, '#ff6666');
+        const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(W / 2, H / 2 + 320, 180, 50, 'SELECIONAR ✓', 0x1a4a2a, 0x22cc66, '#22cc66');
+
+        btnVoltar.setDepth(LAYERS.MODAL);
+        textoVoltar.setDepth(LAYERS.MODAL_BTN);
+        btnSelecionar.setDepth(LAYERS.MODAL);
+        textoSelecionar.setDepth(LAYERS.MODAL_BTN);
+
+        const fecharModal = () => {
+            [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar]
+                .forEach(obj => obj.destroy());
+            this.cartaEmDetalhes = null;
+        };
+
+        btnVoltar.on('pointerover', () => btnVoltar.setFillStyle(0x2a4a6a));
+        btnVoltar.on('pointerout',  () => btnVoltar.setFillStyle(0x1a3a5a));
+        btnVoltar.on('pointerdown', fecharModal);
+
+        btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
+        btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
+        btnSelecionar.on('pointerdown', () => {
+            fecharModal();
+            this._resolverAbordagem(carta);
+        });
+    }
+
+    // Resolve a jogada de uma carta na abordagem
+    _resolverAbordagem(carta) {
+        if (!this.negociacaoAtiva) return;
+
+        if (carta.isCPC) {
+            // CPC encerra a abordagem — só chega aqui se PIFE estava completo
+            this._mostrarDialogo(carta.dialogoAcerto);
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
+            this._removerCartaVisual(carta);
+            this.negociacaoAtiva = false;
+
+            this.time.delayedCall(4000, () => {
+                this.negociacaoAtiva = true;
+                this._avancarOuVencer();
+            });
+            return;
+        }
+
+        if (carta.correta) {
+            // Acertou a letra — preenche se ainda não estava preenchida
+            if (!this._letrasPreenchidas.has(carta.letra)) {
+                this._letrasPreenchidas.add(carta.letra);
+                this._acenderIcone(carta.letra);
+            }
+
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
+            this._mostrarDialogo(carta.dialogoAcerto);
+            this._removerCartaVisual(carta);
+
+            // Verifica se PIFE está completo para liberar o CPC
+            const pifeFull = CenaNegociacao.LETRAS_PIFE.every(l => this._letrasPreenchidas.has(l));
+            if (pifeFull && !this._cpcDisponivel) {
+                this._cpcDisponivel = true;
+                this._liberarCartaCPC();
+            }
+
+        } else {
+            // Errou — perde satisfação, carta permanece na mão
+            this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
+            this._mostrarDialogo(carta.dialogoErro);
+            this.negociacaoAtiva = false;
+
+            this.time.delayedCall(2000, () => {
+                if (this.satisfacao <= 0) {
+                    this._perderNegociacao();
+                } else {
+                    this.negociacaoAtiva = true;
+                }
+            });
+        }
+    }
+
+    // Libera a carta CPC visualmente após PIFE completo
+    _liberarCartaCPC() {
+        const cartaCPC = this.cartasNaMao.find(c => c.isCPC);
+        if (!cartaCPC || !cartaCPC._objetos) return;
+
+        const { bg, iconeLetra } = cartaCPC._objetos;
+
+        this.tweens.add({ targets: [bg, iconeLetra], alpha: 1, duration: 300 });
+        bg.setInteractive({ useHandCursor: true });
+
+        // Acende o ícone CPC na barra
+        this._acenderIcone('CPC');
+
+        // Pulso visual para chamar atenção
+        this.tweens.add({
+            targets: bg, scaleX: 1.05, scaleY: 1.05,
+            duration: 400, yoyo: true, repeat: 2, ease: 'Sine.easeInOut',
+        });
+
+        this._mostrarDialogo('Agora você pode usar o CPC!');
+    }
+
+    _removerCartaVisual(carta) {
+        if (carta._objetos?.bg)        carta._objetos.bg.destroy();
+        if (carta._objetos?.iconeLetra) carta._objetos.iconeLetra.destroy();
+        this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
+    }
+
+    // ── Lógica central (fases não-abordagem) ──────────────────────────────────
 
     _resolverCarta(carta) {
         if (!this.negociacaoAtiva) return;
@@ -252,10 +519,7 @@ export default class CenaNegociacao extends Phaser.Scene {
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
             this.acertosNaFase++;
 
-            // Remove a carta visualmente da mão
-            if (carta._objetos?.bg) {
-                carta._objetos.bg.destroy();
-            }
+            if (carta._objetos?.bg) carta._objetos.bg.destroy();
             this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
 
             const exigidasCount      = exigidas.length > 0 ? exigidas.length : CenaNegociacao.ACERTOS_PARA_AVANCAR;
@@ -263,21 +527,17 @@ export default class CenaNegociacao extends Phaser.Scene {
             const faltam             = acertosNecessarios - this.acertosNaFase;
 
             if (faltam <= 0) {
-                // Atingiu o número necessário de acertos — avança de fase
                 this._mostrarDialogo(this._falaAcertoFase(fase));
                 this.negociacaoAtiva = false;
-
                 this.time.delayedCall(4000, () => {
                     this.negociacaoAtiva = true;
                     this._avancarOuVencer();
                 });
             } else {
-                // Ainda faltam cartas — mostra progresso e aguarda próxima escolha
                 this._mostrarDialogo(`✅ Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
             }
 
         } else {
-            // Erro: perde satisfação mas mantém acertos anteriores e continua na fase
             this._mostrarDialogo(this._falaErroFase(fase));
             this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
             this.negociacaoAtiva = false;
@@ -400,7 +660,6 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.negociacaoAtiva = false;
         this._mostrarDialogo('✅ Negociação concluída com sucesso!');
 
-        // Salva a vitória no registry
         const chave = this._chaveVitoria();
         if (chave) {
             const vitorias = this.game.registry.get('negociacoesVencidas') ?? {};
@@ -410,7 +669,6 @@ export default class CenaNegociacao extends Phaser.Scene {
 
         this.game.registry.set('ultimaNegociacao', 'vitoria');
 
-        // Salva a insígnia no registry e exibe o modal antes de redirecionar
         const insignia = this._getInsignia();
         if (insignia) {
             const insignias = this.game.registry.get('insigniasDesbloqueadas') ?? {};
@@ -436,19 +694,16 @@ export default class CenaNegociacao extends Phaser.Scene {
         const H = this.scale.height;
         const { LAYERS } = CenaNegociacao;
 
-        // Overlay escuro
         const overlay = this.add
             .rectangle(0, 0, W, H, 0x000000, 0.75)
             .setOrigin(0, 0)
             .setDepth(LAYERS.OVERLAY);
 
-        // Painel central
         const painel = this.add
             .rectangle(W / 2, H / 2, 420, 480, 0x0a1a2a)
             .setStrokeStyle(3, 0xf0c040)
             .setDepth(LAYERS.MODAL);
 
-        // Título
         const titulo = this.add.text(W / 2, H / 2 - 190, '🏅 INSÍGNIA DESBLOQUEADA!', {
             fontFamily: '"Courier New", monospace',
             fontSize: '18px',
@@ -458,7 +713,6 @@ export default class CenaNegociacao extends Phaser.Scene {
             strokeThickness: 3,
         }).setOrigin(0.5).setDepth(LAYERS.MODAL);
 
-        // Imagem da insígnia (ou placeholder se não existir)
         const imgInsignia = this.textures.exists(insignia.key)
             ? this.add.image(W / 2, H / 2 - 50, insignia.key)
                 .setDisplaySize(180, 180)
@@ -467,17 +721,12 @@ export default class CenaNegociacao extends Phaser.Scene {
                 .setStrokeStyle(2, 0xf0c040)
                 .setDepth(LAYERS.MODAL);
 
-        // Animação de entrada na imagem
         imgInsignia.setScale(0);
         this.tweens.add({
-            targets:  imgInsignia,
-            scaleX:   1,
-            scaleY:   1,
-            duration: 400,
-            ease:     'Back.easeOut',
+            targets: imgInsignia, scaleX: 1, scaleY: 1,
+            duration: 400, ease: 'Back.easeOut',
         });
 
-        // Nome da insígnia
         const nomeTexto = this.add.text(W / 2, H / 2 + 100, insignia.nome, {
             fontFamily: '"Courier New", monospace',
             fontSize: '22px',
@@ -487,7 +736,6 @@ export default class CenaNegociacao extends Phaser.Scene {
             strokeThickness: 3,
         }).setOrigin(0.5).setDepth(LAYERS.MODAL);
 
-        // Botão continuar
         const { btn: btnContinuar, texto: textoContinuar } = this._criarBotao(
             W / 2, H / 2 + 170, 200, 50, 'CONTINUAR ▶', 0x1a4a2a, 0x22cc66, '#22cc66'
         );
@@ -551,7 +799,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.cartasNaMao = [];
     }
 
-    // ── Renderização de cartas ────────────────────────────────────────────────
+    // ── Renderização de cartas (fases não-abordagem) ──────────────────────────
 
     _distribuirCartas(cartas) {
         const W      = this.scale.width;
@@ -657,6 +905,12 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     // ── Sobrescreva na subclasse ──────────────────────────────────────────────
 
+    // Retorna array de objetos Carta para a fase de abordagem.
+    // Veja Carta.js para a estrutura e como criar novas cartas.
+    _getCartasAbordagem() {
+        return [];
+    }
+
     _getCartasDaFase(fase, quantidade) {
         return Array.from({ length: quantidade }, (_, i) => ({
             key: `carta_${fase}_${i}`, label: `Carta ${i + 1}`, fase,
@@ -668,7 +922,5 @@ export default class CenaNegociacao extends Phaser.Scene {
     _falaErroFase(fase)    { return 'Não é isso que preciso agora.'; }
     _cenaDeRetorno()       { return 'MundoCasa'; }
     _chaveVitoria()        { return null; }
-
-    // Sobrescreva na subclasse retornando { key, path, nome } ou null se não houver insígnia
     _getInsignia()         { return null; }
 }
