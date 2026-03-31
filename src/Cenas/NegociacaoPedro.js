@@ -1,5 +1,6 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
 import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
+import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
 import Insignia       from '../Classes/Insignias.js';
 
 const PONTUACAO_PRODUTO = {
@@ -14,17 +15,15 @@ export default class NegociacaoPedro extends CenaNegociacao {
         super('NegociacaoPedro', {
             nomeCliente:       'Pedro',
             satisfacaoInicial: 0,
-            fases:             ['abordagem', 'sondagem', 'fechamento'],
-            cartasExigidas: {
-                sondagem:  ['PerguntaDeImpacto', 'GanchoDaDor'],
-                fechamento: ['PropostaDeValor', 'CallToAction'],
-            },
-            cartasPorFase: {
-                abordagem: 5,
-                sondagem:  5,
-                fechamento: 5,
-            },
+            fases:             ['abordagem', 'sondagem'],
         });
+
+        // Valores reais do cliente — revelados na sondagem e usados na demonstração
+        this.aspectosCliente = {
+            pessoas: 'baixo',
+            lucro:   'alto',
+            estoque: 'baixo',
+        };
     }
 
     preload() {
@@ -70,7 +69,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     _getCartasAbordagem() {
         return [
-            // ── P: Proximidade ──
+            // ── P: Propósito ──
             new CartaAbordagem({
                 key:           'DiretoAoPonto',
                 letra:         'P',
@@ -79,7 +78,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 dialogoErro:   'Não entendi o que você veio fazer aqui.',
             }),
 
-            // ── I: Interesse ──
+            // ── I: Identificação ──
             new CartaAbordagem({
                 key:           'GanchoSocial',
                 letra:         'I',
@@ -88,7 +87,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
             }),
 
-            // ── F: Familiaridade ──
+            // ── F: Foco ──
             new CartaAbordagem({
                 key:           'AntiPitch',
                 letra:         'F',
@@ -118,7 +117,71 @@ export default class NegociacaoPedro extends CenaNegociacao {
         ];
     }
 
-    // ── Fases restantes ───────────────────────────────────────────────────────
+    // ── Cartas da sondagem ────────────────────────────────────────────────────
+    //
+    // COMO ADICIONAR UMA CARTA NOVA:
+    //
+    //   new CartaSondagem({
+    //       key:           'NomeDaCartaNoAsset',  // arquivo em assets/cartas/
+    //       aspecto:       'lucro',               // 'pessoas', 'lucro' ou 'estoque'
+    //       correta:       true,                  // false = carta errada (perde satisfação)
+    //       dialogoAcerto: 'Fala do Pedro revelando o aspecto',
+    //       dialogoErro:   'Fala do Pedro ao errar',
+    //   }),
+    //
+    //   Regras:
+    //   - Pode ter várias cartas do mesmo aspecto (corretas e erradas)
+    //   - Uma carta errada não revela o ícone e perde satisfação
+    //   - Os três aspectos precisam ser revelados para avançar de fase
+    // ─────────────────────────────────────────────────────────────────────────
+
+    _getCartasSondagem() {
+        return [
+            // ── Pessoas ──
+            new CartaSondagem({
+                key:           'PerguntaDeImpacto',
+                aspecto:       'pessoas',
+                correta:       true,
+                dialogoAcerto: 'Atendo poucas pessoas por dia, mas são clientes fiéis.',
+                dialogoErro:   'Isso não me ajuda a entender o meu fluxo de clientes.',
+            }),
+
+            // ── Lucro ──
+            new CartaSondagem({
+                key:           'GanchoDaDor',
+                aspecto:       'lucro',
+                correta:       true,
+                dialogoAcerto: 'O negócio vai bem, tenho uma margem alta nos produtos.',
+                dialogoErro:   'Essa pergunta não faz sentido pra mim agora.',
+            }),
+
+            // ── Estoque ──
+            new CartaSondagem({
+                key:           'SondagemDeFluxo',
+                aspecto:       'estoque',
+                correta:       true,
+                dialogoAcerto: 'Meu estoque gira pouco, trabalho com produtos especiais.',
+                dialogoErro:   'Não entendo o que você quer saber com isso.',
+            }),
+
+            // ── Erradas (aspectos variados) ──
+            new CartaSondagem({
+                key:           'LoboCurioso',
+                aspecto:       'pessoas',
+                correta:       false,
+                dialogoAcerto: '',
+                dialogoErro:   'Isso não é relevante pra minha operação.',
+            }),
+
+            new CartaSondagem({
+                key:           'AutoridadeImplicita',
+                aspecto:       'lucro',
+                correta:       false,
+                dialogoAcerto: '',
+                dialogoErro:   'Não gosto desse tipo de abordagem.',
+            }),
+        ];
+    }
 
     _falaInicioFase(fase) {
         const falas = {
@@ -126,35 +189,6 @@ export default class NegociacaoPedro extends CenaNegociacao {
             sondagem:  'Tudo bem, me conta mais. O que você tem em mente?',
         };
         return falas[fase] ?? 'O que você tem a me apresentar?';
-    }
-
-    _falaAcertoFase(fase) {
-        const falas = {
-            sondagem: 'Entendi, isso faz bastante sentido. Continue...',
-        };
-        return falas[fase] ?? 'Pode continuar.';
-    }
-
-    _falaErroFase(fase) {
-        const falas = {
-            sondagem: 'Hm, isso não responde à minha situação.',
-        };
-        return falas[fase] ?? 'Não entendi sua estratégia.';
-    }
-
-    _getCartasDaFase(fase, quantidade) {
-        const todasCartas = {
-            sondagem: ['PerguntaDeImpacto', 'GanchoDaDor', 'AutoridadeImplicita', 'ChaveDeExclusividade', 'Cliffhanger', 'LoboCurioso'],
-        };
-
-        const exigidas     = this.clienteConfig.cartasExigidas[fase] ?? [];
-        const disponiveis  = todasCartas[fase] ?? [];
-        const embaralhadas = Phaser.Utils.Array.Shuffle([...disponiveis]);
-
-        return Array.from({ length: quantidade }, (_, i) => {
-            const key = embaralhadas[i] ?? `carta_${fase}_${i}`;
-            return { key, fase, obrigatoria: exigidas.includes(key) };
-        });
     }
 
     _cenaDeRetorno() {
