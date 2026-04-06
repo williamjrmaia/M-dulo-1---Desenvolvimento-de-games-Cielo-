@@ -246,9 +246,9 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // Atualiza o player e a lógica de movimento/diálogo dos NPCs
         this.personagem.atualizar();
-        this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
-        this.jorge.atualizar(this.personagem.sprite, this.teclas.interagir);
-        this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.eric.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        this.jorge.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── HUD (balão de orientação) ─────────────────────────────────────
         const distEric = Phaser.Math.Distance.Between(

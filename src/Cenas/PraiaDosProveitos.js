@@ -201,58 +201,59 @@ export default class PraiaDosProveitos extends CenaMapa {
     }
 
     update() {
-        if (super.update()) return;
+        if (super.update()) return;
 
-        this.personagem.atualizar();
+        this.personagem.atualizar();
 
-        // ── Atualiza NPCs ────────────────────────────────────────────────────
-        if (this.cielita) {
-            this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
-        }
-        if (this.felipe) {
-            this.felipe.atualizar(this.personagem.sprite, this.teclas.interagir);
-        }
+        // ── Atualiza NPCs (Corrigido de this.jogador para this.personagem) ──
+        if (this.cielita) {
+            this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        }
+        if (this.felipe) {
+            this.felipe.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        }
 
-        // ── HUD (balão de orientação) ─────────────────────────────────────────
-        const dialogoAberto = this.cielita?.dialogoAberto || this.felipe?.dialogoAberto;
+        // ── HUD (balão de orientação) ─────────────────────────────────────────
+        const dialogoAberto = this.cielita?.dialogoAberto || this.felipe?.dialogoAberto;
 
-        if (dialogoAberto) {
-            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
-        } else if (!this.dialogoCielitaPraiaConcluido) {
-            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
-        } else if (!this.dialogoFelipeConcluido) {
-            const distFelipe = Phaser.Math.Distance.Between(
-                this.personagem.sprite.x, this.personagem.sprite.y,
-                this.felipe.x,            this.felipe.y
-            );
-            const pertoFelipe = distFelipe <= this.felipe._cfg.distanciaInteracao;
-            this.game.events.emit('atualizarBalao', {
-                texto: pertoFelipe ? 'Fale com o Felipe' : 'Procure pelo Felipe na Praia',
-                visivel: true,
-            });
-        } else {
-            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
-        }
+        if (dialogoAberto) {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        } else if (!this.dialogoCielitaPraiaConcluido) {
+            this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        } else if (!this.dialogoFelipeConcluido) {
+            const distFelipe = Phaser.Math.Distance.Between(
+                this.personagem.sprite.x, this.personagem.sprite.y,
+                this.felipe.x,            this.felipe.y
+            );
+            const pertoFelipe = distFelipe <= this.felipe._cfg.distanciaInteracao;
+            this.game.events.emit('atualizarBalao', {
+                texto: pertoFelipe ? 'Fale com o Felipe' : 'Procure pelo Felipe na Praia',
+                visivel: true,
+            });
+        } else {
+            this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+        }
 
-        // ── Portal de saída ───────────────────────────────────────────────────
-        if (this.personagem.temOverlap(this.PortalPonte1)) {
-            this.trocarCena('PonteVV_PP');
+        // ── Portais de saída (Chaves e lógica corrigidas) ────────────────────
+        if (this.personagem.temOverlap(this.PortalPonte1)) {
+            this.trocarCena('PonteVV_PP');
+            return;
+        }
+
+        if (this.personagem.temOverlap(this.PortaCasaPraia1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaPraia1');
+            return;
+        }
+
+        if (this.personagem.temOverlap(this.PortalCielo)) {
+            this.trocarCena('CidadeCielo');
             return;
-        }
+        }
 
-        if (this.personagem.temOverlap(this.PortaCasaPraia1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('CasaPraia1');
-            return;
-        }
-
-        if (this.personagem.temOverlap(this.PortalCielo)) {
-            this.trocarCena('CidadeCielo');
-         if (this.personagem.temOverlap(this.PortaCasaPraia2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('CasaPraia2');
-            return;
-        }
-    }
+        if (this.personagem.temOverlap(this.PortaCasaPraia2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaPraia2');
+            return;
+        }
+    }
 }
-
-        }
     
