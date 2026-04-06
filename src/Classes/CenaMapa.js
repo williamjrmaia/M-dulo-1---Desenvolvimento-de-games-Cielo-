@@ -5,7 +5,7 @@
 // FORNECE:
 //   - fazendoTransicao — flag para bloquear input durante transições
 //   - trocarCena()     — fade out + stop HUD + scene.start com vindoDe automático
-//   - create()         — lança o HUD, faz fadeIn e registra ESC para o PauseMenu
+//   - create()         — lança o HUD, faz fadeIn e registra P para o PauseMenu
 //   - update()         — guard contra transição em andamento
 //
 // USO:
@@ -14,7 +14,7 @@
 //   export default class QuebraGelo extends CenaMapa {
 //
 //       create() {
-//           super.create(); // lança HUD + fadeIn + registra ESC
+//           super.create(); // lança HUD + fadeIn + registra P
 //           // ... seu código aqui
 //       }
 //
@@ -28,9 +28,9 @@
 //   this.trocarCena('VilaDoVarejo');
 //   this.trocarCena('CenaCasaGelo', { chave: 'valor' }); // dados extras
 //
-// PAUSE (ESC):
-//   Automático — pressionar ESC abre o PauseMenu como overlay,
-//   pausando a cena atual. ESC novamente (ou "CONTINUAR") fecha o menu.
+// PAUSE (P):
+//   Automático — pressionar P abre o PauseMenu como overlay,
+//   pausando a cena atual. P novamente (ou "CONTINUAR") fecha o menu.
 //   Certifique-se de que 'PauseMenu' está registrado na lista de cenas do jogo.
 //
 // HUD:
@@ -47,8 +47,8 @@ export default class CenaMapa extends Phaser.Scene {
 
         this.cameras.main.fadeIn(500, 0, 0, 0);
 
-        // ── ESC → PauseMenu ───────────────────────────────────────────────────
-        this.input.keyboard.on('keydown-ESC', () => {
+        // ── P → PauseMenu ───────────────────────────────────────────────────
+        this.input.keyboard.on('keydown-P', () => {
             // Não abre o pause se já estiver em transição ou se o pause já estiver ativo
             if (this.fazendoTransicao) return;
             if (this.scene.isActive('PauseMenu')) return;

@@ -1,6 +1,6 @@
 // =============================================================================
 // PauseMenu.js
-// Cena de pause lançada por ESC durante o jogo.
+// Cena de pause lançada por P durante o jogo.
 //
 // COMO REGISTRAR (em main.js ou onde você lista as cenas):
 //   import PauseMenu from './Scenes/PauseMenu.js';
@@ -9,12 +9,12 @@
 // COMO ATIVAR NAS SUAS CENAS DE MAPA:
 //   Não precisa fazer nada manualmente — basta herdar de CenaMapa.
 //   CenaMapa já chama this.scene.launch('HUDCenas') no create(),
-//   mas o ESC é capturado aqui diretamente.
+//   mas o P é capturado aqui diretamente.
 //
 //   Se você quiser adicionar o suporte em cenas que NÃO herdam CenaMapa
 //   (ex.: CenaPonte, MenuPrincipal), basta adicionar no create() da cena:
 //
-//       this.input.keyboard.on('keydown-ESC', () => {
+//       this.input.keyboard.on('keydown-P', () => {
 //           if (!this.scene.isActive('PauseMenu')) {
 //               this.scene.launch('PauseMenu', { cenaOrigem: this.scene.key });
 //               this.scene.bringToTop('PauseMenu');
@@ -25,7 +25,7 @@
 //   - Lança como overlay (scene.launch) sem parar a cena de baixo
 //   - Pausa fisicamente a cena de origem (this.scene.pause)
 //   - Ao fechar, retoma a cena de origem (this.scene.resume)
-//   - ESC fecha o menu se já estiver aberto
+//   - P fecha o menu se já estiver aberto
 //   - Toda a lógica visual é idêntica à CenaConfig para consistência
 // =============================================================================
 
@@ -93,9 +93,9 @@ export default class PauseMenu extends Phaser.Scene {
 
         this._mostrarTela('menu');
 
-        // ── ESC fecha o pause ─────────────────────────────────────────────────
-        this._teclaEsc = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        this._teclaEsc.on('down', () => this._fechar());
+        // ── P fecha o pause ─────────────────────────────────────────────────
+        this._teclaP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
+        this._teclaP.on('down', () => this._fechar());
     }
 
     // ─── Fechar o pause e retomar o jogo ─────────────────────────────────────
