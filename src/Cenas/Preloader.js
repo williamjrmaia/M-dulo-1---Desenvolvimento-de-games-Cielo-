@@ -65,6 +65,18 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('QuebradePadrao',         'assets/Cartas/Abordagem/QuebradePadrao.png');
         this.load.image('ReferenciaLocal',        'assets/Cartas/Abordagem/ReferenciaLocal.png');
 
+        //ABORDAGEM - ícones lucro, estoque, pessoas
+        this.load.image('sondagem_pessoas_interrogacao', 'assets/Icones/Sondagem/sondagem_pessoas_interrogacao.png');
+        this.load.image('sondagem_pessoas_baixo',        'assets/Icones/Sondagem/sondagem_pessoas_baixo.png');
+        this.load.image('sondagem_pessoas_alto',         'assets/Icones/Sondagem/sondagem_pessoas_alto.png');
+        this.load.image('sondagem_lucro_interrogacao',   'assets/Icones/Sondagem/sondagem_lucro_interrogacao.png');
+        this.load.image('sondagem_lucro_baixo',          'assets/Icones/Sondagem/sondagem_lucro_baixo.png');
+        this.load.image('sondagem_lucro_medio',          'assets/Icones/Sondagem/sondagem_lucro_medio.png');
+        this.load.image('sondagem_lucro_alto',           'assets/Icones/Sondagem/sondagem_lucro_alto.png');
+        this.load.image('sondagem_estoque_interrogacao', 'assets/Icones/Sondagem/sondagem_estoque_interrogacao.png');
+        this.load.image('sondagem_estoque_baixo',        'assets/Icones/Sondagem/sondagem_estoque_baixo.png');
+        this.load.image('sondagem_estoque_alto',         'assets/Icones/Sondagem/sondagem_estoque_alto.png');
+
         // ── SONDAGEM (12 cartas) ──────────────────────────────────────────────
         this.load.image('AutoridadeImplicita',   'assets/Cartas/Sondagem/AutoridadeImplicita.png');
         this.load.image('ChaveDeExclusividade',  'assets/Cartas/Sondagem/ChaveDeExclusividade.png');
