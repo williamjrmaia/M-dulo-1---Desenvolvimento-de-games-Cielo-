@@ -90,15 +90,23 @@ export default class DialogoManager {
         if (this._indice < this._falas.length) {
             this._mostrarFala(this._indice);
         } else {
-            this.fechar();
+            this._fecharComCallback();
         }
     }
 
-    /** Fecha o diálogo imediatamente, sem esperar o fim das falas. */
+    /** Fecha ao completar todas as falas — dispara onFimDialogo. */
+    _fecharComCallback() {
+        const cb = this._onFim;
+        this.fechar();
+        if (typeof cb === 'function') cb();
+    }
+
+    /** Fecha o diálogo imediatamente (interrupção). Não dispara onFimDialogo. */
     fechar() {
         this._aberto    = false;
         this._digitando = false;
         this._indice    = 0;
+        this._onFim     = null;
 
         if (this._timer) {
             this._timer.remove();
@@ -106,11 +114,6 @@ export default class DialogoManager {
         }
 
         this._setVisivel(false);
-
-        if (typeof this._onFim === 'function') {
-            this._onFim();
-            this._onFim = null;
-        }
     }
 
     /** Retorna true se o diálogo estiver aberto. */
