@@ -98,7 +98,19 @@ export default class MundoDaCielita extends CenaMapa {
         this.cameras.main.setZoom(2.6);
         this.cameras.main.setBounds(0, 0, 1500, 800);
         this.cameras.main.startFollow(this.personagem.sprite);
-    }
+
+        // Árvores de ambientação
+        this.add.sprite(620, 310, 'arvore4'     );
+        this.add.sprite(720, 420, 'arvore1'     );
+        this.add.sprite(650, 500, 'arvore2'     );
+        this.add.sprite(820, 280, 'arvore3'     );
+        this.add.sprite(900, 480, 'arvore4'     );
+        this.add.sprite(780, 490, 'arvore1'     );
+        this.add.sprite(920, 350, 'arvore2'     );
+        this.add.sprite(720, 320, 'arvore4'     );
+
+
+            }
 
     update() {
         if (super.update()) return;
