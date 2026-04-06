@@ -89,14 +89,14 @@ export default class VilaDoVarejo extends CenaMapa {
             distanciaInteracao: 60,
             grupoNPCs: this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
-            scaleIndicador: 1.3,
+            scaleIndicador: 1.5,
             onFimDialogo: () => {
                 this.dialogoCielitaConcluido = true;
                 this.registry.set('cielita_varejo_concluido', true);
             },
         });
         
-        this.cielita.setScale(1.1);
+        this.cielita.setScale(1.5);
         // Ajuste: virar o sprite para a direção "frente" (evita ficar espelhado no idle)
         this.cielita.setFlipX(true);
         this.cielita.setDepth(1);
