@@ -112,10 +112,15 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Pedro_satisfeito','assets/NPC/Pedro/feliz.png');
         this.load.image('Pedro_bravo',     'assets/NPC/Pedro/BossPedro.png');
 
-        this.load.image('Chefa_feliz',    'assets/NPC/JULIA/CHEFE_FELIZ.png');
-        this.load.image('Chefa_neutro',   'assets/NPC/JULIA/CHEFE_NEUTRA.png');
-        this.load.image('Chefa_brava',    'assets/NPC/JULIA/CHEFE_IRRITADA.png'); // ← corrigido de Chefa_brava
-        this.load.image('Chefa',   'assets/NPC/JULIA/spr_chefe_front_idl.png');
+        this.load.image('Chefa_feliz',  'assets/NPC/JULIA/CHEFE_FELIZ.png');
+        this.load.image('Chefa_neutro', 'assets/NPC/JULIA/CHEFE_NEUTRA.png');
+        this.load.image('Chefa_brava',  'assets/NPC/JULIA/CHEFE_IRRITADA.png');
+
+        // ── Chefa como spritesheet para exibir frame único na CasaPraia1 ──────
+        this.load.spritesheet('Chefa', 'assets/NPC/JULIA/spr_chefe_front_idl.png', {
+            frameWidth:  16,
+            frameHeight: 20,
+        });
 
         this.load.image('Sofia', 'assets/NPC/Sofia/sofia.png');
 
@@ -136,12 +141,12 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('blip_dialogo',        'assets/Audio/blip_teclado.wav');
 
         // ── Músicas ──
-        this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
-        this.load.audio('musica_quebragelo', 'assets/Audio/musica_quebragelo.mp3');
-        this.load.audio('musica_viladovarejo', 'assets/Audio/musica_viladovarejo.mp3');
-        this.load.audio('musica_praiadosproveitos', 'assets/Audio/musica_praiadosproveitos.mp3');
-        this.load.audio('musica_cidadecielo', 'assets/Audio/musica_cidadecielo.mp3');
-        this.load.audio('musica_batalha', 'assets/Audio/musica_batalha.mp3');
+        this.load.audio('musica_fundo_inicio',       'assets/Audio/musica_fundo_inicio.mp3');
+        this.load.audio('musica_quebragelo',          'assets/Audio/musica_quebragelo.mp3');
+        this.load.audio('musica_viladovarejo',        'assets/Audio/musica_viladovarejo.mp3');
+        this.load.audio('musica_praiadosproveitos',   'assets/Audio/musica_praiadosproveitos.mp3');
+        this.load.audio('musica_cidadecielo',         'assets/Audio/musica_cidadecielo.mp3');
+        this.load.audio('musica_batalha',             'assets/Audio/musica_batalha.mp3');
 
         // ── Áudio ambiente ──
         this.load.audio('ambiente_quebragelo',        'assets/Audio/ambiente_quebragelo.mp3');
@@ -154,7 +159,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('passos_viladovarejo',       'assets/Audio/passos_viladovarejo.mp3');
         this.load.audio('passos_praiadosproveitos',  'assets/Audio/passos_praiadosproveitos.mp3');
         this.load.audio('passos_cidadecielo',        'assets/Audio/passos_cidadecielo.mp3');
-        this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.wav')
+        this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.wav');
 
         // ── Narração da Introdução ──
         this.load.audio('blip_teclado', 'assets/Audio/blip_teclado.wav');
@@ -167,7 +172,6 @@ export default class Preloader extends Phaser.Scene {
 
         // ── Som de conquista de insígnia ──
         this.load.audio('som_insignia', 'assets/Audio/insignia_sound.mp3');
-
     }
 
     create() {

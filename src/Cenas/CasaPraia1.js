@@ -12,9 +12,8 @@ export default class CasaPraia1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('CasaPraia1',      'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.png');
-        this.load.image('portaSaida',      'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
-        this.load.spritesheet('Chefa',    'assets/NPC/JULIA/spr_chefe_front_idl.png', { frameWidth: 16, frameHeight: 20 });
+        this.load.image('CasaPraia1', 'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.png');
+        this.load.image('portaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
 
         this.load.tilemapTiledJSON('mapaCasaPraia1', 'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.tmj');
     }
@@ -38,29 +37,33 @@ export default class CasaPraia1 extends Phaser.Scene {
         this.jogador.sprite.setScale(1.5);
 
         // ── NPC Chefa ─────────────────────────────────────────────────────────
-        // ── NPC Chefa ─────────────────────────────────────────────────────────
         const npcX = larguraImagem / 2;
         const npcY = alturaImagem  / 2;
 
         this.npcChefa = new NPC(this, npcX, npcY, 'Chefa', {
-        interativo:         true,
-        distanciaInteracao: 80,
-        velocidade:         0,
-        waypoints:          [],       // sem patrulha
-        animacoes:          {},       // sem animações — fica no frame 0 estático
-        onFimDialogo: () => {
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start('NegociacaoJulia');
+            interativo:         true,
+            distanciaInteracao: 80,
+            velocidade:         0,
+            waypoints:          [],
+            animacoes:          {},
+            onFimDialogo: () => {
+                this.cameras.main.fadeOut(500, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('NegociacaoJulia');
+                });
+            },
         });
-    },
-});
 
-this.npcChefa.setFalas([
-    { personagem: 'Chefa', texto: 'Olá!' }, // substitua pelas falas reais
-]);
+        this.npcChefa.setFalas([
+            { personagem: 'Chefa', texto: 'Olá!' },
+        ]);
 
-this.npcChefa.setScale(1.5);
+        this.npcChefa.setScale(1.5);
+
+        // ── Força exibição do frame 0 (personagem parado) ─────────────────────
+        if (this.npcChefa.setFrame) {
+            this.npcChefa.setFrame(0);
+        }
 
         // ── Hitboxes do Tiled ─────────────────────────────────────────────────
         const mapa          = this.make.tilemap({ key: 'mapaCasaPraia1' });
@@ -116,16 +119,9 @@ this.npcChefa.setScale(1.5);
     update() {
         this.jogador.atualizar();
 
-        // ── Interação com o NPC ───────────────────────────────────────────────
-        const pertoDoNpc = this.jogador.temOverlap(this.zonaChefa);
-        this.balaoChefa.setVisible(pertoDoNpc);
-
-        if (pertoDoNpc && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('NegociacaoJulia');
-            });
-        }
+        // ── NPC Chefa — passa sprite do jogador e tecla E para o NPC gerenciar
+        // o indicador E e o diálogo automaticamente
+        this.npcChefa.atualizar(this.jogador.sprite, this.teclas.interagir);
 
         // ── Porta de saída ────────────────────────────────────────────────────
         if (this.jogador.temOverlap(this.PortaCasaPraia1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
