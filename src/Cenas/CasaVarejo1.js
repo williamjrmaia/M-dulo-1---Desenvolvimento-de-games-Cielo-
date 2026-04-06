@@ -56,20 +56,23 @@ export default class CasaVarejo1 extends CenaMapa {
             distanciaInteracao: 80,
             grupoNPCs: this.grupoNPCs,
             onFimDialogo: () => {
-               // Evita balão ficar "preso" durante a negociação
-               this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
-               // Inicia a cena de negociação assim que o papo acabar
-               this.scene.start('NegociacaoThaina');
+                const registry = this.registry.get('negociacoesVencidas') ?? {};
+                if (!registry['varejo_vencido']) {
+                    this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+                    this.scene.start('NegociacaoThaina');
+                }
             },
             scaleIndicador: 1.3,
             animacoes: { idle: 'thaina_idl' }
         });
         this.thaina.setScale(1.3);
-        
+
         this.thaina.setFalas([
             { personagem: 'Thainá',  texto: 'Bem-vindo!' },
             { personagem: 'Jogador', texto: 'Olá!' },
         ]);
+
+        this._thainaVencidaAnterior = null; // força atualização inicial das falas
         
         // 3. Cria o Personagem e configura a colisão com a NPC
         this.personagem = new Jogador(this, 750, 480, 1);
@@ -123,8 +126,24 @@ export default class CasaVarejo1 extends CenaMapa {
         this.thaina.atualizar(this.personagem.sprite, this.teclas.interagir);
 
         // ── HUD ─────────────────────────────────────────────────────────────
-        // Ao entrar na casa da Thainá, a missão passa a ser negociar com ela.
-        if (this.thaina.dialogoAberto) {
+        const registry      = this.registry.get('negociacoesVencidas') ?? {};
+        const thainaVencida = !!registry['varejo_vencido'];
+
+        if (thainaVencida !== this._thainaVencidaAnterior) {
+            this._thainaVencidaAnterior = thainaVencida;
+            if (thainaVencida) {
+                this.thaina.setFalas([
+                    { personagem: 'Thainá', texto: 'Obrigado pela maquininha!' },
+                ]);
+            } else {
+                this.thaina.setFalas([
+                    { personagem: 'Thainá',  texto: 'Bem-vindo!' },
+                    { personagem: 'Jogador', texto: 'Olá!' },
+                ]);
+            }
+        }
+
+        if (this.thaina.dialogoAberto || thainaVencida) {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
         } else {
             this.game.events.emit('atualizarBalao', { texto: 'Negocie com a Thaina', visivel: true });
