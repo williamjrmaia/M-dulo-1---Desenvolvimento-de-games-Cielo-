@@ -29,6 +29,7 @@ import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js';
 import CasaPraia1 from './Cenas/CasaPraia1.js';
 import CasaPraia2 from './Cenas/CasaPraia2.js';
+import NegociacaoJulia from './Cenas/NegociacaoJulia.js';
 
 import CidadeCielo from './Cenas/CidadeCielo.js';
 
@@ -65,7 +66,7 @@ const config = {
         VilaDoVarejo, CasaVarejo1, CasaVarejo2, 
         NegociacaoThaina, PonteVV_PP,
 
-        PraiaDosProveitos, CasaPraia1, CasaPraia2,
+        PraiaDosProveitos, CasaPraia1, CasaPraia2, NegociacaoJulia,
 
         CidadeCielo
         

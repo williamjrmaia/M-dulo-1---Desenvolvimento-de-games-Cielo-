@@ -12,10 +12,9 @@ export default class CasaPraia1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('CasaPraia1',      'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.png');
-        this.load.image('portaSaida',      'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
-        this.load.spritesheet('Chefa',    'assets/NPC/JULIA/spr_chefe_front_idl.png', { frameWidth: 16, frameHeight: 20 });
-
+        this.load.image('CasaPraia1',   'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.png');
+        this.load.image('portaSaida',   'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
+        // ↑ 'Chefa' removida daqui — já carregada como image no Preloader global
         this.load.tilemapTiledJSON('mapaCasaPraia1', 'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.tmj');
     }
 
@@ -37,30 +36,33 @@ export default class CasaPraia1 extends Phaser.Scene {
         this.jogador.sprite.setCollideWorldBounds(true);
         this.jogador.sprite.setScale(1.5);
 
-        // ── NPC Chefa ─────────────────────────────────────────────────────────
+        // ── Teclas ────────────────────────────────────────────────────────────
+        this.teclas = this.jogador.configurarTeclas();
+
         // ── NPC Chefa ─────────────────────────────────────────────────────────
         const npcX = larguraImagem / 2;
         const npcY = alturaImagem  / 2;
 
         this.npcChefa = new NPC(this, npcX, npcY, 'Chefa', {
-        interativo:         true,
-        distanciaInteracao: 80,
-        velocidade:         0,
-        waypoints:          [],       // sem patrulha
-        animacoes:          {},       // sem animações — fica no frame 0 estático
-        onFimDialogo: () => {
-        this.cameras.main.fadeOut(500, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start('NegociacaoJulia');
+            interativo:         true,
+            distanciaInteracao: 80,
+            velocidade:         0,
+            waypoints:          [],
+            animacoes:          {},   // sem animações — sprite estático
+            onFimDialogo: () => {
+                this.cameras.main.fadeOut(500, 0, 0, 0);
+                this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
+                    this.scene.start('NegociacaoJulia');
+                });
+            },
         });
-    },
-});
 
-this.npcChefa.setFalas([
-    { personagem: 'Chefa', texto: 'Olá!' }, // substitua pelas falas reais
-]);
+        this.npcChefa.setFalas([
+            { personagem: 'Chefa', texto: 'Olá, posso te ajudar?' },
+            { personagem: 'Chefa', texto: 'Vamos negociar?' },
+        ]);
 
-this.npcChefa.setScale(1.5);
+        this.npcChefa.setScale(1.5);
 
         // ── Hitboxes do Tiled ─────────────────────────────────────────────────
         const mapa          = this.make.tilemap({ key: 'mapaCasaPraia1' });
@@ -101,9 +103,6 @@ this.npcChefa.setScale(1.5);
             });
         }
 
-        // ── Teclas ────────────────────────────────────────────────────────────
-        this.teclas = this.jogador.configurarTeclas();
-
         // ── Câmera ────────────────────────────────────────────────────────────
         this.cameras.main.centerOn(larguraImagem / 2, alturaImagem / 2);
         this.cameras.main.setZoom(2);
@@ -117,18 +116,13 @@ this.npcChefa.setScale(1.5);
         this.jogador.atualizar();
 
         // ── Interação com o NPC ───────────────────────────────────────────────
-        const pertoDoNpc = this.jogador.temOverlap(this.zonaChefa);
-        this.balaoChefa.setVisible(pertoDoNpc);
-
-        if (pertoDoNpc && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.cameras.main.fadeOut(500, 0, 0, 0);
-            this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-                this.scene.start('NegociacaoJulia');
-            });
-        }
+        this.npcChefa.atualizar(this.jogador.sprite, this.teclas.interagir);
 
         // ── Porta de saída ────────────────────────────────────────────────────
-        if (this.jogador.temOverlap(this.PortaCasaPraia1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+        if (!this.npcChefa.dialogoAberto &&
+            this.jogador.temOverlap(this.PortaCasaPraia1) &&
+            Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+
             this.cameras.main.fadeOut(500, 0, 0, 0);
             this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
                 this.scene.start('PraiaDosProveitos', { vindoDe: 'CasaPraia1' });
