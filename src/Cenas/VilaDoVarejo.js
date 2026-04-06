@@ -84,7 +84,7 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── NPC: Cielita ─────────────────────────────────────────────────────
         // Guia de introdução ao mapa da Vila do Varejo
-        this.cielita = new NPC(this, 270, 230, 'cielitaparada', {
+        this.cielita = new NPC(this, 350, 240, 'cielitaparada', {
             velocidade: 0,
             distanciaInteracao: 60,
             grupoNPCs: this.grupoNPCs,
@@ -96,7 +96,7 @@ export default class VilaDoVarejo extends CenaMapa {
             },
         });
         
-        this.cielita.setScale(1.5);
+        this.cielita.setScale(1.1);
         // Ajuste: virar o sprite para a direção "frente" (evita ficar espelhado no idle)
         this.cielita.setFlipX(true);
         this.cielita.setDepth(1);

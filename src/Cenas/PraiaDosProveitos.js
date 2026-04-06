@@ -30,6 +30,12 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.load.spritesheet('felipe_costas', 'assets/NPC/FELIPE/spr_felipe_back_walk.png',  { frameWidth: 16, frameHeight: 22 });
         this.load.spritesheet('felipe_lado',   'assets/NPC/FELIPE/spr_felipe_side_walk.png',  { frameWidth: 16, frameHeight: 22 });
         
+        // Spritesheets do Arthur
+        this.load.spritesheet('arthur_idle',   'assets/NPC/ARTHUR/spr_arthur_front_idl.png',       { frameWidth: 16, frameHeight: 20 });
+        this.load.spritesheet('arthur_andar',  'assets/NPC/ARTHUR/spr_arthur_front_walk.png',      { frameWidth: 16, frameHeight: 20 });
+        this.load.spritesheet('arthur_costas', 'assets/NPC/ARTHUR/spr_arthur_back_walk.png',       { frameWidth: 16, frameHeight: 20 });
+        this.load.spritesheet('arthur_lado',   'assets/NPC/ARTHUR/spr_arthur_side_walk_right.png', { frameWidth: 16, frameHeight: 20 });
+
         // Carrega o arquivo TMJ (JSON do Tiled) para as hitboxes
         this.load.json('hitboxesPraia', 'assets/PraiaDosProveitos/PraiaDosProveitos.tmj'); 
     }
@@ -103,10 +109,14 @@ export default class PraiaDosProveitos extends CenaMapa {
         // ── Animações (Cielita + Felipe) ────────────────────────────────────
         NPC.criarAnimacoes(this, [
             { key: 'cielitaparada', frameRate: 3 },
-            { key: 'felipe_idle',   frameRate: 4, start: 0, end: 3 }, // 4 frames de idle (frente)
-            { key: 'felipe_andar',  frameRate: 6, start: 0, end: 3 }, // 4 frames de walk (frente)
-            { key: 'felipe_costas', frameRate: 6, start: 0, end: 3 }, // 4 frames de walk (costas)
-            { key: 'felipe_lado',   frameRate: 6, start: 0, end: 3 }, // reutiliza back_walk para lateral
+            { key: 'felipe_idle',   frameRate: 4, start: 0, end: 3 },
+            { key: 'felipe_andar',  frameRate: 6, start: 0, end: 3 },
+            { key: 'felipe_costas', frameRate: 6, start: 0, end: 3 },
+            { key: 'felipe_lado',   frameRate: 6, start: 0, end: 3 },
+            { key: 'arthur_idle',   frameRate: 4, start: 0, end: 3 },
+            { key: 'arthur_andar',  frameRate: 6, start: 0, end: 3 },
+            { key: 'arthur_costas', frameRate: 6, start: 0, end: 3 },
+            { key: 'arthur_lado',   frameRate: 6, start: 0, end: 3 },
         ]);
 
         this.grupoNPCs = this.physics.add.group();
@@ -167,8 +177,7 @@ export default class PraiaDosProveitos extends CenaMapa {
             ],
         });
         this.felipe.setScale(1.3);
-        this.felipe.setFalas([
-            { personagem: 'Felipe', texto: 'Essa praia é incrível, né? Mas cuidado com as ondas — elas podem te surpreender!' },
+        this.felipe.setFalas([            { personagem: 'Felipe', texto: 'Essa praia é incrível, né? Mas cuidado com as ondas — elas podem te surpreender!' },
             { personagem: 'Felipe', texto: 'Não só as ondas surpreendem, mas a chefa também.' },
             { personagem: 'Jogador', texto: 'Chefa? Quem é essa? Aliás, como você se chama?' },
             { personagem: 'Felipe', texto: 'Ah, me chamo Felipe. Sou um dos moradores daqui e conheço cada canto dessa praia. E você, como se chama?' },
@@ -180,6 +189,46 @@ export default class PraiaDosProveitos extends CenaMapa {
             { personagem: 'Felipe', texto: 'Boa sorte! Se você gosta de desafios, a Chefa é a pessoa certa para conversar, agora vou ali dar uns mergulhos.' },
         ]);
 
+        // ── NPC: Arthur ───────────────────────────────────────────────────────
+        this.dialogoArthurConcluido = this.registry.get('arthur_praia_concluido') || false;
+
+        // Arthur patrulha ao longo da orla em loop contínuo.
+        this.arthur = new NPC(this, 500, 580, 'arthur_idle', {
+            velocidade: 40,
+            distanciaInteracao: 35,
+            flipDireita: true,        // spritesheet aponta para a direita
+            grupoNPCs: this.grupoNPCs,
+            animacoes: {
+                idle:  'arthur_idle',
+                andar: 'arthur_andar',
+                costa: 'arthur_costas',
+                lado:  'arthur_lado',
+            },
+            onFimDialogo: () => {
+                this.dialogoArthurConcluido = true;
+                this.registry.set('arthur_praia_concluido', true);
+            },
+            loop: true,
+            waypoints: [
+                { x:    0, y:   0 },
+                { x:  350, y:   0 },
+                { x: 350, y: -250},
+                { x: -150, y: -250},
+                { x: -150, y: 0},
+            ],
+        });
+        this.arthur.setScale(1.3);
+        this.arthur.setFalas([
+            { personagem: 'Arthur', texto: 'Ei, bem-vindo à Praia dos Proveitos! Já conhece o lugar?' },
+            { personagem: 'Jogador', texto: 'Estou chegando agora. Pode me contar mais sobre a praia?' },
+            { personagem: 'Arthur', texto: 'Claro! Me chamo Arthur. Venho aqui todo dia — essa praia tem algo especial, sabe?' },
+            { personagem: 'Arthur', texto: 'Mas fique de olho na Chefa do quiosque. Ela manda e desmanda por aqui.' },
+            { personagem: 'Jogador', texto: 'Já ouvi falar dela. Parece ser uma figura e tanto.' },
+            { personagem: 'Arthur', texto: 'É pouco dizer! Se você quiser entender como o comércio da praia funciona, converse com ela.' },
+            { personagem: 'Jogador', texto: 'Obrigado pela dica, Arthur!' },
+            { personagem: 'Arthur', texto: 'Disponha! Me encontra por aqui se precisar de mais alguma coisa.' },
+        ]);
+
         // NPCs não se atravessam
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
@@ -187,8 +236,8 @@ export default class PraiaDosProveitos extends CenaMapa {
         this.personagem.adicionarColisao(this.cielita);
         this.personagem.adicionarColisao(this.grupoNPCs);
 
-        // UI de diálogo (Cielita + Felipe)
-        DialogoManager.configurarCameraUI(this, 2.4, [this.cielita, this.felipe]);
+        // UI de diálogo (Cielita + Felipe + Arthur)
+        DialogoManager.configurarCameraUI(this, 2.4, [this.cielita, this.felipe, this.arthur]);
 
         if (!this.dialogoCielitaPraiaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
@@ -212,9 +261,12 @@ export default class PraiaDosProveitos extends CenaMapa {
         if (this.felipe) {
             this.felipe.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
         }
+        if (this.arthur) {
+            this.arthur.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        }
 
         // ── HUD (balão de orientação) ─────────────────────────────────────────
-        const dialogoAberto = this.cielita?.dialogoAberto || this.felipe?.dialogoAberto;
+        const dialogoAberto = this.cielita?.dialogoAberto || this.felipe?.dialogoAberto || this.arthur?.dialogoAberto;
 
         if (dialogoAberto) {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
@@ -256,4 +308,3 @@ export default class PraiaDosProveitos extends CenaMapa {
         }
     }
 }
-    
