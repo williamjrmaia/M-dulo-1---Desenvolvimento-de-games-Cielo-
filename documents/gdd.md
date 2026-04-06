@@ -1662,13 +1662,45 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 **Impacto:** Moderado isoladamente, mas com potencial de acúmulo: um jogo que exige esforço visual constante, apresenta movimentação arrastada e tem paleta de baixo contraste comunica descuido técnico e reduz a imersão — especialmente em um produto que precisa ser percebido como profissional por seu público corporativo.
 
 **Ação recomendada:** Aumentar o tamanho mínimo da fonte nos cards de carta para 13–14px e revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
+
 # <a name="c6"></a>6. Conclusões e trabalhos futuros (sprint 5)
 
-*Escreva de que formas a solução do jogo atingiu os objetivos descritos na seção 1 deste documento. Indique pontos fortes e pontos a melhorar de maneira geral.*
+De forma geral, a solução desenvolvida — o jogo Cielo Verso — atingiu os objetivos propostos na Seção 1 ao transformar o treinamento dos Gerentes de Negócios em uma experiência digital gamificada, acessível e padronizada. A proposta de eliminar barreiras geográficas foi atendida por meio de uma solução totalmente remota, permitindo que qualquer colaborador, independentemente da região, tenha acesso ao mesmo conteúdo de capacitação. Além disso, o uso de mecânicas interativas, como o sistema de cartas e simulações de negociação, contribuiu para aumentar o engajamento e a retenção do conteúdo, substituindo o modelo tradicional expositivo por uma abordagem prática e imersiva.
 
-*Relacione os pontos de melhorias evidenciados nos testes com plano de ações para serem implementadas no jogo. O grupo não precisa implementá-las, pode deixar registrado aqui o plano para futuros desenvolvimentos.*
+Outro ponto relevante é o alinhamento do jogo com o funil de vendas da Cielo, garantindo que todas as etapas — abordagem, sondagem, demonstração, benefícios e negociação — fossem trabalhadas de forma progressiva. A estrutura em fases e regiões, junto com o sistema de métricas (tempo de conclusão e mapeamento de erros), também atende ao objetivo de monitorar o desempenho dos usuários, permitindo identificar lacunas de aprendizado.
 
-*Relacione também quaisquer ideias que o grupo tenha para melhorias futuras*
+Como pontos fortes do projeto, destacam-se:
+- A estrutura escalável do jogo, que permite a adição de novos conteúdos com baixo custo técnico;
+- O alto nível de alinhamento com o contexto real de vendas, tornando o aprendizado aplicável;
+- A acessibilidade, incluindo mecânicas simples e o modo daltônico;
+- O engajamento proporcionado pela gamificação, com progressão, desafios e feedback visual.
+
+Por outro lado, alguns pontos a melhorar foram identificados:
+- Necessidade de maior polimento na interface (HUD) e consistência visual entre cenas;
+- Ajustes no balanceamento da dificuldade, especialmente no sistema de satisfação;
+- Correção de bugs técnicos, como reset de estados e sincronização de indicadores;
+- Maior clareza em alguns momentos da experiência para usuários menos familiarizados com jogos.
+
+
+Com base nos testes realizados (Seção 5), foram identificadas oportunidades de melhoria que podem ser organizadas em um plano de ação futuro:
+
+- Correção de bugs críticos: garantir o reset correto do sistema de cartas e estabilidade das mecânicas de negociação;
+- Ajuste de balanceamento: calibrar ganhos e perdas na barra de satisfação com base em dados de playtest;
+- Melhoria da interface: padronizar HUD, indicadores visuais e feedbacks ao jogador;
+- Aprimoramento da progressão: tornar mais claro o avanço entre fases e objetivos de cada etapa;
+- Testes com usuários externos: ampliar a validação com o público-alvo real para refinar a experiência.
+
+Além disso, o grupo identificou diversas ideias para melhorias futuras, que podem expandir o impacto do projeto:
+
+- Implementação de um sistema mais robusto de métricas e relatórios, permitindo análise detalhada de desempenho por usuário;
+- Criação de um sistema de recompensas e progressão, como cartas desbloqueáveis ou níveis de habilidade;
+- Expansão do jogo com novos cenários, clientes e desafios, aumentando a longevidade da plataforma;
+- Integração com sistemas corporativos da Cielo, tornando o jogo uma ferramenta oficial de treinamento;
+- Inclusão de modos colaborativos ou competitivos, incentivando interação entre usuários;
+- Aprimoramento da personalização da experiência, adaptando o conteúdo conforme o desempenho do jogador.
+
+Em síntese, o projeto atingiu com sucesso seu propósito principal como MVP, demonstrando viabilidade técnica e valor estratégico para a capacitação corporativa. As melhorias propostas indicam um caminho claro para evolução futura, com potencial de transformar o jogo em uma plataforma completa de treinamento e desenvolvimento profissional.
+
 
 # <a name="c7"></a>7. Referências (sprint 5)
 
