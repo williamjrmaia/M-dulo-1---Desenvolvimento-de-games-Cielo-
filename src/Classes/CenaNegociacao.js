@@ -174,16 +174,16 @@ export default class CenaNegociacao extends Phaser.Scene {
     // Assets: pife_p_off/on, pife_i_off/on, pife_f_off/on, pife_e_off/on, pife_cpc_off/on
 
     _criarIconesPIFE(barraX, barraW, barraY) {
-        const letras      = [...CenaNegociacao.LETRAS_PIFE, 'CPC'];
-        const iconeH      = 28;
-        const largura     = iconeH * 2;
-        const espaco      = 6;
-        const totalW      = letras.length * largura + (letras.length - 1) * espaco;
-        const startX      = barraX - totalW / 2 + largura / 2;
-        const y           = barraY + 43;
+        const letras  = [...CenaNegociacao.LETRAS_PIFE, 'CPC'];
+        const iconeH  = 26;
+        const largura = iconeH * 2;
+        const espaco  = 6;
+        const totalW  = letras.length * largura + (letras.length - 1) * espaco;
+        const startX  = barraX - totalW / 2 + largura / 2;
+        const y       = barraY + 53;
+        const pad     = 8;
 
-        const pad = 8;
-        this.add.rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+        this._bgPIFE = this.add.rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
             .setStrokeStyle(1, 0x555555)
             .setDepth(49);
 
@@ -202,10 +202,10 @@ export default class CenaNegociacao extends Phaser.Scene {
         });
 
         this._setPIFEVisivel(false);
-
     }
 
     _setPIFEVisivel(visivel) {
+        this._bgPIFE?.setVisible(visivel);
         for (const d of Object.values(this._iconesPIFE)) d.obj.setVisible(visivel);
     }
 
@@ -229,12 +229,17 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _criarIconesAspectos(barraX, barraW, barraY) {
         const aspectos = CenaNegociacao.ASPECTOS_SONDAGEM;
-        const iconeH   = 28;
+        const iconeH   = 24;
         const largura  = iconeH * 2;
         const espaco   = 6;
         const totalW   = aspectos.length * largura + (aspectos.length - 1) * espaco;
         const startX   = barraX - totalW / 2 + largura / 2;
-        const y        = barraY + 43;
+        const y        = barraY + 53;
+
+        const pad = 8;
+        this._bgAspectos = this.add.rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+            .setStrokeStyle(1, 0x555555)
+            .setDepth(49);
 
         this._iconesAspectos = {};
 
@@ -253,6 +258,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     _setAspectosVisiveis(visivel) {
+        this._bgAspectos?.setVisible(visivel);
         for (const d of Object.values(this._iconesAspectos)) d.obj.setVisible(visivel);
     }
 
@@ -322,11 +328,59 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._setPIFEVisivel(false);
         this._setAspectosVisiveis(false);
 
-        if (fase === 'abordagem') { this._iniciarAbordagem(); return; }
-        if (fase === 'sondagem')  { this._iniciarSondagem();  return; }
+        if (fase === 'abordagem')   { this._iniciarAbordagem();   return; }
+        if (fase === 'sondagem')    { this._iniciarSondagem();    return; }
+        if (fase === 'demonstracao') { this._iniciarDemonstracao(); return; }
 
         const numCartas = this.clienteConfig.cartasPorFase[fase] || 3;
         this._distribuirCartas(this._getCartasDaFase(fase, numCartas));
+    }
+
+    // ── Demonstração ──────────────────────────────────────────────────────────
+
+    _iniciarDemonstracao() {
+        this._distribuirCartas(this._getCartasDemonstracao());
+    }
+
+    _mostrarDetalheCartaDemonstracao(carta) {
+        if (!this.negociacaoAtiva || this.cartaEmDetalhes) return;
+        this._abrirModalCarta(carta, () => this._resolverDemonstracao(carta));
+    }
+
+    _resolverDemonstracao(carta) {
+        if (!this.negociacaoAtiva) return;
+
+        const acertos = carta.contarAcertos(this.aspectosCliente);
+
+        this._removerCartaVisual(carta);
+
+        if (acertos === 3) {
+            // Carta perfeita — avança
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
+            this._mostrarDialogo(this._falaAcertoFase('demonstracao'));
+            this.negociacaoAtiva = false;
+            this.time.delayedCall(4000, () => { this.negociacaoAtiva = true; this._avancarOuVencer(); });
+
+        } else if (acertos === 2) {
+            // Quase certo — perde 10
+            this._alterarSatisfacao(-10);
+            this._mostrarDialogo(this._falaErroFase('demonstracao'));
+            this.negociacaoAtiva = false;
+            this.time.delayedCall(2000, () => {
+                if (this.satisfacao <= 0) this._perderNegociacao();
+                else this.negociacaoAtiva = true;
+            });
+
+        } else {
+            // 0 ou 1 correto — perde 20
+            this._alterarSatisfacao(-20);
+            this._mostrarDialogo(this._falaErroFase('demonstracao'));
+            this.negociacaoAtiva = false;
+            this.time.delayedCall(2000, () => {
+                if (this.satisfacao <= 0) this._perderNegociacao();
+                else this.negociacaoAtiva = true;
+            });
+        }
     }
 
     // ── Abordagem ─────────────────────────────────────────────────────────────
@@ -335,7 +389,6 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._letrasPreenchidas = new Set();
         this._cpcDisponivel     = false;
         this._setPIFEVisivel(true);
-                console.log('PIFE visível:', Object.values(this._iconesPIFE).map(d => d.obj.visible));
         this._distribuirCartasAbordagem(this._getCartasAbordagem());
     }
 
@@ -631,7 +684,14 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _mostrarDetalheCarta(carta) {
         if (!this.negociacaoAtiva || this.cartaEmDetalhes) return;
-        this._abrirModalCarta(carta, () => this._resolverCarta(carta));
+
+        const fase = this.clienteConfig.fases[this.faseAtual];
+
+        if (fase === 'demonstracao') {
+            this._abrirModalCarta(carta, () => this._resolverDemonstracao(carta));
+        } else {
+            this._abrirModalCarta(carta, () => this._resolverCarta(carta));
+        }
     }
 
     _criarFundoCarta(x, y, key) {
@@ -783,8 +843,9 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     // ── Sobrescreva na subclasse ──────────────────────────────────────────────
 
-    _getCartasAbordagem() { return []; }
-    _getCartasSondagem()  { return []; }
+    _getCartasAbordagem()    { return []; }
+    _getCartasSondagem()     { return []; }
+    _getCartasDemonstracao() { return []; }
     _getCartasDaFase(fase, quantidade) {
         return Array.from({ length: quantidade }, (_, i) => ({ key: `carta_${fase}_${i}`, fase }));
     }
