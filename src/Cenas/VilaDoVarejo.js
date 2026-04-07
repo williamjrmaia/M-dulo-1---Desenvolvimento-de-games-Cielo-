@@ -85,12 +85,12 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── NPC: Cielita ─────────────────────────────────────────────────────
         // Guia de introdução ao mapa da Vila do Varejo
-        this.cielita = new NPC(this, 270, 230, 'cielitaparada', {
+        this.cielita = new NPC(this, 350, 240, 'cielitaparada', {
             velocidade: 0,
             distanciaInteracao: 60,
             grupoNPCs: this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
-            scaleIndicador: 1.3,
+            scaleIndicador: 1.5,
             onFimDialogo: () => {
                 this.dialogoCielitaConcluido = true;
                 this.registry.set('cielita_varejo_concluido', true);

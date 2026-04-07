@@ -39,6 +39,18 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('fundo_ponte',    'assets/CenarioCasa/ponte.png');
         this.load.image('fundo_ponte_v',  'assets/CenarioCasa/ponte_transicao_vertical.png');
 
+        // Ícones PIFE+CPC — abordagem
+        this.load.image('pife_p_off',   'assets/Icones/Abordagem/pife_p_off.png');
+        this.load.image('pife_p_on',    'assets/Icones/Abordagem/pife_p_on.png');
+        this.load.image('pife_i_off',   'assets/Icones/Abordagem/pife_i_off.png');
+        this.load.image('pife_i_on',    'assets/Icones/Abordagem/pife_i_on.png');
+        this.load.image('pife_f_off',   'assets/Icones/Abordagem/pife_f_off.png');
+        this.load.image('pife_f_on',    'assets/Icones/Abordagem/pife_f_on.png');
+        this.load.image('pife_e_off',   'assets/Icones/Abordagem/pife_e_off.png');
+        this.load.image('pife_e_on',    'assets/Icones/Abordagem/pife_e_on.png');
+        this.load.image('pife_cpc_off', 'assets/Icones/Abordagem/pife_cpc_off.png');
+        this.load.image('pife_cpc_on',  'assets/Icones/Abordagem/pife_cpc_on.png');
+
         // ── ABORDAGEM (12 cartas) ─────────────────────────────────────────────
         this.load.image('AntiPitch',              'assets/Cartas/Abordagem/AntiPitch.png');
         this.load.image('ComparacaoInteligente',  'assets/Cartas/Abordagem/ComparacaoInteligente.png');
@@ -53,6 +65,18 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('QuebradePadrao',         'assets/Cartas/Abordagem/QuebradePadrao.png');
         this.load.image('ReferenciaLocal',        'assets/Cartas/Abordagem/ReferenciaLocal.png');
 
+        //ABORDAGEM - ícones lucro, estoque, pessoas
+        this.load.image('sondagem_pessoas_interrogacao', 'assets/Icones/Sondagem/sondagem_pessoas_interrogacao.png');
+        this.load.image('sondagem_pessoas_baixo',        'assets/Icones/Sondagem/sondagem_pessoas_baixo.png');
+        this.load.image('sondagem_pessoas_alto',         'assets/Icones/Sondagem/sondagem_pessoas_alto.png');
+        this.load.image('sondagem_lucro_interrogacao',   'assets/Icones/Sondagem/sondagem_lucro_interrogacao.png');
+        this.load.image('sondagem_lucro_baixo',          'assets/Icones/Sondagem/sondagem_lucro_baixo.png');
+        this.load.image('sondagem_lucro_medio',          'assets/Icones/Sondagem/sondagem_lucro_medio.png');
+        this.load.image('sondagem_lucro_alto',           'assets/Icones/Sondagem/sondagem_lucro_alto.png');
+        this.load.image('sondagem_estoque_interrogacao', 'assets/Icones/Sondagem/sondagem_estoque_interrogacao.png');
+        this.load.image('sondagem_estoque_baixo',        'assets/Icones/Sondagem/sondagem_estoque_baixo.png');
+        this.load.image('sondagem_estoque_alto',         'assets/Icones/Sondagem/sondagem_estoque_alto.png');
+
         // ── SONDAGEM (12 cartas) ──────────────────────────────────────────────
         this.load.image('AutoridadeImplicita',   'assets/Cartas/Sondagem/AutoridadeImplicita.png');
         this.load.image('ChaveDeExclusividade',  'assets/Cartas/Sondagem/ChaveDeExclusividade.png');
@@ -65,7 +89,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('PerguntaDeImpacto',     'assets/Cartas/Sondagem/PerguntaDeImpacto.png');
         this.load.image('PontoDeDorTecnico',     'assets/Cartas/Sondagem/PontoDeDorTecnico.png');
         this.load.image('SondagemDeFluxo',       'assets/Cartas/Sondagem/SondagemDeFluxo.png');
-        this.load.image('SondagemDePrazo',       'assets/Cartas/Sondagem/SondagemDePrazo.png');
+        this.load.image('SondagemDeParceiro',       'assets/Cartas/Sondagem/SondagemDeParceiro.png');
 
         // ── PRODUTOS / DEMONSTRACAO (12 cartas) ───────────────────────────────
         this.load.image('Antecipacao',      'assets/Cartas/Produtos/Antecipacao.png');
@@ -88,6 +112,20 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Comparativo', 'assets/Cartas/Negociacao/ComparativoDeValor.png');
         this.load.image('Recuo',       'assets/Cartas/Negociacao/RecuoEstrategico.png');
 
+        // ── BENEFICIOS (12 cartas) ─────────────────────────────────────────────
+        this.load.image('Aceitacao',            'assets/Cartas/Beneficios/AceitacaoAmpla.png');
+        this.load.image('AceitaCarteiras',      'assets/Cartas/Beneficios/AceitaCarteirasDigitais.png');
+        this.load.image('AnosDeMercado',        'assets/Cartas/Beneficios/AnosDeMercado.png');    
+        this.load.image('Antecipacao',          'assets/Cartas/Beneficios/AntecipacaoDeRecebiveis.png');
+        this.load.image('Bandeiras',            'assets/Cartas/Beneficios/BandeirasAceitas.png');
+        this.load.image('FidelidadeBeneficios', 'assets/Cartas/Beneficios/FidelidadeBeneficios.png');
+        this.load.image('Gestao',               'assets/Cartas/Beneficios/GestaoIntegrada.png');
+        this.load.image('RecebimentoRapido',    'assets/Cartas/Beneficios/RecebimentoRapido.png');
+        this.load.image('Seguranca',            'assets/Cartas/Beneficios/SegurancaNasTransacoes.png');
+        this.load.image('Suporte',              'assets/Cartas/Beneficios/Suporte24h.png');
+        this.load.image('Taxas',                'assets/Cartas/Beneficios/TaxasNegociaveis.png');
+        this.load.image('Troca',                'assets/Cartas/Beneficios/TrocaDeEquipamento.png');
+
         // ── FECHAMENTO (5 cartas) ─────────────────────────────────────────────
         this.load.image('Adicional',  'assets/Cartas/Fechamento/FechamentoAlternativo.png');
         this.load.image('Alternativo','assets/Cartas/Fechamento/FechamentoAlternativo.png');
@@ -100,10 +138,15 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Pedro_satisfeito','assets/NPC/Pedro/feliz.png');
         this.load.image('Pedro_bravo',     'assets/NPC/Pedro/BossPedro.png');
 
-        this.load.image('Chefa_feliz',    'assets/NPC/JULIA/CHEFE_FELIZ.png');
-        this.load.image('Chefa_neutro',   'assets/NPC/JULIA/CHEFE_NEUTRA.png');
-        this.load.image('Chefa_brava',    'assets/NPC/JULIA/CHEFE_IRRITADA.png'); // ← corrigido de Chefa_brava
-        this.load.image('Chefa',   'assets/NPC/JULIA/spr_chefe_front_idl.png');
+        this.load.image('Chefa_feliz',  'assets/NPC/JULIA/CHEFE_FELIZ.png');
+        this.load.image('Chefa_neutro', 'assets/NPC/JULIA/CHEFE_NEUTRA.png');
+        this.load.image('Chefa_brava',  'assets/NPC/JULIA/CHEFE_IRRITADA.png');
+
+        // ── Chefa como spritesheet para exibir frame único na CasaPraia1 ──────
+        this.load.spritesheet('Chefa', 'assets/NPC/JULIA/spr_chefe_front_idl.png', {
+            frameWidth:  16,
+            frameHeight: 20,
+        });
 
         this.load.image('Sofia', 'assets/NPC/Sofia/sofia.png');
 
@@ -124,12 +167,12 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('blip_dialogo',        'assets/Audio/blip_teclado.wav');
 
         // ── Músicas ──
-        this.load.audio('musica_fundo_inicio', 'assets/Audio/musica_fundo_inicio.mp3');
-        this.load.audio('musica_quebragelo', 'assets/Audio/musica_quebragelo.mp3');
-        this.load.audio('musica_viladovarejo', 'assets/Audio/musica_viladovarejo.mp3');
-        this.load.audio('musica_praiadosproveitos', 'assets/Audio/musica_praiadosproveitos.mp3');
-        this.load.audio('musica_cidadecielo', 'assets/Audio/musica_cidadecielo.mp3');
-        this.load.audio('musica_batalha', 'assets/Audio/musica_batalha.mp3');
+        this.load.audio('musica_fundo_inicio',       'assets/Audio/musica_fundo_inicio.mp3');
+        this.load.audio('musica_quebragelo',          'assets/Audio/musica_quebragelo.mp3');
+        this.load.audio('musica_viladovarejo',        'assets/Audio/musica_viladovarejo.mp3');
+        this.load.audio('musica_praiadosproveitos',   'assets/Audio/musica_praiadosproveitos.mp3');
+        this.load.audio('musica_cidadecielo',         'assets/Audio/musica_cidadecielo.mp3');
+        this.load.audio('musica_batalha',             'assets/Audio/musica_batalha.mp3');
 
         // ── Áudio ambiente ──
         this.load.audio('ambiente_quebragelo',        'assets/Audio/ambiente_quebragelo.mp3');
@@ -142,7 +185,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('passos_viladovarejo',       'assets/Audio/passos_viladovarejo.mp3');
         this.load.audio('passos_praiadosproveitos',  'assets/Audio/passos_praiadosproveitos.mp3');
         this.load.audio('passos_cidadecielo',        'assets/Audio/passos_cidadecielo.mp3');
-        this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.wav')
+        this.load.audio('passos_interiorcasas',      'assets/Audio/passos_interiorcasas.wav');
 
         // ── Narração da Introdução ──
         this.load.audio('blip_teclado', 'assets/Audio/blip_teclado.wav');
@@ -155,7 +198,6 @@ export default class Preloader extends Phaser.Scene {
 
         // ── Som de conquista de insígnia ──
         this.load.audio('som_insignia', 'assets/Audio/insignia_sound.mp3');
-
     }
 
     create() {
