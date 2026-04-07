@@ -91,7 +91,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     // ── Create ────────────────────────────────────────────────────────────────
 
-    _aoVencer() {}
+    _aoVencer() {
 
         const W = this.scale.width;
         const H = this.scale.height;
@@ -222,6 +222,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     // ── Deck de cartas por fase ───────────────────────────────────────────────
 
+    _mostrarDetalheCarta(carta) {
         const fase = this.clienteConfig.fases[this.faseAtual];
 
         if (fase === 'abordagem' || fase === 'sondagem') {
