@@ -2,6 +2,7 @@ import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 import NPC from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
+import MiniMapa from '../Classes/MiniMapa.js';
 
 export default class PraiaDosProveitos extends CenaMapa {
     constructor() {
@@ -50,6 +51,8 @@ export default class PraiaDosProveitos extends CenaMapa {
         
         // --- 3. CRIAÇÃO DO JOGADOR ---
         this.personagem = new Jogador(this, 630, 800, 1.2);
+        this.miniMapa = new MiniMapa(this, this.personagem.sprite);
+        this.miniMapa.definirMissao(675, 470);              // triângulo da missão
         this.personagem.superficiePasso = 'passos_praiadosproveitos';
         this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
@@ -180,6 +183,8 @@ export default class PraiaDosProveitos extends CenaMapa {
             { personagem: 'Felipe', texto: 'Boa sorte! Se você gosta de desafios, a Chefa é a pessoa certa para conversar, agora vou ali dar uns mergulhos.' },
         ]);
 
+        this.miniMapa.registrarNPCs(this.grupoNPCs); // Mostrar NPCs no mini mapa (deixar a baixo quando criarem mais NPCs)
+
         // NPCs não se atravessam
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
@@ -204,6 +209,7 @@ export default class PraiaDosProveitos extends CenaMapa {
         if (super.update()) return;
 
         this.personagem.atualizar();
+        this.miniMapa.atualizar();
 
         // ── Atualiza NPCs (Corrigido de this.jogador para this.personagem) ──
         if (this.cielita) {
@@ -243,17 +249,17 @@ export default class PraiaDosProveitos extends CenaMapa {
         if (this.personagem.temOverlap(this.PortaCasaPraia1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CasaPraia1');
             return;
-        }
+        }
 
-        if (this.personagem.temOverlap(this.PortalCielo)) {
-            this.trocarCena('CidadeCielo');
+        if (this.personagem.temOverlap(this.PortalCielo)) {
+            this.trocarCena('CidadeCielo');
             return;
-        }
+        }
 
         if (this.personagem.temOverlap(this.PortaCasaPraia2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
-            this.trocarCena('CasaPraia2');
-            return;
-        }
-    }
+            this.trocarCena('CasaPraia2');
+            return;
+        }
+    }
 }
     

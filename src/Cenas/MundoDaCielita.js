@@ -1,5 +1,6 @@
 import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
+import MiniMapa from '../Classes/MiniMapa.js';
 
 export default class MundoDaCielita extends CenaMapa {
     constructor() { super('MundoDaCielita'); }
@@ -51,6 +52,8 @@ export default class MundoDaCielita extends CenaMapa {
         }
 
         this.personagem = new Jogador(this, spawnX, spawnY, 1.0);
+        this.miniMapa = new MiniMapa(this, this.personagem.sprite, { zoom: 0.6 });
+        this.miniMapa.definirMissao(100, 200);              // triângulo da missão
         this.personagem.superficiePasso = 'passos_casacielita';
         this.teclas = this.personagem.configurarTeclas();
 
@@ -104,8 +107,9 @@ export default class MundoDaCielita extends CenaMapa {
         if (super.update()) return;
 
         this.personagem.atualizar();
+        this.miniMapa.atualizar();
 
-        // ✅ Lógica do balão indicativo
+        // Lógica do balão indicativo
         this.game.events.emit('atualizarBalao', { texto: 'Atravesse a ponte', visivel: true });
 
         if (!this.personagem.temOverlap(this.gatilhoPorta)) {
