@@ -362,9 +362,15 @@ A experiência é individual, focada no desenvolvimento estratégico e no aprend
 
 ### 2.2.5. Tempo estimado de jogo (sprint 5)
 
-*Ex. O jogo pode ser concluído em 3 horas passando por todas as fases.*
+O jogo foi projetado para ser concluído em um tempo estimado de 1 hora e 15 minutos a 1 hora e 45 minutos. Ao longo dessa jornada, o jogador percorre as 5 áreas da experiência, cada uma com seus próprios NPCs, mecânicas de negociação por cartas e um boss ao final:
 
-*Ex. cada partida dura até 15 minutos*
+- Casa da Cielita (tutorial, cutscenes e introdução narrativa): 10 a 15 minutos
+- Quebra-Gelo (abordagem e sondagem): 15 a 20 minutos
+- Vila do Varejo (demonstração de produtos): 15 a 20 minutos
+- Praia dos Proveitos (benefícios da Cielo): 15 a 20 minutos
+- Cidade Cielo (consolidação de todas as etapas, negociações mais complexas e boss final): 20 a 30 minutos
+
+Vale destacar que, por se tratar de um público com menor familiaridade com jogos digitais, sessões podem se estender até 2 horas em casos de maior dificuldade com as mecânicas de cartas.
 
 # <a name="c3"></a>3. Game Design (sprints 2 e 3)
 
