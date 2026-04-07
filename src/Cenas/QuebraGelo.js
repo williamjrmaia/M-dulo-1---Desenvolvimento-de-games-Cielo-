@@ -185,7 +185,7 @@ export default class QuebraGelo extends CenaMapa {
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(0, 0, 1024, 1024);
-
+        
         if (this.origem === 'CenaCasaGelo') this.personagem.sprite.setPosition(655, 210);
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
         if (this.origem === 'PonteQG_VV')   this.personagem.sprite.setPosition(897, 990);

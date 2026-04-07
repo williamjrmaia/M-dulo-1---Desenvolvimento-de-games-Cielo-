@@ -12,9 +12,9 @@ export default class CasaPraia1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('CasaPraia1',   'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.png');
-        this.load.image('portaSaida',   'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
-        // ↑ 'Chefa' removida daqui — já carregada como image no Preloader global
+        this.load.image('CasaPraia1', 'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.png');
+        this.load.image('portaSaida', 'assets/CenarioCasa/ROOM1-HOUSE/porta_cielita.png');
+
         this.load.tilemapTiledJSON('mapaCasaPraia1', 'assets/PraiaDosProveitos/PraiaCasa1/CasaPraia1.tmj');
     }
 
@@ -48,7 +48,7 @@ export default class CasaPraia1 extends Phaser.Scene {
             distanciaInteracao: 80,
             velocidade:         0,
             waypoints:          [],
-            animacoes:          {},   // sem animações — sprite estático
+            animacoes:          {},
             onFimDialogo: () => {
                 this.cameras.main.fadeOut(500, 0, 0, 0);
                 this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {

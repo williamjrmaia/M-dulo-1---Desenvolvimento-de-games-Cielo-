@@ -39,6 +39,18 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('fundo_ponte',    'assets/CenarioCasa/ponte.png');
         this.load.image('fundo_ponte_v',  'assets/CenarioCasa/ponte_transicao_vertical.png');
 
+        // Ícones PIFE+CPC — abordagem
+        this.load.image('pife_p_off',   'assets/Icones/Abordagem/pife_p_off.png');
+        this.load.image('pife_p_on',    'assets/Icones/Abordagem/pife_p_on.png');
+        this.load.image('pife_i_off',   'assets/Icones/Abordagem/pife_i_off.png');
+        this.load.image('pife_i_on',    'assets/Icones/Abordagem/pife_i_on.png');
+        this.load.image('pife_f_off',   'assets/Icones/Abordagem/pife_f_off.png');
+        this.load.image('pife_f_on',    'assets/Icones/Abordagem/pife_f_on.png');
+        this.load.image('pife_e_off',   'assets/Icones/Abordagem/pife_e_off.png');
+        this.load.image('pife_e_on',    'assets/Icones/Abordagem/pife_e_on.png');
+        this.load.image('pife_cpc_off', 'assets/Icones/Abordagem/pife_cpc_off.png');
+        this.load.image('pife_cpc_on',  'assets/Icones/Abordagem/pife_cpc_on.png');
+
         // ── ABORDAGEM (12 cartas) ─────────────────────────────────────────────
         this.load.image('AntiPitch',              'assets/Cartas/Abordagem/AntiPitch.png');
         this.load.image('ComparacaoInteligente',  'assets/Cartas/Abordagem/ComparacaoInteligente.png');
@@ -52,6 +64,18 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Problematica',           'assets/Cartas/Abordagem/Problematica.png');
         this.load.image('QuebradePadrao',         'assets/Cartas/Abordagem/QuebradePadrao.png');
         this.load.image('ReferenciaLocal',        'assets/Cartas/Abordagem/ReferenciaLocal.png');
+
+        //ABORDAGEM - ícones lucro, estoque, pessoas
+        this.load.image('sondagem_pessoas_interrogacao', 'assets/Icones/Sondagem/sondagem_pessoas_interrogacao.png');
+        this.load.image('sondagem_pessoas_baixo',        'assets/Icones/Sondagem/sondagem_pessoas_baixo.png');
+        this.load.image('sondagem_pessoas_alto',         'assets/Icones/Sondagem/sondagem_pessoas_alto.png');
+        this.load.image('sondagem_lucro_interrogacao',   'assets/Icones/Sondagem/sondagem_lucro_interrogacao.png');
+        this.load.image('sondagem_lucro_baixo',          'assets/Icones/Sondagem/sondagem_lucro_baixo.png');
+        this.load.image('sondagem_lucro_medio',          'assets/Icones/Sondagem/sondagem_lucro_medio.png');
+        this.load.image('sondagem_lucro_alto',           'assets/Icones/Sondagem/sondagem_lucro_alto.png');
+        this.load.image('sondagem_estoque_interrogacao', 'assets/Icones/Sondagem/sondagem_estoque_interrogacao.png');
+        this.load.image('sondagem_estoque_baixo',        'assets/Icones/Sondagem/sondagem_estoque_baixo.png');
+        this.load.image('sondagem_estoque_alto',         'assets/Icones/Sondagem/sondagem_estoque_alto.png');
 
         // ── SONDAGEM (12 cartas) ──────────────────────────────────────────────
         this.load.image('AutoridadeImplicita',   'assets/Cartas/Sondagem/AutoridadeImplicita.png');
@@ -116,9 +140,9 @@ export default class Preloader extends Phaser.Scene {
 
         this.load.image('Chefa_feliz',  'assets/NPC/JULIA/CHEFE_FELIZ.png');
         this.load.image('Chefa_neutro', 'assets/NPC/JULIA/CHEFE_NEUTRA.png');
-        this.load.image('Chefa_bravo',  'assets/NPC/JULIA/CHEFE_IRRITADA.png'); // ← corrigido de 'Chefa_brava' para 'Chefa_bravo'
+        this.load.image('Chefa_brava',  'assets/NPC/JULIA/CHEFE_IRRITADA.png');
 
-        // ── CORREÇÃO: spritesheet 64x20 em vez de load.image ─────────────────
+        // ── Chefa como spritesheet para exibir frame único na CasaPraia1 ──────
         this.load.spritesheet('Chefa', 'assets/NPC/JULIA/spr_chefe_front_idl.png', {
             frameWidth:  16,
             frameHeight: 20,
@@ -143,12 +167,12 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('blip_dialogo',        'assets/Audio/blip_teclado.wav');
 
         // ── Músicas ──
-        this.load.audio('musica_fundo_inicio',      'assets/Audio/musica_fundo_inicio.mp3');
-        this.load.audio('musica_quebragelo',         'assets/Audio/musica_quebragelo.mp3');
-        this.load.audio('musica_viladovarejo',       'assets/Audio/musica_viladovarejo.mp3');
-        this.load.audio('musica_praiadosproveitos',  'assets/Audio/musica_praiadosproveitos.mp3');
-        this.load.audio('musica_cidadecielo',        'assets/Audio/musica_cidadecielo.mp3');
-        this.load.audio('musica_batalha',            'assets/Audio/musica_batalha.mp3');
+        this.load.audio('musica_fundo_inicio',       'assets/Audio/musica_fundo_inicio.mp3');
+        this.load.audio('musica_quebragelo',          'assets/Audio/musica_quebragelo.mp3');
+        this.load.audio('musica_viladovarejo',        'assets/Audio/musica_viladovarejo.mp3');
+        this.load.audio('musica_praiadosproveitos',   'assets/Audio/musica_praiadosproveitos.mp3');
+        this.load.audio('musica_cidadecielo',         'assets/Audio/musica_cidadecielo.mp3');
+        this.load.audio('musica_batalha',             'assets/Audio/musica_batalha.mp3');
 
         // ── Áudio ambiente ──
         this.load.audio('ambiente_quebragelo',        'assets/Audio/ambiente_quebragelo.mp3');
