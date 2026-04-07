@@ -89,7 +89,7 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('PerguntaDeImpacto',     'assets/Cartas/Sondagem/PerguntaDeImpacto.png');
         this.load.image('PontoDeDorTecnico',     'assets/Cartas/Sondagem/PontoDeDorTecnico.png');
         this.load.image('SondagemDeFluxo',       'assets/Cartas/Sondagem/SondagemDeFluxo.png');
-        this.load.image('SondagemDePrazo',       'assets/Cartas/Sondagem/SondagemDePrazo.png');
+        this.load.image('SondagemDeParceiro',       'assets/Cartas/Sondagem/SondagemDeParceiro.png');
 
         // ── PRODUTOS / DEMONSTRACAO (12 cartas) ───────────────────────────────
         this.load.image('Antecipacao',      'assets/Cartas/Produtos/Antecipacao.png');
@@ -111,6 +111,20 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Validacao',   'assets/Cartas/Negociacao/ValidacaoDeValor.png');
         this.load.image('Comparativo', 'assets/Cartas/Negociacao/ComparativoDeValor.png');
         this.load.image('Recuo',       'assets/Cartas/Negociacao/RecuoEstrategico.png');
+
+        // ── BENEFICIOS (12 cartas) ─────────────────────────────────────────────
+        this.load.image('Aceitacao',            'assets/Cartas/Beneficios/AceitacaoAmpla.png');
+        this.load.image('AceitaCarteiras',      'assets/Cartas/Beneficios/AceitaCarteirasDigitais.png');
+        this.load.image('AnosDeMercado',        'assets/Cartas/Beneficios/AnosDeMercado.png');    
+        this.load.image('Antecipacao',          'assets/Cartas/Beneficios/AntecipacaoDeRecebiveis.png');
+        this.load.image('Bandeiras',            'assets/Cartas/Beneficios/BandeirasAceitas.png');
+        this.load.image('FidelidadeBeneficios', 'assets/Cartas/Beneficios/FidelidadeBeneficios.png');
+        this.load.image('Gestao',               'assets/Cartas/Beneficios/GestaoIntegrada.png');
+        this.load.image('RecebimentoRapido',    'assets/Cartas/Beneficios/RecebimentoRapido.png');
+        this.load.image('Seguranca',            'assets/Cartas/Beneficios/SegurancaNasTransacoes.png');
+        this.load.image('Suporte',              'assets/Cartas/Beneficios/Suporte24h.png');
+        this.load.image('Taxas',                'assets/Cartas/Beneficios/TaxasNegociaveis.png');
+        this.load.image('Troca',                'assets/Cartas/Beneficios/TrocaDeEquipamento.png');
 
         // ── FECHAMENTO (5 cartas) ─────────────────────────────────────────────
         this.load.image('Adicional',  'assets/Cartas/Fechamento/FechamentoAlternativo.png');
