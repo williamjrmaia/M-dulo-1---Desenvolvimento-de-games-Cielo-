@@ -103,15 +103,47 @@ export default class MundoDaCielita extends CenaMapa {
         this.cameras.main.startFollow(this.personagem.sprite);
 
         // Árvores de ambientação
-        this.add.sprite(620, 310, 'arvore4'     );
-        this.add.sprite(720, 420, 'arvore1'     );
-        this.add.sprite(650, 500, 'arvore2'     );
-        this.add.sprite(820, 280, 'arvore3'     );
-        this.add.sprite(900, 480, 'arvore4'     );
-        this.add.sprite(780, 490, 'arvore1'     );
-        this.add.sprite(920, 350, 'arvore2'     );
-        this.add.sprite(720, 320, 'arvore4'     );
+        this.add.sprite(620, 310, 'arvore4').setDepth(310 + 35 - 10);
+        this.add.sprite(720, 420, 'arvore1').setDepth(400 + 45 - 10);
+        this.add.sprite(650, 500, 'arvore2').setDepth(480 + 45 - 10);
+        this.add.sprite(820, 280, 'arvore3').setDepth(270 + 45 - 10);
+        this.add.sprite(900, 480, 'arvore4').setDepth(465 + 45 - 10);
+        this.add.sprite(780, 490, 'arvore1').setDepth(470 + 45 - 10);
+        this.add.sprite(920, 350, 'arvore2').setDepth(330 + 45 - 10);
+        this.add.sprite(720, 320, 'arvore4').setDepth(310 + 45 - 10);
 
+        // Hitbox das árvores
+        const h1 = this.add.rectangle(618, 310 + 35, 24, 12, 0xff0000, 0);
+        this.physics.add.existing(h1, true);
+        this.personagem.adicionarColisao(h1); 
+
+        const h2 = this.add.rectangle(720, 400 + 45, 19, 12, 0xff0000, 0);
+        this.physics.add.existing(h2, true);
+        this.personagem.adicionarColisao(h2); 
+
+        const h3 = this.add.rectangle(650, 480 + 45, 20, 12, 0xff0000, 0);
+        this.physics.add.existing(h3, true);
+        this.personagem.adicionarColisao(h3); 
+
+        const h4 = this.add.rectangle(820, 270 + 45, 20, 12, 0xff0000, 0);
+        this.physics.add.existing(h4, true);
+        this.personagem.adicionarColisao(h4); 
+
+        const h5 = this.add.rectangle(900, 465 + 45, 20, 12, 0xff0000, 0);
+        this.physics.add.existing(h5, true);
+        this.personagem.adicionarColisao(h5); 
+
+        const h6 = this.add.rectangle(780, 470 + 45, 19, 12, 0xff0000, 0);
+        this.physics.add.existing(h6, true);
+        this.personagem.adicionarColisao(h6); 
+
+        const h7 = this.add.rectangle(920, 330 + 45, 20, 12, 0xff0000, 0);
+        this.physics.add.existing(h7, true);
+        this.personagem.adicionarColisao(h7); 
+
+        const h8 = this.add.rectangle(718, 310 + 45, 22, 12, 0xff0000, 0);
+        this.physics.add.existing(h8, true);
+        this.personagem.adicionarColisao(h8); 
 
             }
 
@@ -135,5 +167,8 @@ export default class MundoDaCielita extends CenaMapa {
         if (this.personagem.temOverlap(this.portalGelo)) {
             this.trocarCena('PonteMC_QG');
         }
+
+        //Senso de profundiade do personagem
+        this.personagem.sprite.setDepth(this.personagem.sprite.y);
         }
 }
