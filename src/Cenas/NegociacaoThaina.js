@@ -156,7 +156,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
             new CartaAbordagem({
                 key:           'DesarmeElegante',
                 letra:         'P',
-                correta:       false,
+                correta:       true,
                 dialogoAcerto: '',
                 dialogoErro:   'Não gostei dessa abordagem, não.',
             }),
