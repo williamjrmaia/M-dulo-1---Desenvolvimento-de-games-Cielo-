@@ -29,11 +29,11 @@ import NegociacaoThaina from './Cenas/NegociacaoThaina.js';
 import PraiaDosProveitos from './Cenas/PraiaDosProveitos.js';
 import CasaPraia1 from './Cenas/CasaPraia1.js';
 import CasaPraia2 from './Cenas/CasaPraia2.js';
+import NegociacaoJulia from './Cenas/NegociacaoJulia.js';
 
 import CidadeCielo from './Cenas/CidadeCielo.js';
 
 import AudioManager     from './Classes/AudioManager.js';
-import NegociacaoJulia from './Cenas/NegociacaoJulia.js';
 
 const config = {
     type: Phaser.AUTO,

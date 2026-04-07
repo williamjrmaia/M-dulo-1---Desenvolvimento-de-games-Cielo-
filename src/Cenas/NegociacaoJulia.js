@@ -1,9 +1,5 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
-import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
-import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
-import CartaBeneficio from '../Classes/FasesNegociacao/CartaBeneficio.js';
-import Insignia       from '../Classes/Insignias.js';
-
+ 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoJulia.js — Cliente da Praia dos Proveitos
 // ─────────────────────────────────────────────────────────────────────────────
@@ -27,7 +23,7 @@ const PONTUACAO_PRODUTO_TAXA = {
     CieloFlash:       30,
     Antecipacao:       0,
     CrediarioDigital:  0,
-    CVBA:              0,
+    CieloFlash:        0,
     CieloFlash2:       0,
     FlashRecarga:      0,
     CieloLioOn:        0,
@@ -46,9 +42,21 @@ const BENEFICIOS = ['taxa', 'prazo', 'suporte'];
 export default class NegociacaoJulia extends CenaNegociacao {
     constructor() {
         super('NegociacaoJulia', {
-            nomeCliente:       'julia',
+            nomeCliente:       'Chefa',
             satisfacaoInicial: 0,
-            fases:             ['abordagem', 'sondagem', 'demonstracao', 'beneficio'],
+
+            fases: ['abordagem', 'sondagem', 'demonstracao', 'beneficios'],
+
+            cartasExigidas: {
+                abordagem:    ['DiretoAoPonto', 'GanchoSocial', 'AntiPitch'],
+                sondagem:     ['PerguntaDeImpacto', 'GanchoDaDor', 'ChaveDeExclusividade',
+                               'Estrategia', 'SondagemDeFluxo', 'SondagemDePrazo'],
+                demonstracao: ['CVBA', 'CieloFlash2', 'CieloFlash', 'CieloLioOn',
+                               'LioOnGestao', 'CieloTap', 'CieloZip', 'Antecipacao'],
+                beneficios:   ['Taxas', 'Comparativo'],
+            },
+
+            cartasPorFase: CARTAS_NA_MAO,
         });
 
         this.aspectosCliente = {
@@ -63,6 +71,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     // ── Preload ───────────────────────────────────────────────────────────────
+    // Todos os assets ja carregados no Preloader global.
 
     preload() {
         super.preload();
@@ -82,8 +91,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     // ── Create ────────────────────────────────────────────────────────────────
 
-    create() {
-        super.create();
+    _aoVencer() {}
 
         const W = this.scale.width;
         const H = this.scale.height;
@@ -127,39 +135,18 @@ export default class NegociacaoJulia extends CenaNegociacao {
         this._setIconesBeneficiosVisiveis(false);
     }
 
-    _setIconesBeneficiosVisiveis(visivel) {
-        for (const d of Object.values(this._iconesBeneficios)) d.obj.setVisible(visivel);
-    }
-
-    _revelarIconeBeneficio(beneficio) {
-        const d = this._iconesBeneficios[beneficio];
-        if (!d) return;
-
-        if (this.textures.exists(d.chaveOn) && d.obj.setTexture) d.obj.setTexture(d.chaveOn);
-        else if (d.obj.setFillStyle) d.obj.setFillStyle(0x22cc66);
-
-        this.tweens.add({
-            targets:  d.obj,
-            scaleX:   1.3, scaleY: 1.3,
-            duration: 150, yoyo: true,
-            ease:     'Back.easeOut',
-        });
-    }
-
-    // ── Insígnia e vitória ────────────────────────────────────────────────────
-
-    _aoVencer() {
-        const insignia = new Insignia(this, 'praia_proveitos');
-        insignia.conceder();
-    }
-
-    _chaveVitoria() { return 'julia_vencida'; }
-
-    // ── Pontuação dinâmica ────────────────────────────────────────────────────
+    // ── Pontuacao dinamica ────────────────────────────────────────────────────
 
     _getPontuacaoCarta(key) {
-        return this._dorTaxaRevelada()
-            ? (PONTUACAO_PRODUTO_TAXA[key]   ?? 0)
+        // Verifica se a chave pertence ao grupo de beneficios
+        if (BENEFICIOS_CORRETOS.has(key) || BENEFICIOS_ERRADOS.includes(key)) {
+            return this._dorConcorrenciaRevelada()
+                ? (PONTUACAO_BENEFICIO_CONCORRENCIA[key] ?? 0)
+                : (PONTUACAO_BENEFICIO_PADRAO[key] ?? 0);
+        }
+        // Produto de demonstracao
+        return this._dorConcorrenciaRevelada()
+            ? (PONTUACAO_PRODUTO_CONCORRENCIA[key] ?? 0)
             : (PONTUACAO_PRODUTO_PADRAO[key] ?? 0);
     }
 
@@ -168,8 +155,8 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     _produtoEstaErrado(key) {
-        if (!this._dorTaxaRevelada()) return false;
-        return key !== 'CieloFlash';
+        if (!this._dorConcorrenciaRevelada()) return false;
+        return key !== 'CVBA';
     }
 
     // ── Controle de fases ─────────────────────────────────────────────────────
@@ -233,8 +220,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // Para 'demonstracao' e 'beneficio', usamos a lógica local da Julia,
     // igual ao que a Thaina faz para a demonstração dela.
 
-    _mostrarDetalheCarta(carta) {
-        if (!this.negociacaoAtiva || this.cartaEmDetalhes) return;
+    // ── Deck de cartas por fase ───────────────────────────────────────────────
 
         const fase = this.clienteConfig.fases[this.faseAtual];
 
@@ -453,9 +439,9 @@ export default class NegociacaoJulia extends CenaNegociacao {
             this.cartaEmDetalhes = null;
         };
 
-        btnVoltar.on('pointerover', () => btnVoltar.setFillStyle(0x2a4a6a));
-        btnVoltar.on('pointerout',  () => btnVoltar.setFillStyle(0x1a3a5a));
-        btnVoltar.on('pointerdown', fechar);
+        const exigidas     = this.clienteConfig.cartasExigidas[fase] ?? [];
+        const disponiveis  = todasCartas[fase] ?? [];
+        const embaralhadas = Phaser.Utils.Array.Shuffle([...disponiveis]);
 
         btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
         btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
@@ -494,48 +480,53 @@ export default class NegociacaoJulia extends CenaNegociacao {
         });
     }
 
-    // ── Fase de benefícios ────────────────────────────────────────────────────
+    // Mao de beneficios: 2 corretas garantidas + 3 erradas aleatorias, tudo embaralhado
+    _montarMaoBeneficios() {
+        const erradasEmbaralhadas = Phaser.Utils.Array.Shuffle([...BENEFICIOS_ERRADOS]);
+        const erradasSorteadas    = erradasEmbaralhadas.slice(0, 3);
 
-    _distribuirCartasBeneficio() {
-        const cartas = this._getCartasBeneficio();
-        const { CARD_WIDTH, CARD_SPACING, ANIM_FADE_DURATION, ANIM_HOVER_OFFSET } = CenaNegociacao;
-        const W      = this.scale.width;
-        const H      = this.scale.height;
-        const totalW = cartas.length * CARD_WIDTH + (cartas.length - 1) * CARD_SPACING;
-        const startX = (W - totalW) / 2;
-        const y      = H * 0.78;
+        const todasNaMao = Phaser.Utils.Array.Shuffle([
+            'Taxas', 'Comparativo', ...erradasSorteadas,
+        ]);
 
-        this.cartasNaMao = [];
-
-        cartas.forEach((carta, i) => {
-            const x  = startX + i * (CARD_WIDTH + CARD_SPACING) + CARD_WIDTH / 2;
-            const bg = this._criarFundoCarta(x, y, carta.key);
-
-            bg.setAlpha(0);
-            this.tweens.add({ targets: bg, alpha: 1, duration: ANIM_FADE_DURATION, delay: i * 80 });
-            bg.on('pointerover', () => this.tweens.add({ targets: bg, y: `-=${ANIM_HOVER_OFFSET}`, duration: 100 }));
-            bg.on('pointerout',  () => this.tweens.add({ targets: bg, y: `+=${ANIM_HOVER_OFFSET}`, duration: 100 }));
-            bg.on('pointerdown', () => this._mostrarDetalheCarta(carta));
-
-            carta._objetos = { bg };
-            this.cartasNaMao.push(carta);
-            this.grupoCartas.add(bg);
-        });
+        return todasNaMao.map(key => ({
+            key,
+            fase:        'beneficios',
+            obrigatoria: BENEFICIOS_CORRETOS.has(key),
+        }));
     }
 
-    _resolverBeneficio(carta) {
+    // ── Resolucao de carta ────────────────────────────────────────────────────
+
+    _resolverCarta(carta) {
         if (!this.negociacaoAtiva) return;
 
-        if (carta.correta) {
-            if (!this._beneficiosRevelados.has(carta.beneficio)) {
-                this._beneficiosRevelados.add(carta.beneficio);
-                this._revelarIconeBeneficio(carta.beneficio);
-            }
+        const fase = this.clienteConfig.fases[this.faseAtual];
 
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._removerCartaVisual(carta);
 
-            if (this._beneficiosRevelados.size >= BENEFICIOS_NECESSARIOS) {
+        // Abordagem e sondagem: logica de acertos sequenciais
+        const exigidas = this.clienteConfig.cartasExigidas[fase] ?? [];
+        const acertou  = exigidas.length === 0 || exigidas.includes(carta.key);
+
+        if (fase === 'sondagem') {
+            this._cartasSondagemUsadas.add(carta.key);
+        }
+
+        if (acertou) {
+            const pontos = this._getPontuacaoCarta(carta.key);
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
+            this.acertosNaFase++;
+
+            if (carta._objetos?.bg) carta._objetos.bg.destroy();
+            this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
+
+            const acertosNecessarios = ACERTOS_POR_FASE[fase] ?? CenaNegociacao.ACERTOS_PARA_AVANCAR;
+            const faltam             = acertosNecessarios - this.acertosNaFase;
+
+            if (faltam <= 0) {
+                this._mostrarDialogo(this._falaAcertoFase(fase));
                 this.negociacaoAtiva = false;
                 this._mostrarDialogo(carta.dialogoAcerto);
                 this.time.delayedCall(4000, () => {
@@ -544,17 +535,20 @@ export default class NegociacaoJulia extends CenaNegociacao {
                     this._avancarOuVencer();
                 });
             } else {
-                const faltam = BENEFICIOS_NECESSARIOS - this._beneficiosRevelados.size;
-                this._mostrarDialogo(`${carta.dialogoAcerto} (Ainda faltam ${faltam} benefício(s))`);
+                this._mostrarDialogo(`✅ Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
             }
 
         } else {
+            this._mostrarDialogo(this._falaErroFase(fase));
             this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
-            this._mostrarDialogo(carta.dialogoErro);
             this.negociacaoAtiva = false;
+
             this.time.delayedCall(2000, () => {
-                if (this.satisfacao <= 0) this._perderNegociacao();
-                else this.negociacaoAtiva = true;
+                if (this.satisfacao <= 0) {
+                    this._perderNegociacao();
+                } else {
+                    this.negociacaoAtiva = true;
+                }
             });
         }
     }
@@ -599,16 +593,18 @@ export default class NegociacaoJulia extends CenaNegociacao {
         ];
     }
 
-    // ── Contadores visuais ────────────────────────────────────────────────────
+    // ── Contador visual — demonstracao ────────────────────────────────────────
 
     _criarContadorProdutos() {
         const W = this.scale.width;
         const H = this.scale.height;
+
         if (this._contadorTexto) this._contadorTexto.destroy();
+
         this._contadorTexto = this.add.text(W / 2, H * 0.62, this._textoContadorProdutos(), {
-            fontFamily: '"Courier New", monospace',
-            fontSize:   '14px',
-            color:      '#ccaa44',
+            fontFamily:    '"Courier New", monospace',
+            fontSize:      '14px',
+            color:         '#ccaa44',
             letterSpacing: 2,
         }).setOrigin(0.5).setDepth(50);
     }
@@ -621,19 +617,209 @@ export default class NegociacaoJulia extends CenaNegociacao {
         if (this._contadorTexto) this._contadorTexto.setText(this._textoContadorProdutos());
     }
 
-    // ── Falas ─────────────────────────────────────────────────────────────────
+    // ── Contador visual — beneficios ──────────────────────────────────────────
 
-    _falaInicioFase(fase) {
-        const falas = {
-            abordagem:    'Oi! Tô ocupada aqui, mas pode falar.',
-            sondagem:     'Me conta mais. O que você tem pra me oferecer?',
-            demonstracao: `A taxa que pago tá me matando. Me mostre ${PRODUTOS_NECESSARIOS} opções que resolvam isso.`,
-            beneficio:    'Os produtos me interessaram. Agora quero saber quais condições vocês oferecem.',
+    _criarContadorBeneficios() {
+        const W = this.scale.width;
+        const H = this.scale.height;
+
+        if (this._contadorBeneficioTexto) this._contadorBeneficioTexto.destroy();
+
+        this._contadorBeneficioTexto = this.add.text(W / 2, H * 0.62, this._textoContadorBeneficios(), {
+            fontFamily:    '"Courier New", monospace',
+            fontSize:      '14px',
+            color:         '#ccaa44',
+            letterSpacing: 2,
+        }).setOrigin(0.5).setDepth(50);
+    }
+
+    _textoContadorBeneficios() {
+        return `Benefícios apresentados: ${this._beneficiosSelecionados.length} / ${BENEFICIOS_NECESSARIOS}`;
+    }
+
+    _atualizarContadorBeneficios() {
+        if (this._contadorBeneficioTexto) this._contadorBeneficioTexto.setText(this._textoContadorBeneficios());
+    }
+
+    // ── Modal de detalhes ─────────────────────────────────────────────────────
+
+    _mostrarDetalheCarta(carta) {
+        if (!this.negociacaoAtiva) return;
+        if (this.cartaEmDetalhes) return;
+
+        const fase = this.clienteConfig.fases[this.faseAtual];
+
+        // Abordagem e sondagem: modal padrao da classe pai (botao SELECIONAR)
+        if (fase !== 'demonstracao' && fase !== 'beneficios') {
+            super._mostrarDetalheCarta(carta);
+            return;
+        }
+
+        // Demonstracao: guard de duplicata
+        if (fase === 'demonstracao') {
+            if (this._produtosSelecionados.find(c => c.key === carta.key)) {
+                this._mostrarDialogo('Você já apresentou este produto!');
+                return;
+            }
+            const restantes = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
+            this._abrirModalApresentar(carta, restantes, () => this._apresentarProduto(carta));
+            return;
+        }
+
+        // Beneficios: guard de duplicata
+        if (fase === 'beneficios') {
+            if (this._beneficiosSelecionados.find(c => c.key === carta.key)) {
+                this._mostrarDialogo('Você já apresentou este benefício!');
+                return;
+            }
+            const restantes = BENEFICIOS_NECESSARIOS - this._beneficiosSelecionados.length;
+            this._abrirModalApresentar(carta, restantes, () => this._selecionarBeneficio(carta));
+        }
+    }
+
+    // Modal reutilizavel para demonstracao e beneficios
+    _abrirModalApresentar(carta, restantes, aoConfirmar) {
+        this.cartaEmDetalhes = carta;
+
+        const W = this.scale.width;
+        const H = this.scale.height;
+        const { LAYERS } = CenaNegociacao;
+
+        const overlay = this.add
+            .rectangle(0, 0, W, H, 0x000000, 0.7)
+            .setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
+
+        const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
+        cartaZoom.setDepth(LAYERS.MODAL);
+
+        const labelBotao = restantes === 1
+            ? 'APRESENTAR (último!)'
+            : `APRESENTAR (faltam ${restantes})`;
+
+        const { btn: btnVoltar,     texto: textoVoltar     } = this._criarBotao(40, 40, 100, 50, 'VOLTAR',   0x1a3a5a, 0xcc4444, '#ff6666');
+        const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(W / 2, H / 2 + 320, 220, 50, labelBotao, 0x1a4a2a, 0x22cc66, '#22cc66');
+
+        const fecharModal = () => {
+            [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar]
+                .forEach(obj => obj.destroy());
+            this.cartaEmDetalhes = null;
         };
-        return falas[fase] ?? 'O que você tem a me apresentar?';
+
+        btnVoltar.on('pointerover', () => btnVoltar.setFillStyle(0x2a4a6a));
+        btnVoltar.on('pointerout',  () => btnVoltar.setFillStyle(0x1a3a5a));
+        btnVoltar.on('pointerdown', fecharModal);
+
+        btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
+        btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
+        btnSelecionar.on('pointerdown', () => {
+            fecharModal();
+            aoConfirmar();
+        });
+    }
+
+    // ── Logica de apresentacao de produto (demonstracao) ──────────────────────
+
+    _apresentarProduto(carta) {
+        this._produtosSelecionados.push(carta);
+        this._atualizarContadorProdutos();
+
+        const errado = this._produtoEstaErrado(carta.key);
+        const pontos = this._getPontuacaoCarta(carta.key);
+
+        if (errado) {
+            this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
+            this._mostrarDialogo('Isso não resolve meu problema com a concorrência. Você prestou atenção no que eu disse?');
+        } else {
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
+
+            const faltam = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
+            if (faltam > 0) {
+                const msg = this._dorConcorrenciaRevelada() && carta.key === 'CVBA'
+                    ? `Essa proposta de valor é exatamente o que preciso para me diferenciar! Me mostra mais ${faltam}.`
+                    : `Produto apresentado! Continue mostrando mais ${faltam}.`;
+                this._mostrarDialogo(msg);
+            }
+        }
+
+        if (this._produtosSelecionados.length < PRODUTOS_NECESSARIOS) return;
+
+        this.negociacaoAtiva = false;
+
+        if (this.satisfacao <= 0) {
+            this._perderNegociacao();
+            return;
+        }
+
+        this._mostrarDialogo(this._falaAcertoFase('demonstracao'));
+        this.time.delayedCall(4000, () => {
+            this.negociacaoAtiva = true;
+            this._avancarOuVencer();
+        });
+    }
+
+    // ── Logica de selecao de beneficio ────────────────────────────────────────
+
+    _selecionarBeneficio(carta) {
+        if (!this.negociacaoAtiva) return;
+
+        const errado = this._beneficioEstaErrado(carta.key);
+        const pontos = this._getPontuacaoCarta(carta.key);
+
+        if (errado) {
+            // Penaliza, descarta a carta da mao, mas NAO conta no progresso
+            this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
+            this._mostrarDialogo(this._falaErroFase('beneficios'));
+
+            if (carta._objetos?.bg) carta._objetos.bg.destroy();
+            this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
+
+            this.negociacaoAtiva = false;
+            this.time.delayedCall(2000, () => {
+                if (this.satisfacao <= 0) {
+                    this._perderNegociacao();
+                } else {
+                    this.negociacaoAtiva = true;
+                }
+            });
+            return;
+        }
+
+        // Beneficio correto: conta no progresso e remove da mao
+        this._beneficiosSelecionados.push(carta);
+        this._atualizarContadorBeneficios();
+        this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
+
+        if (carta._objetos?.bg) carta._objetos.bg.destroy();
+        this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
+
+        const faltam = BENEFICIOS_NECESSARIOS - this._beneficiosSelecionados.length;
+
+        if (faltam > 0) {
+            const msg = this._dorConcorrenciaRevelada()
+                ? `Ótimo! Esse benefício ataca diretamente o problema de preço. Ainda falta ${faltam} benefício.`
+                : `Benefício apresentado! Ainda falta ${faltam} benefício.`;
+            this._mostrarDialogo(msg);
+            return;
+        }
+
+        // Ambos os beneficios corretos foram apresentados — avanca
+        this.negociacaoAtiva = false;
+
+        if (this.satisfacao <= 0) {
+            this._perderNegociacao();
+            return;
+        }
+
+        this._mostrarDialogo(this._falaAcertoFase('beneficios'));
+        this.time.delayedCall(4000, () => {
+            this.negociacaoAtiva = true;
+            this._avancarOuVencer();
+        });
     }
 
     // ── Retorno de cena ───────────────────────────────────────────────────────
 
-    _cenaDeRetorno() { return 'PraiaDosProveitos'; }
+    _cenaDeRetorno() {
+        return 'PraiaDosProveitos';
+    }
 }
