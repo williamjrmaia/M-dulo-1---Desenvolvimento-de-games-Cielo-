@@ -1,7 +1,7 @@
 # Inteli - Instituto de Tecnologia e Liderança 
 
 <p align="center">
-<a href= "https://www.inteli.edu.br/"><img src="assets/GDD/logointeli.png" alt="Inteli - Instituto de Tecnologia e Liderança" border="0" width=40% height=40%></a>
+<a href= "https://www.inteli.edu.br/"><img src="documents/assets/logointeli.png" alt="Inteli - Instituto de Tecnologia e Liderança" border="0" width=40% height=40%></a>
 </p>
 
 <br>
@@ -11,14 +11,14 @@
 ## O Octeto Fantástico
 
 ## 👨‍🎓 Integrantes: 
-- <a href="https://www.linkedin.com/in/victorbarq/">Arthur Augusto Proença Gonçalves</a>
-- <a href="https://www.linkedin.com/in/victorbarq/">Eric Pimentel Ferraz</a>
-- <a href="https://www.linkedin.com/in/victorbarq/">Felipe Menossi Estrada</a> 
-- <a href="https://www.linkedin.com/in/victorbarq/">Jorge Nader</a> 
+- <a href="https://www.linkedin.com/in/arthur-proen%C3%A7a-87522b355/">Arthur Augusto Proença Gonçalves</a>
+- <a href="https://www.linkedin.com/in/eric-ferraz-52069b3b8/">Eric Pimentel Ferraz</a>
+- <a href="https://www.linkedin.com/in/felipe-menossi-estrada/">Felipe Menossi Estrada</a> 
+- <a href="https://www.linkedin.com/in/jorge-nader-3b3b94400/">Jorge Nader</a> 
 - <a href="https://www.linkedin.com/in/j%C3%BAlia-silva-sales-a7b3602a6/">Júlia Silva Sales</a>
-- <a href="https://www.linkedin.com/in/victorbarq/">Rafael Sleumer Hamacek Succi</a> 
+- <a href="https://www.linkedin.com/in/rafael-succi/">Rafael Sleumer Hamacek Succi</a> 
 - <a href="https://www.linkedin.com/in/thain%C3%A1-lima-33b7a7288/">Thainá Camilly Alves de Lima</a>
-- <a href="https://www.linkedin.com/in/victorbarq/">William Junior dos Santos</a>
+- <a href="https://www.linkedin.com/in/william-maia-95785b323/">William Junior dos Santos</a>
 
 ## 👩‍🏫 Professores:
 ### Orientador(a) 
@@ -49,13 +49,38 @@ Desenvolvido com Phaser 3 e executado diretamente no navegador Google Chrome, o 
 
 Dentre os arquivos e pastas presentes na raiz do projeto, definem-se:
 
-- <b>assets</b>: aqui estão os arquivos relacionados a elementos não-estruturados deste repositório, como imagens.
+- **assets**: aqui estão todos os recursos visuais e sonoros do jogo, organizados nas seguintes subpastas:
+  - **Ambientacao**: sprites e tiles utilizados na ambientação dos cenários.
+  - **Audio**: trilha sonora e efeitos de som.
+  - **Cartas**: imagens das cartas utilizadas no jogo.
+  - **CenarioCasa**: assets visuais do cenário da casa.
+  - **CidadeCielo**: assets visuais da Cidade Cielo.
+  - **Icones**: ícones utilizados na interface do usuário.
+  - **Insignias**: imagens de insígnias e conquistas do jogador.
+  - **MapaGelo**: assets visuais do mapa de gelo.
+  - **menu**: elementos visuais utilizados nas telas de menu.
+  - **NPC**: sprites e animações dos personagens não-jogáveis.
+  - **objetos**: assets dos objetos interativos presentes no jogo.
+  - **PLAYER**: sprites e animações do personagem jogável.
+  - **PraiaDosProveitos**: assets visuais da Praia dos Proveitos.
+  - **VilaDoVarejo**: assets visuais da Vila do Varejo.
 
-- <b>document</b>: aqui estão todos os documentos do projeto, como o Game Development Document (GDD) bem como documentos complementares, na pasta "other".
+- **documents**: aqui estão todos os documentos do projeto, incluindo:
+  - **assets**: imagens e recursos utilizados na documentação.
+  - **other**: documentos complementares ao GDD.
+  - **gdd.md**: o Game Design Document (GDD) principal do jogo.
 
-- <b>src</b>: Todo o código fonte criado para o desenvolvimento do projeto do jogo.
+- **src**: todo o código-fonte do jogo, organizado em:
+  - **Cenas**: arquivos responsáveis por cada cena do jogo.
+  - **Classes**: definições de classes e lógica central do jogo.
+  > Para descrição detalhada de cada cena e classe, consulte o [GDD](documents/gdd.md).
+  - **main.js**: ponto de entrada da aplicação.
 
-- <b>README.md</b>: arquivo que serve como guia e explicação geral sobre o projeto e o jogo (o mesmo que você está lendo agora).
+- **.gitlab-ci.yml**: arquivo de configuração do pipeline de CI/CD.
+
+- **index.html**: página HTML principal que inicializa o jogo no navegador.
+
+- **README.md**: arquivo que serve como guia e explicação geral sobre o projeto (o mesmo que você está lendo agora).
 
 ## 🔧 Como executar o código
 
