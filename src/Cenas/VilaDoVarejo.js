@@ -84,12 +84,12 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── NPC: Cielita ─────────────────────────────────────────────────────
         // Guia de introdução ao mapa da Vila do Varejo
-        this.cielita = new NPC(this, 270, 230, 'cielitaparada', {
+        this.cielita = new NPC(this, 350, 240, 'cielitaparada', {
             velocidade: 0,
             distanciaInteracao: 60,
             grupoNPCs: this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
-            scaleIndicador: 1.3,
+            scaleIndicador: 1.5,
             onFimDialogo: () => {
                 this.dialogoCielitaConcluido = true;
                 this.registry.set('cielita_varejo_concluido', true);
@@ -246,9 +246,9 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // Atualiza o player e a lógica de movimento/diálogo dos NPCs
         this.personagem.atualizar();
-        this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
-        this.jorge.atualizar(this.personagem.sprite, this.teclas.interagir);
-        this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.eric.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        this.jorge.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── HUD (balão de orientação) ─────────────────────────────────────
         const distEric = Phaser.Math.Distance.Between(

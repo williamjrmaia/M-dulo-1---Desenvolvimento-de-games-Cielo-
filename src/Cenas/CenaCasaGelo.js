@@ -54,7 +54,10 @@ export default class CenaCasaGelo extends CenaMapa {
             grupoNPCs:          this.grupoNPCs,
             animacoes:          { idle: 'seupedro_idl' }, // sprite estático, sem animação
             onFimDialogo: () => {
-                this.trocarCena('NegociacaoPedro');
+                const registry = this.registry.get('negociacoesVencidas') ?? {};
+                if (!registry['pedro_vencido']) {
+                    this.trocarCena('NegociacaoPedro');
+                }
             },
         });
         this.pedro.setScale(1.5).setDepth(5);
@@ -64,6 +67,8 @@ export default class CenaCasaGelo extends CenaMapa {
             { personagem: 'Seu Pedro', texto: 'Bem-vindo!' },
             { personagem: 'Jogador',   texto: 'Olá!'      },
         ]);
+
+        this._pedroVencidoAnterior = null; // força atualização inicial das falas
 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
@@ -92,11 +97,25 @@ export default class CenaCasaGelo extends CenaMapa {
         this.personagem.atualizar();
 
         // Atualiza o indicador E do Pedro (mostra quando perto, esconde quando longe)
-        this.pedro.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.pedro.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── HUD do Balão ──────────────────────────────────────────────────────
         const registry    = this.registry.get('negociacoesVencidas') ?? {};
         const pedroVencido = !!registry['pedro_vencido'];
+
+        if (pedroVencido !== this._pedroVencidoAnterior) {
+            this._pedroVencidoAnterior = pedroVencido;
+            if (pedroVencido) {
+                this.pedro.setFalas([
+                    { personagem: 'Seu Pedro', texto: 'Obrigado pela maquininha!' },
+                ]);
+            } else {
+                this.pedro.setFalas([
+                    { personagem: 'Seu Pedro', texto: 'Bem-vindo!' },
+                    { personagem: 'Jogador',   texto: 'Olá!'      },
+                ]);
+            }
+        }
 
         if (!pedroVencido) {
             this.game.events.emit('atualizarBalao', { texto: 'Negocie com Pedro', visivel: true });

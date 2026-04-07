@@ -1220,11 +1220,24 @@ MenuPrincipal
 
 A **Cena de Introdução** é um diferencial narrativo que muitos projetos não entregam: antes de o jogador ver o mapa, a Cielita o recebe com um monólogo animado que usa seu nome diretamente (`"É aí que entram os escolhidos, [nome]."`) — personalizando a experiência desde o primeiro segundo.
 
-> **[INSERIR PRINT — Cena de Introdução: balão da Cielita com texto animado e fundo escuro]**
+> <div align="center">
+  <sub>Cena de Introdução: balão da Cielita </sub><br>
+  <img src="assets/Balao_dialogo.png" width="100%" alt="Cena de Introdução: balão da Cielita "><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Tela de seleção de personagem: 4 skins com animação idle e campo de nome]**
+> <div align="center">
+  <sub>Tela de seleção de personagem: 4 skins com animação idle e campo de nome</sub><br>
+  <img src="assets/Personagens.png" width="100%" alt="Tela de seleção de personagem: 4 skins com animação idle e campo de nome"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem]**
+> <div align="center">
+  <sub>Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem</sub><br>
+  <img src="assets/CasaInternaCielita.png" width="100%" alt="Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
 
 ---
 
@@ -1259,11 +1272,17 @@ A **barra de satisfação** vai de 0 a 100 e muda de cor e expressão do NPC em 
 - **Neutro** (34–66): cliente hesitante — barra amarela
 - **Bravo** (0–33): cliente prestes a encerrar — barra vermelha
 
-> **[INSERIR PRINT — Tela de negociação com Pedro: barra de satisfação, cartas na mão e NPC]**
+> <div align="center">
+  <sub>Tela de negociação com o NPC Pedro</sub><br>
+  <img src="assets/negociacao_pedro.png" width="100%" alt="Tela de negociação com Pedro"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Modal de detalhe de carta aberto com imagem ampliada]**
-
-> **[INSERIR PRINT — Notificação de insígnia animada no topo da tela ("INSÍGNIA CONQUISTADA! — Mestre do Gelo")]**
+> <div align="center">
+  <sub>Carta de abordagem ampliada</sub><br>
+  <img src="assets/modal.png" width="100%" alt="Carta de abordagem ampliada"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
 ---
 
@@ -1299,9 +1318,19 @@ Para eliminar a duplicação de código de transição presente nas sprints ante
 
 O HUD corre como cena paralela em todas as telas de mapa, exibindo balões de missão ("Fale com a Cielita", "Encontre o cliente") que guiam o jogador sem interromper o gameplay. A tecla **O** ativa/desativa os indicadores a qualquer momento, respeitando jogadores que preferem explorar sem assistência.
 
-> **[INSERIR PRINT — Mapa Vila do Varejo com HUD de indicação visível no topo]**
+> <div align="center">
+  <sub>Mapa Vila do Varejo com HUD de indicação</sub><br>
+  <img src="assets/hud_viladovarejo.png" width="100%" alt="Mapa Vila do Varejo com HUD de indicação"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Menu de configurações com opções de modo daltônico]**
+
+> <div align="center">
+  <sub>Menu de configurações com opções de modo daltônico</sub><br>
+  <img src="assets/menu_daltonismo.png" width="100%" alt="Menu de configurações com opções de modo daltônico"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
 
 ---
 
@@ -1430,27 +1459,209 @@ A execução consistente dos casos de teste acima garante que o Cielo Verso perm
 
 
 
+
 ## 5.2. Testes de jogabilidade (playtests) (sprint 5)
 
-### 5.2.1 Registros de testes
+### 5.2.1. Registros de testes
 
-*Descreva nesta seção as sessões de teste/entrevista com diferentes jogadores. Registre cada teste conforme o template a seguir.*
+> **Nota metodológica:** Os playtests desta sprint foram realizados com estudantes do Inteli (turma T26), com idades entre 18 e 19 anos e perfil predominantemente gamer. Esses participantes funcionam como **proxies do público-alvo real** — Gerentes de Negócios da Cielo, com média de 44 anos e menor familiaridade com jogos digitais. As implicações dessa diferença de perfil são discutidas na seção de análise ao final deste bloco.
 
-Nome | João Jonas (use nomes fictícios)
+---
+
+Nome | Marcos Andrade 
 --- | ---
-Já possuía experiência prévia com games? | sim, é um jogador casual
-Conseguiu iniciar o jogo? | sim
-Entendeu as regras e mecânicas do jogo? | entendeu as regras, mas sobre as mecânicas, apenas as essenciais, não explorou os comandos complexos
-Conseguiu progredir no jogo? | sim, sem dificuldades  
-Apresentou dificuldades? | Não, conseguiu jogar com facilidade e afirmou ser fácil
-Que nota deu ao jogo? | 9.0
-O que gostou no jogo? | Gostou  de como o jogo vai ficando mais difícil ao longo do tempo sem deixar de ser divertido
-O que poderia melhorar no jogo? | A responsividade do personagem aos controles, disse que havia um pouco de atraso desde o momento do comando até a resposta do personagem
+Já possuía experiência prévia com games? | Sim, jogador com experiência moderada
+Conseguiu iniciar o jogo? | Sim, sem dificuldades
+Entendeu as regras e mecânicas do jogo? | Entendeu a lógica geral, mas indicou que as instruções para o jogador sobre o que fazer em cada etapa poderiam ser mais claras. Os HUDs de indicação de objetivos também foram apontados como pouco evidentes.
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade leve na interpretação dos controles, que considerou "não muito claros" à primeira vista
+Que nota deu ao jogo? | 7,5
+O que gostou no jogo? | Design visual geral, considerado muito bom; trilha sonora adequada ao contexto
+O que poderia melhorar no jogo? | Melhorar as instruções contextuais ao longo da jornada; aprimorar os HUDs de indicação de objetivos para que o jogador saiba sempre o que deve fazer a seguir
 
-### 5.2.2 Melhorias
+---
 
-*Descreva nesta seção um plano de melhorias sobre o jogo, com base nos resultados dos testes de jogabilidade*
+Nome | Lucas Vinicius 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; destacou positivamente a intuitividade da exploração, mas sugeriu a adição de ícones de localização de objetivos no mapa para facilitar a navegação
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade para localizar objetivos no mapa sem indicadores visuais de direção
+Que nota deu ao jogo? | 9,0
+O que gostou no jogo? | Boa intuitividade geral; controles considerados adequados; design e som avaliados positivamente
+O que poderia melhorar no jogo? | Aumentar o tamanho da fonte da instrução "Aperte H para o tutorial"; adicionar tutorial específico para a fase de negociação; implementar a possibilidade de retornar após selecionar uma carta; corrigir a seta de navegação entre cartas em determinada fase
 
+---
+
+Nome | Gabriel Tavares 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim, considerou as mecânicas claras, porém sinalizou que há excesso de texto nas telas de negociação, o que pode comprometer a fluidez da leitura
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Percepção de sobrecarga textual; inconsistência de estilo visual entre diferentes partes do jogo
+Que nota deu ao jogo? | 8,5
+O que gostou no jogo? | Design agradável; trilha sonora compatível com o ambiente
+O que poderia melhorar no jogo? | Reduzir a quantidade de texto nas cenas de combate; aumentar a intuitividade da mecânica de negociação; avaliar a substituição dos controles WASD por teclas de seta como opção alternativa de movimentação
+
+---
+
+Nome | Matheus Augusto 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim, as mecânicas foram consideradas claras
+Conseguiu progredir no jogo? | Sim, com ressalvas
+Apresentou dificuldades? | Identificou bug crítico: ao selecionar uma carta, retornar e acessar novamente a mesma cena, a carta anteriormente selecionada reaparecia e era contabilizada novamente como resposta correta. Também reportou falha na exibição de descrição e imagem de algumas cartas na Vila do Varejo, e dificuldade de leitura devido ao tamanho reduzido da fonte nas cartas.
+Que nota deu ao jogo? | 9,5
+O que gostou no jogo? | Mecânicas de negociação bem estruturadas; experiência geral positiva
+O que poderia melhorar no jogo? | Correção do bug de re-seleção de carta; reposicionamento do botão de fechar carta para local mais próximo ao card; ajuste do tamanho da fonte nos textos das cartas; correção da falha de carregamento de imagem/descrição de cartas na Vila do Varejo
+
+---
+
+Nome | Heitor Goulart
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim, considerou o sistema de negociação bem claro
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade pontual ao navegar entre cartas (seta lateral com falha de funcionamento); colisões imprecisas com objetos de cenário
+Que nota deu ao jogo? | 9,0
+O que gostou no jogo? | Clareza geral das mecânicas; experiência considerada fluida
+O que poderia melhorar no jogo? | Ajustar colisões de elementos decorativos do cenário; corrigir a hitbox dos botões de interface para maior precisão de clique
+
+---
+
+Nome | Bruno Araújo 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; elogiou a intuitividade do tutorial, mas identificou que é possível iniciar um diálogo de tutorial com um NPC e simplesmente se afastar, fazendo com que a missão avance sem que o conteúdo tenha sido assimilado
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Conseguiu reproduzir o bug de re-seleção de carta: ao escolher uma carta correta, navegar para outras cartas via seta e retornar, a carta correta reaparecia clicável e era contada novamente — quebrando a progressão da cena de negociação
+Que nota deu ao jogo? | 8,0
+O que gostou no jogo? | Sistema de batalha/negociação bem recebido; design do mundo aberto elogiado
+O que poderia melhorar no jogo? | Corrigir o bug de estado de cartas na cena de negociação; adicionar trava de diálogo que impeça o jogador de abandonar um NPC no meio da interação sem consequência
+
+---
+
+Nome | Arthur Morais 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; elogiou o esquema de poucos comandos, considerando-o acessível
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade para distinguir áreas e regiões do mapa sem demarcação clara; identificou bug relacionado ao banco de dados de negociação e apontou ausência de identificação de nome dos locais
+Que nota deu ao jogo? | 9,0
+O que gostou no jogo? | Design do mundo aberto; esquema de controles simples e eficientes; trilha sonora adequada ao ambiente
+O que poderia melhorar no jogo? | Implementar minimapa ou indicadores de região; corrigir bug de persistência de dados na cena de negociação; adicionar nomes ou placas identificadoras nos locais do mapa
+
+---
+
+Nome | Felipe Cabeza / 18 anos / Eng. Comp. / T26
+--- | ---
+Já possuía experiência prévia com games? | Sim, fã declarado do estilo visual inspirado em Pokémon
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; considerou o sistema de negociação simples e coerente com o contexto
+Conseguiu progredir no jogo? | Sim, com ressalvas relacionadas à movimentação e visibilidade em alguns mapas
+Apresentou dificuldades? | Velocidade de deslocamento percebida como lenta em determinados mapas; visibilidade dificultada pela paleta de cores em certas áreas; ausência de indicador visual diferenciando casas com conteúdo das sem conteúdo
+Que nota deu ao jogo? | 8,0
+O que gostou no jogo? | Design visual inspirado em Pokémon bem recebido; trilha sonora elogiada mesmo sendo repetitiva; mecânicas de negociação claras e coerentes
+O que poderia melhorar no jogo? | Corrigir erros de colisão; adicionar trava ou estado visual em personagens cujas negociações já foram concluídas; diferenciar visualmente as cartas por categoria (cores distintas por tipo de iniciativa); indicar visualmente quais casas possuem conteúdo disponível; revisar velocidade de movimentação e paleta de cores em mapas com baixo contraste
+
+**Categorias de problemas por frequência:**
+ 
+| Categoria | Testadores afetados |
+| --- | :---: |
+| Bugs na cena de negociação (cartas) | 4/8 |
+| Falta de indicadores visuais / minimapa | 3/8 |
+| Excesso de texto | 2/8 |
+| Colisão com objetos de cenário | 2/8 |
+| Tutorial ou instrução insuficiente | 2/8 |
+| Legibilidade (tamanho de fonte) | 2/8 |
+
+---
+
+### Análise dos resultados e relação com o público-alvo
+
+Os playtests desta sprint foram conduzidos com estudantes do Inteli com idades entre 18 e 19 anos, todos com experiência prévia em jogos digitais — um perfil consideravelmente distinto do público-alvo final do projeto, composto por Gerentes de Negócios da Cielo com média de 44 anos e menor familiaridade com o universo gamer. Essa condição deve ser considerada na interpretação dos dados: os testadores funcionaram como **proxies qualificados**, capazes de identificar problemas técnicos, de usabilidade e de clareza de mecânicas com precisão, mas não necessariamente representam as dificuldades que um usuário não-gamer enfrentaria. Ainda assim, os resultados são reveladores — e, em alguns aspectos, mais preocupantes do que parecem à primeira vista. Se jogadores experientes relataram dificuldade para localizar objetivos no mapa, identificar áreas distintas, interpretar o excesso de texto nas negociações e navegar pelo sistema de cartas sem indicadores claros, é razoável supor que o público-alvo real — acostumado a ferramentas de trabalho e não a interfaces de jogo — encontraria dificuldades ainda mais acentuadas nesses mesmos pontos. Nesse sentido, os feedbacks sobre sobrecarga textual, ausência de minimapa, falta de demarcação de regiões e necessidade de tutorial expandido para a mecânica de negociação ganham peso estratégico: não são apenas melhorias de experiência para gamers, mas requisitos de acessibilidade para que o jogo cumpra sua função como ferramenta de treinamento corporativo. A nota média atribuída ao jogo pelos testadores foi **8,6**, indicando boa recepção geral — um sinal positivo que, combinado com os pontos de melhoria levantados, fornece uma base concreta para a revisão do MVP.
+
+### 5.2.2. Melhorias
+
+Com base nos resultados consolidados dos playtests realizados na sprint 5, foram identificados seis eixos de melhoria, organizados por prioridade de impacto. A classificação considera tanto a frequência de relato entre os testadores quanto a severidade do problema sobre a experiência de jogo e sobre os objetivos de aprendizado do produto.
+
+---
+
+#### Prioridade 1 — Correção do bug de re-seleção de carta na cena de negociação
+
+**Origem:** Relatado de forma independente por Matheus Augusto e Bruno Araújo.
+
+**Descrição do problema:** Ao selecionar uma carta correta durante a negociação, navegar para outras cartas via seta lateral e retornar à carta anteriormente escolhida, o sistema a exibe novamente como disponível para seleção. Clicar nela uma segunda vez a contabiliza como uma nova resposta correta, corrompendo o estado da cena e permitindo progressão indevida.
+
+**Impacto:** Crítico. Além de quebrar a progressão da cena de negociação, o bug compromete diretamente o objetivo pedagógico do jogo — o jogador avança sem ter tomado a decisão correta de forma consciente, esvaziando o valor de treinamento da mecânica.
+
+**Ação recomendada:** Implementar controle de estado por carta após seleção, marcando-a como `selected: true` e desabilitando o evento de clique. O estado deve persistir mesmo após navegação lateral e ser reiniciado apenas ao iniciar uma nova cena de negociação. Adicionalmente, investigar o bug secundário de carregamento de imagem/descrição reportado na Vila do Varejo (Matheus Augusto), que pode compartilhar a mesma raiz de gerenciamento de estado.
+
+---
+
+#### Prioridade 2 — Implementação de indicadores visuais de navegação e objetivos
+
+**Origem:** Relatado por Lucas Vinicius, Arthur Morais e Felipe Cabeza.
+
+**Descrição do problema:** O mapa não oferece indicadores suficientes para que o jogador saiba onde estão os objetivos ativos, quais regiões já foram concluídas e quais casas possuem conteúdo disponível. A ausência de um minimapa ou de ícones de localização obriga o jogador a explorar por tentativa e erro.
+
+**Impacto:** Alto. Para o público-alvo real (GNs da Cielo com pouca experiência em jogos), a desorientação espacial é um dos principais fatores de abandono em jogos de mundo aberto. Se jogadores experientes já relataram dificuldade, usuários não-gamers provavelmente encontrariam uma barreira de progressão nesse ponto.
+
+**Ação recomendada:** Implementar, em ordem de viabilidade: (1) ícone flutuante ou marcador de objetivo no mapa indicando o NPC-alvo da fase atual; (2) estado visual diferenciado para casas com conteúdo disponível versus casas já concluídas; (3) minimap como melhoria futura de maior escopo. Adicionalmente, adicionar placas ou rótulos de nome nas regiões do mapa (sugerido por Arthur Morais).
+
+---
+
+#### Prioridade 3 — Redução da carga textual nas cenas de negociação
+
+**Origem:** Relatado por Gabriel Tavares e Lucas Vinicius.
+
+**Descrição do problema:** As cenas de negociação apresentam volume excessivo de texto por tela, o que prejudica a fluidez da leitura e pode causar fadiga cognitiva. Gabriel Tavares apontou que "tem muito texto" como principal obstáculo à experiência de combate.
+
+**Impacto:** Alto para o público-alvo real. GNs da Cielo interagem com o jogo em contexto de treinamento corporativo, onde sessões longas e densas de leitura reduzem o engajamento. O excesso de texto também entra em conflito com o princípio de aprendizado por ação, central à proposta do jogo.
+
+**Ação recomendada:** Revisar os textos das cartas e das falas de NPC com foco em concisão. Textos de carta devem comunicar a essência da técnica de negociação em no máximo 2–3 linhas. Considerar o uso de ícones ou elementos visuais para complementar a informação textual em vez de substituí-la por mais texto.
+
+---
+
+#### Prioridade 4 — Ajuste de colisões e hitboxes de interface
+
+**Origem:** Relatado por Heitor Goulart e Felipe Cabeza (colisão de cenário); Heitor Goulart (hitbox de botões).
+
+**Descrição do problema:** Objetos decorativos do cenário apresentam colisão imprecisa, ora bloqueando o personagem em posições inesperadas, ora permitindo sobreposição indevida. Paralelamente, os botões de interface da cena de negociação possuem área de clique menor do que a representação visual, gerando frustração ao tentar interagir.
+
+**Impacto:** Moderado na experiência geral, mas capaz de causar interrupções abruptas no fluxo de jogo. Para usuários com menor familiaridade com jogos, esse tipo de fricção técnica é frequentemente interpretado como erro do usuário, não do sistema, podendo reduzir a autoeficácia durante o treinamento.
+
+**Ação recomendada:** Revisar e ajustar os polígonos de colisão dos objetos de cenário em todos os mapas. Para os botões de interface, garantir que a hitbox corresponda visualmente à área do elemento, com margem mínima de 8px de padding interativo.
+
+---
+
+#### Prioridade 5 — Expansão e melhoria do tutorial
+
+**Origem:** Relatado por Marcos Andrade e Bruno Araújo; indiretamente corroborado por Lucas Vinicius (sugestão de tutorial específico para negociação).
+
+**Descrição do problema:** O tutorial existente cobre as mecânicas básicas de movimentação, mas não prepara adequadamente o jogador para a mecânica de negociação por cartas — a mais complexa e central do jogo. Além disso, Bruno Araújo identificou que é possível iniciar um diálogo de tutorial com um NPC e se afastar antes do fim, avançando a missão sem ter assimilado o conteúdo.
+
+**Impacto:** Alto para o público-alvo real. A mecânica de cartas é o núcleo do treinamento; um jogador que não a compreende plenamente não extrai o valor pedagógico do jogo. A possibilidade de "pular" o tutorial por acidente agrava esse risco.
+
+**Ação recomendada:** Desenvolver um módulo de tutorial dedicado à cena de negociação, acionado antes da primeira interação com um NPC de combate. Implementar trava de proximidade que impeça o jogador de se afastar de um NPC durante um diálogo ativo de tutorial, ou exibir alerta de confirmação caso tente fazê-lo. Aumentar o tamanho da fonte da instrução "Aperte H para o tutorial" para garantir sua leitura imediata na tela inicial.
+
+---
+
+#### Prioridade 6 — Ajustes de legibilidade, paleta e movimentação
+
+**Origem:** Matheus Augusto e Lucas Vinicius (fonte das cartas); Felipe Cabeza (contraste de paleta e velocidade de movimentação).
+
+**Descrição do problema:** O texto das cartas foi considerado difícil de ler devido ao tamanho reduzido da fonte. Em determinados mapas, a paleta de cores apresenta baixo contraste, dificultando a distinção de elementos do cenário. A velocidade de movimentação do personagem foi percebida como lenta em algumas áreas.
+
+**Impacto:** Moderado isoladamente, mas com potencial de acúmulo: um jogo que exige esforço visual constante, apresenta movimentação arrastada e tem paleta de baixo contraste comunica descuido técnico e reduz a imersão — especialmente em um produto que precisa ser percebido como profissional por seu público corporativo.
+
+**Ação recomendada:** Aumentar o tamanho mínimo da fonte nos cards de carta para 13–14px e revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
 # <a name="c6"></a>6. Conclusões e trabalhos futuros (sprint 5)
 
 *Escreva de que formas a solução do jogo atingiu os objetivos descritos na seção 1 deste documento. Indique pontos fortes e pontos a melhorar de maneira geral.*

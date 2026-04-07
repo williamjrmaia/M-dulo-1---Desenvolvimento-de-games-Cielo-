@@ -185,7 +185,7 @@ export default class QuebraGelo extends CenaMapa {
         this.teclas = this.personagem.configurarTeclas();
         this.cameras.main.startFollow(this.personagem.sprite);
         this.cameras.main.setBounds(0, 0, 1024, 1024);
-
+        
         if (this.origem === 'CenaCasaGelo') this.personagem.sprite.setPosition(655, 210);
         if (this.origem === 'CasaGelo2')    this.personagem.sprite.setPosition(400, 675);
         if (this.origem === 'PonteQG_VV')   this.personagem.sprite.setPosition(897, 990);
@@ -207,8 +207,8 @@ export default class QuebraGelo extends CenaMapa {
 
         this.personagem.atualizar();
         // ── Atualiza NPCs (lida com indicador E, diálogo e proximidade) ───────
-        this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
-        this.lorena.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        this.lorena.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── Atualiza HUD conforme o progresso dos diálogos ───────────────────
         const distLorena = Phaser.Math.Distance.Between(
