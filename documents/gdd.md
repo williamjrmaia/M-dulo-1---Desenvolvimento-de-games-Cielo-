@@ -583,176 +583,163 @@ Comando | Ação
 Clique do mouse | Selecionar cartas durante a negociação
 Clique do mouse | Confirmar ações ou escolhas
 
-
 ## 3.8. Implementação Matemática de Animação/Movimento (sprint 4)
 
-Esta seção descreve os modelos matemáticos que fundamentam os sistemas de movimentação e animação de personagens no jogo. Dois subsistemas distintos são abordados: a movimentação do jogador por entrada de teclado e a navegação autônoma dos NPCs por waypoints.
+Esta seção descreve a modelagem matemática e a implementação em código da animação do carro que circula pela Cidade Cielo, último mapa do jogo. O movimento foi modelado como uma composição de dois tipos cinemáticos distintos aplicados simultaneamente: **Movimento Uniforme (MU)** no eixo horizontal (X) e **Movimento Uniformemente Variado (MUV)** no eixo vertical (Y), com velocidade inicial nula. A implementação não utiliza funções prontas de animação ou física da biblioteca Phaser; todo o cálculo de posição e velocidade é realizado diretamente a partir das equações da cinemática clássica.
+
+### Parâmetros do Modelo
+
+Os parâmetros de entrada da função são:
+
+| Símbolo | Tipo | Descrição |
+|--------|------|-----------|
+| `xi` | número (px) | Posição inicial do elemento gráfico no eixo X |
+| `yi` | número (px) | Posição inicial do elemento gráfico no eixo Y |
+| `xf` | número (px) | Posição final do elemento gráfico no eixo X |
+| `yf` | número (px) | Posição final do elemento gráfico no eixo Y |
+| `T`  | número (s)  | Duração total da animação em segundos |
+| `cena` | Phaser.Scene | O elemento gráfico (sprite do carro) inserido na cena |
+
+A variável independente do modelo é o **tempo** `t` (em segundos), que varia no intervalo `[0, T]`.
 
 
+### Movimento Uniforme — Eixo X
 
-### Movimentação do Jogador (Jogador.js)
+No eixo horizontal, o carro percorre a distância `(xf − xi)` em tempo constante `T`, sem variação de velocidade. Esse comportamento é chamado de **Movimento Uniforme (MU)**.
 
-#### Fundamentos: Vetores no Plano 2D
+#### Velocidade constante
 
-Antes de descrever as fórmulas, é importante compreender o conceito de **vetor**. No contexto de um jogo 2D, um vetor é um par ordenado $(v_x, v_y)$ que representa simultaneamente uma direção e uma intensidade (magnitude). Visualmente, pode-se imaginar uma seta: ela aponta para onde algo está indo e seu comprimento indica quão rápido.
+A velocidade no eixo X é determinada pela razão entre o deslocamento horizontal total e o tempo total:
 
-O motor Phaser representa cada objeto no mundo por suas coordenadas $(x, y)$ no plano cartesiano. A cada quadro (*frame*) de animação, o motor atualiza a posição de cada objeto somando sua velocidade ao longo do tempo:
+$$v_x = \frac{x_f - x_i}{T}$$
 
-$$x_{t+1} = x_t + v_x \cdot \Delta t$$
+Como `vx` não depende de `t`, ela é **constante** ao longo de toda a animação.
 
-$$y_{t+1} = y_t + v_y \cdot \Delta t$$
+#### Posição em função do tempo
 
-onde:
+A posição horizontal do elemento a cada instante `t` é dada por:
 
-| Símbolo | Descrição |
-|---|---|
-| $x_t,\ y_t$ | Posição do personagem no frame $t$ (em pixels) |
-| $v_x,\ v_y$ | Componentes do vetor velocidade (em pixels por segundo) |
-| $\Delta t$ | Intervalo de tempo entre dois frames consecutivos (em segundos) |
+$$x(t) = x_i + v_x \cdot t$$
 
-> **Nota:** Este é o modelo de cinemática de posição com velocidade constante: a posição varia linearmente com o tempo, sem aceleração.
+#### Impressão por frame (console.log)
 
-#### Decomposição Vetorial — Teclas WASD
+A cada frame, enquanto `t < T`, o código imprime:
 
-Cada tecla pressionada define o sinal de uma das componentes do vetor velocidade, onde $V = 100$ px/s é a velocidade escalar configurada na classe `Jogador`:
-
-| Tecla | Componente | Valor atribuído |
-|---|---|---|
-| A | $v_x$ | $-V$ (esquerda) |
-| D | $v_x$ | $+V$ (direita) |
-| W | $v_y$ | $-V$ (cima — eixo invertido) |
-| S | $v_y$ | $+V$ (baixo) |
-
-> **Convenção de eixos:** Em Phaser, o eixo $y$ cresce **para baixo** — diferente do plano cartesiano tradicional. Por isso, pressionar W (mover para cima na tela) resulta em $v_y = -V$.
-
-Quando apenas uma tecla é pressionada, a magnitude do vetor resultante é simplesmente $V$:
-
-$$\|\vec{v}\| = \sqrt{v_x^2 + v_y^2} = \sqrt{V^2 + 0^2} = V$$
-
-#### Movimento Diagonal com Velocidade Constante
-
-Quando dois eixos são ativados simultaneamente — por exemplo, as teclas D e W pressionadas ao mesmo tempo —, o vetor de entrada passa a ter componentes em ambos os eixos. Sem tratamento, a magnitude desse vetor cresceria:
-
-$$\|\vec{v}_{\text{diagonal}}\|_{\text{sem normalização}} = \sqrt{V^2 + V^2} = \sqrt{2} \cdot V \approx 1{,}414 \cdot V$$
-
-Para garantir que o personagem se desloque sempre à mesma velocidade escalar $V$ independentemente da direção, o sistema aplica a **normalização** do vetor de entrada antes de escaloná-lo pela velocidade desejada. Normalizar significa dividir cada componente pela magnitude total do vetor, produzindo um **vetor unitário** $\hat{v}$ de comprimento exatamente igual a 1:
-
-$$\hat{v} = \frac{\vec{v}}{\|\vec{v}\|} = \left(\frac{v_x}{\|\vec{v}\|},\ \frac{v_y}{\|\vec{v}\|}\right)$$
-
-O vetor velocidade final aplicado ao personagem é então:
-
-$$\vec{v}_{\text{final}} = V \cdot \hat{v} = \left(\frac{v_x \cdot V}{\|\vec{v}\|},\ \frac{v_y \cdot V}{\|\vec{v}\|}\right)$$
-
-#### Verificação Formal
-
-Para o caso diagonal onde $v_x = V$ e $v_y = -V$, demonstra-se que a magnitude resultante é sempre $V$:
-
-$$\|\vec{v}\| = \sqrt{V^2 + V^2} = V\sqrt{2}$$
-
-$$\vec{v}_{\text{final}} = \left(\frac{V}{\sqrt{2}},\ \frac{-V}{\sqrt{2}}\right)$$
-
-$$\|\vec{v}_{\text{final}}\| = \sqrt{\left(\frac{V}{\sqrt{2}}\right)^2 + \left(\frac{V}{\sqrt{2}}\right)^2} = \sqrt{\frac{V^2}{2} + \frac{V^2}{2}} = \sqrt{V^2} = V \checkmark$$
-
-A magnitude é $V$ em qualquer direção — eixos ortogonais e diagonais.
-
-A implementação correspondente em `Jogador.js`:
-```javascript
-// Vetor de entrada — leitura das teclas
-let vx = 0, vy = 0;
-if (teclas.left.isDown)  vx -= velocidade;
-if (teclas.right.isDown) vx += velocidade;
-if (teclas.up.isDown)    vy -= velocidade;
-if (teclas.down.isDown)  vy += velocidade;
-
-//  garante ‖v⃗_final‖ = V em qualquer direção
-const mag = Math.sqrt(vx * vx + vy * vy);
-if (mag > 0) {
-    sprite.setVelocityX((vx / mag) * velocidade);
-    sprite.setVelocityY((vy / mag) * velocidade);
-} else {
-    sprite.setVelocity(0);
-}
+```
+[MU  X] t=<t>s | vx=<vx> px/s | x=<x(t)> px
 ```
 
+### Movimento Uniformemente Variado — Eixo Y
 
-### Movimentação Autônoma dos NPCs — Patrulha por Waypoints (NPC.js)
+No eixo vertical, o carro parte do repouso (velocidade inicial nula) e é submetido a uma aceleração constante `ay`, de modo que ao final do intervalo `T` ele atinja a posição `yf`. Esse comportamento é chamado de **Movimento Uniformemente Variado (MUV)**.
 
-#### Visão Geral
+#### Aceleração constante
 
-Os NPCs do jogo navegam autonomamente entre uma sequência de pontos predefinidos chamados **waypoints** — coordenadas absolutas no mapa que definem o caminho de patrulha. A cada frame, o sistema executa quatro etapas:
+Partindo da equação horária da posição do MUV com velocidade inicial nula (`v0y = 0`):
 
-1. Identificar o waypoint atual $\mathbf{w} = (w_x, w_y)$
-2. Calcular a distância euclidiana até ele
-3. Se a distância for menor que o limiar $\varepsilon = 4$ px, avançar para o próximo waypoint
-4. Caso contrário, mover o NPC em direção ao waypoint com velocidade constante $V_{\text{NPC}}$
+$$y_f = y_i + \frac{1}{2} \cdot a_y \cdot T^2$$
 
-#### Distância Euclidiana
+Isolando `ay`:
 
-A distância entre a posição atual do NPC $\mathbf{p} = (p_x, p_y)$ e o waypoint $\mathbf{w} = (w_x, w_y)$ é calculada pela **distância euclidiana**, derivada diretamente do Teorema de Pitágoras. Ela mede o comprimento do segmento de reta que conecta dois pontos no plano — a menor distância possível entre eles:
+$$a_y = \frac{2 \cdot (y_f - y_i)}{T^2}$$
 
-$$d(\mathbf{p},\ \mathbf{w}) = \sqrt{(w_x - p_x)^2 + (w_y - p_y)^2}$$
+#### Velocidade em função do tempo
 
-| Símbolo | Descrição |
-|---|---|
-| $\mathbf{p} = (p_x, p_y)$ | Posição atual do NPC no mundo (em pixels) |
-| $\mathbf{w} = (w_x, w_y)$ | Coordenadas do waypoint alvo (em pixels) |
-| $d(\mathbf{p}, \mathbf{w})$ | Distância euclidiana entre os dois pontos (em pixels) |
+Como a velocidade inicial no eixo Y é zero, a velocidade instantânea a cada instante `t` é:
 
-#### Vetor Direção e Normalização
+$$v_y(t) = a_y \cdot t$$
 
-O vetor deslocamento $\vec{d}$ aponta da posição atual do NPC até o waypoint alvo:
+#### Posição em função do tempo
 
-$$\vec{d} = \mathbf{w} - \mathbf{p} = (w_x - p_x,\ w_y - p_y)$$
+A posição vertical do elemento a cada instante `t` é:
 
-Note que $\|\vec{d}\| = d(\mathbf{p}, \mathbf{w})$. Para que o NPC se mova com velocidade constante independentemente da distância ao alvo, normaliza-se $\vec{d}$ para obter o vetor unitário $\hat{d}$:
+$$y(t) = y_i + \frac{1}{2} \cdot a_y \cdot t^2$$
 
-$$\hat{d} = \frac{\vec{d}}{\|\vec{d}\|} = \left(\frac{w_x - p_x}{\|\vec{d}\|},\ \frac{w_y - p_y}{\|\vec{d}\|}\right)$$
+#### Impressão por frame (console.log)
 
-O vetor velocidade final aplicado ao NPC é:
+A cada frame, enquanto `t < T`, o código imprime:
 
-$$\vec{v}_{\text{NPC}} = V_{\text{NPC}} \cdot \hat{d} = \left(\frac{(w_x - p_x) \cdot V_{\text{NPC}}}{\|\vec{d}\|},\ \frac{(w_y - p_y) \cdot V_{\text{NPC}}}{\|\vec{d}\|}\right)$$
-
-Esta é exatamente a formulação implementada em `NPC.js`:
-```javascript
-const dx  = alvo.x - this.x;           // componente x do vetor d⃗
-const dy  = alvo.y - this.y;           // componente y do vetor d⃗
-const mag = Math.sqrt(dx*dx + dy*dy);  // ‖d⃗‖ — distância euclidiana
-
-this.setVelocityX((dx / mag) * vel);   // vₓ = (dx / ‖d⃗‖) · V
-this.setVelocityY((dy / mag) * vel);   // vᵧ = (dy / ‖d⃗‖) · V
+```
+[MUV Y] t=<t>s | ay=<ay> px/s² | vy=<vy(t)> px/s | y=<y(t)> px
 ```
 
-#### Condição de Chegada ao Waypoint
+### Composição do Movimento Bidimensional
 
-O NPC é considerado como tendo alcançado o waypoint quando a distância euclidiana cai abaixo de um limiar $\varepsilon$:
+O movimento resultante é a **composição simultânea** de MU no eixo X e MUV no eixo Y. A cada instante `t`, a posição do carro no plano é o par ordenado:
 
-$$d(\mathbf{p},\ \mathbf{w}) < \varepsilon, \quad \varepsilon = 4 \text{ px}$$
+$$P(t) = \bigl(x(t),\; y(t)\bigr) = \left( x_i + v_x \cdot t,\quad y_i + \frac{1}{2} \cdot a_y \cdot t^2 \right)$$
 
-O limiar $\varepsilon$ é necessário porque, com velocidade discreta frame a frame, o NPC pode nunca pousar exatamente sobre o waypoint. Ao detectar a chegada, o NPC é teleportado para a posição exata do waypoint — eliminando deriva acumulada — e o índice é avançado.
+A trajetória resultante é uma **parábola** no plano 2D, pois `x` cresce linearmente com `t` enquanto `y` cresce quadraticamente. Isso simula o comportamento visual de um carro que percorre uma rua com leve curvatura, característico das vias da Cidade Cielo no mapa do jogo.
 
-#### Progressão Cíclica dos Waypoints
+### Implementação em Código
 
-A patrulha é cíclica e infinita. O índice do waypoint atual avança utilizando a operação de módulo:
+O trecho abaixo reproduz o núcleo da função de atualização implementada em `CarroCielo.js`. Nenhuma função de física ou tween do Phaser é utilizada; a posição do sprite é atribuída diretamente a partir dos cálculos cinemáticos:
 
-$$i_{\text{próximo}} = (i_{\text{atual}} + 1) \bmod N$$
+```javascript
+// ── MU — eixo X ───────────────────────────────────────────────
+// x(t) = xi + vx * t       (vx = constante)
+const x = this.xi + this.vx * t;
 
-| Símbolo | Descrição |
-|---|---|
-| $i_{\text{atual}}$ | Índice do waypoint que o NPC acabou de alcançar |
-| $N$ | Número total de waypoints definidos na patrulha |
-| $\bmod$ | Operação de módulo (resto da divisão inteira) |
+console.log(
+    `[MU  X] t=${t.toFixed(3)}s | ` +
+    `vx=${this.vx.toFixed(4)} px/s | ` +
+    `x=${x.toFixed(2)} px`
+);
 
-> **Nota:** A operação $\bmod\ N$ garante que, ao atingir o último waypoint (índice $N-1$), o próximo índice calculado seja $0$ — reiniciando a patrulha ciclicamente.
+// ── MUV — eixo Y ──────────────────────────────────────────────
+// vy(t) = ay * t            (v0y = 0)
+// y(t)  = yi + ½ * ay * t²
+const vy = this.ay * t;
+const y  = this.yi + 0.5 * this.ay * t * t;
 
-#### Seleção de Animação por Eixo Dominante
+console.log(
+    `[MUV Y] t=${t.toFixed(3)}s | ` +
+    `ay=${this.ay.toFixed(4)} px/s² | ` +
+    `vy=${vy.toFixed(4)} px/s | ` +
+    `y=${y.toFixed(2)} px`
+);
 
-Após definir o vetor velocidade, o sistema determina qual animação reproduzir comparando os valores absolutos das componentes $d_x$ e $d_y$. O eixo com maior deslocamento absoluto é considerado o **eixo dominante**:
+// Aplica posição diretamente ao sprite (sem physics do Phaser)
+this.sprite.x = x;
+this.sprite.y = y;
+```
 
-$$\text{animação}(d_x, d_y) = \begin{cases} \textit{lado} & \text{se } |d_x| \geq |d_y| \\ \textit{costas} & \text{se } |d_x| < |d_y| \text{ e } d_y < 0 \\ \textit{frente} & \text{se } |d_x| < |d_y| \text{ e } d_y \geq 0 \end{cases}$$
+Os parâmetros derivados `vx` e `ay` são calculados uma única vez no construtor da classe, a partir das equações das seções 3.8.2 e 3.8.3:
 
-A condição $|d_x| \geq |d_y|$ seleciona o eixo de maior deslocamento como eixo dominante, produzindo uma animação coerente com a direção percebida pelo jogador mesmo em movimentos diagonais. Quando o eixo horizontal domina, o flip horizontal (`setFlipX`) evita a necessidade de um spritesheet separado para a direção oposta.
+```javascript
+// MU  — velocidade constante no eixo X
+this.vx = (xf - xi) / T;
 
-# <a name="c4"></a>4. Desenvolvimento do Jogo
+// MUV — aceleração constante no eixo Y (velocidade inicial nula)
+this.ay = 2 * (yf - yi) / (T * T);
+```
+
+#### Localização do arquivo
+
+> **Arquivo:** `src/Classes/CarroCielo.js`  
+> **Função principal:** método `atualizar(timeNowMs)` — **linha 87 até linha 119**
+
+###  Verificação e Validação
+
+Para verificar o comportamento matemático da animação em tempo de execução, basta abrir o **Console do navegador** (F12 → aba "Console") durante o jogo na Cidade Cielo. A cada frame serão exibidas as seguintes linhas:
+
+```
+=== CarroCielo INICIALIZADO ===
+  Posição inicial : (200, 300)
+  Posição final   : (900, 600)
+  Duração total   : 4 s
+  [MU  - eixo X]  vx constante = 175.0000 px/s
+  [MUV - eixo Y]  ay           = 37.5000 px/s²
+===============================
+[MU  X] t=0.016s | vx=175.0000 px/s | x=202.80 px
+[MUV Y] t=0.016s | ay=37.5000 px/s² | vy=0.6000 px/s | y=300.00 px
+[MU  X] t=0.033s | vx=175.0000 px/s | x=205.78 px
+[MUV Y] t=0.033s | ay=37.5000 px/s² | vy=1.2375 px/s | y=300.02 px
+...
+[CarroCielo] Animação concluída em t = 4.001 s
+```
+
+A validação pode ser feita manualmente: ao final da animação (`t ≈ T`), `x` deve estar próximo de `xf` e `y` próximo de `yf`, confirmando que as equações foram corretamente parametrizadas e executadas.
 
 ## 4.1. Desenvolvimento preliminar do jogo (sprint 1)
 
