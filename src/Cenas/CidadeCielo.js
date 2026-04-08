@@ -81,7 +81,9 @@ export default class CidadeCielo extends CenaMapa {
         this.jogador = new Jogador(this, larguraImagem / 2, 830);
         this.jogador.sprite.setCollideWorldBounds(true);
         this.jogador.sprite.setScale(1.3);
-        this.miniMapa = new MiniMapa(this, this.jogador.sprite, { zoom: 0.6 })
+        //-- MiniMapa ───────────────────────────────────────────────────────────
+        this.miniMapa = new MiniMapa(this, this.jogador.sprite, { zoom: 0.6 });
+        this.miniMapa.registrarNPCs(this.grupoNPCs);
         this.miniMapa.definirMissao(545, 550);              // triângulo da missão
 
         // Colisão Jogador↔Cielita
@@ -163,7 +165,6 @@ export default class CidadeCielo extends CenaMapa {
         // ── Atualiza NPC Cielita ──────────────────────────────────────────────
         this.cielita.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
-        this.miniMapa.registrarNPCs(this.grupoNPCs);       // pontos amarelos dos NPCs (deixar a baixo quando criarem mais NPCs)
 
         // ── HUD dinâmico ──────────────────────────────────────────────────────
         if (this.cielita.dialogoAberto) {

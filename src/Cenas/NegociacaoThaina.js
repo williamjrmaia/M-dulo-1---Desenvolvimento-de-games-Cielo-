@@ -161,14 +161,6 @@ export default class NegociacaoThaina extends CenaNegociacao {
                 dialogoErro:   'Não gostei dessa abordagem, não.',
             }),
 
-            new CartaAbordagem({
-                key:           'Problematica',
-                letra:         'I',
-                correta:       false,
-                dialogoAcerto: '',
-                dialogoErro:   'Isso me deixou desconfortável.',
-            }),
-
             // ── CPC: Contato com Pessoa Certa ──
             // Só fica disponível após P, I, F e E preenchidos
             new CartaAbordagem({
