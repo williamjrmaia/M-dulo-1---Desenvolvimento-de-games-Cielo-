@@ -40,11 +40,19 @@ export default class CenaCasaGelo extends CenaMapa {
         const map     = this.make.tilemap({ key: 'mapa_casa' });
         const paredes = this.physics.add.staticGroup();
 
+        // The tilemap image layer has an offset (where CasaPedro.png sits inside
+        // the Tiled canvas). Hitbox object coords are relative to the canvas origin,
+        // so we must subtract that offset when converting to world coordinates.
+        const tilemapCache  = this.cache.tilemap.get('mapa_casa');
+        const imgLayerRaw   = tilemapCache?.data?.layers?.find(l => l.type === 'imagelayer');
+        const tileImgOffsetX = imgLayerRaw?.offsetx ?? 0;
+        const tileImgOffsetY = imgLayerRaw?.offsety ?? 0;
+
         const objetoCamada = map.getObjectLayer('Object Layer 1');
         if (objetoCamada) {
             objetoCamada.objects.forEach(obj => {
-                const x    = limiteX + obj.x + obj.width  / 2;
-                const y    = limiteY + obj.y + obj.height / 2;
+                const x    = (limiteX - tileImgOffsetX) + obj.x + obj.width  / 2;
+                const y    = (limiteY - tileImgOffsetY) + obj.y + obj.height / 2;
                 const zona = this.add.zone(x, y, obj.width, obj.height);
                 this.physics.add.existing(zona, true);
                 paredes.add(zona);
