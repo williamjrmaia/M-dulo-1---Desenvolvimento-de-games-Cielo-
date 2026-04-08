@@ -24,11 +24,17 @@ export default class CenaCasaGelo extends CenaMapa {
         NPC.criarAnimacoes(this, [
             { key: 'seupedro_idl',   frameRate: 3 },
         ]);
-        const centerX = 750;
-        const centerY = 400;
+        const W = this.scale.width;
+        const H = this.scale.height;
 
-        this.add.image(centerX, centerY, 'CasaPedro');
-        this.add.image(751, 530, 'portaSaida').setDepth(1);
+        const bg          = this.add.image(W / 2, H / 2, 'CasaPedro');
+        const larguraMapa = bg.displayWidth;
+        const alturaMapa  = bg.displayHeight;
+        const limiteX     = bg.x - larguraMapa / 2;
+        const limiteY     = bg.y - alturaMapa  / 2;
+        this.physics.world.setBounds(limiteX, limiteY, larguraMapa, alturaMapa);
+
+        this.add.image(W / 2, H / 2 + 130, 'portaSaida').setDepth(1);
 
         // ── Mapa / Hitboxes ───────────────────────────────────────────────────
         const map     = this.make.tilemap({ key: 'mapa_casa' });
@@ -37,8 +43,8 @@ export default class CenaCasaGelo extends CenaMapa {
         const objetoCamada = map.getObjectLayer('Object Layer 1');
         if (objetoCamada) {
             objetoCamada.objects.forEach(obj => {
-                const x    = 408 + obj.x + obj.width  / 2;
-                const y    = 124 + obj.y + obj.height / 2;
+                const x    = limiteX + obj.x + obj.width  / 2;
+                const y    = limiteY + obj.y + obj.height / 2;
                 const zona = this.add.zone(x, y, obj.width, obj.height);
                 this.physics.add.existing(zona, true);
                 paredes.add(zona);
@@ -48,7 +54,7 @@ export default class CenaCasaGelo extends CenaMapa {
         // ── NPC: Pedro ────────────────────────────────────────────────────────
         this.grupoNPCs = this.physics.add.group();
 
-        this.pedro = new NPC(this, 750, 460, 'seupedro_idl', {
+        this.pedro = new NPC(this, W / 2, H / 2 + 60, 'seupedro_idl', {
             velocidade:         0,
             distanciaInteracao: 50,
             grupoNPCs:          this.grupoNPCs,
@@ -71,7 +77,7 @@ export default class CenaCasaGelo extends CenaMapa {
         this._pedroVencidoAnterior = null; // força atualização inicial das falas
 
         // ── Jogador ───────────────────────────────────────────────────────────
-        this.personagem = new Jogador(this, centerX, centerY + 100, 1.0);
+        this.personagem = new Jogador(this, W / 2, H / 2 + 100, 1.0);
         this.personagem.sprite.setScale(1.3);
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.sprite.setDepth(10);
@@ -80,13 +86,13 @@ export default class CenaCasaGelo extends CenaMapa {
         this.personagem.adicionarColisao(this.pedro);
 
         // ── Porta de saída ────────────────────────────────────────────────────
-        this.portaSaida = this.add.zone(751, 530, 45, 15);
+        this.portaSaida = this.add.zone(W / 2, H / 2 + 130, 45, 15);
         this.physics.add.existing(this.portaSaida);
         this.portaSaida.body.setAllowGravity(false);
         this.portaSaida.body.moves = false;
 
         // ── Câmera ────────────────────────────────────────────────────────────
-        this.cameras.main.startFollow(this.personagem.sprite);
+        this.cameras.main.centerOn(W / 2, H / 2);
         this.cameras.main.setZoom(2.4);
         // ── Câmera UI para diálogos ───────────────────────────────────────────
         DialogoManager.configurarCameraUI(this, 2.4, [this.pedro]);        
