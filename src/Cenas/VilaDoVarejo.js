@@ -2,6 +2,7 @@ import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
 import CenaMapa from "../Classes/CenaMapa.js";
+import MiniMapa from '../Classes/MiniMapa.js';
 
 export default class VilaDoVarejo extends CenaMapa {
     constructor() {
@@ -173,6 +174,9 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── Jogador e Física ─────────────────────────────────────────────────
         this.personagem = new Jogador(this, 400, 300, 1.5);
+        this.miniMapa = new MiniMapa(this, this.personagem.sprite);
+        this.miniMapa.registrarNPCs(this.grupoNPCs);       // pontos amarelos dos NPCs
+        this.miniMapa.definirMissao(555, 200);              // triângulo da missão
         this.personagem.superficiePasso = 'passos_viladovarejo';
         this.teclas = this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
@@ -246,6 +250,7 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // Atualiza o player e a lógica de movimento/diálogo dos NPCs
         this.personagem.atualizar();
+        this.miniMapa.atualizar();
         this.eric.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
         this.jorge.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
         this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);

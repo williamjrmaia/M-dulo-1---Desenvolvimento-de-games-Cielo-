@@ -2,6 +2,7 @@ import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
 import CenaMapa       from "../Classes/CenaMapa.js";
+import MiniMapa from '../Classes/MiniMapa.js';
 
 export default class CidadeCielo extends CenaMapa {
 
@@ -75,11 +76,23 @@ export default class CidadeCielo extends CenaMapa {
 
         // Colisão NPC↔NPC (necessário mesmo com um único NPC)
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
+        // ── Portas ───────────────────────────────────────────────────────────
+        // Porta para o prédio principal
+        this.PortaCasaCidade1 = this.add.zone(546, 567, 50, 25);
+        this.physics.add.existing(this.PortaCasaCidade1, true);
+
+        //Porta para a loja secundária
+        this.PortaLojaCidade1 = this.add.zone(835, 150, 35, 25);
+        this.physics.add.existing(this.PortaLojaCidade1, true);
 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.jogador = new Jogador(this, larguraImagem / 2, 830);
         this.jogador.sprite.setCollideWorldBounds(true);
         this.jogador.sprite.setScale(1.3);
+        //-- MiniMapa ───────────────────────────────────────────────────────────
+        this.miniMapa = new MiniMapa(this, this.jogador.sprite, { zoom: 0.6 });
+        this.miniMapa.registrarNPCs(this.grupoNPCs);
+        this.miniMapa.definirMissao(545, 550);              // triângulo da missão
 
         // Colisão Jogador↔Cielita
         this.jogador.adicionarColisao(this.grupoNPCs);
@@ -149,15 +162,25 @@ export default class CidadeCielo extends CenaMapa {
         if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
+
+        if (this.origem === 'CasaCidade1') {
+            this.jogador.sprite.setPosition(546, 595); 
+        }
+
+         if (this.origem === 'CasaCidade2') {
+            this.jogador.sprite.setPosition(835, 150); 
+        }
     }
 
     update() {
         if (super.update()) return;
 
         this.jogador.atualizar();
+        this.miniMapa.atualizar();
 
         // ── Atualiza NPC Cielita ──────────────────────────────────────────────
         this.cielita.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+
 
         // ── HUD dinâmico ──────────────────────────────────────────────────────
         if (this.cielita.dialogoAberto) {
@@ -171,6 +194,16 @@ export default class CidadeCielo extends CenaMapa {
         // ── Portal ────────────────────────────────────────────────────────────
         if (this.jogador.temOverlap(this.PortalCielo)) {
             this.trocarCena('PraiaDosProveitos');
+            return;
+        }
+
+        if (this.jogador.temOverlap(this.PortaCasaCidade1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaCidade1');
+            return;
+        }
+
+         if (this.jogador.temOverlap(this.PortaLojaCidade1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+            this.trocarCena('CasaCidade2');
             return;
         }
     }
