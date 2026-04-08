@@ -33,6 +33,8 @@ import CasaPraiaGrande from './Cenas/CasaPraiaGrande.js';
 import NegociacaoJulia from './Cenas/NegociacaoJulia.js';
 
 import CidadeCielo from './Cenas/CidadeCielo.js';
+import CasaCidade1 from './Cenas/CasaCidade1.js';
+import CasaCidade2 from './Cenas/CasaCidade2.js';
 
 import AudioManager     from './Classes/AudioManager.js';
 
@@ -69,8 +71,7 @@ const config = {
 
         PraiaDosProveitos, CasaPraia1, CasaPraia2, CasaPraiaGrande, NegociacaoJulia,
 
-        CidadeCielo
-        
+        CidadeCielo, CasaCidade1, CasaCidade2
     ]
 
     //Preloader carrega as sprites antes do jogo começar 
