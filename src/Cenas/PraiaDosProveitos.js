@@ -106,6 +106,10 @@ export default class PraiaDosProveitos extends CenaMapa {
         //Criando a PortaCasaPraia2
         this.PortaCasaPraia2 = this.add.zone(921, 685, 30, 30);
         this.physics.add.existing(this.PortaCasaPraia2, true)
+
+        //Criando a PortaCasaGrande
+        this.PortaCasaGrande = this.add.zone(655, 260, 30, 30);
+        this.physics.add.existing(this.PortaCasaGrande, true);
         
         this.teclas = this.personagem.configurarTeclas();
 
@@ -251,8 +255,10 @@ export default class PraiaDosProveitos extends CenaMapa {
 
         if (this.origem === 'CasaPraia1') this.personagem.sprite.setPosition(675, 530);
         if (this.origem === 'CasaPraia2') this.personagem.sprite.setPosition(923, 675);
+        if (this.origem === 'CasaPraiaGrande') this.personagem.sprite.setPosition(655, 260);
         
         if (this.origem === 'CidadeCielo') this.personagem.sprite.setPosition(160, 50);
+
     }
 
     update() {
@@ -312,5 +318,10 @@ this.trocarCena('CidadeCielo');
  this.trocarCena('CasaPraia2');
  return;
  }
+
+  if (this.personagem.temOverlap(this.PortaCasaGrande) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+ this.trocarCena('CasaPraiaGrande');
+ return;
  }
+}
 }
