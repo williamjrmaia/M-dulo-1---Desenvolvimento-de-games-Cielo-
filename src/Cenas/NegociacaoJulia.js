@@ -71,7 +71,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
     preload() {
         super.preload();
 
-        this.load.image('julia_fundo',      'assets/NPC/Julia/casa_julia_negociacao.png');
+        this.load.image('julia_fundo',      'assets/NPC/JULIA/casa_julia_negociacao.png');
         this.load.image('julia_satisfeito', 'assets/NPC/JULIA/CHEFE_FELIZ.png');
         this.load.image('julia_neutro',     'assets/NPC/JULIA/CHEFE_NEUTRA.png');
         this.load.image('julia_bravo',      'assets/NPC/JULIA/CHEFE_IRRITADA.png');
