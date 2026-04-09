@@ -152,8 +152,6 @@ export default class NegociacaoThaina extends CenaNegociacao {
                 dialogoErro:   'Isso não se aplica ao meu caso.',
             }),
 
-<<<<<<< HEAD
-=======
             // ── Cartas erradas ──
             new CartaAbordagem({
                 key:           'DesarmeElegante',
@@ -163,7 +161,6 @@ export default class NegociacaoThaina extends CenaNegociacao {
                 dialogoErro:   'Não gostei dessa abordagem, não.',
             }),
 
->>>>>>> dev
             // ── CPC: Contato com Pessoa Certa ──
             // Só fica disponível após P, I, F e E preenchidos
             new CartaAbordagem({
