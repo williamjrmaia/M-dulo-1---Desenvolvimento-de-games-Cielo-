@@ -53,8 +53,8 @@ export default class QuebraGelo extends CenaMapa {
         // Toca som ambiente do Quebra Gelo
         this.registry.get('audio').tocarAmbiente('ambiente_quebragelo', 0.6);
 
-        const larguraMapa = 1500;
-        const alturaMapa  = 1200;
+        const larguraMapa = 1024;
+        const alturaMapa  = 1024;
 
         // Colocando o centro do limite + paredes
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
