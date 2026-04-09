@@ -1,7 +1,8 @@
-import CenaNegociacao from '../Classes/CenaNegociacao.js';
-import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
-import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
-import Insignia       from '../Classes/Insignias.js';
+import CenaNegociacao    from '../Classes/CenaNegociacao.js';
+import CartaAbordagem    from '../Classes/FasesNegociacao/CartaAbordagem.js';
+import CartaSondagem     from '../Classes/FasesNegociacao/CartaSondagem.js';
+import CartaDemonstracao from '../Classes/FasesNegociacao/CartaDemonstracao.js';
+import Insignia          from '../Classes/Insignias.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoThaina.js — Cliente da Vila do Varejo
@@ -23,37 +24,6 @@ import Insignia       from '../Classes/Insignias.js';
 //   Sem a dor revelada, todos os produtos valem igual.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const PONTUACAO_PRODUTO_PADRAO = {
-    Antecipacao:      10,
-    CrediarioDigital: 10,
-    CVBA:             10,
-    CieloFlash:       10,
-    CieloFlash2:      10,
-    FlashRecarga:     10,
-    CieloLioOn:       10,
-    LioOnApps:        10,
-    LioOnGestao:      10,
-    MoedaEstrangeira: 10,
-    CieloTap:         10,
-    CieloZip:         10,
-};
-
-const PONTUACAO_PRODUTO_FALHA = {
-    CieloFlash2:      30, // resolve diretamente o travamento
-    Antecipacao:       0,
-    CrediarioDigital:  0,
-    CVBA:              0,
-    CieloFlash:        0,
-    FlashRecarga:      0,
-    CieloLioOn:        0,
-    LioOnApps:         0,
-    LioOnGestao:       0,
-    MoedaEstrangeira:  0,
-    CieloTap:          0,
-    CieloZip:          0,
-};
-
-const PRODUTOS_NECESSARIOS = 3;
 
 export default class NegociacaoThaina extends CenaNegociacao {
     constructor() {
@@ -70,8 +40,6 @@ export default class NegociacaoThaina extends CenaNegociacao {
             estoque: 'alto',
         };
 
-        // Produtos escolhidos na fase de demonstração
-        this._produtosSelecionados = [];
     }
 
     // ── Preload ───────────────────────────────────────────────────────────────
@@ -88,29 +56,11 @@ export default class NegociacaoThaina extends CenaNegociacao {
     // ── Insígnia e vitória ────────────────────────────────────────────────────
 
     _aoVencer() {
-        const insignia = new Insignia(this, 'produto1');
+        const insignia = new Insignia(this, 'vila_varejo');
         insignia.conceder();
     }
 
     _chaveVitoria() { return 'varejo_vencido'; }
-
-    // ── Pontuação dinâmica (depende dos aspectos revelados na sondagem) ───────
-
-    _getPontuacaoCarta(key) {
-        return this._dorFalhaRevelada()
-            ? (PONTUACAO_PRODUTO_FALHA[key]  ?? 0)
-            : (PONTUACAO_PRODUTO_PADRAO[key] ?? 0);
-    }
-
-    // A dor de falha técnica é revelada quando o jogador sonda 'estoque' ou 'lucro'
-    _dorFalhaRevelada() {
-        return this._aspectosRevelados.has('estoque') || this._aspectosRevelados.has('lucro');
-    }
-
-    _produtoEstaErrado(key) {
-        if (!this._dorFalhaRevelada()) return false;
-        return key !== 'CieloFlash2';
-    }
 
     // ── Cartas da abordagem (sistema PIFE + CPC) ──────────────────────────────
 
@@ -222,36 +172,37 @@ export default class NegociacaoThaina extends CenaNegociacao {
     // produtos e o contador depois que super._iniciarFase() rodar normalmente.
 
     _iniciarFase() {
-        this._produtosSelecionados = [];
-        this._contadorTexto        = null;
         super._iniciarFase();
 
         if (this.clienteConfig.fases[this.faseAtual] === 'demonstracao') {
             this._distribuirCartasDemonstracao();
-            this._criarContadorProdutos();
         }
     }
 
     _distribuirCartasDemonstracao() {
-        const cartaCorreta = 'CieloFlash2';
-
-        const demaisCartas = [
-            'Antecipacao', 'CrediarioDigital', 'CVBA', 'CieloFlash',
-            'FlashRecarga', 'CieloLioOn', 'LioOnApps',
-            'LioOnGestao', 'MoedaEstrangeira', 'CieloTap', 'CieloZip',
+        // Thaina: aspectosCliente = { pessoas: 'alto', lucro: 'medio', estoque: 'alto' }
+        // A carta correta tem os 3 atributos certos. As demais têm 0, 1 ou 2 acertos.
+        const pool = [
+            new CartaDemonstracao({ key: 'CieloFlash2',      pessoas: 'alto',  lucro: 'medio', estoque: 'alto'  }), // 3/3 — correta
+            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'medio', estoque: 'baixo' }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CVBA',             pessoas: 'baixo', lucro: 'medio', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'medio', estoque: 'baixo' }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'medio', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'Antecipacao',      pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+            new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+            new CartaDemonstracao({ key: 'MoedaEstrangeira', pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
         ];
 
-        const embaralhadas = Phaser.Utils.Array.Shuffle([...demaisCartas]);
-        const selecionadas = [cartaCorreta, ...embaralhadas.slice(0, 3)];
-
-        // Segundo shuffle para que a carta correta não fique sempre na 1ª posição
-        const cartas = Phaser.Utils.Array.Shuffle(selecionadas)
-            .map(key => ({ key, fase: 'demonstracao' }));
-
+        const correta = pool[0];
+        const demais  = Phaser.Utils.Array.Shuffle(pool.slice(1));
+        const cartas  = Phaser.Utils.Array.Shuffle([correta, ...demais.slice(0, 3)]);
         this._distribuirCartas(cartas);
     }
 
-    // Sobrescreve o clique nas cartas para a fase de demonstração
     _mostrarDetalheCarta(carta) {
         if (!this.negociacaoAtiva || this.cartaEmDetalhes) return;
 
@@ -261,11 +212,10 @@ export default class NegociacaoThaina extends CenaNegociacao {
             return;
         }
 
-        if (this._produtosSelecionados.find(c => c.key === carta.key)) {
-            this._mostrarDialogo('Você já apresentou este produto!');
-            return;
-        }
+        this._abrirModalApresentar(carta, () => this._apresentarProduto(carta));
+    }
 
+    _abrirModalApresentar(carta, aoSelecionar) {
         this.cartaEmDetalhes = carta;
 
         const W = this.scale.width;
@@ -276,82 +226,53 @@ export default class NegociacaoThaina extends CenaNegociacao {
         const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
         cartaZoom.setDepth(LAYERS.MODAL);
 
-        const restantes  = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
-        const labelBotao = restantes === 1 ? 'APRESENTAR (último!)' : `APRESENTAR (faltam ${restantes})`;
-
-        const { btn: btnVoltar,     texto: textoVoltar     } = this._criarBotao(40, 40, 100, 50, 'VOLTAR',   0x1a3a5a, 0xcc4444, '#ff6666');
-        const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(W / 2, H / 2 + 320, 220, 50, labelBotao, 0x1a4a2a, 0x22cc66, '#22cc66');
+        const { btn: btnVoltar,     texto: textoVoltar     } = this._criarBotao(40, 40, 100, 50, 'VOLTAR',      0x1a3a5a, 0xcc4444, '#ff6666');
+        const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(W / 2, H / 2 + 320, 220, 50, 'APRESENTAR', 0x1a4a2a, 0x22cc66, '#22cc66');
 
         btnVoltar.setDepth(LAYERS.MODAL);     textoVoltar.setDepth(LAYERS.MODAL_BTN);
         btnSelecionar.setDepth(LAYERS.MODAL); textoSelecionar.setDepth(LAYERS.MODAL_BTN);
 
-        const fecharModal = () => {
+        const fechar = () => {
             [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar].forEach(o => o.destroy());
             this.cartaEmDetalhes = null;
         };
 
         btnVoltar.on('pointerover', () => btnVoltar.setFillStyle(0x2a4a6a));
         btnVoltar.on('pointerout',  () => btnVoltar.setFillStyle(0x1a3a5a));
-        btnVoltar.on('pointerdown', fecharModal);
+        btnVoltar.on('pointerdown', fechar);
 
         btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
         btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
-        btnSelecionar.on('pointerdown', () => { fecharModal(); this._apresentarProduto(carta); });
+        btnSelecionar.on('pointerdown', () => { fechar(); aoSelecionar(); });
     }
 
     _apresentarProduto(carta) {
-        this._produtosSelecionados.push(carta);
-        this._atualizarContador();
-
-        const errado = this._produtoEstaErrado(carta.key);
-        const pontos = this._getPontuacaoCarta(carta.key);
-
-        if (errado) {
-            this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
-            this._mostrarDialogo('Isso não resolve o travamento. Você prestou atenção no que eu disse?');
-        } else {
-            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
-            const faltam = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
-            if (faltam > 0) {
-                const msg = this._dorFalhaRevelada() && carta.key === 'CieloFlash2'
-                    ? `Esse resolve! A IA prevê falhas antes de acontecer. Me mostra mais ${faltam}.`
-                    : `Produto apresentado! Continue mostrando mais ${faltam}.`;
-                this._mostrarDialogo(msg);
-            }
-        }
-
-        if (this._produtosSelecionados.length < PRODUTOS_NECESSARIOS) return;
-
+        const acertos = carta.contarAcertos(this.aspectosCliente);
+        this._removerCartaVisual(carta);
         this.negociacaoAtiva = false;
-        if (this.satisfacao <= 0) { this._perderNegociacao(); return; }
 
-        this._mostrarDialogo('Gostei! Pelo menos um desses resolve meu problema.');
-        this.time.delayedCall(4000, () => {
-            this.negociacaoAtiva = true;
-            this._avancarOuVencer();
-        });
+        if (acertos === 3) {
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
+            this._mostrarDialogo('Esse resolve! A IA prevê falhas antes de acontecer. Era exatamente isso que eu precisava.');
+            this.time.delayedCall(4000, () => {
+                this.negociacaoAtiva = true;
+                this._avancarOuVencer();
+            });
+        } else {
+            const penalidade = (3 - acertos) * 10;
+            this._alterarSatisfacao(-penalidade);
+            this._mostrarDialogo(this._dialogoErroProduto(acertos));
+            this.time.delayedCall(2000, () => {
+                if (this.satisfacao <= 0) this._perderNegociacao();
+                else this.negociacaoAtiva = true;
+            });
+        }
     }
 
-    // ── Contador visual de produtos ───────────────────────────────────────────
-
-    _criarContadorProdutos() {
-        const W = this.scale.width;
-        const H = this.scale.height;
-        if (this._contadorTexto) this._contadorTexto.destroy();
-        this._contadorTexto = this.add.text(W / 2, H * 0.62, this._textoContador(), {
-            fontFamily: '"Courier New", monospace',
-            fontSize:   '14px',
-            color:      '#ccaa44',
-            letterSpacing: 2,
-        }).setOrigin(0.5).setDepth(50);
-    }
-
-    _textoContador() {
-        return `Produtos apresentados: ${this._produtosSelecionados.length} / ${PRODUTOS_NECESSARIOS}`;
-    }
-
-    _atualizarContador() {
-        if (this._contadorTexto) this._contadorTexto.setText(this._textoContador());
+    _dialogoErroProduto(acertos) {
+        if (acertos === 2) return 'Até resolve algumas coisas, mas não é o que eu preciso pra evitar o travamento.';
+        if (acertos === 1) return 'Não é isso. Quase nada aqui se aplica ao meu problema.';
+        return 'Isso não tem nada a ver com o que eu tô passando.';
     }
 
     // ── Falas ─────────────────────────────────────────────────────────────────
@@ -360,7 +281,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
         const falas = {
             abordagem:    'Oi, tô ocupada aqui, mas pode falar.',
             sondagem:     'Tá bom, me conta. O que você tem pra me oferecer?',
-            demonstracao: `Minha maquininha trava toda hora. Me mostre ${PRODUTOS_NECESSARIOS} opções que possam resolver isso.`,
+            demonstracao: 'Minha maquininha trava toda hora. Me mostre o produto certo pra resolver isso.',
         };
         return falas[fase] ?? 'O que você tem a me apresentar?';
     }
