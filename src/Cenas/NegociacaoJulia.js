@@ -68,10 +68,10 @@ export default class NegociacaoJulia extends CenaNegociacao {
     preload() {
         super.preload();
 
-        this.load.image('julia_fundo',      'assets/NPC/JULIA/casa_julia_negociacao.png');
-        this.load.image('julia_satisfeito', 'assets/NPC/JULIA/CHEFE_FELIZ.png');
-        this.load.image('julia_neutro',     'assets/NPC/JULIA/CHEFE_NEUTRA.png');
-        this.load.image('julia_bravo',      'assets/NPC/JULIA/CHEFE_IRRITADA.png');
+        this.load.image('julia_fundo',      'assets/NPC/JULIA/loja_chefa_negociacao.png');
+        this.load.image('chefa_satisfeito', 'assets/NPC/JULIA/CHEFE_FELIZ.png');
+        this.load.image('chefa_neutro',     'assets/NPC/JULIA/CHEFE_NEUTRA.png');
+        this.load.image('chefa_bravo',      'assets/NPC/JULIA/CHEFE_IRRITADA.png');
 
         // Ícones da fase de negociação — suporte e taxa
         // Padrão de nomeação igual ao PIFE e aspectos:
@@ -85,11 +85,12 @@ export default class NegociacaoJulia extends CenaNegociacao {
         Insignia.preload(this);
     }
 
-    // ── Vitória ───────────────────────────────────────────────────────────────
+    // ── Create ────────────────────────────────────────────────────────────────
+    // CORREÇÃO: o bloco com W, H, barraW, barraX, barraY e _criarIconesNegociacao
+    // estava solto fora de qualquer método. Pertence ao create().
 
-    _aoVencer() {
-        // TODO: adicionar entrada 'praia_proveitos' em Insignia.CATALOGO e conceder aqui
-    }
+    create() {
+        super.create();
 
     // ── Create ────────────────────────────────────────────────────────────────
 
@@ -104,7 +105,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
         // Cria os ícones já na inicialização (ocultos), igual ao que o super
         // faz com _criarIconesPIFE e _criarIconesAspectos.
-        this._criarIconesNegociacao(barraX, barraY);
+        this._criarIconesNegociacao(barraX, barraW, barraY);
     }
 
     // ── Posição da sprite da Julia ────────────────────────────────────────────
@@ -133,7 +134,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // e de aspectos — abaixo da barra de satisfação.
     // Começam ocultos e aparecem apenas na fase 'negociacao'.
 
-    _criarIconesNegociacao(barraX, barraY) {
+    _criarIconesNegociacao(barraX, barraW, barraY) {
         const iconeH  = 28;
         const largura = iconeH * 2;
         const espaco  = 6;
@@ -202,7 +203,9 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // ── Pontuação dinâmica ────────────────────────────────────────────────────
 
     _getPontuacaoCarta(key) {
-        // TODO: definir PONTUACAO_PRODUTO_TAXA com valores distintos quando taxa é revelada
+        // CORREÇÃO: PONTUACAO_PRODUTO_TAXA nunca foi declarado — usa sempre o padrão.
+        // Se futuramente houver pontuação diferenciada por taxa, declare a constante
+        // e reative a lógica abaixo.
         return PONTUACAO_PRODUTO_PADRAO[key] ?? 0;
     }
 
@@ -576,48 +579,9 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     // ── Contadores visuais (demonstração) ─────────────────────────────────────
 
-    _selecionarBeneficio(carta) {
-        if (!this.negociacaoAtiva) return;
-
-        if (this._beneficioEstaErrado(carta.key)) {
-            this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
-            this._mostrarDialogo(carta.dialogoErro);
-            if (carta._objetos?.bg) carta._objetos.bg.destroy();
-            this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
-            this.negociacaoAtiva = false;
-            this.time.delayedCall(2000, () => {
-                if (this.satisfacao <= 0) this._perderNegociacao();
-                else this.negociacaoAtiva = true;
-            });
-            return;
-        }
-
-        this._beneficiosSelecionados.push(carta);
-        this._atualizarContadorBeneficios();
-        this._acenderIconeBeneficio(carta.beneficio);
-        this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + this._getPontuacaoCarta(carta.key));
-
-        if (carta._objetos?.bg) carta._objetos.bg.destroy();
-        this.cartasNaMao = this.cartasNaMao.filter(c => c !== carta);
-
-        const faltam = BENEFICIOS_NECESSARIOS - this._beneficiosSelecionados.length;
-
-        if (faltam > 0) {
-            this._mostrarDialogo(`${carta.dialogoAcerto} Ainda faltam ${faltam} benefício(s).`);
-            return;
-        }
-
-        this.negociacaoAtiva = false;
-        if (this.satisfacao <= 0) { this._perderNegociacao(); return; }
-
-        this._mostrarDialogo(this._falaAcertoFase('beneficios'));
-        this.time.delayedCall(4000, () => {
-            this.negociacaoAtiva = true;
-            this._avancarOuVencer();
-        });
-    }
-
-    _criarContadorBeneficios() {
+    // CORREÇÃO: renomeado de _criarContadorBeneficios para _criarContadorProdutos,
+    // pois esta cena não tem fase de benefícios — apenas produtos e negociação.
+    _criarContadorProdutos() {
         const W = this.scale.width;
         const H = this.scale.height;
         if (this._contadorTexto) this._contadorTexto.destroy();
@@ -629,8 +593,9 @@ export default class NegociacaoJulia extends CenaNegociacao {
         }).setOrigin(0.5).setDepth(50);
     }
 
-    _textoContadorBeneficios() {
-        return `Benefícios apresentados: ${this._beneficiosSelecionados.length} / ${BENEFICIOS_NECESSARIOS}`;
+    // CORREÇÃO: renomeado de _textoContadorBeneficios para _textoContadorProdutos.
+    _textoContadorProdutos() {
+        return `Produtos apresentados: ${this._produtosSelecionados.length} / ${PRODUTOS_NECESSARIOS}`;
     }
 
     _atualizarContadorProdutos() {

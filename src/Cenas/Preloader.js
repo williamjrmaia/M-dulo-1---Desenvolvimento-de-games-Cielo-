@@ -183,11 +183,11 @@ export default class Preloader extends Phaser.Scene {
         this.load.audio('transicao_ponte', 'assets/Audio/transicao_entre_mapas.wav');
         this.load.audio('som_insignia',    'assets/Audio/insignia_sound.mp3');
 
-        // ── Árvores com profundidade ──
-        this.load.image('arvore1', 'assets/ambientacao/MundoCielita/arvore1.png');
-        this.load.image('arvore2', 'assets/ambientacao/MundoCielita/arvore2.png');
-        this.load.image('arvore3', 'assets/ambientacao/MundoCielita/arvore3.png');
-        this.load.image('arvore4', 'assets/ambientacao/MundoCielita/arvore4.png');
+        // Arvores 
+        this.load.image('arvore1', 'assets/Ambientacao/MundoCielita/arvore1.png');
+        this.load.image('arvore2', 'assets/Ambientacao/MundoCielita/arvore2.png');
+        this.load.image('arvore3', 'assets/Ambientacao/MundoCielita/arvore3.png');
+        this.load.image('arvore4', 'assets/Ambientacao/MundoCielita/arvore4.png');
     }
 
     create() {
