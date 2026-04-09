@@ -21,6 +21,18 @@
  */
 export default class Insignia {
 
+
+     constructor(cena, chave) {
+        this.cena  = cena;
+        this.chave = chave;
+        this.dados = Insignia.CATALOGO[chave] ?? null;
+
+        if (!this.dados) {
+            console.warn(`[Insignia] Chave desconhecida: "${chave}". Verifique Insignia.CATALOGO.`);
+        }
+    }
+
+    
     // ── Catálogo central ──────────────────────────────────────────────────────
     // Cadastre aqui todas as insígnias do jogo.
     // negociacaoChave: chave salva no registry ao vencer a negociação.
@@ -81,15 +93,7 @@ export default class Insignia {
      * @param {Phaser.Scene} cena         - cena Phaser atual
      * @param {string}       chave        - chave de Insignia.CATALOGO (ex: 'mapa_gelo')
      */
-    constructor(cena, chave) {
-        this.cena  = cena;
-        this.chave = chave;
-        this.dados = Insignia.CATALOGO[chave] ?? null;
-
-        if (!this.dados) {
-            console.warn(`[Insignia] Chave desconhecida: "${chave}". Verifique Insignia.CATALOGO.`);
-        }
-    }
+   
 
     // ── API pública ───────────────────────────────────────────────────────────
 
