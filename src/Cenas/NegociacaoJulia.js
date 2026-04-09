@@ -197,8 +197,12 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     // ── Insígnia e vitória ────────────────────────────────────────────────────
 
-    _aoVencer()     { new Insignia(this, 'praia_proveitos').conceder(); }
-    _chaveVitoria() { return 'julia_vencida'; }
+    _getInsignia() {
+        return {
+            key:  'insignia_praia_proveitos',
+            nome: 'Ancião dos Proveitos',
+        };
+    }   
 
     // ── Controle de fases ─────────────────────────────────────────────────────
 
