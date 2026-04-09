@@ -74,7 +74,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 key:           'Proximidade',
                 letra:         'P',
                 correta:       true,
-                dialogoAcerto: 'Claro! Sou o Pedro, dono do estabelecimento. Me conta mais.',
+                dialogoAcerto: 'Bom dia, tudo bem sim.',
                 dialogoErro:   'Não entendi o que você veio fazer aqui.',
             }),
 
@@ -83,7 +83,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 key:           'Interesse',
                 letra:         'I',
                 correta:       true,
-                dialogoAcerto: 'Ah, conheço sim! Boa referência.',
+                dialogoAcerto: 'Eu sou o Pedro.',
                 dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
             }),
 
@@ -92,7 +92,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 key:           'Familiaridade',
                 letra:         'F',
                 correta:       true,
-                dialogoAcerto: 'Interessante, você não está aqui só pra vender. Pode continuar.',
+                dialogoAcerto: 'Interessante, estou com alguns problemas de pagamento ultimamente.',
                 dialogoErro:   'Parece que você só quer me vender algo.',
             }),
 
@@ -185,7 +185,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     _falaInicioFase(fase) {
         const falas = {
-            abordagem: 'Olá, boa tarde! Em que posso ajudar?',
+            abordagem: 'Olá, Em que posso ajudar?',
             sondagem:  'Tudo bem, me conta mais. O que você tem em mente?',
         };
         return falas[fase] ?? 'O que você tem a me apresentar?';

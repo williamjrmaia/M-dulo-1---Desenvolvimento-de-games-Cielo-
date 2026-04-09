@@ -382,6 +382,8 @@ export default class CenaNegociacao extends Phaser.Scene {
     // ── Demonstração ──────────────────────────────────────────────────────────
 
     _iniciarDemonstracao() {
+        // Exibe os ícones de aspecto em estado off (interrogação), igual à sondagem
+        this._setAspectosVisiveis(true);
         this._distribuirCartas(this._getCartasDemonstracao());
     }
 
@@ -398,6 +400,9 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._removerCartaVisual(carta);
 
         if (acertos === 3) {
+            this._revelarIconeAspecto('pessoas');
+            this._revelarIconeAspecto('lucro');
+            this._revelarIconeAspecto('estoque');
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._mostrarDialogo(this._falaAcertoFase('demonstracao'));
             this.negociacaoAtiva = false;
@@ -679,7 +684,7 @@ export default class CenaNegociacao extends Phaser.Scene {
                     this._avancarOuVencer();
                 });
             } else {
-                this._mostrarDialogo(`✅ Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
+                this._mostrarDialogo(` Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
             }
 
         } else {
@@ -813,7 +818,7 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _vencerNegociacao() {
         this.negociacaoAtiva = false;
-        this._mostrarDialogo('✅ Negociação concluída com sucesso!');
+        this._mostrarDialogo(' Negociação concluída com sucesso!');
 
         const chave = this._chaveVitoria();
         if (chave) {
@@ -883,7 +888,7 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _perderNegociacao() {
         this.negociacaoAtiva = false;
-        this._mostrarDialogo('❌ Negociação perdida. Tente novamente.');
+        this._mostrarDialogo(' Negociação perdida. Tente novamente.');
         this.game.registry.set('ultimaNegociacao', 'derrota');
         this.time.delayedCall(2000, () => this._irParaCenaDeRetorno());
     }
