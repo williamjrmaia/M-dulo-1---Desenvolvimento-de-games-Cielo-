@@ -2,11 +2,7 @@ import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
 import CenaMapa       from "../Classes/CenaMapa.js";
-<<<<<<< HEAD
 import CarroCielo from "../Classes/CarroCielo.js";
-=======
-import MiniMapa from '../Classes/MiniMapa.js';
->>>>>>> 7b26eef5caa0da7984670a8dedc0af5c121e960a
 
 export default class CidadeCielo extends CenaMapa {
 
