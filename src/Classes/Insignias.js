@@ -40,6 +40,12 @@ export default class Insignia {
             assetPath:       'assets/insignias/InsigniaProduto1.png',
             negociacaoChave: 'varejo_vencido',
         },
+        praia_proveitos: {
+            nome:            'Mestre da Praia',
+            assetKey:        'insignia_praia_proveitos',
+            assetPath:       'assets/insignias/InsigniaProduto1.png', // TODO: substituir pelo asset definitivo
+            negociacaoChave: 'julia_vencida',
+        },
         // Adicione novas insígnias aqui seguindo o mesmo padrão.
     };
 

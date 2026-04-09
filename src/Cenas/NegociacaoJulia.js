@@ -1,8 +1,9 @@
-import CenaNegociacao from '../Classes/CenaNegociacao.js';
-import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
-import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
-import CartaNegociacao from '../Classes/FasesNegociacao/CartaNegociacao.js';
-import Insignia        from '../Classes/Insignias.js';
+import CenaNegociacao   from '../Classes/CenaNegociacao.js';
+import CartaAbordagem   from '../Classes/FasesNegociacao/CartaAbordagem.js';
+import CartaSondagem    from '../Classes/FasesNegociacao/CartaSondagem.js';
+import CartaDemonstracao from '../Classes/FasesNegociacao/CartaDemonstracao.js';
+import CartaNegociacao  from '../Classes/FasesNegociacao/CartaNegociacao.js';
+import Insignia         from '../Classes/Insignias.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoJulia.js — Cliente da Praia dos Proveitos
@@ -14,31 +15,6 @@ import Insignia        from '../Classes/Insignias.js';
 //   Cada uma acende um ícone próprio abaixo da barra de satisfação,
 //   seguindo o mesmo padrão visual dos ícones PIFE e aspectos.
 // ─────────────────────────────────────────────────────────────────────────────
-
-const PONTUACAO_PRODUTO_PADRAO = {
-    Antecipacao:      10,
-    CrediarioDigital: 10,
-    CVBA:             10,
-    CieloFlash:       10,
-    CieloFlash2:      10,
-    FlashRecarga:     10,
-    CieloLioOn:       10,
-    LioOnApps:        10,
-    LioOnGestao:      10,
-    MoedaEstrangeira: 10,
-    CieloTap:         10,
-    CieloZip:         10,
-};
-
-const PONTUACAO_BENEFICIO_PADRAO = {
-    Ajuste:      10,
-    Antecipacao: 10,
-    Validacao:   10,
-    Comparativo:  0,
-    Recuo:        0,
-};
-
-const PRODUTOS_NECESSARIOS  = 3;
 
 // Condições que precisam ser reveladas na fase de negociação
 const CONDICOES_NEGOCIACAO  = ['suporte', 'taxa'];
@@ -58,7 +34,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
             estoque: 'alto',
         };
 
-        this._produtosSelecionados = [];
         this._condicoesReveladas   = new Set();
         this._iconesNegociacao     = {};
     }
@@ -195,37 +170,13 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     _chaveVitoria() { return 'julia_vencida'; }
 
-    // ── Pontuação dinâmica ────────────────────────────────────────────────────
-
-    _getPontuacaoCarta(key) {
-        // CORREÇÃO: PONTUACAO_PRODUTO_TAXA nunca foi declarado — usa sempre o padrão.
-        // Se futuramente houver pontuação diferenciada por taxa, declare a constante
-        // e reative a lógica abaixo.
-        return PONTUACAO_PRODUTO_PADRAO[key] ?? 0;
-    }
-
-    _dorTaxaRevelada() {
-        return this._aspectosRevelados.has('lucro');
-    }
-
-    _produtoEstaErrado(key) {
-        if (!this._dorTaxaRevelada()) return false;
-        return key !== 'CieloFlash';
-    }
-
     // ── Controle de fases ─────────────────────────────────────────────────────
     //
-    // Padrão idêntico à Thaina:
-    //   - Todas as fases passam pelo super._iniciarFase() primeiro.
-    //   - 'demonstracao': super + produtos + contador.
+    //   - 'demonstracao': jogador apresenta um produto; acerto avança, erro penaliza.
     //   - 'negociacao':   super + ícones próprios + cartas de negociação.
     //   - 'abordagem' / 'sondagem': super faz tudo.
 
     _iniciarFase() {
-        this._produtosSelecionados   = [];
-        this._beneficiosSelecionados = [];
-        this._contadorTexto          = null;
-
         super._iniciarFase();
 
         const fase = this.clienteConfig.fases[this.faseAtual];
@@ -233,7 +184,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         if (fase === 'demonstracao') {
             this._setIconesNegociacaoVisiveis(false);
             this._distribuirCartasDemonstracao();
-            this._criarContadorProdutos();
 
         } else if (fase === 'negociacao') {
             this._condicoesReveladas = new Set();
@@ -262,12 +212,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
         }
 
         if (fase === 'demonstracao') {
-            if (this._produtosSelecionados.find(c => c.key === carta.key)) {
-                this._mostrarDialogo('Você já apresentou este produto!');
-                return;
-            }
-            const restantes = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
-            this._abrirModalApresentar(carta, restantes, () => this._apresentarProduto(carta));
+            this._abrirModalApresentar(carta, () => this._apresentarProduto(carta));
             return;
         }
 
@@ -366,15 +311,26 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // ── Fase de demonstração ──────────────────────────────────────────────────
 
     _distribuirCartasDemonstracao() {
-        const cartaCorreta = 'CieloFlash';
-        const demaisCartas = [
-            'Antecipacao', 'CrediarioDigital', 'CVBA', 'CieloFlash2',
-            'FlashRecarga', 'CieloLioOn', 'LioOnApps',
-            'LioOnGestao', 'MoedaEstrangeira', 'CieloTap', 'CieloZip',
+        // Julia: aspectosCliente = { pessoas: 'alto', lucro: 'baixo', estoque: 'alto' }
+        // A carta correta tem os 3 atributos certos. As demais têm 0, 1 ou 2 acertos.
+        const pool = [
+            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // 3/3 — correta
+            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CVBA',             pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CieloFlash2',      pessoas: 'alto',  lucro: 'alto',  estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'Antecipacao',      pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+            new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+            new CartaDemonstracao({ key: 'MoedaEstrangeira', pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
         ];
-        const embaralhadas = Phaser.Utils.Array.Shuffle([...demaisCartas]);
-        const cartas = Phaser.Utils.Array.Shuffle([cartaCorreta, ...embaralhadas.slice(0, 3)])
-            .map(key => ({ key, fase: 'demonstracao' }));
+
+        const correta  = pool[0];
+        const demais   = Phaser.Utils.Array.Shuffle(pool.slice(1));
+        const cartas   = Phaser.Utils.Array.Shuffle([correta, ...demais.slice(0, 3)]);
         this._distribuirCartas(cartas);
     }
 
@@ -387,10 +343,10 @@ export default class NegociacaoJulia extends CenaNegociacao {
         const { LAYERS } = CenaNegociacao;
 
         const fase      = this.clienteConfig.fases[this.faseAtual];
-        const total     = fase === 'negociacao' ? CONDICOES_NECESSARIAS : PRODUTOS_NECESSARIOS;
-        const feitos    = fase === 'negociacao' ? this._condicoesReveladas.size : this._produtosSelecionados.length;
-        const restantes = total - feitos;
-        const label     = restantes === 1 ? 'APRESENTAR (último!)' : `APRESENTAR (faltam ${restantes})`;
+        const restantes = CONDICOES_NECESSARIAS - this._condicoesReveladas.size;
+        const label     = fase === 'negociacao'
+            ? (restantes === 1 ? 'APRESENTAR (último!)' : `APRESENTAR (faltam ${restantes})`)
+            : 'APRESENTAR';
 
         const overlay   = this.add.rectangle(0, 0, W, H, 0x000000, 0.7).setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
         const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
@@ -417,26 +373,32 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     _apresentarProduto(carta) {
-        this._produtosSelecionados.push(carta);
-        this._atualizarContadorProdutos();
-
-        const pontos = this._getPontuacaoCarta(carta.key);
-        this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO + pontos);
-
-        const faltam = PRODUTOS_NECESSARIOS - this._produtosSelecionados.length;
-        if (faltam > 0) {
-            this._mostrarDialogo(`Produto apresentado! Continue mostrando mais ${faltam}.`);
-            return;
-        }
-
+        const acertos = carta.contarAcertos(this.aspectosCliente);
+        this._removerCartaVisual(carta);
         this.negociacaoAtiva = false;
-        if (this.satisfacao <= 0) { this._perderNegociacao(); return; }
 
-        this._mostrarDialogo('Tá bom, me convenceu com os produtos. Mas quero saber das condições.');
-        this.time.delayedCall(4000, () => {
-            this.negociacaoAtiva = true;
-            this._avancarOuVencer();
-        });
+        if (acertos === 3) {
+            this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
+            this._mostrarDialogo('Perfeito! Esse produto resolve exatamente o que eu precisava.');
+            this.time.delayedCall(4000, () => {
+                this.negociacaoAtiva = true;
+                this._avancarOuVencer();
+            });
+        } else {
+            const penalidade = (3 - acertos) * 10;
+            this._alterarSatisfacao(-penalidade);
+            this._mostrarDialogo(this._dialogoErroProduto(acertos));
+            this.time.delayedCall(2000, () => {
+                if (this.satisfacao <= 0) this._perderNegociacao();
+                else this.negociacaoAtiva = true;
+            });
+        }
+    }
+
+    _dialogoErroProduto(acertos) {
+        if (acertos === 2) return 'Esse produto até ajuda em algumas coisas, mas não é o que eu preciso.';
+        if (acertos === 1) return 'Não é isso. Quase nada aqui se aplica ao meu negócio.';
+        return 'Esse produto não tem nada a ver com a minha realidade.';
     }
 
     // ── Fase de negociação ────────────────────────────────────────────────────
@@ -572,38 +534,13 @@ export default class NegociacaoJulia extends CenaNegociacao {
         ];
     }
 
-    // ── Contadores visuais (demonstração) ─────────────────────────────────────
-
-    // CORREÇÃO: renomeado de _criarContadorBeneficios para _criarContadorProdutos,
-    // pois esta cena não tem fase de benefícios — apenas produtos e negociação.
-    _criarContadorProdutos() {
-        const W = this.scale.width;
-        const H = this.scale.height;
-        if (this._contadorTexto) this._contadorTexto.destroy();
-        this._contadorTexto = this.add.text(W / 2, H * 0.62, this._textoContadorProdutos(), {
-            fontFamily:    '"Courier New", monospace',
-            fontSize:      '14px',
-            color:         '#ccaa44',
-            letterSpacing: 2,
-        }).setOrigin(0.5).setDepth(50);
-    }
-
-    // CORREÇÃO: renomeado de _textoContadorBeneficios para _textoContadorProdutos.
-    _textoContadorProdutos() {
-        return `Produtos apresentados: ${this._produtosSelecionados.length} / ${PRODUTOS_NECESSARIOS}`;
-    }
-
-    _atualizarContadorProdutos() {
-        if (this._contadorTexto) this._contadorTexto.setText(this._textoContadorProdutos());
-    }
-
     // ── Falas ─────────────────────────────────────────────────────────────────
 
     _falaInicioFase(fase) {
         const falas = {
             abordagem:    'Oi! Tô ocupada aqui, mas pode falar.',
             sondagem:     'Me conta mais. O que você tem pra me oferecer?',
-            demonstracao: `A taxa que pago tá me matando. Me mostre ${PRODUTOS_NECESSARIOS} opções que resolvam isso.`,
+            demonstracao: 'A taxa que pago tá me matando. Me mostre o produto certo pra mim.',
             negociacao:   'Os produtos me interessaram. Mas preciso saber: qual o suporte e quais as condições de taxa?',
         };
         return falas[fase] ?? 'O que você tem a me apresentar?';
