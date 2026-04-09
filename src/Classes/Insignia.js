@@ -40,6 +40,20 @@ export default class Insignia {
             assetPath:       'assets/insignias/InsigniaProduto1.png',
             negociacaoChave: 'varejo_vencido',
         },
+
+        praia_proveitos: {
+            nome:            'Ancião da Praia',
+            assetKey:        'insignia_praia_proveitos',
+            assetPath:       'assets/insignias/InsigniaNegociacao1.png',
+            negociacaoChave: 'praia_proveitos_vencida',
+        },
+
+        cidade_cielo: {
+            nome:            'Mestre das Vendas',
+            assetKey:        'insignia_cidade_cielo',
+            assetPath:       'assets/insignias/InsigniaCidadeCielo1.png',
+            negociacaoChave: 'cidade_cielo_vencida',
+        },
         // Adicione novas insígnias aqui seguindo o mesmo padrão.
     };
 

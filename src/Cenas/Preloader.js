@@ -146,6 +146,8 @@ export default class Preloader extends Phaser.Scene {
         // ── Insígnias ─────────────────────────────────────────────────────────
         this.load.image('InsigniaAbordagem1', 'assets/Insignias/InsigniaAbordagem1.png');
         this.load.image('InsigniaProduto1',   'assets/Insignias/InsigniaProduto1.png');
+        this.load.image('InsigniaNegociacao1', 'assets/Insignias/InsigniaNegociacao1.png');
+        this.load.image('InsigniaCidadeCielo1', 'assets/Insignias/InsigniaCidadeCielo1.png');
 
         // ── Barra de satisfação ───────────────────────────────────────────────
         this.load.image('barra_vazia',        'assets/objetos/barra/barra_vazia.png');

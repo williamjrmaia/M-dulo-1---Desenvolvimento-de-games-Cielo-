@@ -2,7 +2,7 @@ import CenaNegociacao from '../Classes/CenaNegociacao.js';
 import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
 import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
 import CartaNegociacao from '../Classes/FasesNegociacao/CartaNegociacao.js';
-import Insignia        from '../Classes/Insignias.js';
+import Insignia        from '../Classes/Insignia.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoJulia.js — Cliente da Praia dos Proveitos
@@ -88,11 +88,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // ── Create ────────────────────────────────────────────────────────────────
     // CORREÇÃO: o bloco com W, H, barraW, barraX, barraY e _criarIconesNegociacao
     // estava solto fora de qualquer método. Pertence ao create().
-
-    create() {
-        super.create();
-
-    // ── Create ────────────────────────────────────────────────────────────────
 
     create() {
         super.create();

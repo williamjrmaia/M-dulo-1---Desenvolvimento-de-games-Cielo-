@@ -1,7 +1,7 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
 import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
 import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
-import Insignia       from '../Classes/Insignias.js';
+import Insignia       from '../Classes/Insignia.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoThaina.js — Cliente da Vila do Varejo
