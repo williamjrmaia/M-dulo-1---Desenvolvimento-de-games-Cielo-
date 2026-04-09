@@ -92,6 +92,11 @@ export default class NegociacaoJulia extends CenaNegociacao {
     create() {
         super.create();
 
+    // ── Create ────────────────────────────────────────────────────────────────
+
+    create() {
+        super.create();
+
         const W      = this.scale.width;
         const H      = this.scale.height;
         const barraW = 300;

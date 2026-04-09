@@ -192,8 +192,15 @@ export default class Preloader extends Phaser.Scene {
 
     create() {
         this.scene.launch('AudioManager');
-        this.time.delayedCall(100, () => {
-            this.scene.start('MenuPrincipal');
-        });
+
+        const audioScene = this.scene.get('AudioManager');
+        const startMenu = () => this.scene.start('MenuPrincipal');
+
+        if (audioScene && audioScene.events) {
+            audioScene.events.once('create', startMenu);
+            this.time.delayedCall(250, startMenu);
+        } else {
+            this.time.delayedCall(100, startMenu);
+        }
     }
 }
