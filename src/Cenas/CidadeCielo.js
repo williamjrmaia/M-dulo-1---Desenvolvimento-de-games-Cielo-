@@ -178,6 +178,16 @@ export default class CidadeCielo extends CenaMapa {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
 
+        this.carro = new CarroCielo(this, {
+        xi:            165,
+        yi:            684,
+        xf:            1335,
+        yf:            688,
+        T:             5,
+        pausaMs:       2000,
+        escala:        1.2,
+        jogadorSprite: this.jogador.sprite,
+});
         if (this.origem === 'CasaCidade1') {
             this.jogador.sprite.setPosition(546, 595); 
         }
@@ -189,6 +199,9 @@ export default class CidadeCielo extends CenaMapa {
 
     update(time, delta) {
         if (super.update()) return;
+       
+        // Atualiza o carro (se estivesse presente nesta cena)
+        this.carro.atualizar(this.time.now);
 
         this.jogador.atualizar();
         this.miniMapa.atualizar();

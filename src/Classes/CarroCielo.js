@@ -1,22 +1,18 @@
 // =============================================================================
 // CarroCielo.js
-// Carro decorativo que circula pela Cidade Cielo em loop contínuo com pausa
-// entre cada ciclo. A posição é calculada por cinemática pura (sem setVelocity
-// nem tweens). O corpo físico Arcade é reposicionado manualmente a cada frame,
-// o que permite que o carro empurre o jogador ao colidir.
+// Carro decorativo que circula pela rua inferior da Cidade Cielo em loop
+// contínuo com pausa entre ciclos.
 //
 // EIXO X → Movimento Uniforme (MU):            velocidade constante
 // EIXO Y → Movimento Uniformemente Variado (MUV): parte do repouso, v0y = 0
 //
-// ── PARÂMETROS DE ENTRADA ─────────────────────────────────────────────────────
-//   xi        {number} — posição inicial em X (px)
-//   yi        {number} — posição inicial em Y (px)
-//   xf        {number} — posição final   em X (px)
-//   yf        {number} — posição final   em Y (px)
-//   T         {number} — duração total de cada travessia (segundos)
-//   pausaMs   {number} — pausa entre ciclos em milissegundos (padrão: 1500)
-//   escala    {number} — escala visual do sprite (padrão: 1)
-//   cena      {Phaser.Scene} — cena que hospeda o carro
+// Coordenadas calculadas a partir do mapa real (escala 1:1 com o jogo):
+//   xi=165  yi=684  xf=1335  yf=688  T=5s  pausaMs=2000
+//
+// A posição é calculada pelas equações cinemáticas puras — sem setVelocity,
+// sem tweens, sem funções de movimento do Phaser.
+// O corpo físico é reposicionado manualmente via body.reset(), mantendo
+// a colisão ativa e permitindo que o carro empurre o jogador.
 //
 // ── REFERÊNCIA ────────────────────────────────────────────────────────────────
 //   HALLIDAY, D.; RESNICK, R.; WALKER, J. Fundamentos de Física, Vol. 1.
@@ -25,7 +21,8 @@
 // ── INTEGRAÇÃO ────────────────────────────────────────────────────────────────
 //   // create():
 //   this.carro = new CarroCielo(this, {
-//       xi: 300, yi: 600, xf: 900, yf: 750, T: 4, pausaMs: 1500,
+//       xi: 165, yi: 684, xf: 1335, yf: 688,
+//       T: 5, pausaMs: 2000, escala: 1.2,
 //       jogadorSprite: this.jogador.sprite,
 //   });
 //
@@ -43,11 +40,11 @@ export default class CarroCielo {
      * @param {number}  p.xf           - posição final   X (px)
      * @param {number}  p.yf           - posição final   Y (px)
      * @param {number}  p.T            - duração de cada ciclo (segundos)
-     * @param {number}  [p.pausaMs]    - pausa entre ciclos em ms (padrão: 1500)
+     * @param {number}  [p.pausaMs]    - pausa entre ciclos em ms (padrão: 2000)
      * @param {number}  [p.escala]     - escala do sprite (padrão: 1)
-     * @param {Phaser.GameObjects.Sprite} p.jogadorSprite - sprite do jogador para colisão
+     * @param {Phaser.GameObjects.Sprite} p.jogadorSprite - sprite do jogador
      */
-    constructor(cena, { xi, yi, xf, yf, T, pausaMs = 1500, escala = 1, jogadorSprite }) {
+    constructor(cena, { xi, yi, xf, yf, T, pausaMs = 2000, escala = 1, jogadorSprite }) {
         this._cena = cena;
 
         // ── 1. Parâmetros de entrada ───────────────────────────────────────────
@@ -58,26 +55,26 @@ export default class CarroCielo {
         this.T       = T;
         this._pausaMs = pausaMs;
 
-        // ── 2. Parâmetros derivados (calculados uma vez por ciclo) ─────────────
-        // MU  — eixo X:  vx = (xf - xi) / T
+        // ── 2. Parâmetros derivados ────────────────────────────────────────────
+        // MU — eixo X:  vx = (xf - xi) / T
         this.vx = (xf - xi) / T;
 
         // MUV — eixo Y (v0y = 0):  ay = 2*(yf - yi) / T²
         this.ay = (2 * (yf - yi)) / (T * T);
 
         // ── 3. Estado do ciclo ─────────────────────────────────────────────────
-        this._iniciado    = false;
-        this._t0Ms        = 0;
-        this._emPausa     = false;
-        this._pausaInicioMs = 0;
+        this._iniciado       = false;
+        this._ativo          = true;
+        this._t0Ms           = 0;
+        this._emPausa        = false;
+        this._pausaInicioMs  = 0;
 
-        // ── 4. Sprite com corpo físico dinâmico (para empurrar o jogador) ──────
+        // ── 4. Sprite com corpo físico dinâmico ────────────────────────────────
         this.sprite = cena.physics.add.image(xi, yi, 'carro_cielo')
             .setDepth(6)
             .setScale(escala)
-            .setImmovable(false);  // false → empurra outros corpos
+            .setImmovable(false);
 
-        // Impede que a gravidade afete o carro
         this.sprite.body.setAllowGravity(false);
 
         // ── 5. Colisão com o jogador ───────────────────────────────────────────
@@ -99,61 +96,42 @@ export default class CarroCielo {
 
     // ──────────────────────────────────────────────────────────────────────────
     // atualizar(timeNowMs)
-    //
-    //   Chamado a cada frame (this.time.now da cena Phaser, em ms).
-    //
-    //   Lógica:
-    //     1. Se estiver em PAUSA, aguarda pausaMs e reinicia o ciclo.
-    //     2. Calcula t = (timeNowMs - t0) / 1000
-    //     3. Aplica equações de MU (eixo X) e MUV (eixo Y) diretamente.
-    //     4. Quando t >= T, entra em pausa e aguarda o próximo ciclo.
-    //
-    //   A posição é atribuída diretamente ao sprite via body.reset() —
-    //   operação que reposiciona o corpo físico sem usar setVelocity.
-    //   Isso mantém a integridade da colisão enquanto honra a restrição
-    //   de não usar funções de movimento prontas do Phaser.
+    //   Chamado a cada frame pela cena (this.time.now, em ms).
+    //   Calcula posição por cinemática pura e reposiciona o corpo físico.
     // ──────────────────────────────────────────────────────────────────────────
     atualizar(timeNowMs) {
 
-        // ── Gerenciamento de pausa entre ciclos ───────────────────────────────
+        // Gerenciamento de pausa entre ciclos
         if (this._emPausa) {
-            // Condicional: verifica se a pausa já durou o suficiente
             if (timeNowMs - this._pausaInicioMs >= this._pausaMs) {
                 this._iniciarCiclo(timeNowMs);
             }
-            // Durante a pausa o carro fica parado — zera velocidade física
             this.sprite.body.setVelocity(0, 0);
             return;
         }
 
-        // Registra o instante de início no primeiro frame após (re)iniciar
         if (!this._iniciado) {
-            this._t0Ms    = timeNowMs;
+            this._t0Ms     = timeNowMs;
             this._iniciado = true;
         }
 
-        // Tempo decorrido desde o início do ciclo atual (segundos)
-        // Operação aritmética elementar: subtração e divisão
+        // Tempo decorrido em segundos
         const t = (timeNowMs - this._t0Ms) / 1000;
 
         // Condicional de fim de ciclo
         if (t >= this.T) {
-            // Posiciona exatamente no ponto final
             this.sprite.body.reset(this.xf, this.yf);
             this.sprite.body.setVelocity(0, 0);
-
-            // Entra em pausa
-            this._emPausa        = true;
-            this._pausaInicioMs  = timeNowMs;
-            this._iniciado       = false;
-
+            this._emPausa       = true;
+            this._pausaInicioMs = timeNowMs;
+            this._iniciado      = false;
             console.log('[CarroCielo] Ciclo concluído. Pausando por', this._pausaMs, 'ms.');
             return;
         }
 
         // ── MU — eixo X ───────────────────────────────────────────────────────
-        // Velocidade constante:  vx = (xf - xi) / T
-        // Posição:               x(t) = xi + vx * t
+        // vx = (xf - xi) / T  →  constante
+        // x(t) = xi + vx * t
         const x = this.xi + this.vx * t;
 
         console.log(
@@ -163,9 +141,9 @@ export default class CarroCielo {
         );
 
         // ── MUV — eixo Y ──────────────────────────────────────────────────────
-        // v0y = 0  →  aceleração:  ay = 2*(yf - yi) / T²
-        //             velocidade:  vy(t) = ay * t
-        //             posição:     y(t)  = yi + (1/2) * ay * t²
+        // v0y = 0  →  ay = 2*(yf - yi) / T²
+        // vy(t) = ay * t
+        // y(t)  = yi + (1/2) * ay * t²
         const vy = this.ay * t;
         const y  = this.yi + (0.5 * this.ay * t * t);
 
@@ -176,20 +154,17 @@ export default class CarroCielo {
             ' | y=' + y.toFixed(2) + ' px'
         );
 
-        // ── Aplica posição ao corpo físico diretamente ─────────────────────────
-        // body.reset(x, y) reposiciona o corpo sem alterar a velocidade física
-        // acumulada — nenhuma função de movimento do Phaser é usada aqui.
+        // Aplica posição diretamente ao corpo físico
         this.sprite.body.reset(x, y);
     }
-
-    // ── Helpers privados ──────────────────────────────────────────────────────
 
     _iniciarCiclo(timeNowMs) {
         this._emPausa  = false;
         this._iniciado = false;
         this._t0Ms     = timeNowMs;
-        // Reposiciona no ponto inicial para o próximo ciclo
         this.sprite.body.reset(this.xi, this.yi);
         console.log('[CarroCielo] Novo ciclo iniciado.');
     }
+
+    get estaAtivo() { return this._ativo; }
 }
