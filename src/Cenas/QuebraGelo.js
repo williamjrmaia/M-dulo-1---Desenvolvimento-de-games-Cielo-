@@ -3,6 +3,7 @@ import Insignia       from '../Classes/Insignias.js';
 import NPC            from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
 import CenaMapa from       '../Classes/CenaMapa.js';
+import MiniMapa from '../Classes/MiniMapa.js';
 
 export default class QuebraGelo extends CenaMapa {
     constructor() { 
@@ -52,8 +53,8 @@ export default class QuebraGelo extends CenaMapa {
         // Toca som ambiente do Quebra Gelo
         this.registry.get('audio').tocarAmbiente('ambiente_quebragelo', 0.6);
 
-        const larguraMapa = 1500;
-        const alturaMapa  = 1200;
+        const larguraMapa = 1024;
+        const alturaMapa  = 1024;
 
         // Colocando o centro do limite + paredes
         this.physics.world.setBounds(0, 0, larguraMapa, alturaMapa);
@@ -141,6 +142,9 @@ export default class QuebraGelo extends CenaMapa {
 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.personagem = new Jogador(this, 25, 212, 1.0);
+        this.miniMapa = new MiniMapa(this, this.personagem.sprite);
+        this.miniMapa.registrarNPCs(this.grupoNPCs);       // pontos amarelos dos NPCs
+        this.miniMapa.definirMissao(655, 190);              // triângulo da missão
         this.personagem.superficiePasso = 'passos_quebragelo';
         this.personagem.sprite.setCollideWorldBounds(true);
         this.personagem.sprite.setDepth(10);
@@ -206,6 +210,7 @@ export default class QuebraGelo extends CenaMapa {
         if (super.update()) return;
 
         this.personagem.atualizar();
+        this.miniMapa.atualizar();
         // ── Atualiza NPCs (lida com indicador E, diálogo e proximidade) ───────
         this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
         this.lorena.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);

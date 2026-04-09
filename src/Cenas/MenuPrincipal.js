@@ -12,8 +12,11 @@ export default class MenuPrincipal extends Phaser.Scene {
             }
 
             create() {
-                // Toca música de fundo do menu
-                this.registry.get('audio').tocarMusica('musica_fundo_inicio', 0.5);
+                // Toca música de fundo do menu (se o AudioManager já estiver pronto)
+                const audio = this.registry.get('audio');
+                if (audio && typeof audio.tocarMusica === 'function') {
+                    audio.tocarMusica('musica_fundo_inicio', 0.5);
+                }
 
                 let tela = this.add.image(750, 400, 'menu_jogo')
 

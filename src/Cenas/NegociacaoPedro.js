@@ -71,7 +71,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
         return [
             // ── P: Propósito ──
             new CartaAbordagem({
-                key:           'DiretoAoPonto',
+                key:           'Proximidade',
                 letra:         'P',
                 correta:       true,
                 dialogoAcerto: 'Claro! Sou o Pedro, dono do estabelecimento. Me conta mais.',
@@ -80,7 +80,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
             // ── I: Identificação ──
             new CartaAbordagem({
-                key:           'GanchoSocial',
+                key:           'Interesse',
                 letra:         'I',
                 correta:       true,
                 dialogoAcerto: 'Ah, conheço sim! Boa referência.',
@@ -89,7 +89,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
             // ── F: Foco ──
             new CartaAbordagem({
-                key:           'AntiPitch',
+                key:           'Familiaridade',
                 letra:         'F',
                 correta:       true,
                 dialogoAcerto: 'Interessante, você não está aqui só pra vender. Pode continuar.',
@@ -98,7 +98,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
             // ── E: Empatia ──
             new CartaAbordagem({
-                key:           'ComparacaoInteligente',
+                key:           'Empatia',
                 letra:         'E',
                 correta:       true,
                 dialogoAcerto: 'Faz sentido. Você entende a minha situação.',
@@ -108,7 +108,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
             // ── CPC: Contato com Pessoa Certa ──
             // Só fica disponível após P, I, F e E estarem preenchidos
             new CartaAbordagem({
-                key:           'CartaCPC',
+                key:           'CPC',
                 letra:         'CPC',
                 correta:       true,
                 dialogoAcerto: 'Ótimo! Você falou com a pessoa certa. Vamos continuar.',
@@ -139,8 +139,8 @@ export default class NegociacaoPedro extends CenaNegociacao {
         return [
             // ── Pessoas ──
             new CartaSondagem({
-                key:           'PerguntaDeImpacto',
-                aspecto:       'pessoas',
+                key:           'LucroCerto',
+                aspecto:       'lucro',
                 correta:       true,
                 dialogoAcerto: 'Atendo poucas pessoas por dia, mas são clientes fiéis.',
                 dialogoErro:   'Isso não me ajuda a entender o meu fluxo de clientes.',
@@ -148,17 +148,17 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
             // ── Lucro ──
             new CartaSondagem({
-                key:           'GanchoDaDor',
+                key:           'LucroErrado',
                 aspecto:       'lucro',
-                correta:       true,
+                correta:       false,
                 dialogoAcerto: 'O negócio vai bem, tenho uma margem alta nos produtos.',
                 dialogoErro:   'Essa pergunta não faz sentido pra mim agora.',
             }),
 
             // ── Estoque ──
             new CartaSondagem({
-                key:           'SondagemDeFluxo',
-                aspecto:       'estoque',
+                key:           'Movimento',
+                aspecto:       'pessoas',
                 correta:       true,
                 dialogoAcerto: 'Meu estoque gira pouco, trabalho com produtos especiais.',
                 dialogoErro:   'Não entendo o que você quer saber com isso.',
@@ -166,18 +166,18 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
             // ── Erradas (aspectos variados) ──
             new CartaSondagem({
-                key:           'LoboCurioso',
-                aspecto:       'pessoas',
+                key:           'EstoqueErrado',
+                aspecto:       'estoque',
                 correta:       false,
                 dialogoAcerto: '',
                 dialogoErro:   'Isso não é relevante pra minha operação.',
             }),
 
             new CartaSondagem({
-                key:           'AutoridadeImplicita',
-                aspecto:       'lucro',
-                correta:       false,
-                dialogoAcerto: '',
+                key:           'EstoqueCerto',
+                aspecto:       'estoque',
+                correta:       true,
+                dialogoAcerto: 'Tenho um estoque bem controlado, o que me permite oferecer produtos de qualidade.',
                 dialogoErro:   'Não gosto desse tipo de abordagem.',
             }),
         ];

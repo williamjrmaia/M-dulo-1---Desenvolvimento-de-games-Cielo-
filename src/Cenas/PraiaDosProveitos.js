@@ -2,6 +2,7 @@ import CenaMapa from '../Classes/CenaMapa.js';
 import Jogador from '../Classes/Jogador.js';
 import NPC from '../Classes/NPC.js';
 import DialogoManager from '../Classes/DialogoManager.js';
+import MiniMapa from '../Classes/MiniMapa.js';
 
 export default class PraiaDosProveitos extends CenaMapa {
     constructor() {
@@ -56,6 +57,8 @@ export default class PraiaDosProveitos extends CenaMapa {
         
         // --- 3. CRIAÇÃO DO JOGADOR ---
         this.personagem = new Jogador(this, 630, 800, 1.2);
+        this.miniMapa = new MiniMapa(this, this.personagem.sprite);
+        this.miniMapa.definirMissao(675, 470);              // triângulo da missão
         this.personagem.superficiePasso = 'passos_praiadosproveitos';
         this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
@@ -103,6 +106,10 @@ export default class PraiaDosProveitos extends CenaMapa {
         //Criando a PortaCasaPraia2
         this.PortaCasaPraia2 = this.add.zone(921, 685, 30, 30);
         this.physics.add.existing(this.PortaCasaPraia2, true)
+
+        //Criando a PortaCasaGrande
+        this.PortaCasaGrande = this.add.zone(655, 260, 30, 30);
+        this.physics.add.existing(this.PortaCasaGrande, true);
         
         this.teclas = this.personagem.configurarTeclas();
 
@@ -190,6 +197,7 @@ export default class PraiaDosProveitos extends CenaMapa {
             { personagem: 'Felipe', texto: 'Boa sorte! Se você gosta de desafios, a Chefa é a pessoa certa para conversar, agora vou ali dar uns mergulhos.' },
         ]);
 
+        this.miniMapa.registrarNPCs(this.grupoNPCs); // Mostrar NPCs no mini mapa (deixar a baixo quando criarem mais NPCs)
         // ── NPC: Arthur ───────────────────────────────────────────────────────
         this.dialogoArthurConcluido = this.registry.get('arthur_praia_concluido') || false;
 
@@ -247,14 +255,17 @@ export default class PraiaDosProveitos extends CenaMapa {
 
         if (this.origem === 'CasaPraia1') this.personagem.sprite.setPosition(675, 530);
         if (this.origem === 'CasaPraia2') this.personagem.sprite.setPosition(923, 675);
+        if (this.origem === 'CasaPraiaGrande') this.personagem.sprite.setPosition(655, 260);
         
         if (this.origem === 'CidadeCielo') this.personagem.sprite.setPosition(160, 50);
+
     }
 
     update() {
 if (super.update()) return;
 
 this.personagem.atualizar();
+this.miniMapa.atualizar();
 
 // ── Atualiza NPCs (Corrigido de this.jogador para this.personagem) ──
  if (this.cielita) {
@@ -307,5 +318,10 @@ this.trocarCena('CidadeCielo');
  this.trocarCena('CasaPraia2');
  return;
  }
+
+  if (this.personagem.temOverlap(this.PortaCasaGrande) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+ this.trocarCena('CasaPraiaGrande');
+ return;
  }
+}
 }

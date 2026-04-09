@@ -57,9 +57,9 @@ export default class CenaNegociacao extends Phaser.Scene {
             cartasPorFase:     clienteConfig.cartasPorFase      ?? {
                 abordagem:    5,
                 sondagem:     5,
-                demonstracao: 4,
-                negociacao:   3,
-                fechamento:   3,
+                demonstracao: 5,
+                negociacao:   5,
+                fechamento:   5,
             },
         };
 
@@ -79,6 +79,9 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._letrasPreenchidas = new Set();
         this._cpcDisponivel     = false;
         this._iconesPIFE        = {};
+
+        // Tween do pulso da carta CPC (guardado para poder cancelar ao jogar)
+        this._tweenCPC = null;
 
         // Estado da fase de sondagem
         this._aspectosRevelados = new Set();
@@ -129,12 +132,22 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _criarFundo(W, H) {
         const nome = this.clienteConfig.nomeCliente;
+
+        // Fundo superior — imagem do cliente ou retângulo fallback
         if (this.textures.exists(`${nome}_fundo`)) {
             this.add.image(W / 2, H * 0.3, `${nome}_fundo`).setDisplaySize(W, H * 0.6);
         } else {
             this.add.rectangle(0, 0, W, H * 0.6, 0x111a24).setOrigin(0, 0);
         }
-        this.add.rectangle(0, H * 0.58, W, H * 0.42, 0x0a0f14).setOrigin(0, 0);
+
+        // Área inferior das cartas — balcão ou retângulo escuro fallback
+        if (this.textures.exists('balcao')) {
+            this.add.image(W / 2, H * 0.79, 'balcao').setDisplaySize(W, H * 0.42);
+        } else {
+            this.add.rectangle(0, H * 0.58, W, H * 0.42, 0x0a0f14).setOrigin(0, 0);
+        }
+
+        // Linha divisória entre as duas áreas
         const div = this.add.graphics();
         div.lineStyle(2, 0x2a4a6a, 0.8);
         div.lineBetween(0, H * 0.58, W, H * 0.58);
@@ -176,7 +189,6 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     // ── Ícones PIFE+CPC ───────────────────────────────────────────────────────
-    // Assets: pife_p_off/on, pife_i_off/on, pife_f_off/on, pife_e_off/on, pife_cpc_off/on
 
     _criarIconesPIFE(barraX, barraW, barraY) {
         const letras  = [...CenaNegociacao.LETRAS_PIFE, 'CPC'];
@@ -188,20 +200,24 @@ export default class CenaNegociacao extends Phaser.Scene {
         const y       = barraY + 53;
         const pad     = 8;
 
-        this._bgPIFE = this.add.rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+        this._bgPIFE = this.add
+            .rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
             .setStrokeStyle(1, 0x555555)
             .setDepth(49);
 
         this._iconesPIFE = {};
 
         letras.forEach((letra, i) => {
-            const x        = startX + i * (largura + espaco);
-            const chaveOff = `pife_${letra.toLowerCase()}_off`;
-            const chaveOn  = `pife_${letra.toLowerCase()}_on`;
+            const x = startX + i * (largura + espaco);
+
+            const chaveOff = letra === 'CPC' ? 'cpc_off' : `pife_${letra.toLowerCase()}_off`;
+            const chaveOn  = letra === 'CPC' ? 'cpc_on'  : `pife_${letra.toLowerCase()}_on`;
 
             const icone = this.textures.exists(chaveOff)
                 ? this.add.image(x, y, chaveOff).setDisplaySize(largura, iconeH).setDepth(50)
-                : this.add.rectangle(x, y, largura, iconeH, 0x333333).setStrokeStyle(1, 0x555555).setDepth(50);
+                : this.add.rectangle(x, y, largura, iconeH, 0x333333)
+                    .setStrokeStyle(1, 0x555555)
+                    .setDepth(50);
 
             this._iconesPIFE[letra] = { obj: icone, chaveOff, chaveOn };
         });
@@ -218,19 +234,23 @@ export default class CenaNegociacao extends Phaser.Scene {
         const d = this._iconesPIFE[letra];
         if (!d) return;
 
-        if (this.textures.exists(d.chaveOn) && d.obj.setTexture) d.obj.setTexture(d.chaveOn);
-        else if (d.obj.setFillStyle) d.obj.setFillStyle(0x22cc66);
+        if (this.textures.exists(d.chaveOn) && d.obj.setTexture) {
+            d.obj.setTexture(d.chaveOn);
+        } else if (d.obj.setFillStyle) {
+            d.obj.setFillStyle(0x22cc66);
+        }
 
-        this.tweens.add({ targets: d.obj, scaleX: 1.3, scaleY: 1.3, duration: 150, yoyo: true, ease: 'Back.easeOut' });
+        this.tweens.add({
+            targets:  d.obj,
+            scaleX:   1.3,
+            scaleY:   1.3,
+            duration: 150,
+            yoyo:     true,
+            ease:     'Sine.easeInOut',
+        });
     }
 
     // ── Ícones de aspectos da sondagem ────────────────────────────────────────
-    // Começa com interrogação e troca para o valor revelado ao acertar.
-    //
-    // Assets necessários:
-    //   sondagem_pessoas_interrogacao, sondagem_pessoas_baixo, sondagem_pessoas_alto
-    //   sondagem_lucro_interrogacao,   sondagem_lucro_baixo,   sondagem_lucro_medio,  sondagem_lucro_alto
-    //   sondagem_estoque_interrogacao, sondagem_estoque_baixo, sondagem_estoque_alto
 
     _criarIconesAspectos(barraX, barraW, barraY) {
         const aspectos = CenaNegociacao.ASPECTOS_SONDAGEM;
@@ -240,9 +260,10 @@ export default class CenaNegociacao extends Phaser.Scene {
         const totalW   = aspectos.length * largura + (aspectos.length - 1) * espaco;
         const startX   = barraX - totalW / 2 + largura / 2;
         const y        = barraY + 53;
+        const pad      = 8;
 
-        const pad = 8;
-        this._bgAspectos = this.add.rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+        this._bgAspectos = this.add
+            .rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
             .setStrokeStyle(1, 0x555555)
             .setDepth(49);
 
@@ -254,7 +275,9 @@ export default class CenaNegociacao extends Phaser.Scene {
 
             const icone = this.textures.exists(chave)
                 ? this.add.image(x, y, chave).setDisplaySize(largura, iconeH).setDepth(50)
-                : this.add.rectangle(x, y, largura, iconeH, 0x333333).setStrokeStyle(1, 0x555555).setDepth(50);
+                : this.add.rectangle(x, y, largura, iconeH, 0x333333)
+                    .setStrokeStyle(1, 0x555555)
+                    .setDepth(50);
 
             this._iconesAspectos[aspecto] = { obj: icone };
         });
@@ -268,16 +291,26 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     _revelarIconeAspecto(aspecto) {
-        const d     = this._iconesAspectos[aspecto];
+        const d = this._iconesAspectos[aspecto];
         if (!d) return;
 
         const valor = this.aspectosCliente[aspecto];
         const chave = `sondagem_${aspecto}_${valor}`;
 
-        if (this.textures.exists(chave) && d.obj.setTexture) d.obj.setTexture(chave);
-        else if (d.obj.setFillStyle) d.obj.setFillStyle(0x22cc66);
+        if (this.textures.exists(chave) && d.obj.setTexture) {
+            d.obj.setTexture(chave);
+        } else if (d.obj.setFillStyle) {
+            d.obj.setFillStyle(0x22cc66);
+        }
 
-        this.tweens.add({ targets: d.obj, scaleX: 1.3, scaleY: 1.3, duration: 150, yoyo: true, ease: 'Back.easeOut' });
+        this.tweens.add({
+            targets:  d.obj,
+            scaleX:   1.3,
+            scaleY:   1.3,
+            duration: 150,
+            yoyo:     true,
+            ease:     'Back.easeOut',
+        });
     }
 
     // ── Barra de fases ────────────────────────────────────────────────────────
@@ -301,8 +334,12 @@ export default class CenaNegociacao extends Phaser.Scene {
             }
 
             const circulo = this.add.circle(x, y, 13, 0x1a3a5a).setStrokeStyle(2, 0x2a6a9a);
-            this.add.text(x, y, `${i + 1}`, { fontFamily: '"Courier New", monospace', fontSize: '16px', color: '#4a8aaa' }).setOrigin(0.5);
-            this.add.text(x, y + 22, CenaNegociacao.LABELS_FASE[fase] ?? fase, { fontFamily: '"Courier New", monospace', fontSize: '14px', color: '#3a6a7a' }).setOrigin(0.5);
+            this.add.text(x, y, `${i + 1}`, {
+                fontFamily: '"Courier New", monospace', fontSize: '16px', color: '#4a8aaa',
+            }).setOrigin(0.5);
+            this.add.text(x, y + 22, CenaNegociacao.LABELS_FASE[fase] ?? fase, {
+                fontFamily: '"Courier New", monospace', fontSize: '14px', color: '#3a6a7a',
+            }).setOrigin(0.5);
 
             this.indicadoresFase.push(circulo);
         });
@@ -311,7 +348,9 @@ export default class CenaNegociacao extends Phaser.Scene {
     _criarAreaCartas(W, H) { this.grupoCartas = this.add.group(); }
 
     _criarDialogo(W, H) {
-        this.dialogoBg = this.add.rectangle(W / 2, H * 0.47, W * 0.45, 55, 0x060e14, 0.9).setStrokeStyle(1, 0x2a5a7a);
+        this.dialogoBg = this.add
+            .rectangle(W / 2, H * 0.47, W * 0.45, 55, 0x060e14, 0.9)
+            .setStrokeStyle(1, 0x2a5a7a);
         this.dialogoTexto = this.add.text(W / 2, H * 0.47, '', {
             fontFamily: '"Courier New", monospace', fontSize: '16px', color: '#a0c8d8',
             wordWrap: { width: W * 0.42 }, align: 'center',
@@ -329,12 +368,11 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._limparCartas();
         this.cartaEmDetalhes = null;
 
-        // Esconde ambos os grupos de ícones — cada fase mostra o seu
         this._setPIFEVisivel(false);
         this._setAspectosVisiveis(false);
 
-        if (fase === 'abordagem')   { this._iniciarAbordagem();   return; }
-        if (fase === 'sondagem')    { this._iniciarSondagem();    return; }
+        if (fase === 'abordagem')    { this._iniciarAbordagem();    return; }
+        if (fase === 'sondagem')     { this._iniciarSondagem();     return; }
         if (fase === 'demonstracao') { this._iniciarDemonstracao(); return; }
 
         const numCartas = this.clienteConfig.cartasPorFase[fase] || 3;
@@ -360,14 +398,15 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._removerCartaVisual(carta);
 
         if (acertos === 3) {
-            // Carta perfeita — avança
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._mostrarDialogo(this._falaAcertoFase('demonstracao'));
             this.negociacaoAtiva = false;
-            this.time.delayedCall(4000, () => { this.negociacaoAtiva = true; this._avancarOuVencer(); });
+            this.time.delayedCall(4000, () => {
+                this.negociacaoAtiva = true;
+                this._avancarOuVencer();
+            });
 
         } else if (acertos === 2) {
-            // Quase certo — perde 10
             this._alterarSatisfacao(-10);
             this._mostrarDialogo(this._falaErroFase('demonstracao'));
             this.negociacaoAtiva = false;
@@ -377,7 +416,6 @@ export default class CenaNegociacao extends Phaser.Scene {
             });
 
         } else {
-            // 0 ou 1 correto — perde 20
             this._alterarSatisfacao(-20);
             this._mostrarDialogo(this._falaErroFase('demonstracao'));
             this.negociacaoAtiva = false;
@@ -393,6 +431,7 @@ export default class CenaNegociacao extends Phaser.Scene {
     _iniciarAbordagem() {
         this._letrasPreenchidas = new Set();
         this._cpcDisponivel     = false;
+        this._tweenCPC          = null;
         this._setPIFEVisivel(true);
         this._distribuirCartasAbordagem(this._getCartasAbordagem());
     }
@@ -435,11 +474,15 @@ export default class CenaNegociacao extends Phaser.Scene {
         if (!this.negociacaoAtiva) return;
 
         if (carta.isCPC) {
+            this._pararPulsoCPC(carta);
             this._mostrarDialogo(carta.dialogoAcerto);
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._removerCartaVisual(carta);
             this.negociacaoAtiva = false;
-            this.time.delayedCall(4000, () => { this.negociacaoAtiva = true; this._avancarOuVencer(); });
+            this.time.delayedCall(4000, () => {
+                this.negociacaoAtiva = true;
+                this._avancarOuVencer();
+            });
             return;
         }
 
@@ -453,7 +496,10 @@ export default class CenaNegociacao extends Phaser.Scene {
             this._removerCartaVisual(carta);
 
             const pifeFull = CenaNegociacao.LETRAS_PIFE.every(l => this._letrasPreenchidas.has(l));
-            if (pifeFull && !this._cpcDisponivel) { this._cpcDisponivel = true; this._liberarCartaCPC(); }
+            if (pifeFull && !this._cpcDisponivel) {
+                this._cpcDisponivel = true;
+                this._liberarCartaCPC();
+            }
 
         } else {
             this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
@@ -466,6 +512,16 @@ export default class CenaNegociacao extends Phaser.Scene {
         }
     }
 
+    _pararPulsoCPC(carta) {
+        if (this._tweenCPC) {
+            this._tweenCPC.stop();
+            this._tweenCPC = null;
+        }
+        if (carta?._objetos?.bg) {
+            carta._objetos.bg.setScale(1);
+        }
+    }
+
     _liberarCartaCPC() {
         const cpc = this.cartasNaMao.find(c => c.isCPC);
         if (!cpc?._objetos) return;
@@ -473,7 +529,17 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.tweens.add({ targets: cpc._objetos.bg, alpha: 1, duration: 300 });
         cpc._objetos.bg.setInteractive({ useHandCursor: true });
         this._acenderIconePIFE('CPC');
-        this.tweens.add({ targets: cpc._objetos.bg, scaleX: 1.05, scaleY: 1.05, duration: 400, yoyo: true, repeat: 2, ease: 'Sine.easeInOut' });
+
+        this._tweenCPC = this.tweens.add({
+            targets:  cpc._objetos.bg,
+            scaleX:   0.25,
+            scaleY:   0.25,
+            duration: 700,
+            yoyo:     true,
+            repeat:   -1,
+            ease:     'Sine.easeInOut',
+        });
+
         this._mostrarDialogo('Agora você pode usar o CPC!');
     }
 
@@ -531,7 +597,10 @@ export default class CenaNegociacao extends Phaser.Scene {
             const completa = CenaNegociacao.ASPECTOS_SONDAGEM.every(a => this._aspectosRevelados.has(a));
             if (completa) {
                 this.negociacaoAtiva = false;
-                this.time.delayedCall(4000, () => { this.negociacaoAtiva = true; this._avancarOuVencer(); });
+                this.time.delayedCall(4000, () => {
+                    this.negociacaoAtiva = true;
+                    this._avancarOuVencer();
+                });
             } else {
                 const faltam = CenaNegociacao.ASPECTOS_SONDAGEM.length - this._aspectosRevelados.size;
                 this._mostrarDialogo(`${carta.dialogoAcerto} (Ainda faltam ${faltam} aspecto(s))`);
@@ -557,8 +626,8 @@ export default class CenaNegociacao extends Phaser.Scene {
         const H = this.scale.height;
         const { LAYERS } = CenaNegociacao;
 
-        const overlay     = this.add.rectangle(0, 0, W, H, 0x000000, 0.7).setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
-        const cartaZoom   = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
+        const overlay   = this.add.rectangle(0, 0, W, H, 0x000000, 0.7).setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
+        const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
         cartaZoom.setDepth(LAYERS.MODAL);
 
         const { btn: btnVoltar,     texto: textoVoltar     } = this._criarBotao(40, 40, 100, 50, '◀ VOLTAR',     0x1a3a5a, 0xcc4444, '#ff6666');
@@ -605,10 +674,14 @@ export default class CenaNegociacao extends Phaser.Scene {
             if (faltam <= 0) {
                 this._mostrarDialogo(this._falaAcertoFase(fase));
                 this.negociacaoAtiva = false;
-                this.time.delayedCall(4000, () => { this.negociacaoAtiva = true; this._avancarOuVencer(); });
+                this.time.delayedCall(4000, () => {
+                    this.negociacaoAtiva = true;
+                    this._avancarOuVencer();
+                });
             } else {
                 this._mostrarDialogo(`✅ Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
             }
+
         } else {
             this._mostrarDialogo(this._falaErroFase(fase));
             this._alterarSatisfacao(-CenaNegociacao.PERDA_SATISFACAO);
@@ -642,9 +715,14 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.indicadoresFase.forEach((circulo, i) => {
             this.tweens.killTweensOf(circulo);
             circulo.setScale(1);
-            if (i < this.faseAtual)      circulo.setFillStyle(0x22aa55).setStrokeStyle(2, 0x44cc77);
-            else if (i === this.faseAtual) { circulo.setFillStyle(0x1a4a8a).setStrokeStyle(2, 0x4488ff); this.tweens.add({ targets: circulo, scaleX: 1.2, scaleY: 1.2, duration: 200, yoyo: true }); }
-            else                          circulo.setFillStyle(0x1a3a5a).setStrokeStyle(2, 0x2a6a9a);
+            if (i < this.faseAtual) {
+                circulo.setFillStyle(0x22aa55).setStrokeStyle(2, 0x44cc77);
+            } else if (i === this.faseAtual) {
+                circulo.setFillStyle(0x1a4a8a).setStrokeStyle(2, 0x4488ff);
+                this.tweens.add({ targets: circulo, scaleX: 1.2, scaleY: 1.2, duration: 200, yoyo: true });
+            } else {
+                circulo.setFillStyle(0x1a3a5a).setStrokeStyle(2, 0x2a6a9a);
+            }
         });
     }
 
@@ -716,8 +794,18 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _criarBotao(x, y, w, h, label, corFundo, corBorda, corTexto) {
         const { LAYERS } = CenaNegociacao;
-        const btn = this.add.rectangle(x, y, w, h, corFundo).setStrokeStyle(2, corBorda).setInteractive({ useHandCursor: true }).setDepth(LAYERS.MODAL);
-        const texto = this.add.text(x, y, label, { fontFamily: '"Courier New", monospace', fontSize: '15px', color: corTexto, letterSpacing: 1 }).setOrigin(0.5).setDepth(LAYERS.MODAL_BTN);
+        const btn = this.add
+            .rectangle(x, y, w, h, corFundo)
+            .setStrokeStyle(2, corBorda)
+            .setInteractive({ useHandCursor: true })
+            .setDepth(LAYERS.MODAL);
+        const texto = this.add
+            .text(x, y, label, {
+                fontFamily: '"Courier New", monospace', fontSize: '15px',
+                color: corTexto, letterSpacing: 1,
+            })
+            .setOrigin(0.5)
+            .setDepth(LAYERS.MODAL_BTN);
         return { btn, texto };
     }
 
@@ -738,7 +826,10 @@ export default class CenaNegociacao extends Phaser.Scene {
         const insignia = this._getInsignia();
         if (insignia) {
             const insignias = this.game.registry.get('insigniasDesbloqueadas') ?? {};
-            if (!insignias[insignia.key]) { insignias[insignia.key] = true; this.game.registry.set('insigniasDesbloqueadas', insignias); }
+            if (!insignias[insignia.key]) {
+                insignias[insignia.key] = true;
+                this.game.registry.set('insigniasDesbloqueadas', insignias);
+            }
             this.time.delayedCall(1000, () => this._mostrarModalInsignia(insignia, () => this._irParaCenaDeRetorno()));
         } else {
             this.time.delayedCall(2000, () => this._irParaCenaDeRetorno());
@@ -752,7 +843,10 @@ export default class CenaNegociacao extends Phaser.Scene {
 
         const overlay = this.add.rectangle(0, 0, W, H, 0x000000, 0.75).setOrigin(0, 0).setDepth(LAYERS.OVERLAY);
         const painel  = this.add.rectangle(W / 2, H / 2, 420, 480, 0x0a1a2a).setStrokeStyle(3, 0xf0c040).setDepth(LAYERS.MODAL);
-        const titulo  = this.add.text(W / 2, H / 2 - 190, '🏅 INSÍGNIA DESBLOQUEADA!', { fontFamily: '"Courier New", monospace', fontSize: '18px', color: '#f0c040', letterSpacing: 2, stroke: '#000000', strokeThickness: 3 }).setOrigin(0.5).setDepth(LAYERS.MODAL);
+        const titulo  = this.add.text(W / 2, H / 2 - 190, '🏅 INSÍGNIA DESBLOQUEADA!', {
+            fontFamily: '"Courier New", monospace', fontSize: '18px', color: '#f0c040',
+            letterSpacing: 2, stroke: '#000000', strokeThickness: 3,
+        }).setOrigin(0.5).setDepth(LAYERS.MODAL);
 
         const imgInsignia = this.textures.exists(insignia.key)
             ? this.add.image(W / 2, H / 2 - 50, insignia.key).setDisplaySize(180, 180).setDepth(LAYERS.MODAL)
@@ -761,7 +855,10 @@ export default class CenaNegociacao extends Phaser.Scene {
         imgInsignia.setScale(0);
         this.tweens.add({ targets: imgInsignia, scaleX: 1, scaleY: 1, duration: 400, ease: 'Back.easeOut' });
 
-        const nomeTexto = this.add.text(W / 2, H / 2 + 100, insignia.nome, { fontFamily: '"Courier New", monospace', fontSize: '22px', color: '#ffffff', letterSpacing: 2, stroke: '#000000', strokeThickness: 3 }).setOrigin(0.5).setDepth(LAYERS.MODAL);
+        const nomeTexto = this.add.text(W / 2, H / 2 + 100, insignia.nome, {
+            fontFamily: '"Courier New", monospace', fontSize: '22px', color: '#ffffff',
+            letterSpacing: 2, stroke: '#000000', strokeThickness: 3,
+        }).setOrigin(0.5).setDepth(LAYERS.MODAL);
 
         const { btn: btnContinuar, texto: textoContinuar } = this._criarBotao(W / 2, H / 2 + 170, 200, 50, 'CONTINUAR ▶', 0x1a4a2a, 0x22cc66, '#22cc66');
         btnContinuar.setDepth(LAYERS.MODAL); textoContinuar.setDepth(LAYERS.MODAL_BTN);
@@ -778,7 +875,10 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _irParaCenaDeRetorno() {
         this.cameras.main.fadeOut(600, 0, 0, 0);
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => this.scene.start(this._cenaDeRetorno()));
+        this.cameras.main.once(
+            Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
+            () => this.scene.start(this._cenaDeRetorno())
+        );
     }
 
     _perderNegociacao() {
