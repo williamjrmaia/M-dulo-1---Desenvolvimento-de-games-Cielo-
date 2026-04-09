@@ -119,6 +119,20 @@ this.load.image('sondagem_lucro_alto',           'assets/Icones/Sondagem/sondage
         this.load.image('Recebimento', 'assets/Cartas/Negociacao/RecebimentoRapido.png');
         this.load.image('Gestao',       'assets/Cartas/Negociacao/GestaoIntegrada.png');
 
+        // ── BENEFICIOS (12 cartas) ─────────────────────────────────────────────
+        this.load.image('Aceitacao',            'assets/Cartas/Beneficios/AceitacaoAmpla.png');
+        this.load.image('AceitaCarteiras',      'assets/Cartas/Beneficios/AceitaCarteirasDigitais.png');
+        this.load.image('AnosDeMercado',        'assets/Cartas/Beneficios/AnosDeMercado.png');    
+        this.load.image('Antecipacao',          'assets/Cartas/Beneficios/AntecipacaoDeRecebiveis.png');
+        this.load.image('Bandeiras',            'assets/Cartas/Beneficios/BandeirasAceitas.png');
+        this.load.image('FidelidadeBeneficios', 'assets/Cartas/Beneficios/FidelidadeBeneficios.png');
+        this.load.image('Gestao',               'assets/Cartas/Beneficios/GestaoIntegrada.png');
+        this.load.image('RecebimentoRapido',    'assets/Cartas/Beneficios/RecebimentoRapido.png');
+        this.load.image('Seguranca',            'assets/Cartas/Beneficios/SegurancaNasTransacoes.png');
+        this.load.image('Suporte',              'assets/Cartas/Beneficios/Suporte24h.png');
+        this.load.image('Taxas',                'assets/Cartas/Beneficios/TaxasNegociaveis.png');
+        this.load.image('Troca',                'assets/Cartas/Beneficios/TrocaDeEquipamento.png');
+
         // ── FECHAMENTO (5 cartas) ─────────────────────────────────────────────
         this.load.image('Adicional',  'assets/Cartas/Fechamento/FechamentoAlternativo.png');
         this.load.image('Alternativo','assets/Cartas/Fechamento/FechamentoAlternativo.png');
@@ -191,6 +205,9 @@ this.load.image('sondagem_lucro_alto',           'assets/Icones/Sondagem/sondage
 
         // ── Som de conquista de insígnia ──
         this.load.audio('som_insignia', 'assets/Audio/insignia_sound.mp3');
+
+        // Carro da cidade cielo
+        this.load.image('carro_cielo', 'assets/CidadeCielo/carro_cielo.png');
     }
 
     create() {

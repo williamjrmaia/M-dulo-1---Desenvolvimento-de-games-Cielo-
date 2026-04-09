@@ -105,7 +105,12 @@ export default class CenaNegociacao extends Phaser.Scene {
     }
 
     create() {
-        this.registry.get('audio').tocarMusica('musica_batalha', 0.5);
+
+        // ── CORREÇÃO: guard para evitar tela branca se AudioManager não estiver pronto ──
+        const audio = this.registry.get('audio');
+        if (audio) {
+            audio.tocarMusica('musica_batalha', 0.5);
+        }
 
         const W = this.scale.width;
         const H = this.scale.height;
