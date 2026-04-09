@@ -2,6 +2,7 @@ import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
 import CenaMapa       from "../Classes/CenaMapa.js";
+import CarroCielo from "../Classes/CarroCielo.js";
 
 export default class CidadeCielo extends CenaMapa {
 
@@ -149,10 +150,24 @@ export default class CidadeCielo extends CenaMapa {
         if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
+
+        this.carro = new CarroCielo(this, {
+        xi:            165,
+        yi:            684,
+        xf:            1335,
+        yf:            688,
+        T:             5,
+        pausaMs:       2000,
+        escala:        1.2,
+        jogadorSprite: this.jogador.sprite,
+});
     }
 
     update() {
         if (super.update()) return;
+       
+        // Atualiza o carro (se estivesse presente nesta cena)
+        this.carro.atualizar(this.time.now);
 
         this.jogador.atualizar();
 
