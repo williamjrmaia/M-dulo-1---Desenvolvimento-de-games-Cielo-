@@ -208,6 +208,13 @@ this.load.image('sondagem_lucro_alto',           'assets/Icones/Sondagem/sondage
 
         // Carro da cidade cielo
         this.load.image('carro_cielo', 'assets/CidadeCielo/carro_cielo.png');
+
+        // ── Ambientação - Mundo Cielita ──
+        this.load.image('arvore1', 'assets/Ambientacao/MundoCielita/arvore1.png');
+        this.load.image('arvore2', 'assets/Ambientacao/MundoCielita/arvore2.png');
+        this.load.image('arvore3', 'assets/Ambientacao/MundoCielita/arvore3.png');
+        this.load.image('arvore4', 'assets/Ambientacao/MundoCielita/arvore4.png');
+        
     }
 
     create() {
