@@ -239,7 +239,7 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 \# | Requisito | Explicação | Critérios de Aceitação
 --- | --- | --- | ---
 1 | Menu principal | O jogo deve apresentar uma tela inicial com os botões de Iniciar, Configurações e Sair. | O botão Iniciar deve redirecionar para a tela de seleção de personagem; o botão Configurações deve abrir a tela de configurações; o botão Sair deve fechar a aba do navegador; todos os botões devem apresentar feedback visual de hover.
-2 | Configurações e filtro de daltonismo | A tela de configurações deve permitir que o jogador ative um filtro de daltonismo que será aplicado globalmente em todo o jogo. | O filtro deve ser aplicado em todas as cenas do jogo sem exceção; a ativação e desativação do filtro deve ocorrer imediatamente, sem necessidade de reiniciar o jogo.
+2 | Configurações | A tela de configurações permite que o jogador ajuste o modo de visão (adaptando-o ao seu grau de daltonismo ou alterando o brilho da tela), a resolução do monitor e o som (trilha sonora ou música). A aba pode ser aberta a qualquer momento da gameplay pressionando a tecla P. |O menu deve abrir e fechar corretamente ao pressionar a tecla P durante a partida; as opções de daltonismo, brilho, resolução e som devem ser aplicadas imediatamente no jogo ao serem alteradas pelo jogador.
 3 | Configuração inicial do avatar | O jogo deverá disponibilizar quatro (4) opções de avatares jogáveis para seleção do jogador em uma tela específica no início da partida. Após a escolha do avatar, o jogador deverá definir o nome do personagem, que será utilizado para sua identificação ao longo da experiência. | As 4 opções de avatar devem ser exibidas simultaneamente na tela de seleção; o nome deve aceitar entre 1 e 16 caracteres; caso nenhum nome seja digitado, o valor padrão "Jogador" deve ser utilizado.
 4 | Salvamento de configuração do jogador | O jogo deve preservar o nome e o avatar escolhidos pelo jogador entre sessões utilizando localStorage. O progresso de regiões desbloqueadas não é persistido no MVP atual. | O nome e o avatar devem ser recuperados corretamente ao recarregar a página, desde que o jogador tenha concluído a tela de seleção.
 5 | Introdução narrativa | O jogo deve apresentar uma cutscene narrativa com a Cielita contextualizando o universo do jogo e o papel do jogador antes de entrar no mapa. O jogador deve apertar E para avançar cada etapa do diálogo. | Todas as falas devem ser exibidas na ordem correta; o jogador deve conseguir avançar e pular o texto com a tecla E; ao fim do diálogo o jogador deve ser redirecionado automaticamente para a Casa da Cielita.
@@ -362,9 +362,15 @@ A experiência é individual, focada no desenvolvimento estratégico e no aprend
 
 ### 2.2.5. Tempo estimado de jogo (sprint 5)
 
-*Ex. O jogo pode ser concluído em 3 horas passando por todas as fases.*
+O jogo foi projetado para ser concluído em um tempo estimado de 1 hora e 15 minutos a 1 hora e 45 minutos. Ao longo dessa jornada, o jogador percorre as 5 áreas da experiência, cada uma com seus próprios NPCs, mecânicas de negociação por cartas e um boss ao final:
 
-*Ex. cada partida dura até 15 minutos*
+- Casa da Cielita (tutorial, cutscenes e introdução narrativa): 10 a 15 minutos
+- Quebra-Gelo (abordagem e sondagem): 15 a 20 minutos
+- Vila do Varejo (demonstração de produtos): 15 a 20 minutos
+- Praia dos Proveitos (benefícios da Cielo): 15 a 20 minutos
+- Cidade Cielo (consolidação de todas as etapas, negociações mais complexas e boss final): 20 a 30 minutos
+
+Vale destacar que, por se tratar de um público com menor familiaridade com jogos digitais, sessões podem se estender até 2 horas em casos de maior dificuldade com as mecânicas de cartas.
 
 # <a name="c3"></a>3. Game Design (sprints 2 e 3)
 
@@ -1370,7 +1376,126 @@ Traduzir o processo real de vendas em mecânica de jogo exigiu múltiplas itera�
 
 ## 4.5. Revisão do MVP (sprint 5)
 
-*Descreva e ilustre aqui o desenvolvimento dos refinamentos e revisões da versão final do jogo, explicando brevemente o que foi entregue em termos de MVP. Utilize prints de tela para ilustrar.*
+O que foi entregue como MVP
+O Cielo Verso chega ao seu MVP como um ciclo jogável completo de ponta a ponta. O jogador parte do menu inicial, atravessa quatro regiões distintas — Quebra Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo — cada uma com seu próprio mapa, NPCs, diálogos e negociação por cartas, e conclui a jornada enfrentando o boss final Rafael na Cidade Cielo. Não é um protótipo de navegação: é um produto com início, meio e fim jogáveis, narrativa personalizada e sistemas técnicos estáveis.
+
+Refinamentos entregues ao longo das sprints
+Sprint 1 — Estrutura e identidade visual
+A base do jogo foi estabelecida nessa fase: movimentação por WASD, câmera com zoom dinâmico seguindo o personagem, sistema de colisão via hitbox e carregamento do mapa com suas regiões temáticas. O design do personagem principal e suas animações direcionais foram definidos — idle, frente, costas e lateral com flip horizontal —, consolidando a identidade visual do projeto em pixel art 2D.
+<div align="center">
+  <sub>Imagem 1 — Sprite do personagem jogável: estado idle</sub><br>
+  <img src="assets/sprite1principal.jpeg" width="60%" alt="Sprite idle do personagem principal"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 2 — Sprite do personagem jogável: animação lateral</sub><br>
+  <img src="assets/sprite2principal.jpeg" width="60%" alt="Sprite lateral do personagem principal"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+A estrutura do mapa foi pensada desde o início para incentivar a progressão entre regiões. As primeiras versões já definiam as áreas temáticas e os pontos de referência visuais — como a torre de negociação — que guiariam o jogador ao longo de toda a jornada.
+<div align="center">
+  <sub>Imagem 3 — Mapa introdutório: visão geral do cenário</sub><br>
+  <img src="assets/direitaCastelo.jpeg" width="80%" alt="Mapa introdutório visão geral"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 4 — Esboço da região Quebra Gelo</sub><br>
+  <img src="assets/noroeste.jpeg" width="80%" alt="Esboço da região Quebra Gelo"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 5 — Torre de negociação: primeiro ponto de referência arquitetônico do mapa</sub><br>
+  <img src="assets/frenteCastelo.jpeg" width="80%" alt="Torre de negociação"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+Sprint 2 — Fluxo de aprendizado e mecânica central
+Definiu-se a divisão da experiência em duas fases: mundos de aprendizagem com minigames temáticos, seguidos do Mundo de Negociação com sistema de cartas. A barra de satisfação do cliente e a lógica de progressão por insígnias foram concebidas nessa etapa, estabelecendo a espinha dorsal da experiência de jogo. O concept art do menu inicial e do mapa de introdução também foi produzido nessa fase, definindo a linguagem visual que seria mantida até o MVP final.
+<div align="center">
+  <sub>Imagem 6 — Concept art: menu inicial</sub><br>
+  <img src="assets/tela_inicial.png" width="80%" alt="Concept art do menu inicial"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 7 — Concept art: mapa de introdução</sub><br>
+  <img src="assets/Mapa_Introducao.jpeg" width="80%" alt="Concept art do mapa de introdução"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 8 — Concept art: Casa da Cielita</sub><br>
+  <img src="assets/casa_cielita.png" width="80%" alt="Concept art da Casa da Cielita"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+Sprint 3 — Sistemas técnicos integrados
+Foram implementados os sistemas que sustentam toda a experiência: transições com fadeOut/fadeIn, preservação de spawn entre cenas via init(data), diálogo com efeito typewriter pelo DialogoManager, colisões via Tiled Map Editor com suporte a polígonos e retângulos, e o núcleo da negociação por cartas com suas cinco fases. A tela de seleção de personagem com quatro skins representando diversidade de gênero e etnia, somada ao campo de input de nome, também foi entregue nessa fase, consolidando a personalização da experiência.
+
+Sprint 4 — MVP completo e refinamentos finais
+Os refinamentos mais significativos foram entregues nessa sprint. A experiência começa com uma cena de introdução narrativa personalizada: antes de ver qualquer mapa, o jogador é recebido pela Cielita em um monólogo animado que usa seu nome diretamente, estabelecendo vínculo com a narrativa desde o primeiro segundo.
+<div align="center">
+  <sub>Imagem 9 — Cena de introdução: balão de diálogo da Cielita com nome do jogador</sub><br>
+  <img src="assets/Balao_dialogo.png" width="80%" alt="Cena de introdução com balão da Cielita"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+Em seguida, o jogador escolhe entre quatro skins — homem e mulher, em duas tonalidades de pele — e digita seu nome, que será utilizado ao longo de toda a jornada. A escolha é persistida via game.registry para durar durante toda a sessão.
+<div align="center">
+  <sub>Imagem 10 — Tela de seleção de personagem: 4 skins com animação idle e campo de nome</sub><br>
+  <img src="assets/Personagens.png" width="80%" alt="Tela de seleção de personagem"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+A partir da seleção, o jogador adentra o Mapa Introdutório e começa a explorar o mundo. O primeiro ambiente interior navegável é a Casa da Cielita, onde a mentora contextualiza a jornada e instrui o jogador sobre as mecânicas básicas.
+<div align="center">
+  <sub>Imagem 11 — Casa interna da Cielita: primeiro ambiente interior navegável do jogo</sub><br>
+  <img src="assets/CasaInternaCielita.png" width="80%" alt="Interior da casa da Cielita"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+O núcleo estratégico do MVP é a negociação por cartas. A arquitetura foi consolidada com CenaNegociacao como classe-base e cada cliente como subclasse independente, eliminando duplicação de código e permitindo que cada NPC tenha suas próprias falas, cartas exigidas e curva de satisfação sem reescrever a lógica de UI. A tela de negociação posiciona o jogador frente a frente com o cliente, com a barra de satisfação e o indicador de fases visíveis em tempo real.
+<div align="center">
+  <sub>Imagem 12 — Tela de negociação com o NPC Seu Pedro: barra de satisfação, indicador de fases e mão de cartas</sub><br>
+  <img src="assets/negociacao_pedro.png" width="80%" alt="Tela de negociação com Pedro"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+Ao clicar em uma carta, um modal exibe sua imagem ampliada com os botões de voltar e selecionar, permitindo que o jogador leia o conteúdo completo antes de confirmar a jogada — decisão de UX que reduz erros acidentais e reforça a leitura das técnicas de negociação.
+<div align="center">
+  <sub>Imagem 13 — Modal de carta ampliada: visualização detalhada antes da seleção</sub><br>
+  <img src="assets/modal.png" width="80%" alt="Modal de carta ampliada"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+O HUD de indicações, ativável e desativável pela tecla O, orienta o jogador sem interromper o gameplay, exibindo balões de missão contextuais em cada região do mapa. Jogadores que preferem explorar sem assistência podem ocultá-lo a qualquer momento.
+<div align="center">
+  <sub>Imagem 14 — Mapa Vila do Varejo: HUD de indicação de missão ativo</sub><br>
+  <img src="assets/hud_viladovarejo.png" width="80%" alt="Mapa Vila do Varejo com HUD"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+Um dos refinamentos de acessibilidade mais relevantes do MVP é o suporte a três tipos de daltonismo — deuteranopia, protanopia e tritanopia — configurável diretamente no menu de opções via filtro SVG aplicado sobre todo o canvas. Essa feature posiciona o Cielo Verso como uma solução de treinamento genuinamente inclusiva para uma força de vendas nacional e diversa.
+<div align="center">
+  <sub>Imagem 15 — Menu de configurações: opções de modo daltônico</sub><br>
+  <img src="assets/menu_daltonismo.png" width="80%" alt="Menu de configurações com modo daltônico"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+Estrutura do ciclo completo entregue
+O fluxo jogável percorre as seguintes etapas em sequência:
+Menu Principal
+  → Cena de Introdução (narrativa da Cielita com nome do jogador)
+    → Seleção de Personagem (4 skins, input de nome)
+      → Mundo da Cielita (Mapa Introdutório + Casa da Cielita)
+        → Quebra Gelo
+            → Negociação com Seu Pedro (5 fases completas)
+                → Insígnia "Mestre do Gelo"
+          → Vila do Varejo
+              → Negociação com Thainá (3 fases)
+                  → Insígnia "Rei do Varejo"
+            → Praia dos Proveitos
+                → Negociação com Julia (5 fases completas)
+                    → Insígnia "Praia dos Proveitos"
+              → Cidade Cielo
+                  → Negociação com Rafael (boss final — todas as competências)
+                      → Insígnia "Mestre Cielo"
+Cada negociação forma um degrau progressivo de complexidade: Seu Pedro introduz o funil completo de vendas, Thainá aprofunda a coerência entre fases, Julia consolida o repertório e Rafael representa o clímax — exigindo o desempenho completo de um Gerente de Negócios Cielo.
+
+O que permanece previsto para a sprint 5
+A tela de fim de jogo com resumo de desempenho por negociação e o sistema de métricas — tempo de conclusão e mapeamento de erros críticos por fase — não integram o MVP atual e constituem a entrega central da sprint seguinte. Dois bugs conhecidos também seguem para correção: duplicação de cartas em reinícios de negociação, reportada de forma independente por dois testadores nos playtests, e dessincronização visual do indicador de fases no topo da tela em casos específicos de progressão.
 
 # <a name="c5"></a>5. Testes
 
@@ -1662,13 +1787,45 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 **Impacto:** Moderado isoladamente, mas com potencial de acúmulo: um jogo que exige esforço visual constante, apresenta movimentação arrastada e tem paleta de baixo contraste comunica descuido técnico e reduz a imersão — especialmente em um produto que precisa ser percebido como profissional por seu público corporativo.
 
 **Ação recomendada:** Aumentar o tamanho mínimo da fonte nos cards de carta para 13–14px e revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
+
 # <a name="c6"></a>6. Conclusões e trabalhos futuros (sprint 5)
 
-*Escreva de que formas a solução do jogo atingiu os objetivos descritos na seção 1 deste documento. Indique pontos fortes e pontos a melhorar de maneira geral.*
+De forma geral, a solução desenvolvida — o jogo Cielo Verso — atingiu os objetivos propostos na Seção 1 ao transformar o treinamento dos Gerentes de Negócios em uma experiência digital gamificada, acessível e padronizada. A proposta de eliminar barreiras geográficas foi atendida por meio de uma solução totalmente remota, permitindo que qualquer colaborador, independentemente da região, tenha acesso ao mesmo conteúdo de capacitação. Além disso, o uso de mecânicas interativas, como o sistema de cartas e simulações de negociação, contribuiu para aumentar o engajamento e a retenção do conteúdo, substituindo o modelo tradicional expositivo por uma abordagem prática e imersiva.
 
-*Relacione os pontos de melhorias evidenciados nos testes com plano de ações para serem implementadas no jogo. O grupo não precisa implementá-las, pode deixar registrado aqui o plano para futuros desenvolvimentos.*
+Outro ponto relevante é o alinhamento do jogo com o funil de vendas da Cielo, garantindo que todas as etapas — abordagem, sondagem, demonstração, benefícios e negociação — fossem trabalhadas de forma progressiva. A estrutura em fases e regiões, junto com o sistema de métricas (tempo de conclusão e mapeamento de erros), também atende ao objetivo de monitorar o desempenho dos usuários, permitindo identificar lacunas de aprendizado.
 
-*Relacione também quaisquer ideias que o grupo tenha para melhorias futuras*
+Como pontos fortes do projeto, destacam-se:
+- A estrutura escalável do jogo, que permite a adição de novos conteúdos com baixo custo técnico;
+- O alto nível de alinhamento com o contexto real de vendas, tornando o aprendizado aplicável;
+- A acessibilidade, incluindo mecânicas simples e o modo daltônico;
+- O engajamento proporcionado pela gamificação, com progressão, desafios e feedback visual.
+
+Por outro lado, alguns pontos a melhorar foram identificados:
+- Necessidade de maior polimento na interface (HUD) e consistência visual entre cenas;
+- Ajustes no balanceamento da dificuldade, especialmente no sistema de satisfação;
+- Correção de bugs técnicos, como reset de estados e sincronização de indicadores;
+- Maior clareza em alguns momentos da experiência para usuários menos familiarizados com jogos.
+
+
+Com base nos testes realizados (Seção 5), foram identificadas oportunidades de melhoria que podem ser organizadas em um plano de ação futuro:
+
+- Correção de bugs críticos: garantir o reset correto do sistema de cartas e estabilidade das mecânicas de negociação;
+- Ajuste de balanceamento: calibrar ganhos e perdas na barra de satisfação com base em dados de playtest;
+- Melhoria da interface: padronizar HUD, indicadores visuais e feedbacks ao jogador;
+- Aprimoramento da progressão: tornar mais claro o avanço entre fases e objetivos de cada etapa;
+- Testes com usuários externos: ampliar a validação com o público-alvo real para refinar a experiência.
+
+Além disso, o grupo identificou diversas ideias para melhorias futuras, que podem expandir o impacto do projeto:
+
+- Implementação de um sistema mais robusto de métricas e relatórios, permitindo análise detalhada de desempenho por usuário;
+- Criação de um sistema de recompensas e progressão, como cartas desbloqueáveis ou níveis de habilidade;
+- Expansão do jogo com novos cenários, clientes e desafios, aumentando a longevidade da plataforma;
+- Integração com sistemas corporativos da Cielo, tornando o jogo uma ferramenta oficial de treinamento;
+- Inclusão de modos colaborativos ou competitivos, incentivando interação entre usuários;
+- Aprimoramento da personalização da experiência, adaptando o conteúdo conforme o desempenho do jogador.
+
+Em síntese, o projeto atingiu com sucesso seu propósito principal como MVP, demonstrando viabilidade técnica e valor estratégico para a capacitação corporativa. As melhorias propostas indicam um caminho claro para evolução futura, com potencial de transformar o jogo em uma plataforma completa de treinamento e desenvolvimento profissional.
+
 
 # <a name="c7"></a>7. Referências (sprint 5)
 
