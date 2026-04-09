@@ -198,6 +198,9 @@ export default class Preloader extends Phaser.Scene {
 
         // ── Som de conquista de insígnia ──
         this.load.audio('som_insignia', 'assets/Audio/insignia_sound.mp3');
+
+        // Carro da cidade cielo
+        this.load.image('carro_cielo', 'assets/CidadeCielo/carro_cielo.png');
     }
 
     create() {
