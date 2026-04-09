@@ -38,11 +38,7 @@ Arthur Augusto Proença Gonçalves, Eric Pimentel Ferraz, Felipe Menossi Estrada
 
 ### 1.1.1. Contexto da indústria (sprint 2)
 
-A Cielo atua no setor de serviços financeiros, mais especificamente no segmento de meios eletrônicos de pagamento e adquirência. Sua atividade principal consiste em credenciar estabelecimentos comerciais para aceitar pagamentos com cartões de crédito, débito e vouchers, realizando a captura, o processamento e a liquidação das transações financeiras. Essa operação conecta três pontas do ecossistema: os estabelecimentos comerciais, as instituições financeiras emissoras (bancos) e as bandeiras de cartão, como Visa e Mastercard. A empresa fornece terminais de ponto de venda (POS), soluções de e-commerce, links de pagamento, antecipação de recebíveis, gestão de vendas e serviços integrados de tecnologia financeira, operando como intermediadora tecnológica e financeira nesse fluxo (Cielo, 2024).
-
-O mercado brasileiro de adquirência tornou-se mais competitivo após a quebra da exclusividade entre bandeiras e credenciadoras em 2010, ampliando a entrada de novos players como Stone e PagSeguro (InvestNews, 2024). Além disso, a implementação do Pix pelo Banco Central do Brasil em 2020 intensificou a transformação digital dos meios de pagamento, oferecendo transferências instantâneas com menor custo para lojistas e consumidores. Esse cenário reduziu margens no setor de terminais físicos e impactou a liderança histórica da Cielo em participação de mercado, exigindo reposicionamento estratégico diante da digitalização acelerada e da maior sensibilidade a preços (Banco Central do Brasil, 2024; Cielo, 2024).
-
-Atualmente, a Cielo adota uma estratégia focada em eficiência operacional, ampliação de soluções digitais e diversificação de serviços financeiros, buscando ir além da captura de transações. A empresa investe em tecnologia, análise de dados e integração com plataformas digitais para oferecer soluções completas de gestão financeira aos lojistas. Sua atuação possui abrangência nacional, atendendo micro, pequenas, médias e grandes empresas em todo o território brasileiro, com forte capilaridade comercial e relacionamento com grandes bancos acionistas (Cielo, 2024). Esse reposicionamento visa fortalecer a competitividade em um ambiente de pagamentos cada vez mais digital, instantâneo e orientado por inovação.
+A Cielo atua no setor de meios eletrônicos de pagamento (adquirência), conectando lojistas, bancos emissores e bandeiras (p. ex., Visa e Mastercard) no processamento de transações. O modelo de negócio baseia-se na intermediação financeira e tecnológica, com oferta de POS, e-commerce e antecipação de recebíveis. Após o fim da exclusividade em 2010, o mercado tornou-se mais competitivo, incorporando players como Stone e PagSeguro. Tendências recentes incluem digitalização, crescimento do Pix e pressão por redução de custos, intensificando a concorrência e a inovação no setor (Banco Central do Brasil, 2024; Cielo, 2024; InvestNews, 2024).
 
 
 #### 1.1.1.1. Modelo de 5 Forças de Porter (sprint 2)
@@ -452,7 +448,7 @@ Cada área só é acessada após a comprovação de competência na anterior, si
 
 ### 3.3.3. Condições climáticas e temporais (sprints 2 e 3)
 
-O tempo não possui relevância no jogo
+O tempo não possui relevância no jogo.
 
 ### 3.3.4. Concept Art (sprint 2)
 
@@ -512,7 +508,7 @@ Cada cenário explorável conta com trilha musical temática e sons de ambiente 
 
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
 
-<img src="../assets/GDD/Gameflow.jpeg">
+<img src="assets/Gameflow.jpeg">
 
 ## 3.6. Regras do jogo (sprint 3)
 
@@ -1829,23 +1825,41 @@ Em síntese, o projeto atingiu com sucesso seu propósito principal como MVP, de
 
 # <a name="c7"></a>7. Referências (sprint 5)
 
-_Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
+Associação Brasileira das Empresas de Cartões de Crédito e Serviços [Abecs]. (2024). *Balanço do setor de meios eletrônicos de pagamento: Indicadores*. https://abecs.org.br/indicadores/
 
-LUCK, Heloisa. Liderança em gestão escolar. 4. ed. Petrópolis: Vozes, 2010. <br>
-SOBRENOME, Nome. Título do livro: subtítulo do livro. Edição. Cidade de publicação: Nome da editora, Ano de publicação. <br>
+Associação Brasileira das Empresas de Cartões de Crédito e Serviços [Abecs]. (2024). *Monitor Abecs: Balanço do setor de meios eletrônicos de pagamento*. https://www.abecs.org.br/monitor-abecs
 
-INTELI. Adalove. Disponível em: https://adalove.inteli.edu.br/feed. Acesso em: 1 out. 2023 <br>
-SOBRENOME, Nome. Título do site. Disponível em: link do site. Acesso em: Dia Mês Ano
+Banco Central do Brasil. (2021). *Boxe 7: A nova dinâmica da competição no SFN e no SPB*. Relatório de Economia Bancária. https://www.bcb.gov.br/content/publicacoes/boxe_relatorio_de_economia_bancaria/reb2021b7p.pdf
 
-Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review.
-https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy
+Banco Central do Brasil. (2021, 25 de março). *Resolução BCB nº 80, de 25 de março de 2021: Disciplina a constituição e o funcionamento das instituições de pagamento*. https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=80
 
-> - ABECS. *Associação Brasileira das Empresas de Cartões de Crédito e Serviços*. 2023.
-> - BANCO CENTRAL DO BRASIL. *Relatório de Estabilidade Financeira*. 2023.
-> - CIELO. *Relatório Anual*. 2023.
-> - FERNANDES, A. et al. *Planejamento estratégico*. 2015.
-> - VIAL, G. Understanding digital transformation. *Journal of Strategic Information Systems*, 2019.
+Banco Central do Brasil. (2022, 23 de setembro). *Resolução BCB nº 246, de 23 de setembro de 2022*. https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=246
 
+Banco Central do Brasil. (2023). *Relatório de Estabilidade Financeira* (Vol. 22, n. 1). https://www.bcb.gov.br/content/publicacoes/ref/202304/RELESTAB202304-refPub.pdf
+
+Banco Central do Brasil. (2023). *Relatório de Gestão do Pix: Concepção e primeiros anos de funcionamento 2020–2022*. Departamento de Competição e de Estrutura do Mercado Financeiro (Decem). https://www.bcb.gov.br/content/estabilidadefinanceira/pix/relatorio_de_gestao_pix/relatorio_gestao_pix_2023.pdf
+
+Banco Central do Brasil. (2024). *Estatísticas de meios de pagamentos*. Portal de Dados Abertos do Banco Central do Brasil. https://dadosabertos.bcb.gov.br/dataset/estatisticas-meios-pagamentos
+
+Banco Central do Brasil. (2024). *Pix em números: Estatísticas e informações gerais*. https://www.bcb.gov.br/estabilidadefinanceira/pix-em-numeros-estatisticas
+
+Cielo. (2024). *Relatório Anual Integrado 2023*. https://www.cielo.com.br/docs/sustentabilidade/2023/pt-br/Relatorio-Anual-Integrado-2023.pdf
+
+Cielo S.A. (2024). *Formulário de Referência 2024 (V12)*. Comissão de Valores Mobiliários. https://www.rad.cvm.gov.br/ENET/frmGerenciaPaginaFRE.aspx?NumeroSequencialDocumento=143465&CodigoTipoInstituicao=1
+
+Conselho Administrativo de Defesa Econômica [CADE]. (2019). *Cadernos do Cade: Mercado de instrumentos de pagamento*. Departamento de Estudos Econômicos. https://cdn.cade.gov.br/Portal/centrais-de-conteudo/publicacoes/estudos-economicos/cadernos-do-cade/mercado-de-instrumentos-de-pagamento-2019.pdf
+
+Conselho Administrativo de Defesa Econômica [CADE]. (2023). *Fusões conglomerais: Teorias do dano e jurisprudência do Cade entre 2012 e 2022* (Documento de Trabalho). https://cdn.cade.gov.br/Portal/centrais-de-conteudo/publicacoes/estudos-economicos/documentos-de-trabalho/2023/Documento-de-Trabalho-Fusoes-Conglomerais.pdf
+
+Estadão Conteúdo. (2024, 16 de agosto). *Cielo deixa B3 após 15 anos com menos de 20% do mercado e com desafio a controladores*. InfoMoney. https://www.infomoney.com.br/mercados/cielo-deixa-b3-apos-15-anos-com-menos-de-20-do-mercado-e-com-desafio-a-controladores/
+
+Fernandes, B. H. R., Berton, L. H., & Bezerra, C. A. (2015). *Administração estratégica: Da competência empreendedora à avaliação de desempenho*. Saraiva.
+
+Halliday, D., Resnick, R., & Walker, J. (2016). *Fundamentos de física: Vol. 1* (10ª ed.). LTC.
+
+InvestNews. (2024, 26 de junho). *Destronada nas maquininhas, Cielo luta para se manter relevante na era do Pix*. https://investnews.com.br/negocios/destronada-nas-maquininhas-cielo-luta-para-se-manter-relevante-na-era-do-pix/
+
+Vial, G. (2019). Understanding digital transformation: A review and a research agenda. *The Journal of Strategic Information Systems*, *28*(2), 118–144. https://doi.org/10.1016/j.jsis.2019.01.003
 
 
 # <a name="c8"></a>Anexos
