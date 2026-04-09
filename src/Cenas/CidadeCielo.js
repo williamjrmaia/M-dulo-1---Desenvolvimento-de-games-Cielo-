@@ -17,7 +17,9 @@ export default class CidadeCielo extends CenaMapa {
 
     preload() {
         this.load.image('CidadeCielo', './assets/CidadeCielo/CidadeCielo.png');
+        this.load.image('CarroCielo', './assets/CidadeCielo/carro_cielo.png');
         this.load.tilemapTiledJSON('mapaCidadeCielo', './assets/CidadeCielo/CidadeCielo.tmj');
+        
 
         // ── Assets da Cielita ─────────────────────────────────────────────────
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', {
@@ -98,6 +100,18 @@ export default class CidadeCielo extends CenaMapa {
         // Colisão Jogador↔Cielita
         this.jogador.adicionarColisao(this.grupoNPCs);
 
+        // Criando o Carro
+        this.carro = new CarroCielo(this, {
+            xi: 100,             // X inicial
+            yi: 200,             // Y inicial
+            xf: 800,             // X final
+            yf: 200,             // Y final
+            T: 5,                // Tempo de travessia em segundos
+            pausaMs: 2000,       // Pausa de 2 segundos antes de repetir
+            escala: 1,           // Tamanho normal
+            jogadorSprite: this.jogador // Passando o jogador para ativar a colisão
+        });
+
         // ── Criação do Portal ─────────────────────────────────────────────────
         this.PortalCielo = this.add.zone(540, 880, 30, 20);
         this.physics.add.existing(this.PortalCielo, true);
@@ -173,7 +187,7 @@ export default class CidadeCielo extends CenaMapa {
         }
     }
 
-    update() {
+    update(time, delta) {
         if (super.update()) return;
 
         this.jogador.atualizar();
@@ -206,6 +220,9 @@ export default class CidadeCielo extends CenaMapa {
          if (this.jogador.temOverlap(this.PortaLojaCidade1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CasaCidade2');
             return;
+        }
+        if (this.carro) {
+            this.carro.atualizar(time); 
         }
     }
 }
