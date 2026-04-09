@@ -118,7 +118,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
         return [
             // ── P: Propósito ──
             new CartaAbordagem({
-                key:           'DiretoAoPonto',
+                key:           'Proximidade',
                 letra:         'P',
                 correta:       true,
                 dialogoAcerto: 'Pode falar! Sou a Thaina, dona daqui. O que você tem pra mim?',
@@ -127,7 +127,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
 
             // ── I: Identificação ──
             new CartaAbordagem({
-                key:           'GanchoSocial',
+                key:           'Interesse',
                 letra:         'I',
                 correta:       true,
                 dialogoAcerto: 'Ah, conhece o pessoal daqui? Boa referência!',
@@ -136,7 +136,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
 
             // ── F: Foco ──
             new CartaAbordagem({
-                key:           'AntiPitch',
+                key:           'Familiaridade',
                 letra:         'F',
                 correta:       true,
                 dialogoAcerto: 'Gostei, você não chegou só pra empurrar produto. Pode continuar.',
@@ -145,34 +145,17 @@ export default class NegociacaoThaina extends CenaNegociacao {
 
             // ── E: Empatia ──
             new CartaAbordagem({
-                key:           'Proatividade',
+                key:           'Empatia',
                 letra:         'E',
                 correta:       true,
                 dialogoAcerto: 'É, dá pra ver que você entende o que é trabalhar no varejo.',
                 dialogoErro:   'Isso não se aplica ao meu caso.',
             }),
 
-            // ── Cartas erradas ──
-            new CartaAbordagem({
-                key:           'DesarmeElegante',
-                letra:         'P',
-                correta:       true,
-                dialogoAcerto: '',
-                dialogoErro:   'Não gostei dessa abordagem, não.',
-            }),
-
-            new CartaAbordagem({
-                key:           'Problematica',
-                letra:         'I',
-                correta:       false,
-                dialogoAcerto: '',
-                dialogoErro:   'Isso me deixou desconfortável.',
-            }),
-
             // ── CPC: Contato com Pessoa Certa ──
             // Só fica disponível após P, I, F e E preenchidos
             new CartaAbordagem({
-                key:           'ParceriaEstrategica',
+                key:           'CPC',
                 letra:         'CPC',
                 correta:       true,
                 dialogoAcerto: 'Ótimo! Você está falando com a pessoa certa. Vamos ao que interessa.',
@@ -186,17 +169,11 @@ export default class NegociacaoThaina extends CenaNegociacao {
     _getCartasSondagem() {
         return [
             // ── Pessoas ──
-            new CartaSondagem({
-                key:           'PerguntaDeImpacto',
-                aspecto:       'pessoas',
-                correta:       true,
-                dialogoAcerto: 'Atendo bastante gente, especialmente nos fins de semana. É bem movimentado.',
-                dialogoErro:   'Não entendi o que você quer saber com isso.',
-            }),
+        
 
             // ── Lucro ──
             new CartaSondagem({
-                key:           'GanchoDaDor',
+                key:           'LucroCerto',
                 aspecto:       'lucro',
                 correta:       true,
                 dialogoAcerto: 'Minha margem tá razoável, mas quando a maquininha trava no pico eu perco venda mesmo.',
@@ -205,36 +182,36 @@ export default class NegociacaoThaina extends CenaNegociacao {
 
             // ── Estoque ──
             new CartaSondagem({
-                key:           'SondagemDeFluxo',
-                aspecto:       'estoque',
-                correta:       true,
+                key:           'LucroErrado',
+                aspecto:       'lucro',
+                correta:       false,
                 dialogoAcerto: 'Meu giro é alto! E é exatamente no pico que a maquininha resolve travar.',
                 dialogoErro:   'Não entendo o que você quer saber com isso.',
             }),
 
             // ── Erradas ──
             new CartaSondagem({
-                key:           'LoboCurioso',
+                key:           'Movimento',
                 aspecto:       'pessoas',
-                correta:       false,
+                correta:       true,
                 dialogoAcerto: '',
                 dialogoErro:   'Isso não é relevante pra minha operação.',
             }),
 
             new CartaSondagem({
-                key:           'AutoridadeImplicita',
-                aspecto:       'lucro',
+                key:           'EstoqueErrado',
+                aspecto:       'estoque',
                 correta:       false,
                 dialogoAcerto: '',
                 dialogoErro:   'Não gosto desse tipo de abordagem.',
             }),
 
             new CartaSondagem({
-                key:           'EgoCorporativo',
+                key:           'EstoqueCerto',
                 aspecto:       'estoque',
-                correta:       false,
-                dialogoAcerto: '',
-                dialogoErro:   'Você está mais preocupado com você do que comigo.',
+                correta:       true,
+                dialogoAcerto: 'Tenho um estoque bem controlado, o que me permite oferecer produtos de qualidade.',
+                dialogoErro:   'Não gosto desse tipo de abordagem.',
             }),
         ];
     }
@@ -256,14 +233,21 @@ export default class NegociacaoThaina extends CenaNegociacao {
     }
 
     _distribuirCartasDemonstracao() {
-        const todasCartas = [
+        const cartaCorreta = 'CieloFlash2';
+
+        const demaisCartas = [
             'Antecipacao', 'CrediarioDigital', 'CVBA', 'CieloFlash',
-            'CieloFlash2', 'FlashRecarga', 'CieloLioOn', 'LioOnApps',
+            'FlashRecarga', 'CieloLioOn', 'LioOnApps',
             'LioOnGestao', 'MoedaEstrangeira', 'CieloTap', 'CieloZip',
         ];
 
-        const embaralhadas = Phaser.Utils.Array.Shuffle([...todasCartas]);
-        const cartas = embaralhadas.slice(0, 4).map(key => ({ key, fase: 'demonstracao' }));
+        const embaralhadas = Phaser.Utils.Array.Shuffle([...demaisCartas]);
+        const selecionadas = [cartaCorreta, ...embaralhadas.slice(0, 3)];
+
+        // Segundo shuffle para que a carta correta não fique sempre na 1ª posição
+        const cartas = Phaser.Utils.Array.Shuffle(selecionadas)
+            .map(key => ({ key, fase: 'demonstracao' }));
+
         this._distribuirCartas(cartas);
     }
 

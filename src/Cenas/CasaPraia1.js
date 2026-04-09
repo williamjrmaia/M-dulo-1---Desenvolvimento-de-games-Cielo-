@@ -37,8 +37,8 @@ export default class CasaPraia1 extends Phaser.Scene {
         this.jogador.sprite.setScale(1.5);
 
         // ── NPC Chefa ─────────────────────────────────────────────────────────
-        const npcX = larguraImagem / 2;
-        const npcY = alturaImagem  / 2;
+        const npcX = 400;
+        const npcY = 300;
 
         this.npcChefa = new NPC(this, npcX, npcY, 'Chefa', {
             interativo:         true,
@@ -58,7 +58,7 @@ export default class CasaPraia1 extends Phaser.Scene {
             { personagem: 'Chefa', texto: 'Olá!' },
         ]);
 
-        this.npcChefa.setScale(1.5);
+        this.npcChefa.setScale(1.8);
 
         // ── Força exibição do frame 0 (personagem parado) ─────────────────────
         if (this.npcChefa.setFrame) {

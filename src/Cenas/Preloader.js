@@ -39,6 +39,9 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('fundo_ponte',    'assets/CenarioCasa/ponte.png');
         this.load.image('fundo_ponte_v',  'assets/CenarioCasa/ponte_transicao_vertical.png');
 
+        // assets balcão da negociação
+        this.load.image('balcao', 'assets/Icones/Fundo_madeira.png');
+
         // Ícones PIFE+CPC — abordagem
         this.load.image('pife_p_off',   'assets/Icones/Abordagem/pife_p_off.png');
         this.load.image('pife_p_on',    'assets/Icones/Abordagem/pife_p_on.png');
@@ -48,22 +51,30 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('pife_f_on',    'assets/Icones/Abordagem/pife_f_on.png');
         this.load.image('pife_e_off',   'assets/Icones/Abordagem/pife_e_off.png');
         this.load.image('pife_e_on',    'assets/Icones/Abordagem/pife_e_on.png');
-        this.load.image('pife_cpc_off', 'assets/Icones/Abordagem/pife_cpc_off.png');
-        this.load.image('pife_cpc_on',  'assets/Icones/Abordagem/pife_cpc_on.png');
+        this.load.image('cpc_on', 'assets/Icones/Abordagem/icone_cpc_on.png');
+        this.load.image('cpc_off',  'assets/Icones/Abordagem/icone_cpc_off.png');
+       // Ícones sondagem — pessoas (fluxo)
+this.load.image('sondagem_pessoas_interrogacao', 'assets/Icones/Sondagem/icone_fluxo_g_off.png');
+this.load.image('sondagem_pessoas_baixo',        'assets/Icones/Sondagem/icone_fluxo_g_off.png');
+this.load.image('sondagem_pessoas_alto',         'assets/Icones/Sondagem/icone_fluxo_g.png');
 
-        // ── ABORDAGEM (12 cartas) ─────────────────────────────────────────────
-        this.load.image('AntiPitch',              'assets/Cartas/Abordagem/AntiPitch.png');
-        this.load.image('ComparacaoInteligente',  'assets/Cartas/Abordagem/ComparacaoInteligente.png');
-        this.load.image('CuriosidadeDespertada',  'assets/Cartas/Abordagem/CuriosidadeDespertada.png');
-        this.load.image('DesarmeElegante',        'assets/Cartas/Abordagem/DesarmeElegante.png');
-        this.load.image('DiretoAoPonto',          'assets/Cartas/Abordagem/DiretoAoPonto.png');
-        this.load.image('GanchoSocial',           'assets/Cartas/Abordagem/GanchoSocial.png');
-        this.load.image('GatilhoDeEscassez',      'assets/Cartas/Abordagem/GatilhoDeEscassez.png');
-        this.load.image('ParceriaEstrategica',    'assets/Cartas/Abordagem/ParceriaEstrategica.png');
-        this.load.image('Proatividade',           'assets/Cartas/Abordagem/Proatividade.png');
-        this.load.image('Problematica',           'assets/Cartas/Abordagem/Problematica.png');
-        this.load.image('QuebradePadrao',         'assets/Cartas/Abordagem/QuebradePadrao.png');
-        this.load.image('ReferenciaLocal',        'assets/Cartas/Abordagem/ReferenciaLocal.png');
+// Ícones sondagem — estoque (caixa)
+this.load.image('sondagem_estoque_interrogacao', 'assets/Icones/Sondagem/icone_caixa_off.png');
+this.load.image('sondagem_estoque_baixo',        'assets/Icones/Sondagem/icone_caixa_baixo.png');
+this.load.image('sondagem_estoque_alto',         'assets/Icones/Sondagem/icone_caixa_cima.png');
+
+// Ícones sondagem — lucro (mantém os arquivos que já funcionam)
+this.load.image('sondagem_lucro_interrogacao',   'assets/Icones/Sondagem/sondagem_lucro_interrogacao.png');
+this.load.image('sondagem_lucro_baixo',          'assets/Icones/Sondagem/sondagem_lucro_baixo.png');
+this.load.image('sondagem_lucro_medio',          'assets/Icones/Sondagem/sondagem_lucro_medio.png');
+this.load.image('sondagem_lucro_alto',           'assets/Icones/Sondagem/sondagem_lucro_alto.png');
+        // ── ABORDAGEM (5 cartas) ─────────────────────────────────────────────
+           
+        this.load.image('Proximidade', 'assets/Cartas/Abordagem/Proximidade.png');
+        this.load.image('Interesse', 'assets/Cartas/Abordagem/Interesse.png');
+        this.load.image('Familiaridade', 'assets/Cartas/Abordagem/Familiaridade.png');
+        this.load.image('Empatia', 'assets/Cartas/Abordagem/Empatia.png');
+        this.load.image('CPC', 'assets/Cartas/Abordagem/CPC.png');
 
         //ABORDAGEM - ícones lucro, estoque, pessoas
         this.load.image('sondagem_pessoas_interrogacao', 'assets/Icones/Sondagem/sondagem_pessoas_interrogacao.png');
@@ -77,19 +88,15 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('sondagem_estoque_baixo',        'assets/Icones/Sondagem/sondagem_estoque_baixo.png');
         this.load.image('sondagem_estoque_alto',         'assets/Icones/Sondagem/sondagem_estoque_alto.png');
 
-        // ── SONDAGEM (12 cartas) ──────────────────────────────────────────────
-        this.load.image('AutoridadeImplicita',   'assets/Cartas/Sondagem/AutoridadeImplicita.png');
-        this.load.image('ChaveDeExclusividade',  'assets/Cartas/Sondagem/ChaveDeExclusividade.png');
-        this.load.image('Cliffhanger',           'assets/Cartas/Sondagem/Cliffhanger.png');
-        this.load.image('DiagnosticoDeParceria', 'assets/Cartas/Sondagem/DiagnosticoDeParceria.png');
-        this.load.image('EgoCorporativo',        'assets/Cartas/Sondagem/EgoCorporativo.png');
-        this.load.image('Estrategia',            'assets/Cartas/Sondagem/Estrategia.png');
-        this.load.image('GanchoDaDor',           'assets/Cartas/Sondagem/GanchoDaDor.png');
-        this.load.image('LoboCurioso',           'assets/Cartas/Sondagem/LoboCurioso.png');
-        this.load.image('PerguntaDeImpacto',     'assets/Cartas/Sondagem/PerguntaDeImpacto.png');
-        this.load.image('PontoDeDorTecnico',     'assets/Cartas/Sondagem/PontoDeDorTecnico.png');
-        this.load.image('SondagemDeFluxo',       'assets/Cartas/Sondagem/SondagemDeFluxo.png');
-        this.load.image('SondagemDePrazo',       'assets/Cartas/Sondagem/SondagemDePrazo.png');
+        // ── SONDAGEM (5 cartas) ──────────────────────────────────────────────
+            
+        this.load.image('LucroCerto', 'assets/Cartas/Sondagem/LucroCerto.png');
+        this.load.image('LucroErrado', 'assets/Cartas/Sondagem/LucroErrado.png');
+        this.load.image('Movimento', 'assets/Cartas/Sondagem/Movimento.png');
+        this.load.image('EstoqueCerto', 'assets/Cartas/Sondagem/EstoqueCerto.png');
+        this.load.image('EstoqueErrado', 'assets/Cartas/Sondagem/EstoqueErrado.png');
+        
+
 
         // ── PRODUTOS / DEMONSTRACAO (12 cartas) ───────────────────────────────
         this.load.image('Antecipacao',      'assets/Cartas/Produtos/Antecipacao.png');
@@ -106,11 +113,11 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('CieloZip',         'assets/Cartas/Produtos/ZIP.png');
 
         // ── NEGOCIACAO (5 cartas) ─────────────────────────────────────────────
-        this.load.image('Ajuste',      'assets/Cartas/Negociacao/AjustesDeCondicoes.png');
-        this.load.image('Quebra',      'assets/Cartas/Negociacao/QuebraDeObjecao.png');
-        this.load.image('Validacao',   'assets/Cartas/Negociacao/ValidacaoDeValor.png');
-        this.load.image('Comparativo', 'assets/Cartas/Negociacao/ComparativoDeValor.png');
-        this.load.image('Recuo',       'assets/Cartas/Negociacao/RecuoEstrategico.png');
+        this.load.image('Aceitacao',      'assets/Cartas/Negociacao/AceitacaoAmpla.png');
+        this.load.image('Suporte',      'assets/Cartas/Negociacao/Suporte24h.png');
+        this.load.image('Taxas',   'assets/Cartas/Negociacao/TaxasNegociaveis.png');
+        this.load.image('Recebimento', 'assets/Cartas/Negociacao/RecebimentoRapido.png');
+        this.load.image('Gestao',       'assets/Cartas/Negociacao/GestaoIntegrada.png');
 
         // ── FECHAMENTO (5 cartas) ─────────────────────────────────────────────
         this.load.image('Adicional',  'assets/Cartas/Fechamento/FechamentoAlternativo.png');
