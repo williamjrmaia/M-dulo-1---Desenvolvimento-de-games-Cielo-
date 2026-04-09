@@ -14,6 +14,10 @@ import Insignia         from '../Classes/Insignias.js';
 //   O jogador precisa revelar 2 condições corretas: Suporte e Taxas.
 //   Cada uma acende um ícone próprio abaixo da barra de satisfação,
 //   seguindo o mesmo padrão visual dos ícones PIFE e aspectos.
+//
+// FASE DE DEMONSTRAÇÃO:
+//   Exibe um único ícone de estoque abaixo da barra de satisfação.
+//   Começa como interrogação e acende para 'estoque_alto' ao acertar.
 // ─────────────────────────────────────────────────────────────────────────────
 
 // Condições que precisam ser reveladas na fase de negociação
@@ -34,8 +38,12 @@ export default class NegociacaoJulia extends CenaNegociacao {
             estoque: 'alto',
         };
 
-        this._condicoesReveladas   = new Set();
-        this._iconesNegociacao     = {};
+        this._condicoesReveladas = new Set();
+        this._iconesNegociacao   = {};
+
+        // Referências do ícone exclusivo da demonstração
+        this._bgIconeDemo  = null;
+        this._iconeDemo    = null;
     }
 
     // ── Preload ───────────────────────────────────────────────────────────────
@@ -48,10 +56,11 @@ export default class NegociacaoJulia extends CenaNegociacao {
         this.load.image('chefa_neutro',     'assets/NPC/JULIA/CHEFE_NEUTRA.png');
         this.load.image('chefa_bravo',      'assets/NPC/JULIA/CHEFE_IRRITADA.png');
 
-        // Ícones da fase de negociação — suporte e taxa
-        // Padrão de nomeação igual ao PIFE e aspectos:
-        //   negociacao_suporte_off / negociacao_suporte_on
-        //   negociacao_taxa_off    / negociacao_taxa_on
+        // ── Ícone único da fase de demonstração (reutiliza assets de sondagem) ──
+        this.load.image('demo_estoque_off', 'assets/Icones/Sondagem/icone_caixa_baixo_off.png');
+        this.load.image('demo_estoque_on',  'assets/Icones/Sondagem/icone_caixa_cima.png');
+
+        // ── Ícones da fase de negociação — suporte e taxa ──
         CONDICOES_NEGOCIACAO.forEach(c => {
             this.load.image(`negociacao_${c}_off`, `assets/Icones/Negociacao/negociacao_${c}_off.png`);
             this.load.image(`negociacao_${c}_on`,  `assets/Icones/Negociacao/negociacao_${c}_on.png`);
@@ -61,8 +70,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     // ── Create ────────────────────────────────────────────────────────────────
-    // CORREÇÃO: o bloco com W, H, barraW, barraX, barraY e _criarIconesNegociacao
-    // estava solto fora de qualquer método. Pertence ao create().
 
     create() {
         super.create();
@@ -73,15 +80,16 @@ export default class NegociacaoJulia extends CenaNegociacao {
         const barraX = W - barraW / 2 - 40;
         const barraY = H * 0.08;
 
-        // Cria os ícones já na inicialização (ocultos), igual ao que o super
-        // faz com _criarIconesPIFE e _criarIconesAspectos.
+        // Cria os ícones de negociação já na inicialização (ocultos)
         this._criarIconesNegociacao(barraX, barraW, barraY);
+
+        // Cria o ícone de demonstração já na inicialização (oculto)
+        this._criarIconeDemo(barraX, barraY);
+
+        this.add.image(0, 0, 'julia_fundo').setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
     }
 
     // ── Posição da sprite da Julia ────────────────────────────────────────────
-    // Sobrescreve _criarAreaCliente da classe base para posicionar a sprite
-    // da Julia de forma independente dos outros clientes (Pedro, Thaina).
-    // Ajuste W * 0.5 (horizontal), H * 0.22 (vertical) e setScale(0.4) (tamanho).
 
     _criarAreaCliente(W, H) {
         const nome         = this.clienteConfig.nomeCliente;
@@ -98,11 +106,50 @@ export default class NegociacaoJulia extends CenaNegociacao {
             : this.add.rectangle(W / 2, H * 0.28, 100, 150, 0x1a3a5a).setStrokeStyle(2, 0x2a6a9a);
     }
 
+    // ── Ícone exclusivo da demonstração ──────────────────────────────────────
+
+    _criarIconeDemo(barraX, barraY) {
+        const iconeH  = 24;
+        const largura = iconeH * 2;
+        const pad     = 8;
+        const y       = barraY + 53;    // mesma linha dos ícones PIFE/aspectos
+
+        this._bgIconeDemo = this.add
+            .rectangle(barraX, y, largura + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+            .setStrokeStyle(1, 0x555555)
+            .setDepth(49)
+            .setVisible(false);
+
+        this._iconeDemo = this.textures.exists('demo_estoque_off')
+            ? this.add.image(barraX, y, 'demo_estoque_off').setDisplaySize(largura, iconeH).setDepth(50).setVisible(false)
+            : this.add.rectangle(barraX, y, largura, iconeH, 0x333333).setStrokeStyle(1, 0x555555).setDepth(50).setVisible(false);
+    }
+
+    _setIconeDemoVisivel(visivel) {
+        this._bgIconeDemo?.setVisible(visivel);
+        this._iconeDemo?.setVisible(visivel);
+    }
+
+    _acenderIconeDemo() {
+        if (!this._iconeDemo) return;
+
+        if (this.textures.exists('demo_estoque_on') && this._iconeDemo.setTexture) {
+            this._iconeDemo.setTexture('demo_estoque_on');
+        } else if (this._iconeDemo.setFillStyle) {
+            this._iconeDemo.setFillStyle(0x22cc66);
+        }
+
+        this.tweens.add({
+            targets:  this._iconeDemo,
+            scaleX:   1.3,
+            scaleY:   1.3,
+            duration: 150,
+            yoyo:     true,
+            ease:     'Back.easeOut',
+        });
+    }
+
     // ── Ícones da fase de negociação ──────────────────────────────────────────
-    //
-    // Dois ícones (suporte / taxa) na mesma faixa vertical dos ícones PIFE
-    // e de aspectos — abaixo da barra de satisfação.
-    // Começam ocultos e aparecem apenas na fase 'negociacao'.
 
     _criarIconesNegociacao(barraX, barraW, barraY) {
         const iconeH  = 28;
@@ -171,10 +218,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
     _chaveVitoria() { return 'julia_vencida'; }
 
     // ── Controle de fases ─────────────────────────────────────────────────────
-    //
-    //   - 'demonstracao': jogador apresenta um produto; acerto avança, erro penaliza.
-    //   - 'negociacao':   super + ícones próprios + cartas de negociação.
-    //   - 'abordagem' / 'sondagem': super faz tudo.
 
     _iniciarFase() {
         super._iniciarFase();
@@ -183,19 +226,23 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
         if (fase === 'demonstracao') {
             this._setIconesNegociacaoVisiveis(false);
+            this._setAspectosVisiveis(false);
+            this._setIconeDemoVisivel(true);          // ← ícone de estoque aparece
             this._distribuirCartasDemonstracao();
 
         } else if (fase === 'negociacao') {
             this._condicoesReveladas = new Set();
             this._setPIFEVisivel(false);
             this._setAspectosVisiveis(false);
+            this._setIconeDemoVisivel(false);         // ← ícone de estoque some
             this._setIconesNegociacaoVisiveis(true);
             this._limparCartas();
             this._distribuirCartasNegociacao();
 
         } else {
-            // 'abordagem' e 'sondagem': super fez tudo.
+            // 'abordagem' e 'sondagem': super fez tudo
             this._setIconesNegociacaoVisiveis(false);
+            this._setIconeDemoVisivel(false);
         }
     }
 
@@ -232,21 +279,21 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 key:           'Proximidade',
                 letra:         'P',
                 correta:       true,
-                dialogoAcerto: 'Claro! Sou a Julia, dona do estabelecimento. Me conta mais.',
+                dialogoAcerto: 'Bom dia, tudo bem sim..',
                 dialogoErro:   'Não entendi o que você veio fazer aqui.',
             }),
             new CartaAbordagem({
                 key:           'Interesse',
                 letra:         'I',
                 correta:       true,
-                dialogoAcerto: 'Ah, conheço sim! Boa referência.',
+                dialogoAcerto: ' Sou a Julia.',
                 dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
             }),
             new CartaAbordagem({
                 key:           'Familiaridade',
                 letra:         'F',
                 correta:       true,
-                dialogoAcerto: 'Interessante, você não está aqui só pra vender. Pode continuar.',
+                dialogoAcerto: 'Interessante, ultimamente tenho utilizado bastante as maquininhas. Pode continuar.',
                 dialogoErro:   'Parece que você só quer me vender algo.',
             }),
             new CartaAbordagem({
@@ -312,25 +359,20 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     _distribuirCartasDemonstracao() {
         // Julia: aspectosCliente = { pessoas: 'alto', lucro: 'baixo', estoque: 'alto' }
-        // A carta correta tem os 3 atributos certos. As demais têm 0, 1 ou 2 acertos.
         const pool = [
-            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // 3/3 — correta
+            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // 3/3 — correta
+            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
             new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'CVBA',             pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'CieloFlash2',      pessoas: 'alto',  lucro: 'alto',  estoque: 'alto'  }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
             new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
             new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
             new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
             new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }), // 1/3 — -20
-            new CartaDemonstracao({ key: 'Antecipacao',      pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
             new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
-            new CartaDemonstracao({ key: 'MoedaEstrangeira', pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
         ];
 
-        const correta  = pool[0];
-        const demais   = Phaser.Utils.Array.Shuffle(pool.slice(1));
-        const cartas   = Phaser.Utils.Array.Shuffle([correta, ...demais.slice(0, 3)]);
+        const correta = pool[0];
+        const demais  = Phaser.Utils.Array.Shuffle(pool.slice(1));
+        const cartas  = Phaser.Utils.Array.Shuffle([correta, ...demais.slice(0, 3)]);
         this._distribuirCartas(cartas);
     }
 
@@ -378,6 +420,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
         this.negociacaoAtiva = false;
 
         if (acertos === 3) {
+            this._acenderIconeDemo();  // ← acende o ícone de estoque_alto
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._mostrarDialogo('Perfeito! Esse produto resolve exatamente o que eu precisava.');
             this.time.delayedCall(4000, () => {
@@ -402,10 +445,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     // ── Fase de negociação ────────────────────────────────────────────────────
-    //
-    // O jogador apresenta cartas de condições. Ao acertar 'suporte' e 'taxa',
-    // os dois ícones acendem e a negociação avança.
-    // Cartas erradas penalizam a satisfação sem revelar nenhum ícone.
 
     _distribuirCartasNegociacao() {
         const cartas = this._getCartasNegociacao();
@@ -471,25 +510,9 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     // ── Cartas da negociação ──────────────────────────────────────────────────
-    //
-    // COMO ADICIONAR UMA CARTA NOVA:
-    //
-    //   new CartaNegociacao({
-    //       key:           'NomeDaCartaNoAsset',
-    //       condicao:      'suporte',   // 'suporte' ou 'taxa'
-    //       correta:       true,        // false = penaliza satisfação
-    //       dialogoAcerto: 'Fala da Julia ao acertar',
-    //       dialogoErro:   'Fala da Julia ao errar',
-    //   }),
-    //
-    //   Regras:
-    //   - Pode haver mais de uma carta para a mesma condição
-    //   - A condição só é revelada uma vez (pelo primeiro acerto)
-    //   - Cartas erradas penalizam sem revelar nenhum ícone
 
     _getCartasNegociacao() {
         return [
-            // ── Suporte (correta) ──
             new CartaNegociacao({
                 key:           'Suporte',
                 condicao:      'suporte',
@@ -497,8 +520,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: 'Suporte 24h na praia? Isso é exatamente o que eu precisava ouvir!',
                 dialogoErro:   'Isso não me convence sobre o suporte.',
             }),
-
-            // ── Taxas (correta) ──
             new CartaNegociacao({
                 key:           'Taxas',
                 condicao:      'taxa',
@@ -506,8 +527,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: 'Taxas negociáveis? Agora você tá falando a minha língua!',
                 dialogoErro:   'Isso não resolve meu problema com as taxas.',
             }),
-
-            // ── Erradas ──
             new CartaNegociacao({
                 key:           'Aceitacao',
                 condicao:      'suporte',
@@ -515,7 +534,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: '',
                 dialogoErro:   'Aceitar qualquer condição não é o que eu quero ouvir.',
             }),
-
             new CartaNegociacao({
                 key:           'Recebimento',
                 condicao:      'taxa',
@@ -523,7 +541,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: '',
                 dialogoErro:   'Recebimento rápido é bom, mas não é o meu problema principal agora.',
             }),
-
             new CartaNegociacao({
                 key:           'Gestao',
                 condicao:      'suporte',

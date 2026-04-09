@@ -131,9 +131,9 @@ export default class Preloader extends Phaser.Scene {
         this.load.image('Pedro_satisfeito', 'assets/NPC/Pedro/feliz.png');
         this.load.image('Pedro_bravo',      'assets/NPC/Pedro/BossPedro.png');
 
-        this.load.image('Chefa_feliz',  'assets/NPC/JULIA/CHEFE_FELIZ.png');
-        this.load.image('Chefa_neutro', 'assets/NPC/JULIA/CHEFE_NEUTRA.png');
-        this.load.image('Chefa_brava',  'assets/NPC/JULIA/CHEFE_IRRITADA.png');
+        //this.load.image('Chefa_feliz',  'assets/NPC/JULIA/CHEFE_FELIZ.png');
+        //this.load.image('Chefa_neutro', 'assets/NPC/JULIA/CHEFE_NEUTRA.png');
+        //this.load.image('Chefa_brava',  'assets/NPC/JULIA/CHEFE_IRRITADA.png');
 
         // Chefa como spritesheet para exibir frame único na CasaPraia1
         this.load.spritesheet('Chefa', 'assets/NPC/JULIA/spr_chefe_front_idl.png', {

@@ -40,6 +40,9 @@ export default class NegociacaoThaina extends CenaNegociacao {
             estoque: 'alto',
         };
 
+        // Referências do ícone exclusivo da demonstração
+        this._bgIconeDemo  = null;
+        this._iconeDemo    = null;
     }
 
     // ── Preload ───────────────────────────────────────────────────────────────
@@ -50,6 +53,11 @@ export default class NegociacaoThaina extends CenaNegociacao {
         this.load.image('thaina_satisfeito', 'assets/NPC/Thaina/thaina_feliz.png');
         this.load.image('thaina_neutro',     'assets/NPC/Thaina/thaina_neutra.png');
         this.load.image('thaina_bravo',      'assets/NPC/Thaina/thaina_raiva.png');
+
+        // ── Ícone único da fase de demonstração (reutiliza assets de sondagem) ──
+        this.load.image('demo_lucro_off', 'assets/Icones/Sondagem/sondagem_lucro_interrogacao.png');
+        this.load.image('demo_lucro_on',  'assets/Icones/Sondagem/sondagem_lucro_alto.png');
+
         Insignia.preload(this);
     }
 
@@ -62,6 +70,77 @@ export default class NegociacaoThaina extends CenaNegociacao {
 
     _chaveVitoria() { return 'varejo_vencido'; }
 
+    // ── Ícone exclusivo da demonstração ──────────────────────────────────────
+
+    _criarIconeDemo() {
+        const W      = this.scale.width;
+        const H      = this.scale.height;
+        const barraX = W - 300 / 2 - 40;   // mesmo X da barra de satisfação
+        const barraY = H * 0.08;            // mesmo Y da barra de satisfação
+        const y      = barraY + 53;         // mesma linha dos ícones PIFE/aspectos
+        const iconeH = 24;
+        const largura = iconeH * 2;
+        const pad    = 8;
+
+        this._bgIconeDemo = this.add
+            .rectangle(barraX, y, largura + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+            .setStrokeStyle(1, 0x555555)
+            .setDepth(49)
+            .setVisible(false);
+
+        this._iconeDemo = this.textures.exists('demo_lucro_off')
+            ? this.add.image(barraX, y, 'demo_lucro_off').setDisplaySize(largura, iconeH).setDepth(50).setVisible(false)
+            : this.add.rectangle(barraX, y, largura, iconeH, 0x333333).setStrokeStyle(1, 0x555555).setDepth(50).setVisible(false);
+    }
+
+    _setIconeDemoVisivel(visivel) {
+        this._bgIconeDemo?.setVisible(visivel);
+        this._iconeDemo?.setVisible(visivel);
+    }
+
+    _acenderIconeDemo() {
+        if (!this._iconeDemo) return;
+
+        if (this.textures.exists('demo_lucro_on') && this._iconeDemo.setTexture) {
+            this._iconeDemo.setTexture('demo_lucro_on');
+        } else if (this._iconeDemo.setFillStyle) {
+            this._iconeDemo.setFillStyle(0x22cc66);
+        }
+
+        this.tweens.add({
+            targets:  this._iconeDemo,
+            scaleX:   1.3,
+            scaleY:   1.3,
+            duration: 150,
+            yoyo:     true,
+            ease:     'Back.easeOut',
+        });
+    }
+
+    // ── Fluxo de fases ────────────────────────────────────────────────────────
+
+    _iniciarFase() {
+        super._iniciarFase();
+
+        // Cria o ícone de demo na primeira vez (após o create() da classe pai)
+        if (!this._bgIconeDemo) {
+            this._criarIconeDemo();
+        }
+
+        const fase = this.clienteConfig.fases[this.faseAtual];
+
+        if (fase === 'demonstracao') {
+            // Garante que os ícones da sondagem fiquem ocultos nesta fase
+            this._setAspectosVisiveis(false);
+            // Exibe o ícone exclusivo desta fase
+            this._setIconeDemoVisivel(true);
+            this._distribuirCartasDemonstracao();
+        } else {
+            // Fora da demonstração o ícone de demo fica escondido
+            this._setIconeDemoVisivel(false);
+        }
+    }
+
     // ── Cartas da abordagem (sistema PIFE + CPC) ──────────────────────────────
 
     _getCartasAbordagem() {
@@ -71,7 +150,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
                 key:           'Proximidade',
                 letra:         'P',
                 correta:       true,
-                dialogoAcerto: 'Pode falar! Sou a Thaina, dona daqui. O que você tem pra mim?',
+                dialogoAcerto: 'Bom dia, tudo sim',
                 dialogoErro:   'Não entendi o que você veio fazer aqui.',
             }),
 
@@ -80,7 +159,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
                 key:           'Interesse',
                 letra:         'I',
                 correta:       true,
-                dialogoAcerto: 'Ah, conhece o pessoal daqui? Boa referência!',
+                dialogoAcerto: 'Pode falar! Sou a Thaina, dona daqui. O que você tem pra mim?',
                 dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
             }),
 
@@ -119,7 +198,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
     _getCartasSondagem() {
         return [
             // ── Pessoas ──
-        
+
 
             // ── Lucro ──
             new CartaSondagem({
@@ -167,34 +246,20 @@ export default class NegociacaoThaina extends CenaNegociacao {
     }
 
     // ── Fase de demonstração ──────────────────────────────────────────────────
-    // O Pedro não tem demonstração — toda essa lógica é exclusiva da Thaina.
-    // Sobrescrevemos _iniciarFase() apenas para injetar a distribuição de
-    // produtos e o contador depois que super._iniciarFase() rodar normalmente.
-
-    _iniciarFase() {
-        super._iniciarFase();
-
-        if (this.clienteConfig.fases[this.faseAtual] === 'demonstracao') {
-            this._distribuirCartasDemonstracao();
-        }
-    }
 
     _distribuirCartasDemonstracao() {
         // Thaina: aspectosCliente = { pessoas: 'alto', lucro: 'medio', estoque: 'alto' }
         // A carta correta tem os 3 atributos certos. As demais têm 0, 1 ou 2 acertos.
         const pool = [
             new CartaDemonstracao({ key: 'CieloFlash2',      pessoas: 'alto',  lucro: 'medio', estoque: 'alto'  }), // 3/3 — correta
-            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'medio', estoque: 'baixo' }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'CVBA',             pessoas: 'baixo', lucro: 'medio', estoque: 'alto'  }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'alto', estoque: 'alto' }), // 2/3 — -10
             new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'medio', estoque: 'baixo' }), // 2/3 — -10
             new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'medio', estoque: 'alto'  }), // 2/3 — -10
             new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
-            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'baixo',  lucro: 'baixo',  estoque: 'baixo' }), // 1/3 — -20
             new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }), // 1/3 — -20
-            new CartaDemonstracao({ key: 'Antecipacao',      pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
             new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
-            new CartaDemonstracao({ key: 'MoedaEstrangeira', pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+    
         ];
 
         const correta = pool[0];
@@ -252,6 +317,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
         this.negociacaoAtiva = false;
 
         if (acertos === 3) {
+            this._acenderIconeDemo(); // ← acende o ícone de lucro_alto
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._mostrarDialogo('Esse resolve! A IA prevê falhas antes de acontecer. Era exatamente isso que eu precisava.');
             this.time.delayedCall(4000, () => {
