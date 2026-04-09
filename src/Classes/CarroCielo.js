@@ -1,29 +1,46 @@
 // =============================================================================
 // CarroCielo.js
-// Carro decorativo que circula pela rua inferior da Cidade Cielo em loop
-// contínuo com pausa entre ciclos.
+// Carro decorativo que percorre um trajeto retangular em loop contínuo.
 //
-// EIXO X → Movimento Uniforme (MU):            velocidade constante
-// EIXO Y → Movimento Uniformemente Variado (MUV): parte do repouso, v0y = 0
+// O trajeto é definido por um array de SEGMENTOS, cada um com ponto inicial,
+// ponto final, duração, textura e flip. O carro percorre todos os segmentos
+// em sequência e, ao concluir o loop completo, pausa antes de reiniciar.
 //
-// Coordenadas calculadas a partir do mapa real (escala 1:1 com o jogo):
-//   xi=165  yi=684  xf=1335  yf=688  T=5s  pausaMs=2000
+// EIXO X → Movimento Uniforme (MU):            vx = (xf-xi)/T  (constante)
+// EIXO Y → Movimento Uniformemente Variado (MUV): ay = 2*(yf-yi)/T²  (v0y=0)
 //
-// A posição é calculada pelas equações cinemáticas puras — sem setVelocity,
-// sem tweens, sem funções de movimento do Phaser.
-// O corpo físico é reposicionado manualmente via body.reset(), mantendo
-// a colisão ativa e permitindo que o carro empurre o jogador.
+// Em segmentos puramente horizontais: yf = yi  → ay = 0, Y constante.
+// Em segmentos puramente verticais:   xf = xi  → vx = 0, X constante.
+// A matemática é idêntica ao original — apenas aplicada por trecho.
 //
 // ── REFERÊNCIA ────────────────────────────────────────────────────────────────
 //   HALLIDAY, D.; RESNICK, R.; WALKER, J. Fundamentos de Física, Vol. 1.
 //   Rio de Janeiro: LTC, 10ª ed., 2016. Cap. 2, pp. 18-52.
 //
+// ── PERCURSO PADRÃO (Cidade Cielo) ────────────────────────────────────────────
+//
+//   A (165,684) ──[carro_cielo]──► B (480,684)
+//                                  │
+//                              [carro2]
+//                                  │
+//                                  ▼
+//   D (165,768) ◄──[carro_cielo]── C (480,768)
+//   │
+//   [carro2 flipY]
+//   │
+//   ▲ volta a A
+//
 // ── INTEGRAÇÃO ────────────────────────────────────────────────────────────────
 //   // create():
 //   this.carro = new CarroCielo(this, {
-//       xi: 165, yi: 684, xf: 1335, yf: 688,
-//       T: 5, pausaMs: 2000, escala: 1.2,
+//       pausaMs:       2000,
 //       jogadorSprite: this.jogador.sprite,
+//       segmentos: [
+//           { xi:165, yi:684, xf:480, yf:684, T:3, textura:'carro_cielo'              },
+//           { xi:480, yi:684, xf:480, yf:768, T:2, textura:'carro2'                   },
+//           { xi:480, yi:768, xf:165, yf:768, T:3, textura:'carro_cielo', flipX:true  },
+//           { xi:165, yi:768, xf:165, yf:684, T:2, textura:'carro2',      flipY:true  },
+//       ],
 //   });
 //
 //   // update():
@@ -35,97 +52,152 @@ export default class CarroCielo {
     /**
      * @param {Phaser.Scene} cena
      * @param {object}  p
-     * @param {number}  p.xi           - posição inicial X (px)
-     * @param {number}  p.yi           - posição inicial Y (px)
-     * @param {number}  p.xf           - posição final   X (px)
-     * @param {number}  p.yf           - posição final   Y (px)
-     * @param {number}  p.T            - duração de cada ciclo (segundos)
-     * @param {number}  [p.pausaMs]    - pausa entre ciclos em ms (padrão: 2000)
-     * @param {number}  [p.escala]     - escala do sprite (padrão: 1)
-     * @param {Phaser.GameObjects.Sprite} p.jogadorSprite - sprite do jogador
+     * @param {Array}   p.segmentos        - array de segmentos do percurso
+     * @param {number}  [p.pausaMs]        - pausa ao fim do loop completo (ms, padrão: 2000)
+     * @param {number}  [p.pausaSegMs]     - pausa entre segmentos/esquinas (ms, padrão: 0)
+     * @param {number}  [p.escala]         - escala global do sprite (padrão: 1)
+     * @param {Phaser.GameObjects.Sprite} p.jogadorSprite
+     *
+     * Cada segmento: { xi, yi, xf, yf, T, textura, flipX?, flipY?, escala? }
      */
-    constructor(cena, { xi, yi, xf, yf, T, pausaMs = 2000, escala = 1, jogadorSprite }) {
-        this._cena = cena;
+    constructor(cena, { segmentos, pausaMs = 2000, pausaSegMs = 0, escala = 1, jogadorSprite }) {
+        this._cena        = cena;
+        this._segmentos   = segmentos;
+        this._pausaMs     = pausaMs;
+        this._pausaSegMs  = pausaSegMs;
+        this._escalaGlobal = escala;
 
-        // ── 1. Parâmetros de entrada ───────────────────────────────────────────
-        this.xi      = xi;
-        this.yi      = yi;
-        this.xf      = xf;
-        this.yf      = yf;
-        this.T       = T;
-        this._pausaMs = pausaMs;
+        // ── Estado ─────────────────────────────────────────────────────────────
+        this._segAtual        = 0;
+        this._iniciado        = false;
+        this._emPausa         = false;
+        this._pausaInicioMs   = 0;
+        this._t0Ms            = 0;
+        this._pausaFimLoop    = false;   // true = pausa pós-loop completo
 
-        // ── 2. Parâmetros derivados ────────────────────────────────────────────
-        // MU — eixo X:  vx = (xf - xi) / T
-        this.vx = (xf - xi) / T;
-
-        // MUV — eixo Y (v0y = 0):  ay = 2*(yf - yi) / T²
-        this.ay = (2 * (yf - yi)) / (T * T);
-
-        // ── 3. Estado do ciclo ─────────────────────────────────────────────────
-        this._iniciado       = false;
-        this._ativo          = true;
-        this._t0Ms           = 0;
-        this._emPausa        = false;
-        this._pausaInicioMs  = 0;
-
-        // ── 4. Sprite com corpo físico dinâmico ────────────────────────────────
-        this.sprite = cena.physics.add.image(xi, yi, 'carro_cielo')
+        // ── Sprite inicial (primeiro segmento) ────────────────────────────────
+        const s0 = segmentos[0];
+        this.sprite = cena.physics.add.image(s0.xi, s0.yi, s0.textura)
             .setDepth(6)
-            .setScale(escala)
+            .setScale(s0.escala ?? escala)
+            .setFlipX(s0.flipX ?? false)
+            .setFlipY(s0.flipY ?? false)
             .setImmovable(false);
 
         this.sprite.body.setAllowGravity(false);
 
-        // ── 5. Colisão com o jogador ───────────────────────────────────────────
         if (jogadorSprite) {
             cena.physics.add.collider(this.sprite, jogadorSprite);
         }
 
-        // ── 6. Log de inicialização ────────────────────────────────────────────
-        console.log('=== CarroCielo: INICIALIZADO ===');
-        console.log('  Parâmetros de entrada:');
-        console.log('    xi =', xi, 'px  |  yi =', yi, 'px');
-        console.log('    xf =', xf, 'px  |  yf =', yf, 'px');
-        console.log('    T  =', T, 's   |  pausa =', pausaMs, 'ms');
-        console.log('  Parâmetros derivados:');
-        console.log('    [MU  eixo X] vx =', this.vx.toFixed(4), 'px/s  (constante)');
-        console.log('    [MUV eixo Y] ay =', this.ay.toFixed(4), 'px/s² (v0y = 0)');
-        console.log('================================');
+        // Pré-calcula parâmetros cinemáticos do segmento inicial
+        this._calcularParametros();
+
+        // ── Log ───────────────────────────────────────────────────────────────
+        console.log('=== CarroCielo: INICIALIZADO (%d segmentos) ===', segmentos.length);
+        segmentos.forEach((s, i) => {
+            const vx = (s.xf - s.xi) / s.T;
+            const ay = (2 * (s.yf - s.yi)) / (s.T * s.T);
+            console.log(
+                '  [seg %d] %s  xi=%d yi=%d → xf=%d yf=%d  T=%ds' +
+                '  [MU]  vx=%.4f px/s  [MUV] ay=%.4f px/s²  flipX=%s flipY=%s',
+                i, s.textura, s.xi, s.yi, s.xf, s.yf, s.T,
+                vx, ay,
+                s.flipX ?? false,
+                s.flipY ?? false
+            );
+        });
+        console.log('  pausa loop=', pausaMs, 'ms  pausa seg=', pausaSegMs, 'ms');
+        console.log('================================================');
     }
 
-    // ──────────────────────────────────────────────────────────────────────────
+    // ─────────────────────────────────────────────────────────────────────────
+    // _calcularParametros()
+    //   Deriva vx e ay para o segmento corrente usando as equações cinemáticas.
+    // ─────────────────────────────────────────────────────────────────────────
+    _calcularParametros() {
+        const s = this._segmentos[this._segAtual];
+
+        this.xi = s.xi;
+        this.yi = s.yi;
+        this.xf = s.xf;
+        this.yf = s.yf;
+        this.T  = s.T;
+
+        // MU — eixo X:  vx = (xf - xi) / T
+        this.vx = (s.xf - s.xi) / s.T;
+
+        // MUV — eixo Y (v0y = 0):  ay = 2*(yf - yi) / T²
+        this.ay = (2 * (s.yf - s.yi)) / (s.T * s.T);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    // _aplicarSegmento()
+    //   Atualiza textura, flip e escala do sprite para o segmento atual.
+    // ─────────────────────────────────────────────────────────────────────────
+    _aplicarSegmento() {
+        const s = this._segmentos[this._segAtual];
+        this.sprite.setTexture(s.textura);
+        this.sprite.setFlipX(s.flipX ?? false);
+        this.sprite.setFlipY(s.flipY ?? false);
+        this.sprite.setScale(s.escala ?? this._escalaGlobal);
+        this._calcularParametros();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
     // atualizar(timeNowMs)
-    //   Chamado a cada frame pela cena (this.time.now, em ms).
-    //   Calcula posição por cinemática pura e reposiciona o corpo físico.
-    // ──────────────────────────────────────────────────────────────────────────
+    //   Chamado a cada frame. Calcula posição por cinemática pura e reposiciona
+    //   o corpo físico via body.reset().
+    // ─────────────────────────────────────────────────────────────────────────
     atualizar(timeNowMs) {
 
-        // Gerenciamento de pausa entre ciclos
+        // ── Gerenciamento de pausa (entre segmentos ou fim de loop) ──────────
         if (this._emPausa) {
-            if (timeNowMs - this._pausaInicioMs >= this._pausaMs) {
-                this._iniciarCiclo(timeNowMs);
+            const duracao = this._pausaFimLoop ? this._pausaMs : this._pausaSegMs;
+            if (timeNowMs - this._pausaInicioMs >= duracao) {
+                this._emPausa = false;
+                this._iniciado = false;
             }
             this.sprite.body.setVelocity(0, 0);
             return;
         }
 
+        // ── Inicializa o segmento atual ───────────────────────────────────────
         if (!this._iniciado) {
             this._t0Ms     = timeNowMs;
             this._iniciado = true;
+            this._aplicarSegmento();
+            this.sprite.body.reset(this.xi, this.yi);
         }
 
-        // Tempo decorrido em segundos
+        // Tempo decorrido no segmento (segundos)
         const t = (timeNowMs - this._t0Ms) / 1000;
 
-        // Condicional de fim de ciclo
+        // ── Fim do segmento ───────────────────────────────────────────────────
         if (t >= this.T) {
             this.sprite.body.reset(this.xf, this.yf);
             this.sprite.body.setVelocity(0, 0);
-            this._emPausa       = true;
-            this._pausaInicioMs = timeNowMs;
-            this._iniciado      = false;
-            console.log('[CarroCielo] Ciclo concluído. Pausando por', this._pausaMs, 'ms.');
+
+            const proximoSeg = (this._segAtual + 1) % this._segmentos.length;
+            const fimDeLoop  = proximoSeg === 0;
+
+            this._segAtual = proximoSeg;
+            this._iniciado = false;
+
+            if (fimDeLoop && this._pausaMs > 0) {
+                // Pausa longa ao fim do loop completo
+                this._emPausa      = true;
+                this._pausaFimLoop = true;
+                this._pausaInicioMs = timeNowMs;
+                console.log('[CarroCielo] Loop completo. Pausando %dms.', this._pausaMs);
+            } else if (!fimDeLoop && this._pausaSegMs > 0) {
+                // Pausa curta na virada de segmento (esquina)
+                this._emPausa      = true;
+                this._pausaFimLoop = false;
+                this._pausaInicioMs = timeNowMs;
+                console.log('[CarroCielo] Fim seg %d → próx %d. Pausando %dms.',
+                    this._segAtual - 1, this._segAtual, this._pausaSegMs);
+            }
             return;
         }
 
@@ -134,37 +206,16 @@ export default class CarroCielo {
         // x(t) = xi + vx * t
         const x = this.xi + this.vx * t;
 
-        console.log(
-            '[MU  X] t=' + t.toFixed(3) + 's' +
-            ' | vx=' + this.vx.toFixed(4) + ' px/s' +
-            ' | x=' + x.toFixed(2) + ' px'
-        );
-
         // ── MUV — eixo Y ──────────────────────────────────────────────────────
         // v0y = 0  →  ay = 2*(yf - yi) / T²
         // vy(t) = ay * t
         // y(t)  = yi + (1/2) * ay * t²
-        const vy = this.ay * t;
-        const y  = this.yi + (0.5 * this.ay * t * t);
+        const y = this.yi + (0.5 * this.ay * t * t);
 
-        console.log(
-            '[MUV Y] t=' + t.toFixed(3) + 's' +
-            ' | ay=' + this.ay.toFixed(4) + ' px/s²' +
-            ' | vy=' + vy.toFixed(4) + ' px/s' +
-            ' | y=' + y.toFixed(2) + ' px'
-        );
-
-        // Aplica posição diretamente ao corpo físico
+        // Reposiciona o corpo físico mantendo colisão ativa
         this.sprite.body.reset(x, y);
     }
 
-    _iniciarCiclo(timeNowMs) {
-        this._emPausa  = false;
-        this._iniciado = false;
-        this._t0Ms     = timeNowMs;
-        this.sprite.body.reset(this.xi, this.yi);
-        console.log('[CarroCielo] Novo ciclo iniciado.');
-    }
-
-    get estaAtivo() { return this._ativo; }
+    get segmentoAtual() { return this._segAtual; }
+    get emPausa()       { return this._emPausa;  }
 }
