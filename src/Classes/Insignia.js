@@ -38,13 +38,20 @@ export default class Insignia {
             nome:            'Rei do Varejo',
             assetKey:        'insignia_vila_varejo',
             assetPath:       'assets/insignias/InsigniaProduto1.png',
-            negociacaoChave: 'varejo_vencido',
+            negociacaoChave: 'thaina_vencida',
         },
         praia_proveitos: {
-            nome:            'Mestre da Praia',
+            nome:            'Ancião dos Proveitos',
             assetKey:        'insignia_praia_proveitos',
-            assetPath:       'assets/insignias/InsigniaProduto1.png', // TODO: substituir pelo asset definitivo
+            assetPath:       'assets/insignias/InsigniaNegociacao1.png', 
             negociacaoChave: 'julia_vencida',
+        },
+
+        praia_proveitos: {
+            nome:            'Mestre das Vendas',
+            assetKey:        'insignia_cidade_cielo',
+            assetPath:       'assets/insignias/InsigniaCidadeCielo1.png', 
+            negociacaoChave: 'cidade_cielo_vencida',
         },
         // Adicione novas insígnias aqui seguindo o mesmo padrão.
     };

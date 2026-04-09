@@ -3,7 +3,7 @@ import CartaAbordagem   from '../Classes/FasesNegociacao/CartaAbordagem.js';
 import CartaSondagem    from '../Classes/FasesNegociacao/CartaSondagem.js';
 import CartaDemonstracao from '../Classes/FasesNegociacao/CartaDemonstracao.js';
 import CartaNegociacao  from '../Classes/FasesNegociacao/CartaNegociacao.js';
-import Insignia         from '../Classes/Insignias.js';
+import Insignia         from '../Classes/Insignia.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoJulia.js — Cliente da Praia dos Proveitos
