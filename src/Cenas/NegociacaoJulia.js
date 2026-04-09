@@ -1,28 +1,33 @@
-import CenaNegociacao   from '../Classes/CenaNegociacao.js';
-import CartaAbordagem   from '../Classes/FasesNegociacao/CartaAbordagem.js';
-import CartaSondagem    from '../Classes/FasesNegociacao/CartaSondagem.js';
+import CenaNegociacao    from '../Classes/CenaNegociacao.js';
+import CartaAbordagem    from '../Classes/FasesNegociacao/CartaAbordagem.js';
+import CartaSondagem     from '../Classes/FasesNegociacao/CartaSondagem.js';
 import CartaDemonstracao from '../Classes/FasesNegociacao/CartaDemonstracao.js';
-import CartaNegociacao  from '../Classes/FasesNegociacao/CartaNegociacao.js';
-import Insignia         from '../Classes/Insignia.js';
+import CartaNegociacao   from '../Classes/FasesNegociacao/CartaNegociacao.js';
+import Insignia          from '../Classes/Insignia.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoJulia.js — Cliente da Praia dos Proveitos
 //
 // FASES: abordagem → sondagem → demonstracao → negociacao
-//
-// FASE DE NEGOCIAÇÃO:
-//   O jogador precisa revelar 2 condições corretas: Suporte e Taxas.
-//   Cada uma acende um ícone próprio abaixo da barra de satisfação,
-//   seguindo o mesmo padrão visual dos ícones PIFE e aspectos.
-//
-// FASE DE DEMONSTRAÇÃO:
-//   Exibe um único ícone de estoque abaixo da barra de satisfação.
-//   Começa como interrogação e acende para 'estoque_alto' ao acertar.
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Condições que precisam ser reveladas na fase de negociação
 const CONDICOES_NEGOCIACAO  = ['suporte', 'taxa'];
 const CONDICOES_NECESSARIAS = 2;
+
+// Prefixo das texturas da Chefa — todas carregadas com 'chefa_' (minúsculo)
+const SPRITE_KEY = 'chefa';
+
+// Mapeamento: condição revelada → aspecto a acender (mesmo sistema da sondagem)
+const CONDICAO_PARA_ASPECTO = {
+    suporte: 'pessoas',
+    taxa:    'lucro',
+};
+
+// Dimensões dos ícones de aspecto — devem ser idênticas às de _criarIconesAspectos() na base
+const ICONE_LARGURA = 48; // iconeH (24) * 2
+const ICONE_ALTURA  = 24;
+
+
 
 export default class NegociacaoJulia extends CenaNegociacao {
     constructor() {
@@ -39,11 +44,8 @@ export default class NegociacaoJulia extends CenaNegociacao {
         };
 
         this._condicoesReveladas = new Set();
-        this._iconesNegociacao   = {};
-
-        // Referências do ícone exclusivo da demonstração
-        this._bgIconeDemo  = null;
-        this._iconeDemo    = null;
+        this._bgIconeDemo        = null;
+        this._iconeDemo          = null;
     }
 
     // ── Preload ───────────────────────────────────────────────────────────────
@@ -52,19 +54,18 @@ export default class NegociacaoJulia extends CenaNegociacao {
         super.preload();
 
         this.load.image('julia_fundo',      'assets/NPC/JULIA/loja_chefa_negociacao.png');
+
+        // Texturas da sprite da Chefa — sempre com prefixo minúsculo 'chefa_'
         this.load.image('chefa_satisfeito', 'assets/NPC/JULIA/CHEFE_FELIZ.png');
         this.load.image('chefa_neutro',     'assets/NPC/JULIA/CHEFE_NEUTRA.png');
         this.load.image('chefa_bravo',      'assets/NPC/JULIA/CHEFE_IRRITADA.png');
 
-        // ── Ícone único da fase de demonstração (reutiliza assets de sondagem) ──
         this.load.image('demo_estoque_off', 'assets/Icones/Sondagem/icone_caixa_baixo_off.png');
         this.load.image('demo_estoque_on',  'assets/Icones/Sondagem/icone_caixa_cima.png');
 
-        // ── Ícones da fase de negociação — suporte e taxa ──
-        CONDICOES_NEGOCIACAO.forEach(c => {
-            this.load.image(`negociacao_${c}_off`, `assets/Icones/Negociacao/negociacao_${c}_off.png`);
-            this.load.image(`negociacao_${c}_on`,  `assets/Icones/Negociacao/negociacao_${c}_on.png`);
-        });
+        // Os ícones de negociação reutilizam os assets da sondagem —
+        // já carregados pelo super.preload() via CenaNegociacao.
+        // Nenhum asset adicional de negociação é necessário aqui.
 
         Insignia.preload(this);
     }
@@ -80,25 +81,55 @@ export default class NegociacaoJulia extends CenaNegociacao {
         const barraX = W - barraW / 2 - 40;
         const barraY = H * 0.08;
 
-        // Cria os ícones de negociação já na inicialização (ocultos)
-        this._criarIconesNegociacao(barraX, barraW, barraY);
-
-        // Cria o ícone de demonstração já na inicialização (oculto)
         this._criarIconeDemo(barraX, barraY);
-
-        this.add.image(0, 0, 'julia_fundo').setOrigin(0, 0).setDisplaySize(this.scale.width, this.scale.height);
     }
 
-    // ── Posição da sprite da Julia ────────────────────────────────────────────
+    // ── Fundo — sobrescreve a base para usar 'julia_fundo' no lugar certo ────
+
+    _criarFundo(W, H) {
+        if (this.textures.exists('julia_fundo')) {
+            this.add.image(0, 0, 'julia_fundo')
+                .setOrigin(0, 0)
+                .setDisplaySize(W, H)
+                .setDepth(0);
+        } else {
+            this.add.rectangle(0, 0, W, H * 0.6, 0x111a24).setOrigin(0, 0).setDepth(0);
+        }
+
+        if (this.textures.exists('balcao')) {
+            this.add.image(W / 2, H * 0.79, 'balcao').setDisplaySize(W, H * 0.42).setDepth(1);
+        } else {
+            this.add.rectangle(0, H * 0.58, W, H * 0.42, 0x0a0f14).setOrigin(0, 0).setDepth(1);
+        }
+
+        const div = this.add.graphics().setDepth(1);
+        div.lineStyle(2, 0x2a4a6a, 0.8);
+        div.lineBetween(0, H * 0.58, W, H * 0.58);
+    }
+
+    // ── Cartas — depth 2 para ficarem na frente do balcão (depth 1) ──────────
+
+    _criarFundoCarta(x, y, key) {
+        const { CARD_WIDTH, CARD_HEIGHT } = CenaNegociacao;
+        const obj = this.textures.exists(key)
+            ? this.add.image(x, y, key).setDisplaySize(CARD_WIDTH, CARD_HEIGHT)
+            : this.add.rectangle(x, y, CARD_WIDTH, CARD_HEIGHT, 0x0d1f2e).setStrokeStyle(2, 0x1a4a6a);
+        return obj.setDepth(2).setInteractive({ useHandCursor: true });
+    }
+
+    // ── Área do cliente ───────────────────────────────────────────────────────
 
     _criarAreaCliente(W, H) {
         const nome         = this.clienteConfig.nomeCliente;
-        const chaveInicial = `${nome}_${this._getEstadoSatisfacao()}`;
+        const chaveInicial = `${SPRITE_KEY}_${this._getEstadoSatisfacao()}`;
 
         this.add.text(W / 2, H * 0.04, nome, {
             fontFamily: '"Courier New", monospace',
-            fontSize: '26px', color: '#c8e6f0', letterSpacing: 4,
-            stroke: '#000000', strokeThickness: 3,
+            fontSize:   '26px',
+            color:      '#c8e6f0',
+            letterSpacing: 4,
+            stroke:          '#000000',
+            strokeThickness: 3,
         }).setOrigin(0.5);
 
         this.spriteCliente = this.textures.exists(chaveInicial)
@@ -106,13 +137,30 @@ export default class NegociacaoJulia extends CenaNegociacao {
             : this.add.rectangle(W / 2, H * 0.28, 100, 150, 0x1a3a5a).setStrokeStyle(2, 0x2a6a9a);
     }
 
-    // ── Ícone exclusivo da demonstração ──────────────────────────────────────
+    // ── Atualização da sprite ─────────────────────────────────────────────────
+
+    _atualizarSpriteCliente() {
+        const chave = `${SPRITE_KEY}_${this._getEstadoSatisfacao()}`;
+        if (!this.textures.exists(chave)) return;
+
+        this.tweens.add({
+            targets:  this.spriteCliente,
+            alpha:    0,
+            duration: 150,
+            onComplete: () => {
+                if (this.spriteCliente?.setTexture) this.spriteCliente.setTexture(chave);
+                this.tweens.add({ targets: this.spriteCliente, alpha: 1, duration: 150 });
+            },
+        });
+    }
+
+    // ── Ícone exclusivo da demonstração ───────────────────────────────────────
 
     _criarIconeDemo(barraX, barraY) {
         const iconeH  = 24;
         const largura = iconeH * 2;
         const pad     = 8;
-        const y       = barraY + 53;    // mesma linha dos ícones PIFE/aspectos
+        const y       = barraY + 53;
 
         this._bgIconeDemo = this.add
             .rectangle(barraX, y, largura + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
@@ -141,80 +189,15 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
         this.tweens.add({
             targets:  this._iconeDemo,
-            scaleX:   1.3,
-            scaleY:   1.3,
-            duration: 150,
-            yoyo:     true,
-            ease:     'Back.easeOut',
-        });
-    }
-
-    // ── Ícones da fase de negociação ──────────────────────────────────────────
-
-    _criarIconesNegociacao(barraX, barraW, barraY) {
-        const iconeH  = 28;
-        const largura = iconeH * 2;
-        const espaco  = 6;
-        const totalW  = CONDICOES_NEGOCIACAO.length * largura + (CONDICOES_NEGOCIACAO.length - 1) * espaco;
-        const startX  = barraX - totalW / 2 + largura / 2;
-        const y       = barraY + 80;
-        const pad     = 8;
-
-        this._bgNegociacao = this.add
-            .rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
-            .setStrokeStyle(1, 0x555555)
-            .setDepth(49)
-            .setVisible(false);
-
-        this._iconesNegociacao = {};
-
-        CONDICOES_NEGOCIACAO.forEach((condicao, i) => {
-            const x        = startX + i * (largura + espaco);
-            const chaveOff = `negociacao_${condicao}_off`;
-            const chaveOn  = `negociacao_${condicao}_on`;
-
-            const icone = this.textures.exists(chaveOff)
-                ? this.add.image(x, y, chaveOff).setDisplaySize(largura, iconeH).setDepth(50)
-                : this.add.rectangle(x, y, largura, iconeH, 0x333333)
-                    .setStrokeStyle(1, 0x555555)
-                    .setDepth(50);
-
-            icone.setVisible(false);
-
-            this._iconesNegociacao[condicao] = { obj: icone, chaveOff, chaveOn };
-        });
-    }
-
-    _setIconesNegociacaoVisiveis(visivel) {
-        this._bgNegociacao?.setVisible(visivel);
-        for (const d of Object.values(this._iconesNegociacao)) d.obj.setVisible(visivel);
-    }
-
-    _revelarIconeNegociacao(condicao) {
-        const d = this._iconesNegociacao[condicao];
-        if (!d) return;
-
-        if (this.textures.exists(d.chaveOn) && d.obj.setTexture) {
-            d.obj.setTexture(d.chaveOn);
-        } else if (d.obj.setFillStyle) {
-            d.obj.setFillStyle(0x22cc66);
-        }
-
-        this.tweens.add({
-            targets:  d.obj,
             scaleX:   1.3, scaleY: 1.3,
-            duration: 150, yoyo: true,
+            duration: 150, yoyo:   true,
             ease:     'Back.easeOut',
         });
     }
 
     // ── Insígnia e vitória ────────────────────────────────────────────────────
 
-    _aoVencer() {
-        const insignia = new Insignia(this, 'praia_proveitos');
-        insignia.conceder();
-    }
-
+    _aoVencer()     { new Insignia(this, 'praia_proveitos').conceder(); }
     _chaveVitoria() { return 'julia_vencida'; }
 
     // ── Controle de fases ─────────────────────────────────────────────────────
@@ -225,25 +208,111 @@ export default class NegociacaoJulia extends CenaNegociacao {
         const fase = this.clienteConfig.fases[this.faseAtual];
 
         if (fase === 'demonstracao') {
-            this._setIconesNegociacaoVisiveis(false);
             this._setAspectosVisiveis(false);
-            this._setIconeDemoVisivel(true);          // ← ícone de estoque aparece
+            this._setIconeDemoVisivel(true);
             this._distribuirCartasDemonstracao();
 
         } else if (fase === 'negociacao') {
             this._condicoesReveladas = new Set();
             this._setPIFEVisivel(false);
-            this._setAspectosVisiveis(false);
-            this._setIconeDemoVisivel(false);         // ← ícone de estoque some
-            this._setIconesNegociacaoVisiveis(true);
+            this._setIconeDemoVisivel(false);
+
+            // Exibe apenas os ícones de 'pessoas' e 'lucro', resetados para
+            // interrogação (cinza) com o tamanho correto. Oculta 'estoque'.
+            this._resetarIconesNegociacao();
+
             this._limparCartas();
             this._distribuirCartasNegociacao();
 
         } else {
-            // 'abordagem' e 'sondagem': super fez tudo
-            this._setIconesNegociacaoVisiveis(false);
+            // 'abordagem' e 'sondagem': super faz tudo
             this._setIconeDemoVisivel(false);
         }
+    }
+
+    // ── Reset dos ícones de aspecto para a fase de negociação ─────────────────
+    //
+    // Redimensiona o _bgAspectos para exatamente 2 ícones (pessoas + lucro),
+    // reposiciona os ícones centralizados dentro do novo retângulo,
+    // e oculta o estoque que não participa da negociação.
+
+    _resetarIconesNegociacao() {
+        // Esconde estoque — não é usado na negociação
+        const dEstoque = this._iconesAspectos['estoque'];
+        if (dEstoque) dEstoque.obj.setVisible(false);
+
+        // Recalcula dimensões para exatamente 2 ícones (pessoas + lucro)
+        const espaco        = 6;
+        const pad           = 8;
+        const totalW        = ICONE_LARGURA * 2 + espaco;
+        const novaLarguraBg = totalW + pad * 2;
+
+        // Redimensiona o retângulo de fundo para caber só 2 ícones
+        if (this._bgAspectos) {
+            this._bgAspectos.setSize(novaLarguraBg, ICONE_ALTURA + pad * 2);
+            this._bgAspectos.setVisible(true);
+        }
+
+        // Reposiciona os ícones centralizados dentro do novo retângulo
+        const centroX = this._bgAspectos?.x ?? 0;
+        const startX  = centroX - totalW / 2 + ICONE_LARGURA / 2;
+        const y       = this._bgAspectos?.y ?? 0;
+
+        for (const [i, aspecto] of ['pessoas', 'lucro'].entries()) {
+            const d     = this._iconesAspectos[aspecto];
+            const chave = `sondagem_${aspecto}_interrogacao`;
+            if (!d) continue;
+
+            // Reposiciona centralizado no novo fundo
+            d.obj.setPosition(startX + i * (ICONE_LARGURA + espaco), y);
+
+            if (this.textures.exists(chave) && d.obj.setTexture) {
+                d.obj.setTexture(chave);
+            } else if (d.obj.setFillStyle) {
+                d.obj.setFillStyle(0x333333);
+            }
+
+            // Força o tamanho de volta ao original — o tween de pulso pode
+            // ter deixado a escala em valor diferente de 1
+            if (d.obj.setDisplaySize) {
+                d.obj.setDisplaySize(ICONE_LARGURA, ICONE_ALTURA);
+            } else {
+                d.obj.setScale(1);
+            }
+
+            d.obj.setVisible(true);
+        }
+    }
+
+    // ── Revelar ícone de aspecto — sobrescreve a base para garantir o tamanho ─
+    //
+    // A base faz setTexture mas não chama setDisplaySize depois, o que faz a
+    // imagem assumir seu tamanho natural (geralmente muito maior).
+    // Aqui forçamos as dimensões corretas logo após a troca de textura.
+
+    _revelarIconeAspecto(aspecto) {
+        const d = this._iconesAspectos[aspecto];
+        if (!d) return;
+
+        const valor = this.aspectosCliente[aspecto];
+        const chave = `sondagem_${aspecto}_${valor}`;
+
+        if (this.textures.exists(chave) && d.obj.setTexture) {
+            d.obj.setTexture(chave);
+            // Reaplica o tamanho correto após trocar a textura
+            if (d.obj.setDisplaySize) d.obj.setDisplaySize(ICONE_LARGURA, ICONE_ALTURA);
+        } else if (d.obj.setFillStyle) {
+            d.obj.setFillStyle(0x22cc66);
+        }
+
+        this.tweens.add({
+            targets:  d.obj,
+            scaleX:   1.3,
+            scaleY:   1.3,
+            duration: 150,
+            yoyo:     true,
+            ease:     'Back.easeOut',
+        });
     }
 
     // ── _mostrarDetalheCarta ──────────────────────────────────────────────────
@@ -286,7 +355,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 key:           'Interesse',
                 letra:         'I',
                 correta:       true,
-                dialogoAcerto: ' Sou a Julia.',
+                dialogoAcerto: 'Sou a Julia.',
                 dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
             }),
             new CartaAbordagem({
@@ -358,16 +427,15 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // ── Fase de demonstração ──────────────────────────────────────────────────
 
     _distribuirCartasDemonstracao() {
-        // Julia: aspectosCliente = { pessoas: 'alto', lucro: 'baixo', estoque: 'alto' }
         const pool = [
-            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // 3/3 — correta
-            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
-            new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
-            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
-            new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }), // 1/3 — -20
-            new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // carta correta
+            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }),
+            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }),
+            new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }),
+            new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }),
+            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }),
+            new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }),
+            new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }),
         ];
 
         const correta = pool[0];
@@ -376,7 +444,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         this._distribuirCartas(cartas);
     }
 
-    // Modal reutilizável — demonstração e negociação
     _abrirModalApresentar(carta, aoSelecionar) {
         this.cartaEmDetalhes = carta;
 
@@ -420,7 +487,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
         this.negociacaoAtiva = false;
 
         if (acertos === 3) {
-            this._acenderIconeDemo();  // ← acende o ícone de estoque_alto
+            this._acenderIconeDemo();
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._mostrarDialogo('Perfeito! Esse produto resolve exatamente o que eu precisava.');
             this.time.delayedCall(4000, () => {
@@ -479,7 +546,9 @@ export default class NegociacaoJulia extends CenaNegociacao {
         if (carta.correta) {
             if (!this._condicoesReveladas.has(carta.condicao)) {
                 this._condicoesReveladas.add(carta.condicao);
-                this._revelarIconeNegociacao(carta.condicao);
+                // Acende o ícone de aspecto correspondente — mesmo sistema da sondagem
+                const aspecto = CONDICAO_PARA_ASPECTO[carta.condicao];
+                if (aspecto) this._revelarIconeAspecto(aspecto);
             }
 
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
@@ -565,7 +634,5 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     // ── Retorno de cena ───────────────────────────────────────────────────────
 
-    _cenaDeRetorno() {
-        return 'PraiaDosProveitos';
-    }
+    _cenaDeRetorno() { return 'PraiaDosProveitos'; }
 }

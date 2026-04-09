@@ -201,7 +201,7 @@ export default class CenaPersonagem extends Phaser.Scene {
         // Fluxo correto: CenaPersonagem → CenaIntroducao → CasaCielita → MundoDaCielita → QuebraGelo
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
-            this.scene.start('CidadeCielo');
+            this.scene.start('NegociacaoJulia');
         });
     }
 }
