@@ -103,14 +103,14 @@ export default class MundoDaCielita extends CenaMapa {
         this.cameras.main.startFollow(this.personagem.sprite);
 
         // Árvores de ambientação
-        this.add.sprite(620, 310, 'arvore4').setDepth(310 + 35 - 10);
-        this.add.sprite(720, 420, 'arvore1').setDepth(400 + 45 - 10);
-        this.add.sprite(650, 500, 'arvore2').setDepth(480 + 45 - 10);
-        this.add.sprite(820, 280, 'arvore3').setDepth(270 + 45 - 10);
-        this.add.sprite(900, 480, 'arvore4').setDepth(465 + 45 - 10);
-        this.add.sprite(780, 490, 'arvore1').setDepth(470 + 45 - 10);
-        this.add.sprite(920, 350, 'arvore2').setDepth(330 + 45 - 10);
-        this.add.sprite(720, 320, 'arvore4').setDepth(310 + 45 - 10);
+        this.add.image(620, 310, 'arvore4').setDepth(310 + 35 - 10);
+        this.add.image(720, 420, 'arvore1').setDepth(400 + 45 - 10);
+        this.add.image(650, 500, 'arvore2').setDepth(480 + 45 - 10);
+        this.add.image(820, 280, 'arvore3').setDepth(270 + 45 - 10);
+        this.add.image(900, 480, 'arvore4').setDepth(465 + 45 - 10);
+        this.add.image(780, 490, 'arvore1').setDepth(470 + 45 - 10);
+        this.add.image(920, 350, 'arvore2').setDepth(330 + 45 - 10);
+        this.add.image(720, 320, 'arvore4').setDepth(310 + 45 - 10);
 
         // Hitbox das árvores
         const h1 = this.add.rectangle(618, 310 + 35, 24, 12, 0xff0000, 0);
