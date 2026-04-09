@@ -852,8 +852,9 @@ export default class CenaNegociacao extends Phaser.Scene {
             ? this.add.image(W / 2, H / 2 - 50, insignia.key).setDisplaySize(180, 180).setDepth(LAYERS.MODAL)
             : this.add.rectangle(W / 2, H / 2 - 50, 180, 180, 0x1a3a5a).setStrokeStyle(2, 0xf0c040).setDepth(LAYERS.MODAL);
 
+        const escalaFinal = 180 / Math.max(imgInsignia.width, imgInsignia.height);
         imgInsignia.setScale(0);
-        this.tweens.add({ targets: imgInsignia, scaleX: 1, scaleY: 1, duration: 400, ease: 'Back.easeOut' });
+        this.tweens.add({ targets: imgInsignia, scaleX: escalaFinal, scaleY: escalaFinal, duration: 400, ease: 'Back.easeOut' });
 
         const nomeTexto = this.add.text(W / 2, H / 2 + 100, insignia.nome, {
             fontFamily: '"Courier New", monospace', fontSize: '22px', color: '#ffffff',

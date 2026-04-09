@@ -1,7 +1,7 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
 import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
 import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
-import Insignia       from '../Classes/Insignias.js';
+import Insignia       from '../Classes/Insignia.js';
 
 const PONTUACAO_PRODUTO = {
     CieloLioOn:  10,
@@ -32,11 +32,12 @@ export default class NegociacaoPedro extends CenaNegociacao {
         Insignia.preload(this);
     }
 
-    _aoVencer() {
-        const insignia = new Insignia(this, 'mapa_gelo');
-        insignia.conceder();
+    _getInsignia() {
+        return {
+            key:  'insignia_mapa_gelo',
+            nome: 'Mestre do Gelo',
+        };
     }
-
     _chaveVitoria() {
         return 'pedro_vencido';
     }
