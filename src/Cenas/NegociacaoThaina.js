@@ -87,9 +87,11 @@ export default class NegociacaoThaina extends CenaNegociacao {
 
     // ── Insígnia e vitória ────────────────────────────────────────────────────
 
-    _aoVencer() {
-        const insignia = new Insignia(this, 'produto1');
-        insignia.conceder();
+    _getInsignia() {
+        return {
+            key:  'insignia_vila_varejo',
+            nome: 'Rei do Varejo',
+        };
     }
 
     _chaveVitoria() { return 'varejo_vencido'; }
