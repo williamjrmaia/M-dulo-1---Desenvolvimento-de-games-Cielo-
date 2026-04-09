@@ -7,17 +7,12 @@ import Insignia        from '../Classes/Insignias.js';
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoJulia.js — Cliente da Praia dos Proveitos
 //
-<<<<<<< HEAD
 // FASES: abordagem → sondagem → demonstracao → negociacao
 //
 // FASE DE NEGOCIAÇÃO:
 //   O jogador precisa revelar 2 condições corretas: Suporte e Taxas.
 //   Cada uma acende um ícone próprio abaixo da barra de satisfação,
 //   seguindo o mesmo padrão visual dos ícones PIFE e aspectos.
-=======
-// FASES: abordagem (PIFE+CPC) → sondagem (aspectos) → demonstracao (produtos)
-//        → beneficios (taxa / prazo / suporte)
->>>>>>> dev
 // ─────────────────────────────────────────────────────────────────────────────
 
 const PONTUACAO_PRODUTO_PADRAO = {
@@ -43,37 +38,18 @@ const PONTUACAO_BENEFICIO_PADRAO = {
     Recuo:        0,
 };
 
-<<<<<<< HEAD
 const PRODUTOS_NECESSARIOS  = 3;
 
 // Condições que precisam ser reveladas na fase de negociação
 const CONDICOES_NEGOCIACAO  = ['suporte', 'taxa'];
 const CONDICOES_NECESSARIAS = 2;
-=======
-const BENEFICIOS_CORRETOS = new Set(['Ajuste', 'Antecipacao', 'Validacao']);
-const BENEFICIOS_ERRADOS  = ['Comparativo', 'Recuo'];
-
-const PRODUTOS_NECESSARIOS   = 3;
-const BENEFICIOS_NECESSARIOS = 3;
-const BENEFICIOS = ['taxa', 'prazo', 'suporte'];
->>>>>>> dev
 
 export default class NegociacaoJulia extends CenaNegociacao {
     constructor() {
         super('NegociacaoJulia', {
             nomeCliente:       'Chefa',
             satisfacaoInicial: 0,
-<<<<<<< HEAD
             fases:             ['abordagem', 'sondagem', 'demonstracao', 'negociacao'],
-=======
-            fases:             ['abordagem', 'sondagem', 'demonstracao', 'beneficios'],
-            cartasPorFase: {
-                abordagem:    5,
-                sondagem:     5,
-                demonstracao: 4,
-                beneficios:   3,
-            },
->>>>>>> dev
         });
 
         this.aspectosCliente = {
@@ -82,15 +58,9 @@ export default class NegociacaoJulia extends CenaNegociacao {
             estoque: 'alto',
         };
 
-<<<<<<< HEAD
         this._produtosSelecionados = [];
         this._condicoesReveladas   = new Set();
         this._iconesNegociacao     = {};
-=======
-        this._produtosSelecionados   = [];
-        this._beneficiosSelecionados = [];
-        this._iconesBeneficios       = {};
->>>>>>> dev
     }
 
     // ── Preload ───────────────────────────────────────────────────────────────
@@ -121,7 +91,11 @@ export default class NegociacaoJulia extends CenaNegociacao {
         // TODO: adicionar entrada 'praia_proveitos' em Insignia.CATALOGO e conceder aqui
     }
 
-<<<<<<< HEAD
+    // ── Create ────────────────────────────────────────────────────────────────
+
+    create() {
+        super.create();
+
         const W      = this.scale.width;
         const H      = this.scale.height;
         const barraW = 300;
@@ -130,22 +104,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
         // Cria os ícones já na inicialização (ocultos), igual ao que o super
         // faz com _criarIconesPIFE e _criarIconesAspectos.
-        this._criarIconesNegociacao(barraX, barraW, barraY);
-=======
-    _chaveVitoria() { return 'julia_vencida'; }
-
-    // ── Pontuação ─────────────────────────────────────────────────────────────
-
-    _getPontuacaoCarta(key) {
-        if (BENEFICIOS_CORRETOS.has(key) || BENEFICIOS_ERRADOS.includes(key)) {
-            return PONTUACAO_BENEFICIO_PADRAO[key] ?? 0;
-        }
-        return PONTUACAO_PRODUTO_PADRAO[key] ?? 0;
-    }
-
-    _beneficioEstaErrado(key) {
-        return BENEFICIOS_ERRADOS.includes(key);
->>>>>>> dev
+        this._criarIconesNegociacao(barraX, barraY);
     }
 
     // ── Posição da sprite da Julia ────────────────────────────────────────────
@@ -153,7 +112,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // da Julia de forma independente dos outros clientes (Pedro, Thaina).
     // Ajuste W * 0.5 (horizontal), H * 0.22 (vertical) e setScale(0.4) (tamanho).
 
-<<<<<<< HEAD
     _criarAreaCliente(W, H) {
         const nome         = this.clienteConfig.nomeCliente;
         const chaveInicial = `${nome}_${this._getEstadoSatisfacao()}`;
@@ -175,15 +133,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // e de aspectos — abaixo da barra de satisfação.
     // Começam ocultos e aparecem apenas na fase 'negociacao'.
 
-    _criarIconesNegociacao(barraX, barraW, barraY) {
-=======
-    _criarIconesBeneficios() {
-        const W      = this.scale.width;
-        const H      = this.scale.height;
-        const barraX = W - 300 / 2 - 40;
-        const barraY = H * 0.08;
-
->>>>>>> dev
+    _criarIconesNegociacao(barraX, barraY) {
         const iconeH  = 28;
         const largura = iconeH * 2;
         const espaco  = 6;
@@ -217,7 +167,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         });
     }
 
-<<<<<<< HEAD
     _setIconesNegociacaoVisiveis(visivel) {
         this._bgNegociacao?.setVisible(visivel);
         for (const d of Object.values(this._iconesNegociacao)) d.obj.setVisible(visivel);
@@ -253,9 +202,8 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // ── Pontuação dinâmica ────────────────────────────────────────────────────
 
     _getPontuacaoCarta(key) {
-        return this._dorTaxaRevelada()
-            ? (PONTUACAO_PRODUTO_TAXA[key]   ?? 0)
-            : (PONTUACAO_PRODUTO_PADRAO[key] ?? 0);
+        // TODO: definir PONTUACAO_PRODUTO_TAXA com valores distintos quando taxa é revelada
+        return PONTUACAO_PRODUTO_PADRAO[key] ?? 0;
     }
 
     _dorTaxaRevelada() {
@@ -274,23 +222,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
     //   - 'demonstracao': super + produtos + contador.
     //   - 'negociacao':   super + ícones próprios + cartas de negociação.
     //   - 'abordagem' / 'sondagem': super faz tudo.
-=======
-    _setIconesBeneficiosVisiveis(visivel) {
-        Object.values(this._iconesBeneficios).forEach(({ obj }) => obj.setVisible(visivel));
-    }
-
-    _acenderIconeBeneficio(beneficio) {
-        const icone = this._iconesBeneficios[beneficio];
-        if (!icone) return;
-        if (this.textures.exists(icone.chaveOn)) {
-            icone.obj.setTexture(icone.chaveOn);
-        } else {
-            icone.obj.setFillStyle(0x22cc66);
-        }
-    }
-
-    // ── Controle de fases ─────────────────────────────────────────────────────
->>>>>>> dev
 
     _iniciarFase() {
         this._produtosSelecionados   = [];
@@ -302,7 +233,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         const fase = this.clienteConfig.fases[this.faseAtual];
 
         if (fase === 'demonstracao') {
-<<<<<<< HEAD
             this._setIconesNegociacaoVisiveis(false);
             this._distribuirCartasDemonstracao();
             this._criarContadorProdutos();
@@ -322,45 +252,13 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     // ── _mostrarDetalheCarta ──────────────────────────────────────────────────
-=======
-            super._iniciarFase();
-            this._setIconesBeneficiosVisiveis(false);
-            this._distribuirCartasDemonstracao();
-            this._criarContadorProdutos();
-
-        } else if (fase === 'beneficios') {
-            this.acertosNaFase = 0;
-            this._atualizarIndicadoresFase();
-            this._mostrarDialogo(this._falaInicioFase(fase));
-            this._limparCartas();
-            this.cartaEmDetalhes = null;
-            this._setPIFEVisivel(false);
-            this._setAspectosVisiveis(false);
-            this._criarIconesBeneficios();
-            this._setIconesBeneficiosVisiveis(true);
-            this._distribuirCartasBeneficio();
-            this._criarContadorBeneficios();
-
-        } else {
-            // abordagem e sondagem: delega ao super — igual ao Pedro
-            this._setIconesBeneficiosVisiveis(false);
-            super._iniciarFase();
-        }
-    }
-
-    // ── Modal de detalhe (demonstração e benefícios) ──────────────────────────
->>>>>>> dev
 
     _mostrarDetalheCarta(carta) {
         if (!this.negociacaoAtiva || this.cartaEmDetalhes) return;
 
         const fase = this.clienteConfig.fases[this.faseAtual];
 
-<<<<<<< HEAD
         if (fase !== 'demonstracao' && fase !== 'negociacao') {
-=======
-        if (fase !== 'demonstracao' && fase !== 'beneficios') {
->>>>>>> dev
             super._mostrarDetalheCarta(carta);
             return;
         }
@@ -375,7 +273,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
             return;
         }
 
-<<<<<<< HEAD
         // fase === 'negociacao'
         if (this._condicoesReveladas.has(carta.condicao)) {
             this._mostrarDialogo('Essa condição já foi apresentada!');
@@ -468,201 +365,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         ];
     }
 
-=======
-        if (fase === 'beneficios') {
-            if (this._beneficiosSelecionados.find(c => c.key === carta.key)) {
-                this._mostrarDialogo('Você já apresentou este benefício!');
-                return;
-            }
-            const restantes = BENEFICIOS_NECESSARIOS - this._beneficiosSelecionados.length;
-            this._abrirModalApresentar(carta, restantes, () => this._selecionarBeneficio(carta));
-        }
-    }
-
-    _abrirModalApresentar(carta, restantes, aoConfirmar) {
-        this.cartaEmDetalhes = carta;
-
-        const W = this.scale.width;
-        const H = this.scale.height;
-        const { LAYERS } = CenaNegociacao;
-
-        const overlay = this.add
-            .rectangle(0, 0, W, H, 0x000000, 0.7)
-            .setOrigin(0, 0).setDepth(LAYERS.OVERLAY).setInteractive();
-
-        const cartaZoom = this._criarFundoCartaZoom(W / 2, H / 2, carta.key);
-        cartaZoom.setDepth(LAYERS.MODAL);
-
-        const labelBotao = restantes === 1
-            ? 'APRESENTAR (último!)'
-            : `APRESENTAR (faltam ${restantes})`;
-
-        const { btn: btnVoltar,     texto: textoVoltar     } = this._criarBotao(40, 40, 100, 50, 'VOLTAR',   0x1a3a5a, 0xcc4444, '#ff6666');
-        const { btn: btnSelecionar, texto: textoSelecionar } = this._criarBotao(W / 2, H / 2 + 320, 220, 50, labelBotao, 0x1a4a2a, 0x22cc66, '#22cc66');
-
-        btnVoltar.setDepth(LAYERS.MODAL);     textoVoltar.setDepth(LAYERS.MODAL_BTN);
-        btnSelecionar.setDepth(LAYERS.MODAL); textoSelecionar.setDepth(LAYERS.MODAL_BTN);
-
-        const fecharModal = () => {
-            [overlay, cartaZoom, btnVoltar, textoVoltar, btnSelecionar, textoSelecionar]
-                .forEach(obj => obj.destroy());
-            this.cartaEmDetalhes = null;
-        };
-
-        btnVoltar.on('pointerover', () => btnVoltar.setFillStyle(0x2a4a6a));
-        btnVoltar.on('pointerout',  () => btnVoltar.setFillStyle(0x1a3a5a));
-        btnVoltar.on('pointerdown', fecharModal);
-
-        btnSelecionar.on('pointerover', () => btnSelecionar.setFillStyle(0x2a6a3a));
-        btnSelecionar.on('pointerout',  () => btnSelecionar.setFillStyle(0x1a4a2a));
-        btnSelecionar.on('pointerdown', () => { fecharModal(); aoConfirmar(); });
-    }
-
-    // ── Cartas da abordagem ───────────────────────────────────────────────────
-    //
-    // COMO ADICIONAR UMA CARTA NOVA:
-    //
-    //   new CartaAbordagem({
-    //       key:           'NomeDaCartaNoAsset',  // arquivo em assets/cartas/
-    //       letra:         'P',                   // 'P', 'I', 'F', 'E' ou 'CPC'
-    //       correta:       true,                  // false = perde satisfação
-    //       dialogoAcerto: 'Fala da Julia ao acertar',
-    //       dialogoErro:   'Fala da Julia ao errar',
-    //   }),
-    //
-    //   Regras:
-    //   - Pode ter várias cartas da mesma letra (P, I, F ou E)
-    //   - Só pode haver UMA carta com letra: 'CPC', e ela deve ter correta: true
-    //   - A carta CPC só fica disponível após P, I, F e E estarem preenchidos
-    // ─────────────────────────────────────────────────────────────────────────
-
-    _getCartasAbordagem() {
-        return [
-            // ── P: Propósito ──
-            new CartaAbordagem({
-                key:           'DiretoAoPonto',
-                letra:         'P',
-                correta:       true,
-                dialogoAcerto: 'Claro! Sou o Pedro, dono do estabelecimento. Me conta mais.',
-                dialogoErro:   'Não entendi o que você veio fazer aqui.',
-            }),
-
-            // ── I: Identificação ──
-            new CartaAbordagem({
-                key:           'GanchoSocial',
-                letra:         'I',
-                correta:       true,
-                dialogoAcerto: 'Ah, conheço sim! Boa referência.',
-                dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
-            }),
-
-            // ── F: Foco ──
-            new CartaAbordagem({
-                key:           'AntiPitch',
-                letra:         'F',
-                correta:       true,
-                dialogoAcerto: 'Interessante, você não está aqui só pra vender. Pode continuar.',
-                dialogoErro:   'Parece que você só quer me vender algo.',
-            }),
-
-            // ── E: Empatia ──
-            new CartaAbordagem({
-                key:           'ComparacaoInteligente',
-                letra:         'E',
-                correta:       true,
-                dialogoAcerto: 'Faz sentido. Você entende a minha situação.',
-                dialogoErro:   'Isso não se aplica ao meu caso.',
-            }),
-
-            // ── CPC: Contato com Pessoa Certa ──
-            // Só fica disponível após P, I, F e E estarem preenchidos
-            new CartaAbordagem({
-                key:           'CartaCPC',
-                letra:         'CPC',
-                correta:       true,
-                dialogoAcerto: 'Ótimo! Você falou com a pessoa certa. Vamos continuar.',
-                dialogoErro:   '',
-            }),
-        ];
-    }
-
-    // ── Cartas da sondagem ────────────────────────────────────────────────────
-    //
-    // COMO ADICIONAR UMA CARTA NOVA:
-    //
-    //   new CartaSondagem({
-    //       key:           'NomeDaCartaNoAsset',  // arquivo em assets/cartas/
-    //       aspecto:       'lucro',               // 'pessoas', 'lucro' ou 'estoque'
-    //       correta:       true,                  // false = perde satisfação
-    //       dialogoAcerto: 'Fala da Julia revelando o aspecto',
-    //       dialogoErro:   'Fala da Julia ao errar',
-    //   }),
-    //
-    //   Regras:
-    //   - Pode ter várias cartas do mesmo aspecto (corretas e erradas)
-    //   - Uma carta errada não revela o ícone e perde satisfação
-    //   - Os três aspectos precisam ser revelados para avançar de fase
-    // ─────────────────────────────────────────────────────────────────────────
-
-    _getCartasSondagem() {
-        return [
-            // ── Pessoas ──
-            new CartaSondagem({
-                key:           'PerguntaDeImpacto',
-                aspecto:       'pessoas',
-                correta:       true,
-                dialogoAcerto: 'Atendo poucas pessoas por dia, mas são clientes fiéis.',
-                dialogoErro:   'Isso não me ajuda a entender o meu fluxo de clientes.',
-            }),
-
-            // ── Lucro ──
-            new CartaSondagem({
-                key:           'GanchoDaDor',
-                aspecto:       'lucro',
-                correta:       true,
-                dialogoAcerto: 'O negócio vai bem, tenho uma margem alta nos produtos.',
-                dialogoErro:   'Essa pergunta não faz sentido pra mim agora.',
-            }),
-
-            // ── Estoque ──
-            new CartaSondagem({
-                key:           'SondagemDeFluxo',
-                aspecto:       'estoque',
-                correta:       true,
-                dialogoAcerto: 'Meu estoque gira pouco, trabalho com produtos especiais.',
-                dialogoErro:   'Não entendo o que você quer saber com isso.',
-            }),
-
-            // ── Erradas ──
-            new CartaSondagem({
-                key:           'LoboCurioso',
-                aspecto:       'pessoas',
-                correta:       false,
-                dialogoAcerto: '',
-                dialogoErro:   'Isso não é relevante pra minha operação.',
-            }),
-
-            new CartaSondagem({
-                key:           'AutoridadeImplicita',
-                aspecto:       'lucro',
-                correta:       false,
-                dialogoAcerto: '',
-                dialogoErro:   'Não gosto desse tipo de abordagem.',
-            }),
-        ];
-    }
-
-    _falaInicioFase(fase) {
-        const falas = {
-            abordagem:    'Olá, boa tarde! Em que posso ajudar?',
-            sondagem:     'Tudo bem, me conta mais. O que você tem em mente?',
-            demonstracao: `Me mostre ${PRODUTOS_NECESSARIOS} produtos que possam me ajudar.`,
-            beneficios:   'Agora quero saber das condições. O que você tem pra me oferecer?',
-        };
-        return falas[fase] ?? 'O que você tem a me apresentar?';
-    }
-
->>>>>>> dev
     // ── Fase de demonstração ──────────────────────────────────────────────────
 
     _distribuirCartasDemonstracao() {
@@ -678,7 +380,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         this._distribuirCartas(cartas);
     }
 
-<<<<<<< HEAD
     // Modal reutilizável — demonstração e negociação
     _abrirModalApresentar(carta, aoSelecionar) {
         this.cartaEmDetalhes = carta;
@@ -717,8 +418,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         btnSelecionar.on('pointerdown', () => { fechar(); aoSelecionar(); });
     }
 
-=======
->>>>>>> dev
     _apresentarProduto(carta) {
         this._produtosSelecionados.push(carta);
         this._atualizarContadorProdutos();
@@ -742,7 +441,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         });
     }
 
-<<<<<<< HEAD
     // ── Fase de negociação ────────────────────────────────────────────────────
     //
     // O jogador apresenta cartas de condições. Ao acertar 'suporte' e 'taxa',
@@ -811,44 +509,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
             });
         }
     }
-=======
-    _criarContadorProdutos() {
-        const W = this.scale.width;
-        const H = this.scale.height;
-        if (this._contadorTexto) this._contadorTexto.destroy();
-        this._contadorTexto = this.add.text(W / 2, H * 0.62, this._textoContadorProdutos(), {
-            fontFamily:    '"Courier New", monospace',
-            fontSize:      '14px',
-            color:         '#ccaa44',
-            letterSpacing: 2,
-        }).setOrigin(0.5).setDepth(50);
-    }
-
-    _textoContadorProdutos() {
-        return `Produtos apresentados: ${this._produtosSelecionados.length} / ${PRODUTOS_NECESSARIOS}`;
-    }
-
-    _atualizarContadorProdutos() {
-        if (this._contadorTexto) this._contadorTexto.setText(this._textoContadorProdutos());
-    }
-
-    // ── Fase de benefícios ────────────────────────────────────────────────────
-    //
-    // COMO ADICIONAR UMA CARTA NOVA:
-    //
-    //   new CartaBeneficio({
-    //       key:           'NomeDaCartaNoAsset',  // arquivo em assets/cartas/
-    //       beneficio:     'taxa',                // 'taxa', 'prazo' ou 'suporte'
-    //       correta:       true,                  // false = perde satisfação
-    //       dialogoAcerto: 'Fala da Julia ao revelar o benefício',
-    //       dialogoErro:   'Fala da Julia ao errar',
-    //   }),
-    //
-    //   Regras:
-    //   - Os três benefícios (taxa, prazo, suporte) precisam ser revelados para vencer
-    //   - Adicionar a chave em BENEFICIOS_CORRETOS ou BENEFICIOS_ERRADOS conforme necessário
-    // ─────────────────────────────────────────────────────────────────────────
->>>>>>> dev
 
     // ── Cartas da negociação ──────────────────────────────────────────────────
     //
@@ -914,14 +574,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
         ];
     }
 
-<<<<<<< HEAD
     // ── Contadores visuais (demonstração) ─────────────────────────────────────
-=======
-    _distribuirCartasBeneficio() {
-        const cartas = Phaser.Utils.Array.Shuffle(this._getCartasBeneficio());
-        this._distribuirCartas(cartas);
-    }
->>>>>>> dev
 
     _selecionarBeneficio(carta) {
         if (!this.negociacaoAtiva) return;
@@ -967,13 +620,8 @@ export default class NegociacaoJulia extends CenaNegociacao {
     _criarContadorBeneficios() {
         const W = this.scale.width;
         const H = this.scale.height;
-<<<<<<< HEAD
         if (this._contadorTexto) this._contadorTexto.destroy();
         this._contadorTexto = this.add.text(W / 2, H * 0.62, this._textoContadorProdutos(), {
-=======
-        if (this._contadorBeneficioTexto) this._contadorBeneficioTexto.destroy();
-        this._contadorBeneficioTexto = this.add.text(W / 2, H * 0.62, this._textoContadorBeneficios(), {
->>>>>>> dev
             fontFamily:    '"Courier New", monospace',
             fontSize:      '14px',
             color:         '#ccaa44',
@@ -985,7 +633,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         return `Benefícios apresentados: ${this._beneficiosSelecionados.length} / ${BENEFICIOS_NECESSARIOS}`;
     }
 
-<<<<<<< HEAD
     _atualizarContadorProdutos() {
         if (this._contadorTexto) this._contadorTexto.setText(this._textoContadorProdutos());
     }
@@ -1000,10 +647,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
             negociacao:   'Os produtos me interessaram. Mas preciso saber: qual o suporte e quais as condições de taxa?',
         };
         return falas[fase] ?? 'O que você tem a me apresentar?';
-=======
-    _atualizarContadorBeneficios() {
-        if (this._contadorBeneficioTexto) this._contadorBeneficioTexto.setText(this._textoContadorBeneficios());
->>>>>>> dev
     }
 
     // ── Retorno de cena ───────────────────────────────────────────────────────
