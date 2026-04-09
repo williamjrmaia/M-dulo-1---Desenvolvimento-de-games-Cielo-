@@ -20,12 +20,12 @@ export default class TutorialOverlay extends Phaser.Scene {
         const imgTutorial = this.add.image(width / 2, height / 2, 'Tutorial');
         imgTutorial.setDisplaySize(width * 0.85, height * 0.85);
 
-        this.add.text(width / 2, height - 30, 'Para fechar o tutorial aperte H', {
-            fontSize: '12px',
-            fill: '#ffffff',
-            backgroundColor: '#000000',
-            padding: { x: 8, y: 4 }
-        }).setOrigin(0.5);
+       this.add.text(width / 2, height - 30, 'Para fechar o tutorial aperte H', {
+    fontSize: '26px',  // era '18px'
+    fill: '#ffffff',
+    backgroundColor: '#000000aa',  // mais opaco e visível
+    padding: { x: 14, y: 8 }
+}).setOrigin(0.5);
 
         this.podeFechar = false; // impede fechar acidentalmente logo ao abrir (H ainda está pressionado)
         this.time.delayedCall(300, () => {
