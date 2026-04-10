@@ -27,6 +27,12 @@ export default class CidadeCielo extends CenaMapa {
             frameWidth:  16,
             frameHeight: 25,
         });
+
+        // ── Assets do Succi ───────────────────────────────────────────────────
+        this.load.spritesheet('succi_idle',   './assets/NPC/SUCCI/spr_succi_front_idl.png',  { frameWidth: 16, frameHeight: 20 });
+        this.load.spritesheet('succi_andar',  './assets/NPC/SUCCI/spr_succi_front_walk.png', { frameWidth: 16, frameHeight: 20 });
+        this.load.spritesheet('succi_lado',   './assets/NPC/SUCCI/spr_succi_side_walk.png',  { frameWidth: 16, frameHeight: 20 });
+        this.load.spritesheet('succi_costa',  './assets/NPC/SUCCI/spr_succi_back_walk.png',  { frameWidth: 16, frameHeight: 20 });
     }
 
     create() {
@@ -36,6 +42,7 @@ export default class CidadeCielo extends CenaMapa {
         this.registry.get('audio').tocarAmbiente('passos_cidadecielo', 0.8);
 
         this.dialogoCielitaConcluido = this.registry.get('cielita_cidadecielo_concluido') || false;
+        this.dialogoSucciConcluido   = this.registry.get('succi_cidadecielo_concluido')   || false;
 
         const escalaCenario = 1.5;
 
@@ -45,9 +52,13 @@ export default class CidadeCielo extends CenaMapa {
 
         this.physics.world.setBounds(0, 0, larguraImagem, alturaImagem);
 
-        // ── Animações da Cielita ──────────────────────────────────────────────
+        // ── Animações da Cielita + Succi ──────────────────────────────────────
         NPC.criarAnimacoes(this, [
             { key: 'cielitaparada', frameRate: 3 },
+            { key: 'succi_idle',    frameRate: 3 },
+            { key: 'succi_andar',   frameRate: 4 },
+            { key: 'succi_lado',    frameRate: 4 },
+            { key: 'succi_costa',   frameRate: 4 },
         ]);
 
         // ── Grupo de NPCs ─────────────────────────────────────────────────────
@@ -76,6 +87,44 @@ export default class CidadeCielo extends CenaMapa {
             { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
         ]);
 
+        // ── NPC: Succi ────────────────────────────────────────────────────────
+        // Succi patrulha uma rota pela cidade em loop contínuo.
+        this.succi = new NPC(this, 400, 600, 'succi_idle', {
+            velocidade:         45,
+            distanciaInteracao: 40,
+            grupoNPCs:          this.grupoNPCs,
+            animacoes: {
+                idle:  'succi_idle',
+                andar: 'succi_andar',
+                costa: 'succi_costa',
+                lado:  'succi_lado',
+            },
+            scaleIndicador: 1.3,
+            onFimDialogo: () => {
+                this.dialogoSucciConcluido = true;
+                this.registry.set('succi_cidadecielo_concluido', true);
+            },
+            loop: true,
+            waypoints: [
+                { x:    0, y:    0 },
+                { x: -200, y:    0 },
+                { x: -200, y: -200 },
+                { x: -200, y: -200 },
+                { x:   35, y: -190 },
+                { x: -200, y: -190 },
+                { x: -200, y:   10 },
+            ],
+        });
+        this.succi.setScale(1.1);
+        this.succi.setDepth(5);
+        this.succi.body?.setSize(14, 19);
+        this.succi.setFalas([
+            { personagem: 'Succi', texto: 'Espera... você realmente conseguiu todas as insígnias? Não esperava que chegasse tão longe.' },
+            { personagem: 'Jogador', texto: 'Consegui sim. Passei por tudo que tinha que passar.' },
+            { personagem: 'Succi', texto: 'Tá bom, você me convenceu. Acho que finalmente encontrei o sócio certo pro meu negócio.' },
+            { personagem: 'Succi', texto: 'Mas antes de fechar qualquer coisa, precisamos negociar. E eu não facilito pra ninguém.' },
+        ]);
+
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
         // ── Portas ────────────────────────────────────────────────────────────
@@ -98,29 +147,12 @@ export default class CidadeCielo extends CenaMapa {
         this.jogador.adicionarColisao(this.grupoNPCs);
 
         // ── Carro — percurso retangular ───────────────────────────────────────
-        //
-        //   A (165,684) ──[carro_cielo]──────────► B (480,684)
-        //                                           │
-        //                                       [carro2]
-        //                                           │ ▼
-        //   D (165,768) ◄──[carro_cielo flipX]── C (480,768)
-        //   │
-        //   [carro2 flipY] ▲
-        //   │
-        //   volta a A
-        //
-        // Ajuste xi/yi/xf/yf conforme o layout real do seu tilemap.
-        // Os valores abaixo foram calculados a partir da escala 1.5 aplicada
-        // ao mapa (pixel da imagem × 1.5 = coordenada do mundo de jogo).
-        //
         this.carro = new CarroCielo(this, {
-            pausaMs:    2000,   // pausa após completar o loop inteiro
-            pausaSegMs: 150,    // pequena pausa nas esquinas (ms); use 0 para remover
+            pausaMs:    2000,
+            pausaSegMs: 150,
             escala:     1.2,
             jogadorSprite: this.jogador.sprite,
             segmentos: [
-                // ── Segmento 1: direita ──────────────────────────────────────
-                // carro_cielo normal, MU horizontal
                 {
                     xi: 165, yi: 684,
                     xf: 480, yf: 684,
@@ -129,8 +161,6 @@ export default class CidadeCielo extends CenaMapa {
                     flipX: false,
                     flipY: false,
                 },
-                // ── Segmento 2: descida ──────────────────────────────────────
-                // carro2 normal, MUV vertical (v0y = 0, acelera para baixo)
                 {
                     xi: 480, yi: 684,
                     xf: 480, yf: 768,
@@ -139,8 +169,6 @@ export default class CidadeCielo extends CenaMapa {
                     flipX: false,
                     flipY: false,
                 },
-                // ── Segmento 3: esquerda ─────────────────────────────────────
-                // carro_cielo espelhado em X, MU horizontal (vx negativo)
                 {
                     xi: 480, yi: 768,
                     xf: 165, yf: 768,
@@ -149,8 +177,6 @@ export default class CidadeCielo extends CenaMapa {
                     flipX: true,
                     flipY: false,
                 },
-                // ── Segmento 4: subida ───────────────────────────────────────
-                // carro2 espelhado em Y, MUV vertical (v0y = 0, acelera para cima)
                 {
                     xi: 165, yi: 768,
                     xf: 165, yf: 684,
@@ -226,7 +252,7 @@ export default class CidadeCielo extends CenaMapa {
         }
 
         // ── Câmera UI para diálogos ───────────────────────────────────────────
-        DialogoManager.configurarCameraUI(this, 2.3, [this.cielita]);
+        DialogoManager.configurarCameraUI(this, 2.3, [this.cielita, this.succi]);
 
         // ── HUD inicial ───────────────────────────────────────────────────────
         if (!this.dialogoCielitaConcluido) {
@@ -246,11 +272,24 @@ export default class CidadeCielo extends CenaMapa {
         // ── Atualiza NPC Cielita ──────────────────────────────────────────────
         this.cielita.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
+        // ── Atualiza NPC Succi ────────────────────────────────────────────────
+        this.succi.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+
         // ── HUD dinâmico ──────────────────────────────────────────────────────
-        if (this.cielita.dialogoAberto) {
+        if (this.cielita.dialogoAberto || this.succi.dialogoAberto) {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
         } else if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
+        } else if (!this.dialogoSucciConcluido) {
+            const distSucci = Phaser.Math.Distance.Between(
+                this.jogador.sprite.x, this.jogador.sprite.y,
+                this.succi.x,          this.succi.y
+            );
+            const pertoSucci = distSucci <= this.succi._cfg.distanciaInteracao;
+            this.game.events.emit('atualizarBalao', {
+                texto:   pertoSucci ? 'Fale com o Succi' : 'Procure pelo Succi na cidade',
+                visivel: true,
+            });
         } else {
             this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
         }
