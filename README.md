@@ -42,7 +42,9 @@ O jogo também celebra a diversidade brasileira: os personagens jogáveis e os N
 
 Desenvolvido com Phaser 3 e executado diretamente no navegador Google Chrome, o Cielo Verso é acessível em desktop e mobile, sem necessidade de instalação. No fim, o jogo cumpre um papel prático: nivelar o conhecimento comercial da força de vendas, independentemente de onde ela esteja.
 
-🎮 [Acesse o jogo aqui](#)
+🎮 [Acesse o jogo aqui](https://octetofantastico.itch.io/cielo-verso)
+🔑 Senha: `cieloverso`
+
 
 
 ## 📁 Estrutura de pastas
