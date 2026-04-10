@@ -1758,43 +1758,19 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 
 ---
 
-#### Prioridade 1 — Correção do bug de re-seleção de carta na cena de negociação
-
-**Origem:** Relatado de forma independente por Matheus Augusto e Bruno Araújo.
-
-**Descrição do problema:** Ao selecionar uma carta correta durante a negociação, navegar para outras cartas via seta lateral e retornar à carta anteriormente escolhida, o sistema a exibe novamente como disponível para seleção. Clicar nela uma segunda vez a contabiliza como uma nova resposta correta, corrompendo o estado da cena e permitindo progressão indevida.
-
-**Impacto:** Crítico. Além de quebrar a progressão da cena de negociação, o bug compromete diretamente o objetivo pedagógico do jogo — o jogador avança sem ter tomado a decisão correta de forma consciente, esvaziando o valor de treinamento da mecânica.
-
-**Ação recomendada:** Implementar controle de estado por carta após seleção, marcando-a como `selected: true` e desabilitando o evento de clique. O estado deve persistir mesmo após navegação lateral e ser reiniciado apenas ao iniciar uma nova cena de negociação. Adicionalmente, investigar o bug secundário de carregamento de imagem/descrição reportado na Vila do Varejo (Matheus Augusto), que pode compartilhar a mesma raiz de gerenciamento de estado.
-
----
-
-#### Prioridade 2 — Implementação de indicadores visuais de navegação e objetivos
+#### Prioridade 1 — Implementação de indicadores visuais de navegação e objetivos
 
 **Origem:** Relatado por Lucas Vinicius, Arthur Morais e Felipe Cabeza.
 
-**Descrição do problema:** O mapa não oferece indicadores suficientes para que o jogador saiba onde estão os objetivos ativos, quais regiões já foram concluídas e quais casas possuem conteúdo disponível. A ausência de um minimapa ou de ícones de localização obriga o jogador a explorar por tentativa e erro.
+**Descrição do problema:** O mapa não oferece indicadores suficientes fora da HUD para que o jogador saiba onde estão os objetivos ativos, quais regiões já foram concluídas e quais casas possuem conteúdo disponível. A ausência de ícones de localização obriga o jogador a explorar por tentativa e erro.
 
 **Impacto:** Alto. Para o público-alvo real (GNs da Cielo com pouca experiência em jogos), a desorientação espacial é um dos principais fatores de abandono em jogos de mundo aberto. Se jogadores experientes já relataram dificuldade, usuários não-gamers provavelmente encontrariam uma barreira de progressão nesse ponto.
 
-**Ação recomendada:** Implementar, em ordem de viabilidade: (1) ícone flutuante ou marcador de objetivo no mapa indicando o NPC-alvo da fase atual; (2) estado visual diferenciado para casas com conteúdo disponível versus casas já concluídas; (3) minimap como melhoria futura de maior escopo. Adicionalmente, adicionar placas ou rótulos de nome nas regiões do mapa (sugerido por Arthur Morais).
+**Ação recomendada:** Implementar, em ordem de viabilidade: (1) ícone flutuante ou marcador de objetivo no mapa indicando o NPC-alvo da fase atual; (2) estado visual diferenciado para casas com conteúdo disponível versus casas já concluídas.
 
 ---
 
-#### Prioridade 3 — Redução da carga textual nas cenas de negociação
-
-**Origem:** Relatado por Gabriel Tavares e Lucas Vinicius.
-
-**Descrição do problema:** As cenas de negociação apresentam volume excessivo de texto por tela, o que prejudica a fluidez da leitura e pode causar fadiga cognitiva. Gabriel Tavares apontou que "tem muito texto" como principal obstáculo à experiência de combate.
-
-**Impacto:** Alto para o público-alvo real. GNs da Cielo interagem com o jogo em contexto de treinamento corporativo, onde sessões longas e densas de leitura reduzem o engajamento. O excesso de texto também entra em conflito com o princípio de aprendizado por ação, central à proposta do jogo.
-
-**Ação recomendada:** Revisar os textos das cartas e das falas de NPC com foco em concisão. Textos de carta devem comunicar a essência da técnica de negociação em no máximo 2–3 linhas. Considerar o uso de ícones ou elementos visuais para complementar a informação textual em vez de substituí-la por mais texto.
-
----
-
-#### Prioridade 4 — Ajuste de colisões e hitboxes de interface
+#### Prioridade 2 — Ajuste de colisões e hitboxes de interface
 
 **Origem:** Relatado por Heitor Goulart e Felipe Cabeza (colisão de cenário); Heitor Goulart (hitbox de botões).
 
@@ -1806,7 +1782,7 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 
 ---
 
-#### Prioridade 5 — Expansão e melhoria do tutorial
+#### Prioridade 3 — Expansão e melhoria do tutorial
 
 **Origem:** Relatado por Marcos Andrade e Bruno Araújo; indiretamente corroborado por Lucas Vinicius (sugestão de tutorial específico para negociação).
 
@@ -1818,15 +1794,15 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 
 ---
 
-#### Prioridade 6 — Ajustes de legibilidade, paleta e movimentação
+#### Prioridade 4 — Ajustes de legibilidade, paleta e movimentação
 
 **Origem:** Matheus Augusto e Lucas Vinicius (fonte das cartas); Felipe Cabeza (contraste de paleta e velocidade de movimentação).
 
-**Descrição do problema:** O texto das cartas foi considerado difícil de ler devido ao tamanho reduzido da fonte. Em determinados mapas, a paleta de cores apresenta baixo contraste, dificultando a distinção de elementos do cenário. A velocidade de movimentação do personagem foi percebida como lenta em algumas áreas.
+**Descrição do problema:** Em determinados mapas, a paleta de cores apresenta baixo contraste, dificultando a distinção de elementos do cenário. A velocidade de movimentação do personagem foi percebida como lenta em algumas áreas.
 
 **Impacto:** Moderado isoladamente, mas com potencial de acúmulo: um jogo que exige esforço visual constante, apresenta movimentação arrastada e tem paleta de baixo contraste comunica descuido técnico e reduz a imersão — especialmente em um produto que precisa ser percebido como profissional por seu público corporativo.
 
-**Ação recomendada:** Aumentar o tamanho mínimo da fonte nos cards de carta para 13–14px e revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
+**Ação recomendada:** Revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
 
 # <a name="c6"></a>6. Conclusões e trabalhos futuros (sprint 5)
 
