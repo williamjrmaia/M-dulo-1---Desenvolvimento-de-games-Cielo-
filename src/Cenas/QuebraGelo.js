@@ -263,12 +263,7 @@ export default class QuebraGelo extends CenaMapa {
 
         // ── Portal VilaDoVarejo — exige insígnia ──────────────────────────────
         if (this.personagem.temOverlap(this.PortalVarejo)) {
-            // Nota: Adicione a função _temInsignia() se ela não estiver na classe
-            if (typeof this._temInsignia === 'function' && !this._temInsignia()) {
-                this._mostrarMensagemBloqueio();
-                return;
-            }
-            this.trocarCena('PonteQG_VV');
+            this.trocarCena('PonteQG_VV', {}, 'mapa_gelo');
             return;
         }
 
@@ -297,37 +292,4 @@ export default class QuebraGelo extends CenaMapa {
         insignia.conceder();
     }
 
-    // ── Mensagem de bloqueio ──────────────────────────────────────────────────
-
-    _mostrarMensagemBloqueio() {
-        if (this._mensagemBloqueio) return;
-
-        const W = this.scale.width;
-        const H = this.scale.height;
-
-        const bg = this.add.rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
-            .setStrokeStyle(2, 0xcc4444)
-            .setDepth(200)
-            .setScrollFactor(0);
-
-        const texto = this.add
-            .text(W / 2, H * 0.2, '⛔ Você precisa vencer a negociação com Pedro primeiro!', {
-                fontFamily: '"Courier New", monospace',
-                fontSize:   '13px',
-                color:      '#ff6666',
-                align:      'center',
-                wordWrap:   { width: 500 },
-            })
-            .setOrigin(0.5)
-            .setDepth(201)
-            .setScrollFactor(0);
-
-        this._mensagemBloqueio = { bg, texto };
-
-        this.time.delayedCall(2500, () => {
-            bg.destroy();
-            texto.destroy();
-            this._mensagemBloqueio = null;
-        });
-    }
 }
