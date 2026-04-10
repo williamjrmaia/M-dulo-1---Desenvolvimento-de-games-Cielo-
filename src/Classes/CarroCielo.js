@@ -29,7 +29,13 @@ export default class CarroCielo {
             .setFlipY(flipY);
 
         this.sprite.body.setAllowGravity(false);
-        
+
+        // Ignora este sprite em todas as câmeras secundárias (ex: uiCam do DialogoManager)
+        // para evitar que apareça duplicado na tela.
+        cena.cameras.cameras.forEach(cam => {
+            if (cam !== cena.cameras.main) cam.ignore(this.sprite);
+        });
+
         if (miniMapa) {
     miniMapa.ignorarObjeto(this.sprite);
         }
