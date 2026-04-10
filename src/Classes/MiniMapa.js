@@ -54,6 +54,7 @@ export default class MiniMapa {
     constructor(cena, playerSprite, opcoes = {}) {
         this._cena   = cena;
         this._player = playerSprite;
+        this._objetosIgnorados = [];
  
         const {
             zoom      = 0.5,
@@ -79,6 +80,7 @@ export default class MiniMapa {
         this._label       = null;
         this._visivel     = true;
  
+     
         this._criar();
  
         // Destrói automaticamente quando a cena for encerrada
@@ -233,17 +235,30 @@ export default class MiniMapa {
     // Deve ser chamado no update() da cena.
     // =========================================================================
     atualizar() {
-        if (this._pontoPlayer && this._player) {
-            this._pontoPlayer.x = this._player.x;
-            this._pontoPlayer.y = this._player.y;
-        }
- 
-        this._npcPontos.forEach(({ npc, ponto }) => {
-            ponto.x = npc.x;
-            ponto.y = npc.y;
-        });
+    if (this._pontoPlayer && this._player) {
+        this._pontoPlayer.x = this._player.x;
+        this._pontoPlayer.y = this._player.y;
     }
- 
+
+    this._npcPontos.forEach(({ npc, ponto }) => {
+        ponto.x = npc.x;
+        ponto.y = npc.y;
+    });
+
+    // Reaplica ignore a cada frame para objetos dinâmicos
+    this._objetosIgnorados.forEach(obj => {
+        if (obj && obj.active) {
+            try { this._cam.ignore(obj); } catch(_) {}
+        }
+    });
+}
+
+   ignorarObjeto(objeto) {
+    if (!this._cam || !objeto) return;
+    try { this._cam.ignore(objeto); } catch(_) {}
+    // Guarda referência para reaplicar a cada frame
+    this._objetosIgnorados.push(objeto);
+    }   
     // =========================================================================
     // destruir()
     // Limpa todos os objetos criados pelo mini mapa.
@@ -258,6 +273,8 @@ export default class MiniMapa {
         try { if (this._label)       this._label.destroy(); }                catch(_) {}
         this._npcPontos.forEach(({ ponto }) => { try { ponto.destroy(); } catch(_){} });
         this._npcPontos = [];
+
+        this._objetosIgnorados = [];
     }
 }
  
