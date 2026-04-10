@@ -17,7 +17,7 @@ export default class CidadeCielo extends CenaMapa {
 
     preload() {
         this.load.image('CidadeCielo', './assets/CidadeCielo/CidadeCielo.png');
-        this.load.image('CarroCielo', './assets/CidadeCielo/carro_cielo.png');
+        this.load.image('carro_cielo', './assets/CidadeCielo/carro_cielo.png');
         this.load.tilemapTiledJSON('mapaCidadeCielo', './assets/CidadeCielo/CidadeCielo.tmj');
         
 
@@ -100,16 +100,18 @@ export default class CidadeCielo extends CenaMapa {
         // Colisão Jogador↔Cielita
         this.jogador.adicionarColisao(this.grupoNPCs);
 
-        // Criando o Carro
+        // Criando o Carro — percorre a rua horizontal principal entre os blocos de edifícios
+        // A rua corre da borda esquerda (após o penhasco) até o lado direito do mapa
+        // Y ≈ 620 corresponde à faixa de asfalto visível no mapa (entre y≈570 dos prédios superiores e y≈750 da Cielita)
         this.carro = new CarroCielo(this, {
-            xi: 100,             // X inicial
-            yi: 200,             // Y inicial
-            xf: 800,             // X final
-            yf: 200,             // Y final
-            T: 5,                // Tempo de travessia em segundos
+            xi: 55,              // X inicial — borda esquerda da rua
+            yi: 620,             // Y inicial — centro da rua horizontal principal
+            xf: 845,             // X final   — borda direita da rua
+            yf: 620,             // Y final   — mesma rua (movimento reto horizontal)
+            T: 8,                // Tempo de travessia em segundos
             pausaMs: 2000,       // Pausa de 2 segundos antes de repetir
             escala: 1,           // Tamanho normal
-            jogadorSprite: this.jogador // Passando o jogador para ativar a colisão
+            jogadorSprite: this.jogador.sprite  // sprite físico do jogador para colisão
         });
 
         // ── Criação do Portal ─────────────────────────────────────────────────

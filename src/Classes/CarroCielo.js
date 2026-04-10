@@ -85,16 +85,6 @@ export default class CarroCielo {
             cena.physics.add.collider(this.sprite, jogadorSprite);
         }
 
-        // ── 6. Log de inicialização ────────────────────────────────────────────
-        console.log('=== CarroCielo: INICIALIZADO ===');
-        console.log('  Parâmetros de entrada:');
-        console.log('    xi =', xi, 'px  |  yi =', yi, 'px');
-        console.log('    xf =', xf, 'px  |  yf =', yf, 'px');
-        console.log('    T  =', T, 's   |  pausa =', pausaMs, 'ms');
-        console.log('  Parâmetros derivados:');
-        console.log('    [MU  eixo X] vx =', this.vx.toFixed(4), 'px/s  (constante)');
-        console.log('    [MUV eixo Y] ay =', this.ay.toFixed(4), 'px/s² (v0y = 0)');
-        console.log('================================');
     }
 
     // ──────────────────────────────────────────────────────────────────────────
@@ -147,7 +137,6 @@ export default class CarroCielo {
             this._pausaInicioMs  = timeNowMs;
             this._iniciado       = false;
 
-            console.log('[CarroCielo] Ciclo concluído. Pausando por', this._pausaMs, 'ms.');
             return;
         }
 
@@ -156,25 +145,11 @@ export default class CarroCielo {
         // Posição:               x(t) = xi + vx * t
         const x = this.xi + this.vx * t;
 
-        console.log(
-            '[MU  X] t=' + t.toFixed(3) + 's' +
-            ' | vx=' + this.vx.toFixed(4) + ' px/s' +
-            ' | x=' + x.toFixed(2) + ' px'
-        );
-
         // ── MUV — eixo Y ──────────────────────────────────────────────────────
         // v0y = 0  →  aceleração:  ay = 2*(yf - yi) / T²
         //             velocidade:  vy(t) = ay * t
         //             posição:     y(t)  = yi + (1/2) * ay * t²
-        const vy = this.ay * t;
         const y  = this.yi + (0.5 * this.ay * t * t);
-
-        console.log(
-            '[MUV Y] t=' + t.toFixed(3) + 's' +
-            ' | ay=' + this.ay.toFixed(4) + ' px/s²' +
-            ' | vy=' + vy.toFixed(4) + ' px/s' +
-            ' | y=' + y.toFixed(2) + ' px'
-        );
 
         // ── Aplica posição ao corpo físico diretamente ─────────────────────────
         // body.reset(x, y) reposiciona o corpo sem alterar a velocidade física
@@ -190,6 +165,5 @@ export default class CarroCielo {
         this._t0Ms     = timeNowMs;
         // Reposiciona no ponto inicial para o próximo ciclo
         this.sprite.body.reset(this.xi, this.yi);
-        console.log('[CarroCielo] Novo ciclo iniciado.');
     }
 }
