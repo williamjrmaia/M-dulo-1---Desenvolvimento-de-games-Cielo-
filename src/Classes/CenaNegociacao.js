@@ -823,6 +823,9 @@ export default class CenaNegociacao extends Phaser.Scene {
         }
         this.game.registry.set('ultimaNegociacao', 'vitoria');
 
+        // Concede a insígnia via Insignias.js (salva em insigniasJogador)
+        if (typeof this._aoVencer === 'function') this._aoVencer();
+
         const insignia = this._getInsignia();
         if (insignia) {
             const insignias = this.game.registry.get('insigniasDesbloqueadas') ?? {};
@@ -877,7 +880,10 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(
             Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE,
-            () => this.scene.start(this._cenaDeRetorno())
+            () => {
+                if (this.scene.isActive('HUDCenas')) this.scene.stop('HUDCenas');
+                this.scene.start(this._cenaDeRetorno());
+            }
         );
     }
 

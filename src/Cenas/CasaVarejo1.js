@@ -57,8 +57,9 @@ export default class CasaVarejo1 extends CenaMapa {
             grupoNPCs: this.grupoNPCs,
             onFimDialogo: () => {
                 const registry = this.registry.get('negociacoesVencidas') ?? {};
-                if (!registry['varejo_vencido']) {
+                if (!registry['thaina_vencida']) {
                     this.game.events.emit('atualizarBalao', { texto: '', visivel: false });
+                    if (this.scene.isActive('HUDCenas')) this.scene.stop('HUDCenas');
                     this.scene.start('NegociacaoThaina');
                 }
             },

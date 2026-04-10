@@ -60,7 +60,7 @@ export default class NegociacaoThaina extends CenaNegociacao {
         insignia.conceder();
     }
 
-    _chaveVitoria() { return 'varejo_vencido'; }
+    _chaveVitoria() { return 'thaina_vencida'; }
 
     // ── Cartas da abordagem (sistema PIFE + CPC) ──────────────────────────────
 

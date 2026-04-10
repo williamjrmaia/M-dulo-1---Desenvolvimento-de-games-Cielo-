@@ -38,7 +38,7 @@ export default class Insignia {
             nome:            'Rei do Varejo',
             assetKey:        'insignia_vila_varejo',
             assetPath:       'assets/insignias/InsigniaProduto1.png',
-            negociacaoChave: 'varejo_vencido',
+            negociacaoChave: 'thaina_vencida',
         },
         praia_proveitos: {
             nome:            'Mestre da Praia',

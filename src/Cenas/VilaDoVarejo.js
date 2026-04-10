@@ -1,8 +1,9 @@
 import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
-import CenaMapa from "../Classes/CenaMapa.js";
-import MiniMapa from '../Classes/MiniMapa.js';
+import CenaMapa       from "../Classes/CenaMapa.js";
+import MiniMapa       from '../Classes/MiniMapa.js';
+import Insignia       from '../Classes/Insignias.js';
 
 export default class VilaDoVarejo extends CenaMapa {
     constructor() {
@@ -243,6 +244,9 @@ export default class VilaDoVarejo extends CenaMapa {
         if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
+
+        // Concede a insígnia se o jogador já venceu a negociação com a Thaina
+        new Insignia(this, 'vila_varejo').conceder();
     }
 
     update() {

@@ -62,11 +62,6 @@ export default class CenaMapa extends Phaser.Scene {
 
     // Retorna true se estiver em transição — use como guard no update()
     update() {
-        // Reseta a flag de bloqueio 500ms após o jogador sair da zona bloqueada
-        if (this._mensagemBloqueioAtiva &&
-            this.time.now - (this._ultimoBloqueio ?? 0) > 500) {
-            this._mensagemBloqueioAtiva = false;
-        }
         return this.fazendoTransicao;
     }
 
@@ -74,7 +69,6 @@ export default class CenaMapa extends Phaser.Scene {
         if (insigniaRequerida) {
             const insignias = this.game.registry.get('insigniasJogador') ?? [];
             if (!insignias.includes(insigniaRequerida)) {
-                this._ultimoBloqueio = this.time.now; // atualizado a cada frame enquanto estiver na zona
                 this._mostrarMensagemBloqueio(insigniaRequerida);
                 return;
             }
@@ -89,20 +83,24 @@ export default class CenaMapa extends Phaser.Scene {
     }
 
     _mostrarMensagemBloqueio(chave) {
-        if (this._mensagemBloqueioAtiva) return;
-        this._mensagemBloqueioAtiva = true;
+        // Se a mensagem já está na tela, renova o timer em vez de criar outra
+        if (this._timerBloqueio) {
+            this.time.removeEvent(this._timerBloqueio);
+            this._timerBloqueio = this.time.delayedCall(2500, () => this._destruirMensagemBloqueio());
+            return;
+        }
 
         const nome = Insignia.CATALOGO[chave]?.nome ?? chave;
         const W = this.scale.width;
         const H = this.scale.height;
 
-        const bg = this.add
+        this._bgBloqueio = this.add
             .rectangle(W / 2, H * 0.2, 520, 60, 0x000000, 0.8)
             .setStrokeStyle(2, 0xcc4444)
             .setDepth(200)
             .setScrollFactor(0);
 
-        const texto = this.add
+        this._textoBloqueio = this.add
             .text(W / 2, H * 0.2, `⛔ Você precisa da insígnia "${nome}" para continuar!`, {
                 fontFamily: '"Courier New", monospace',
                 fontSize:   '13px',
@@ -114,11 +112,18 @@ export default class CenaMapa extends Phaser.Scene {
             .setDepth(201)
             .setScrollFactor(0);
 
-        this.time.delayedCall(2500, () => {
-            bg.destroy();
-            texto.destroy();
-            // A flag é resetada pelo update() quando o jogador sai da zona,
-            // não por um timer aqui.
-        });
+        // Ignora na câmera principal (que tem zoom alto) — só renderiza na uiCam
+        this.cameras.main.ignore(this._bgBloqueio);
+        this.cameras.main.ignore(this._textoBloqueio);
+
+        this._timerBloqueio = this.time.delayedCall(2500, () => this._destruirMensagemBloqueio());
+    }
+
+    _destruirMensagemBloqueio() {
+        this._bgBloqueio?.destroy();
+        this._textoBloqueio?.destroy();
+        this._bgBloqueio    = null;
+        this._textoBloqueio = null;
+        this._timerBloqueio = null;
     }
 }
