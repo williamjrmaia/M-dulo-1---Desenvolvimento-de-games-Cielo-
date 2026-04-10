@@ -101,9 +101,7 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.load.image('reacao_feliz',  'assets/objetos/reacoes/reacao_feliz.png');
 
         const insignia = this._getInsignia();
-        if (insignia && insignia.path) {
-            this.load.image(insignia.key, insignia.path);
-        }
+        if (insignia) this.load.image(insignia.key, insignia.path);
     }
 
     create() {
@@ -384,8 +382,6 @@ export default class CenaNegociacao extends Phaser.Scene {
     // ── Demonstração ──────────────────────────────────────────────────────────
 
     _iniciarDemonstracao() {
-        // Exibe os ícones de aspecto em estado off (interrogação), igual à sondagem
-        this._setAspectosVisiveis(true);
         this._distribuirCartas(this._getCartasDemonstracao());
     }
 
@@ -402,9 +398,6 @@ export default class CenaNegociacao extends Phaser.Scene {
         this._removerCartaVisual(carta);
 
         if (acertos === 3) {
-            this._revelarIconeAspecto('pessoas');
-            this._revelarIconeAspecto('lucro');
-            this._revelarIconeAspecto('estoque');
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._mostrarDialogo(this._falaAcertoFase('demonstracao'));
             this.negociacaoAtiva = false;
@@ -686,7 +679,7 @@ export default class CenaNegociacao extends Phaser.Scene {
                     this._avancarOuVencer();
                 });
             } else {
-                this._mostrarDialogo(` Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
+                this._mostrarDialogo(`✅ Boa escolha! Ainda faltam ${faltam} carta(s) para avançar.`);
             }
 
         } else {
@@ -820,7 +813,7 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _vencerNegociacao() {
         this.negociacaoAtiva = false;
-        this._mostrarDialogo(' Negociação concluída com sucesso!');
+        this._mostrarDialogo('✅ Negociação concluída com sucesso!');
 
         const chave = this._chaveVitoria();
         if (chave) {
@@ -859,9 +852,8 @@ export default class CenaNegociacao extends Phaser.Scene {
             ? this.add.image(W / 2, H / 2 - 50, insignia.key).setDisplaySize(180, 180).setDepth(LAYERS.MODAL)
             : this.add.rectangle(W / 2, H / 2 - 50, 180, 180, 0x1a3a5a).setStrokeStyle(2, 0xf0c040).setDepth(LAYERS.MODAL);
 
-        const escalaFinal = 180 / Math.max(imgInsignia.width, imgInsignia.height);
         imgInsignia.setScale(0);
-        this.tweens.add({ targets: imgInsignia, scaleX: escalaFinal, scaleY: escalaFinal, duration: 400, ease: 'Back.easeOut' });
+        this.tweens.add({ targets: imgInsignia, scaleX: 1, scaleY: 1, duration: 400, ease: 'Back.easeOut' });
 
         const nomeTexto = this.add.text(W / 2, H / 2 + 100, insignia.nome, {
             fontFamily: '"Courier New", monospace', fontSize: '22px', color: '#ffffff',
@@ -891,7 +883,7 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     _perderNegociacao() {
         this.negociacaoAtiva = false;
-        this._mostrarDialogo(' Negociação perdida. Tente novamente.');
+        this._mostrarDialogo('❌ Negociação perdida. Tente novamente.');
         this.game.registry.set('ultimaNegociacao', 'derrota');
         this.time.delayedCall(2000, () => this._irParaCenaDeRetorno());
     }

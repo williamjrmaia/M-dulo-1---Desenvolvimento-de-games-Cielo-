@@ -1,29 +1,24 @@
-import CenaNegociacao    from '../Classes/CenaNegociacao.js';
-import CartaAbordagem    from '../Classes/FasesNegociacao/CartaAbordagem.js';
-import CartaSondagem     from '../Classes/FasesNegociacao/CartaSondagem.js';
+import CenaNegociacao   from '../Classes/CenaNegociacao.js';
+import CartaAbordagem   from '../Classes/FasesNegociacao/CartaAbordagem.js';
+import CartaSondagem    from '../Classes/FasesNegociacao/CartaSondagem.js';
 import CartaDemonstracao from '../Classes/FasesNegociacao/CartaDemonstracao.js';
-import CartaNegociacao   from '../Classes/FasesNegociacao/CartaNegociacao.js';
-import Insignia          from '../Classes/Insignia.js';
+import CartaNegociacao  from '../Classes/FasesNegociacao/CartaNegociacao.js';
+import Insignia         from '../Classes/Insignias.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // NegociacaoJulia.js — Cliente da Praia dos Proveitos
 //
 // FASES: abordagem → sondagem → demonstracao → negociacao
+//
+// FASE DE NEGOCIAÇÃO:
+//   O jogador precisa revelar 2 condições corretas: Suporte e Taxas.
+//   Cada uma acende um ícone próprio abaixo da barra de satisfação,
+//   seguindo o mesmo padrão visual dos ícones PIFE e aspectos.
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Condições que precisam ser reveladas na fase de negociação
 const CONDICOES_NEGOCIACAO  = ['suporte', 'taxa'];
 const CONDICOES_NECESSARIAS = 2;
-
-// Prefixo das texturas da Chefa — todas carregadas com 'chefa_' (minúsculo)
-const SPRITE_KEY = 'chefa';
-
-// Mapeamento: condição revelada → aspecto a acender (mesmo sistema da sondagem)
-const CONDICAO_PARA_ASPECTO = {
-    suporte: 'pessoas',
-    taxa:    'lucro',
-};
-
-
 
 export default class NegociacaoJulia extends CenaNegociacao {
     constructor() {
@@ -39,9 +34,8 @@ export default class NegociacaoJulia extends CenaNegociacao {
             estoque: 'alto',
         };
 
-        this._condicoesReveladas = new Set();
-        this._bgIconeDemo        = null;
-        this._iconeDemo          = null;
+        this._condicoesReveladas   = new Set();
+        this._iconesNegociacao     = {};
     }
 
     // ── Preload ───────────────────────────────────────────────────────────────
@@ -50,23 +44,25 @@ export default class NegociacaoJulia extends CenaNegociacao {
         super.preload();
 
         this.load.image('julia_fundo',      'assets/NPC/JULIA/loja_chefa_negociacao.png');
-
-        // Texturas da sprite da Chefa — sempre com prefixo minúsculo 'chefa_'
         this.load.image('chefa_satisfeito', 'assets/NPC/JULIA/CHEFE_FELIZ.png');
         this.load.image('chefa_neutro',     'assets/NPC/JULIA/CHEFE_NEUTRA.png');
         this.load.image('chefa_bravo',      'assets/NPC/JULIA/CHEFE_IRRITADA.png');
 
-        this.load.image('demo_estoque_off', 'assets/Icones/Sondagem/icone_caixa_baixo_off.png');
-        this.load.image('demo_estoque_on',  'assets/Icones/Sondagem/icone_caixa_cima.png');
-
-        // Os ícones de negociação reutilizam os assets da sondagem —
-        // já carregados pelo super.preload() via CenaNegociacao.
-        // Nenhum asset adicional de negociação é necessário aqui.
+        // Ícones da fase de negociação — suporte e taxa
+        // Padrão de nomeação igual ao PIFE e aspectos:
+        //   negociacao_suporte_off / negociacao_suporte_on
+        //   negociacao_taxa_off    / negociacao_taxa_on
+        CONDICOES_NEGOCIACAO.forEach(c => {
+            this.load.image(`negociacao_${c}_off`, `assets/Icones/Negociacao/negociacao_${c}_off.png`);
+            this.load.image(`negociacao_${c}_on`,  `assets/Icones/Negociacao/negociacao_${c}_on.png`);
+        });
 
         Insignia.preload(this);
     }
 
     // ── Create ────────────────────────────────────────────────────────────────
+    // CORREÇÃO: o bloco com W, H, barraW, barraX, barraY e _criarIconesNegociacao
+    // estava solto fora de qualquer método. Pertence ao create().
 
     create() {
         super.create();
@@ -77,55 +73,24 @@ export default class NegociacaoJulia extends CenaNegociacao {
         const barraX = W - barraW / 2 - 40;
         const barraY = H * 0.08;
 
-        this._criarIconeDemo(barraX, barraY);
+        // Cria os ícones já na inicialização (ocultos), igual ao que o super
+        // faz com _criarIconesPIFE e _criarIconesAspectos.
+        this._criarIconesNegociacao(barraX, barraW, barraY);
     }
 
-    // ── Fundo — sobrescreve a base para usar 'julia_fundo' no lugar certo ────
-
-    _criarFundo(W, H) {
-        if (this.textures.exists('julia_fundo')) {
-            this.add.image(0, 0, 'julia_fundo')
-                .setOrigin(0, 0)
-                .setDisplaySize(W, H)
-                .setDepth(0);
-        } else {
-            this.add.rectangle(0, 0, W, H * 0.6, 0x111a24).setOrigin(0, 0).setDepth(0);
-        }
-
-        if (this.textures.exists('balcao')) {
-            this.add.image(W / 2, H * 0.79, 'balcao').setDisplaySize(W, H * 0.42).setDepth(1);
-        } else {
-            this.add.rectangle(0, H * 0.58, W, H * 0.42, 0x0a0f14).setOrigin(0, 0).setDepth(1);
-        }
-
-        const div = this.add.graphics().setDepth(1);
-        div.lineStyle(2, 0x2a4a6a, 0.8);
-        div.lineBetween(0, H * 0.58, W, H * 0.58);
-    }
-
-    // ── Cartas — depth 2 para ficarem na frente do balcão (depth 1) ──────────
-
-    _criarFundoCarta(x, y, key) {
-        const { CARD_WIDTH, CARD_HEIGHT } = CenaNegociacao;
-        const obj = this.textures.exists(key)
-            ? this.add.image(x, y, key).setDisplaySize(CARD_WIDTH, CARD_HEIGHT)
-            : this.add.rectangle(x, y, CARD_WIDTH, CARD_HEIGHT, 0x0d1f2e).setStrokeStyle(2, 0x1a4a6a);
-        return obj.setDepth(2).setInteractive({ useHandCursor: true });
-    }
-
-    // ── Área do cliente ───────────────────────────────────────────────────────
+    // ── Posição da sprite da Julia ────────────────────────────────────────────
+    // Sobrescreve _criarAreaCliente da classe base para posicionar a sprite
+    // da Julia de forma independente dos outros clientes (Pedro, Thaina).
+    // Ajuste W * 0.5 (horizontal), H * 0.22 (vertical) e setScale(0.4) (tamanho).
 
     _criarAreaCliente(W, H) {
         const nome         = this.clienteConfig.nomeCliente;
-        const chaveInicial = `${SPRITE_KEY}_${this._getEstadoSatisfacao()}`;
+        const chaveInicial = `${nome}_${this._getEstadoSatisfacao()}`;
 
         this.add.text(W / 2, H * 0.04, nome, {
             fontFamily: '"Courier New", monospace',
-            fontSize:   '26px',
-            color:      '#c8e6f0',
-            letterSpacing: 4,
-            stroke:          '#000000',
-            strokeThickness: 3,
+            fontSize: '26px', color: '#c8e6f0', letterSpacing: 4,
+            stroke: '#000000', strokeThickness: 3,
         }).setOrigin(0.5);
 
         this.spriteCliente = this.textures.exists(chaveInicial)
@@ -133,74 +98,83 @@ export default class NegociacaoJulia extends CenaNegociacao {
             : this.add.rectangle(W / 2, H * 0.28, 100, 150, 0x1a3a5a).setStrokeStyle(2, 0x2a6a9a);
     }
 
-    // ── Atualização da sprite ─────────────────────────────────────────────────
+    // ── Ícones da fase de negociação ──────────────────────────────────────────
+    //
+    // Dois ícones (suporte / taxa) na mesma faixa vertical dos ícones PIFE
+    // e de aspectos — abaixo da barra de satisfação.
+    // Começam ocultos e aparecem apenas na fase 'negociacao'.
 
-    _atualizarSpriteCliente() {
-        const chave = `${SPRITE_KEY}_${this._getEstadoSatisfacao()}`;
-        if (!this.textures.exists(chave)) return;
-
-        this.tweens.add({
-            targets:  this.spriteCliente,
-            alpha:    0,
-            duration: 150,
-            onComplete: () => {
-                if (this.spriteCliente?.setTexture) this.spriteCliente.setTexture(chave);
-                this.tweens.add({ targets: this.spriteCliente, alpha: 1, duration: 150 });
-            },
-        });
-    }
-
-    // ── Ícone exclusivo da demonstração ───────────────────────────────────────
-
-    _criarIconeDemo(barraX, barraY) {
-        const iconeH  = 24;
+    _criarIconesNegociacao(barraX, barraW, barraY) {
+        const iconeH  = 28;
         const largura = iconeH * 2;
+        const espaco  = 6;
+        const totalW  = CONDICOES_NEGOCIACAO.length * largura + (CONDICOES_NEGOCIACAO.length - 1) * espaco;
+        const startX  = barraX - totalW / 2 + largura / 2;
+        const y       = barraY + 80;
         const pad     = 8;
-        const y       = barraY + 53;
 
-        this._bgIconeDemo = this.add
-            .rectangle(barraX, y, largura + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
+        this._bgNegociacao = this.add
+            .rectangle(barraX, y, totalW + pad * 2, iconeH + pad * 2, 0x222222, 0.85)
             .setStrokeStyle(1, 0x555555)
             .setDepth(49)
             .setVisible(false);
 
-        this._iconeDemo = this.textures.exists('demo_estoque_off')
-            ? this.add.image(barraX, y, 'demo_estoque_off').setDisplaySize(largura, iconeH).setDepth(50).setVisible(false)
-            : this.add.rectangle(barraX, y, largura, iconeH, 0x333333).setStrokeStyle(1, 0x555555).setDepth(50).setVisible(false);
+        this._iconesNegociacao = {};
+
+        CONDICOES_NEGOCIACAO.forEach((condicao, i) => {
+            const x        = startX + i * (largura + espaco);
+            const chaveOff = `negociacao_${condicao}_off`;
+            const chaveOn  = `negociacao_${condicao}_on`;
+
+            const icone = this.textures.exists(chaveOff)
+                ? this.add.image(x, y, chaveOff).setDisplaySize(largura, iconeH).setDepth(50)
+                : this.add.rectangle(x, y, largura, iconeH, 0x333333)
+                    .setStrokeStyle(1, 0x555555)
+                    .setDepth(50);
+
+            icone.setVisible(false);
+
+            this._iconesNegociacao[condicao] = { obj: icone, chaveOff, chaveOn };
+        });
     }
 
-    _setIconeDemoVisivel(visivel) {
-        this._bgIconeDemo?.setVisible(visivel);
-        this._iconeDemo?.setVisible(visivel);
+    _setIconesNegociacaoVisiveis(visivel) {
+        this._bgNegociacao?.setVisible(visivel);
+        for (const d of Object.values(this._iconesNegociacao)) d.obj.setVisible(visivel);
     }
 
-    _acenderIconeDemo() {
-        if (!this._iconeDemo) return;
+    _revelarIconeNegociacao(condicao) {
+        const d = this._iconesNegociacao[condicao];
+        if (!d) return;
 
-        if (this.textures.exists('demo_estoque_on') && this._iconeDemo.setTexture) {
-            this._iconeDemo.setTexture('demo_estoque_on');
-        } else if (this._iconeDemo.setFillStyle) {
-            this._iconeDemo.setFillStyle(0x22cc66);
+        if (this.textures.exists(d.chaveOn) && d.obj.setTexture) {
+            d.obj.setTexture(d.chaveOn);
+        } else if (d.obj.setFillStyle) {
+            d.obj.setFillStyle(0x22cc66);
         }
 
         this.tweens.add({
-            targets:  this._iconeDemo,
+            targets:  d.obj,
             scaleX:   1.3, scaleY: 1.3,
-            duration: 150, yoyo:   true,
+            duration: 150, yoyo: true,
             ease:     'Back.easeOut',
         });
     }
 
     // ── Insígnia e vitória ────────────────────────────────────────────────────
 
-    _getInsignia() {
-        return {
-            key:  'insignia_praia_proveitos',
-            nome: 'Ancião dos Proveitos',
-        };
-    }   
+    _aoVencer() {
+        const insignia = new Insignia(this, 'praia_proveitos');
+        insignia.conceder();
+    }
+
+    _chaveVitoria() { return 'julia_vencida'; }
 
     // ── Controle de fases ─────────────────────────────────────────────────────
+    //
+    //   - 'demonstracao': jogador apresenta um produto; acerto avança, erro penaliza.
+    //   - 'negociacao':   super + ícones próprios + cartas de negociação.
+    //   - 'abordagem' / 'sondagem': super faz tudo.
 
     _iniciarFase() {
         super._iniciarFase();
@@ -208,87 +182,21 @@ export default class NegociacaoJulia extends CenaNegociacao {
         const fase = this.clienteConfig.fases[this.faseAtual];
 
         if (fase === 'demonstracao') {
-            this._setAspectosVisiveis(false);
-            this._setIconeDemoVisivel(true);
+            this._setIconesNegociacaoVisiveis(false);
             this._distribuirCartasDemonstracao();
 
         } else if (fase === 'negociacao') {
             this._condicoesReveladas = new Set();
             this._setPIFEVisivel(false);
-            this._setIconeDemoVisivel(false);
-            this._resetarIconesNegociacao();
+            this._setAspectosVisiveis(false);
+            this._setIconesNegociacaoVisiveis(true);
             this._limparCartas();
             this._distribuirCartasNegociacao();
 
         } else {
-            // 'abordagem' e 'sondagem': super faz tudo
-            this._setIconeDemoVisivel(false);
+            // 'abordagem' e 'sondagem': super fez tudo.
+            this._setIconesNegociacaoVisiveis(false);
         }
-    }
-
-    // ── Reset dos ícones de aspecto para a fase de negociação ─────────────────
-    //
-    // Redimensiona o _bgAspectos para exatamente 2 ícones (pessoas + lucro),
-    // reposiciona os ícones centralizados dentro do novo retângulo,
-    // e oculta o estoque que não participa da negociação.
-
-    _resetarIconesNegociacao() {
-        // Mesma lógica da sondagem: mostra o bg e os ícones relevantes,
-        // oculta apenas o estoque. Não tenta redimensionar nem reposicionar nada.
-        const iconeH  = 24;
-        const largura = 48;
-
-        const dEstoque = this._iconesAspectos['estoque'];
-        if (dEstoque) dEstoque.obj.setVisible(false);
-
-        for (const aspecto of ['pessoas', 'lucro']) {
-            const d     = this._iconesAspectos[aspecto];
-            const chave = `sondagem_${aspecto}_interrogacao`;
-            if (!d) continue;
-
-            if (this.textures.exists(chave) && d.obj.setTexture) {
-                d.obj.setTexture(chave);
-            } else if (d.obj.setFillStyle) {
-                d.obj.setFillStyle(0x333333);
-            }
-
-            if (d.obj.setDisplaySize) d.obj.setDisplaySize(largura, iconeH);
-            else d.obj.setScale(1);
-
-            d.obj.setVisible(true);
-        }
-
-        this._bgAspectos?.setVisible(true);
-    }
-
-    // ── Revelar ícone de aspecto — sobrescreve a base para garantir o tamanho ─
-    //
-    // A base faz setTexture mas não chama setDisplaySize depois, o que faz a
-    // imagem assumir seu tamanho natural (geralmente muito maior).
-    // Aqui forçamos as dimensões corretas logo após a troca de textura.
-
-    _revelarIconeAspecto(aspecto) {
-        const d = this._iconesAspectos[aspecto];
-        if (!d) return;
-
-        const valor = this.aspectosCliente[aspecto];
-        const chave = `sondagem_${aspecto}_${valor}`;
-
-        if (this.textures.exists(chave) && d.obj.setTexture) {
-            d.obj.setTexture(chave);
-            if (d.obj.setDisplaySize) d.obj.setDisplaySize(48, 24);
-        } else if (d.obj.setFillStyle) {
-            d.obj.setFillStyle(0x22cc66);
-        }
-
-        this.tweens.add({
-            targets:  d.obj,
-            scaleX:   1.3,
-            scaleY:   1.3,
-            duration: 150,
-            yoyo:     true,
-            ease:     'Back.easeOut',
-        });
     }
 
     // ── _mostrarDetalheCarta ──────────────────────────────────────────────────
@@ -324,21 +232,21 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 key:           'Proximidade',
                 letra:         'P',
                 correta:       true,
-                dialogoAcerto: 'Bom dia, tudo bem sim..',
+                dialogoAcerto: 'Claro! Sou a Julia, dona do estabelecimento. Me conta mais.',
                 dialogoErro:   'Não entendi o que você veio fazer aqui.',
             }),
             new CartaAbordagem({
                 key:           'Interesse',
                 letra:         'I',
                 correta:       true,
-                dialogoAcerto: 'Sou a Julia.',
+                dialogoAcerto: 'Ah, conheço sim! Boa referência.',
                 dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
             }),
             new CartaAbordagem({
                 key:           'Familiaridade',
                 letra:         'F',
                 correta:       true,
-                dialogoAcerto: 'Interessante, ultimamente tenho utilizado bastante as maquininhas. Pode continuar.',
+                dialogoAcerto: 'Interessante, você não está aqui só pra vender. Pode continuar.',
                 dialogoErro:   'Parece que você só quer me vender algo.',
             }),
             new CartaAbordagem({
@@ -403,23 +311,30 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // ── Fase de demonstração ──────────────────────────────────────────────────
 
     _distribuirCartasDemonstracao() {
+        // Julia: aspectosCliente = { pessoas: 'alto', lucro: 'baixo', estoque: 'alto' }
+        // A carta correta tem os 3 atributos certos. As demais têm 0, 1 ou 2 acertos.
         const pool = [
-            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // carta correta
-            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }),
-            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }),
-            new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }),
-            new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }),
-            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }),
-            new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }),
-            new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }),
+            new CartaDemonstracao({ key: 'CieloFlash',       pessoas: 'alto',  lucro: 'baixo', estoque: 'alto'  }), // 3/3 — correta
+            new CartaDemonstracao({ key: 'CrediarioDigital', pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CVBA',             pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CieloFlash2',      pessoas: 'alto',  lucro: 'alto',  estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'CieloLioOn',       pessoas: 'alto',  lucro: 'baixo', estoque: 'baixo' }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'LioOnGestao',      pessoas: 'baixo', lucro: 'baixo', estoque: 'alto'  }), // 2/3 — -10
+            new CartaDemonstracao({ key: 'LioOnApps',        pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'CieloTap',         pessoas: 'alto',  lucro: 'alto',  estoque: 'baixo' }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'CieloZip',         pessoas: 'baixo', lucro: 'alto',  estoque: 'alto'  }), // 1/3 — -20
+            new CartaDemonstracao({ key: 'Antecipacao',      pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+            new CartaDemonstracao({ key: 'FlashRecarga',     pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
+            new CartaDemonstracao({ key: 'MoedaEstrangeira', pessoas: 'baixo', lucro: 'alto',  estoque: 'baixo' }), // 0/3 — -30
         ];
 
-        const correta = pool[0];
-        const demais  = Phaser.Utils.Array.Shuffle(pool.slice(1));
-        const cartas  = Phaser.Utils.Array.Shuffle([correta, ...demais.slice(0, 3)]);
+        const correta  = pool[0];
+        const demais   = Phaser.Utils.Array.Shuffle(pool.slice(1));
+        const cartas   = Phaser.Utils.Array.Shuffle([correta, ...demais.slice(0, 3)]);
         this._distribuirCartas(cartas);
     }
 
+    // Modal reutilizável — demonstração e negociação
     _abrirModalApresentar(carta, aoSelecionar) {
         this.cartaEmDetalhes = carta;
 
@@ -463,7 +378,6 @@ export default class NegociacaoJulia extends CenaNegociacao {
         this.negociacaoAtiva = false;
 
         if (acertos === 3) {
-            this._acenderIconeDemo();
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
             this._mostrarDialogo('Perfeito! Esse produto resolve exatamente o que eu precisava.');
             this.time.delayedCall(4000, () => {
@@ -488,6 +402,10 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     // ── Fase de negociação ────────────────────────────────────────────────────
+    //
+    // O jogador apresenta cartas de condições. Ao acertar 'suporte' e 'taxa',
+    // os dois ícones acendem e a negociação avança.
+    // Cartas erradas penalizam a satisfação sem revelar nenhum ícone.
 
     _distribuirCartasNegociacao() {
         const cartas = this._getCartasNegociacao();
@@ -522,9 +440,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
         if (carta.correta) {
             if (!this._condicoesReveladas.has(carta.condicao)) {
                 this._condicoesReveladas.add(carta.condicao);
-                // Acende o ícone de aspecto correspondente — mesmo sistema da sondagem
-                const aspecto = CONDICAO_PARA_ASPECTO[carta.condicao];
-                if (aspecto) this._revelarIconeAspecto(aspecto);
+                this._revelarIconeNegociacao(carta.condicao);
             }
 
             this._alterarSatisfacao(CenaNegociacao.GANHO_SATISFACAO);
@@ -555,9 +471,25 @@ export default class NegociacaoJulia extends CenaNegociacao {
     }
 
     // ── Cartas da negociação ──────────────────────────────────────────────────
+    //
+    // COMO ADICIONAR UMA CARTA NOVA:
+    //
+    //   new CartaNegociacao({
+    //       key:           'NomeDaCartaNoAsset',
+    //       condicao:      'suporte',   // 'suporte' ou 'taxa'
+    //       correta:       true,        // false = penaliza satisfação
+    //       dialogoAcerto: 'Fala da Julia ao acertar',
+    //       dialogoErro:   'Fala da Julia ao errar',
+    //   }),
+    //
+    //   Regras:
+    //   - Pode haver mais de uma carta para a mesma condição
+    //   - A condição só é revelada uma vez (pelo primeiro acerto)
+    //   - Cartas erradas penalizam sem revelar nenhum ícone
 
     _getCartasNegociacao() {
         return [
+            // ── Suporte (correta) ──
             new CartaNegociacao({
                 key:           'Suporte',
                 condicao:      'suporte',
@@ -565,6 +497,8 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: 'Suporte 24h na praia? Isso é exatamente o que eu precisava ouvir!',
                 dialogoErro:   'Isso não me convence sobre o suporte.',
             }),
+
+            // ── Taxas (correta) ──
             new CartaNegociacao({
                 key:           'Taxas',
                 condicao:      'taxa',
@@ -572,6 +506,8 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: 'Taxas negociáveis? Agora você tá falando a minha língua!',
                 dialogoErro:   'Isso não resolve meu problema com as taxas.',
             }),
+
+            // ── Erradas ──
             new CartaNegociacao({
                 key:           'Aceitacao',
                 condicao:      'suporte',
@@ -579,6 +515,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: '',
                 dialogoErro:   'Aceitar qualquer condição não é o que eu quero ouvir.',
             }),
+
             new CartaNegociacao({
                 key:           'Recebimento',
                 condicao:      'taxa',
@@ -586,6 +523,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 dialogoAcerto: '',
                 dialogoErro:   'Recebimento rápido é bom, mas não é o meu problema principal agora.',
             }),
+
             new CartaNegociacao({
                 key:           'Gestao',
                 condicao:      'suporte',
@@ -610,5 +548,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
     // ── Retorno de cena ───────────────────────────────────────────────────────
 
-    _cenaDeRetorno() { return 'PraiaDosProveitos'; }
+    _cenaDeRetorno() {
+        return 'PraiaDosProveitos';
+    }
 }

@@ -30,20 +30,20 @@ export default class CasaGelo2 extends CenaMapa {
                  || localStorage.getItem('nomeJogador')
                  || 'Jogador';
                  
-        // Falas da Sofia
-        const FALAS_SOFIA = [
-            { personagem: 'Sofia', texto: 'Olá, viajante! Me chamo Sofia. Seja bem-vindo à minha casa.' },
-            { personagem: 'Sofia', texto: 'Estas terras congeladas guardam segredos que poucos ousam descobrir. Mas afinal, qual seu nome?' },
-            { personagem: 'Jogador', texto: `Prazer Sofia, me chamo ${nomeJogador}. O que você sabe sobre este lugar?` },
-            { personagem: 'Sofia', texto: 'Sei que o frio aqui não é apenas clima — é um teste. Apenas os mais determinados conseguem avançar.' },
-            { personagem: 'Sofia', texto: 'E que houveram problemas ao norte, sobre Sondagem. Os últimos viajantes não tem sido muito agradáveis.' },
-            { personagem: 'Sofia', texto: `${nomeJogador}, espero que você consiga resolver esses problemas. Algumas pessoas tem se mudado do Quebra Gelo devido toda essa confusão` },
-            { personagem: 'Jogador', texto: 'Entendo. Vou investigar esses problemas.' },
-            { personagem: 'Sofia', texto: 'Boa sorte, aventureiro! Se precisar de algo, estarei por aqui.' },
-        ];
+// Falas da Sofia
+const FALAS_SOFIA = [
+    { personagem: 'Sofia', texto: 'Olá, viajante! Me chamo Sofia. Seja bem-vindo à minha casa.' },
+    { personagem: 'Sofia', texto: 'Estas terras congeladas guardam segredos que poucos ousam descobrir. Mas afinal, qual seu nome?' },
+    { personagem: 'Jogador', texto: `Prazer Sofia, me chamo ${nomeJogador}. O que você sabe sobre este lugar?` },
+    { personagem: 'Sofia', texto: 'Sei que o frio aqui não é apenas clima — é um teste. Apenas os mais determinados conseguem avançar.' },
+    { personagem: 'Sofia', texto: 'E que houveram problemas ao norte, sobre Sondagem. Os últimos viajantes não tem sido muito agradáveis.' },
+    { personagem: 'Sofia', texto: `${nomeJogador}, espero que você consiga resolver esses problemas. Algumas pessoas tem se mudado do Quebra Gelo devido toda essa confusão` },
+    { personagem: 'Jogador', texto: 'Entendo. Vou investigar esses problemas.' },
+    { personagem: 'Sofia', texto: 'Boa sorte, aventureiro! Se precisar de algo, estarei por aqui.' },
+];
 
-        const centerX     = 750;
-        const centerY     = 400;
+        const centerX    = 750;
+        const centerY    = 400;
         const larguraMapa = 1500;
         const alturaMapa  = 800;
 
@@ -54,8 +54,7 @@ export default class CasaGelo2 extends CenaMapa {
         const offsetX = fundo.x - (fundo.width  / 2);
         const offsetY = fundo.y - (fundo.height / 2);
 
-        // CORREÇÃO: key em minúsculo, igual ao preload
-        this.add.image(750, 530, 'portaSaida').setDepth(1);
+        this.add.image(750, 530, 'PortaSaida').setDepth(1);
 
         // ── Hitboxes do Tiled ──────────────────────────────────────────────────
         const mapa          = this.make.tilemap({ key: 'mapaCasaGelo2' });
@@ -98,6 +97,8 @@ export default class CasaGelo2 extends CenaMapa {
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
 
         // ── Jogador ────────────────────────────────────────────────────────────
+        // Vindo do MapaGelo: aparece próximo à porta (parte de baixo)
+        // Caso contrário: posição padrão no centro
         const spawnY = this.origem === 'QuebraGelo'
             ? 520
             : centerY + 100;
@@ -113,7 +114,7 @@ export default class CasaGelo2 extends CenaMapa {
         this.jogador.adicionarColisao(this.sofia);
 
         // ── Porta de saída (gatilho) ───────────────────────────────────────────
-        this.gatilhoPorta = this.add.zone(750, 530, 60, 20);
+        this.gatilhoPorta = this.add.zone(750, 515, 60, 30);
         this.physics.add.existing(this.gatilhoPorta);
         this.gatilhoPorta.body.setAllowGravity(false);
         this.gatilhoPorta.body.moves = false;
@@ -129,11 +130,11 @@ export default class CasaGelo2 extends CenaMapa {
         if (super.update()) return;
 
         this.jogador.atualizar();
-        this.sofia.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
-        // ── Porta de saída ────────────────────────────────────────────────────
+        this.sofia.atualizar(this.jogador.sprite, this.teclas.interagir);
+
         const naPorta = this.physics.overlap(this.jogador.sprite, this.gatilhoPorta);
-        if (naPorta && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+        if (naPorta && !this.sofia.dialogoAberto && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('QuebraGelo');
         }
     }
