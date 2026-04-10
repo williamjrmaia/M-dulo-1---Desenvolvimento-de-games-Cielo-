@@ -37,7 +37,7 @@
 //   O HUD é lançado no create() e parado no trocarCena().
 // =============================================================================
 
-import Insignia from './Insignia.js';
+import Insignia from './Insignias.js';
 
 export default class CenaMapa extends Phaser.Scene {
 
