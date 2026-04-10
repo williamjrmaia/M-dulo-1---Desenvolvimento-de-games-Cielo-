@@ -2,8 +2,8 @@ import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
 import CenaMapa       from "../Classes/CenaMapa.js";
-import CarroCielo     from "../Classes/CarroCielo.js";
-import MiniMapa       from '../Classes/MiniMapa.js';
+import CarroCielo from "../Classes/CarroCielo.js";
+import MiniMapa from '../Classes/MiniMapa.js';
 
 export default class CidadeCielo extends CenaMapa {
 
@@ -16,11 +16,10 @@ export default class CidadeCielo extends CenaMapa {
     }
 
     preload() {
-        this.load.image('CidadeCielo',   './assets/CidadeCielo/CidadeCielo.png');
-        // ── Texturas do carro ─────────────────────────────────────────────────
-        this.load.image('carro_cielo',   './assets/CidadeCielo/carro_cielo.png'); // horizontal
-        this.load.image('carro2',        './assets/CidadeCielo/carro2.png');      // vertical
+        this.load.image('CidadeCielo', './assets/CidadeCielo/CidadeCielo.png');
+        this.load.image('carro_cielo', './assets/CidadeCielo/carro_cielo.png');
         this.load.tilemapTiledJSON('mapaCidadeCielo', './assets/CidadeCielo/CidadeCielo.tmj');
+        this.load.image('carro2', './assets/CidadeCielo/carro2.png');
 
         // ── Assets da Cielita ─────────────────────────────────────────────────
         this.load.spritesheet('cielitaparada', './assets/NPC/cielita/idlecielita.png', {
@@ -29,17 +28,194 @@ export default class CidadeCielo extends CenaMapa {
         });
     }
 
+    _iniciarCadeiaCarros() {
+    this.carro1 = new CarroCielo(this, {
+        xi: 200, yi: 600,
+        xf: 680, yf: 600,
+        T: 8, pausaMs: 2000,
+        escala: 1.2,
+        texturaKey: 'carro_cielo',
+        flipX: true, flipY: false,
+        jogadorSprite: this.jogador.sprite,
+        miniMapa: this.miniMapa,
+        onFimCiclo: () => {
+            this.carro1.sprite.destroy();
+            this.carro1 = null;
+            
+
+            this.carro2 = new CarroCielo(this, {
+                xi: 680, yi: 600,
+                xf: 680, yf: 550,
+                T: 1, pausaMs: 1000,
+                escala: 0.6,
+                texturaKey: 'carro2',
+                flipX: false, flipY: true,
+                jogadorSprite: this.jogador.sprite,
+                miniMapa: this.miniMapa,
+                onFimCiclo: () => {
+                    this.carro2.sprite.destroy();
+                    this.carro2 = null;
+
+                    this.carro3 = new CarroCielo(this, {
+                        xi: 680, yi: 550,
+                        xf: 775, yf: 550,
+                        T: 1, pausaMs: 1000,
+                        escala: 1.2,
+                        texturaKey: 'carro_cielo',
+                        flipX: true, flipY: false,
+                        jogadorSprite: this.jogador.sprite,
+                        miniMapa: this.miniMapa,
+                        onFimCiclo: () => {
+                            this.carro3.sprite.destroy();
+                            this.carro3 = null;
+
+                            this.carro4 = new CarroCielo(this, {
+                                xi: 775, yi: 550,
+                                xf: 775, yf: 395,
+                                T: 3, pausaMs: 1000,
+                                escala: 0.6,
+                                texturaKey: 'carro2',
+                                flipX: false, flipY: false,
+                                jogadorSprite: this.jogador.sprite,
+                                miniMapa: this.miniMapa,
+                                onFimCiclo: () => {
+                                    this.carro4.sprite.destroy();
+                                    this.carro4 = null;
+
+                                    this.carro5 = new CarroCielo(this, {
+                                        xi: 775, yi: 395,
+                                        xf: 670, yf: 395,
+                                        T: 2, pausaMs: 500,
+                                        escala: 1.2,
+                                        texturaKey: 'carro_cielo',
+                                        flipX: false, flipY: false,
+                                        jogadorSprite: this.jogador.sprite,
+                                        miniMapa: this.miniMapa,
+                                        onFimCiclo: () => {
+                                            this.carro5.sprite.destroy();
+                                            this.carro5 = null;
+
+                                            this.carro6 = new CarroCielo(this, {
+                                                xi: 670, yi: 395,
+                                                xf: 670, yf: 220,
+                                                T: 3, pausaMs: 500,
+                                                escala: 0.6,
+                                                texturaKey: 'carro2',
+                                                flipX: false, flipY: false,
+                                                jogadorSprite: this.jogador.sprite,
+                                                miniMapa: this.miniMapa,
+                                                onFimCiclo: () => {
+                                                    this.carro6.sprite.destroy();
+                                                    this.carro6 = null;
+
+                                                    this.carro7 = new CarroCielo(this, {
+                                                        xi: 670, yi: 220,
+                                                        xf: 450, yf: 220,
+                                                        T: 3.5, pausaMs: 500,
+                                                        escala: 1.2,
+                                                        texturaKey: 'carro_cielo',
+                                                        flipX: false, flipY: false,
+                                                        jogadorSprite: this.jogador.sprite,
+                                                        miniMapa: this.miniMapa,
+                                                        onFimCiclo: () => {
+                                                            this.carro7.sprite.destroy();
+                                                            this.carro7 = null;
+
+                                                            this.carro8 = new CarroCielo(this, {
+                                                                xi: 450, yi: 220,
+                                                                xf: 405, yf: 220,
+                                                                T: 2, pausaMs: 1000,
+                                                                escala: 1.2,
+                                                                texturaKey: 'carro_cielo',
+                                                                flipX: false, flipY: false,
+                                                                jogadorSprite: this.jogador.sprite,
+                                                                miniMapa: this.miniMapa,
+                                                                onFimCiclo: () => {
+                                                                    this.carro8.sprite.destroy();
+                                                                    this.carro8 = null;
+
+                                                                    this.carro9 = new CarroCielo(this, {
+                                                                        xi: 405, yi: 220,
+                                                                        xf: 405, yf: 420,
+                                                                        T: 4, pausaMs: 500,
+                                                                        escala: 0.6,
+                                                                        texturaKey: 'carro2',
+                                                                        flipX: false, flipY: true,
+                                                                        jogadorSprite: this.jogador.sprite,
+                                                                        miniMapa: this.miniMapa,
+                                                                        onFimCiclo: () => {
+                                                                            this.carro9.sprite.destroy();
+                                                                            this.carro9 = null;
+
+                                                                            this.carro10 = new CarroCielo(this, {
+                                                                                xi: 405, yi: 420,
+                                                                                xf: 200, yf: 420,
+                                                                                T: 1, pausaMs: 500,
+                                                                                escala: 1.2,
+                                                                                texturaKey: 'carro_cielo',
+                                                                                flipX: false, flipY: false,
+                                                                                jogadorSprite: this.jogador.sprite,
+                                                                                miniMapa: this.miniMapa,
+                                                                                onFimCiclo: () => {
+                                                                                    this.carro10.sprite.destroy();
+                                                                                    this.carro10 = null;
+
+                                                                                    this.carro11 = new CarroCielo(this, {
+                                                                                        xi: 200, yi: 420,
+                                                                                        xf: 200, yf: 600,
+                                                                                        T: 2, pausaMs: 2000,
+                                                                                        escala: 0.6,
+                                                                                        texturaKey: 'carro2',
+                                                                                        flipX: false, flipY: true,
+                                                                                        jogadorSprite: this.jogador.sprite,
+                                                                                        miniMapa: this.miniMapa,
+                                                                                        onFimCiclo: () => {
+                                                                                            this.carro11.sprite.destroy();
+                                                                                            this.carro11 = null;
+
+                                                                                            // 🔁 Fecha o loop
+                                                                                            this._iniciarCadeiaCarros();
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    });
+                                                                }
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+}
+
     create() {
         super.create();
+
+        if (this.carro) {
+        this.carro.sprite.destroy();
+        this.carro = null;
+}
 
         this.registry.get('audio').tocarMusica('musica_cidadecielo', 0.5);
         this.registry.get('audio').tocarAmbiente('passos_cidadecielo', 0.8);
 
+        // Controla se o diálogo de introdução já foi concluído nesta sessão
         this.dialogoCielitaConcluido = this.registry.get('cielita_cidadecielo_concluido') || false;
 
         const escalaCenario = 1.5;
 
-        const cenario      = this.add.image(0, 0, 'CidadeCielo').setOrigin(0, 0).setScale(escalaCenario);
+        const cenario = this.add.image(0, 0, 'CidadeCielo').setOrigin(0, 0).setScale(escalaCenario);
         const larguraImagem = cenario.displayWidth;
         const alturaImagem  = cenario.displayHeight;
 
@@ -53,7 +229,8 @@ export default class CidadeCielo extends CenaMapa {
         // ── Grupo de NPCs ─────────────────────────────────────────────────────
         this.grupoNPCs = this.physics.add.group();
 
-        // ── NPC: Cielita ──────────────────────────────────────────────────────
+        // ── NPC: Cielita (introdução no início do mapa) ───────────────────────
+        // Posicionada bem no início, perto de onde o jogador aparece (y ≈ 830)
         this.cielita = new NPC(this, larguraImagem / 1.93 - 20, 750, 'cielitaparada', {
             velocidade:         0,
             distanciaInteracao: 60,
@@ -76,12 +253,14 @@ export default class CidadeCielo extends CenaMapa {
             { personagem: 'Cielita', texto: 'Boa sorte, aventureiro! Estarei aqui se precisar de mim.' },
         ]);
 
+        // Colisão NPC↔NPC (necessário mesmo com um único NPC)
         this.physics.add.collider(this.grupoNPCs, this.grupoNPCs);
-
-        // ── Portas ────────────────────────────────────────────────────────────
+        // ── Portas ───────────────────────────────────────────────────────────
+        // Porta para o prédio principal
         this.PortaCasaCidade1 = this.add.zone(546, 567, 50, 25);
         this.physics.add.existing(this.PortaCasaCidade1, true);
 
+        //Porta para a loja secundária
         this.PortaLojaCidade1 = this.add.zone(835, 150, 35, 25);
         this.physics.add.existing(this.PortaLojaCidade1, true);
 
@@ -89,80 +268,16 @@ export default class CidadeCielo extends CenaMapa {
         this.jogador = new Jogador(this, larguraImagem / 2, 830);
         this.jogador.sprite.setCollideWorldBounds(true);
         this.jogador.sprite.setScale(1.3);
-
-        // ── MiniMapa ──────────────────────────────────────────────────────────
+        //-- MiniMapa ───────────────────────────────────────────────────────────
         this.miniMapa = new MiniMapa(this, this.jogador.sprite, { zoom: 0.6 });
         this.miniMapa.registrarNPCs(this.grupoNPCs);
-        this.miniMapa.definirMissao(545, 550);
+        this.miniMapa.definirMissao(545, 550);              // triângulo da missão
 
+        // Colisão Jogador↔Cielita
         this.jogador.adicionarColisao(this.grupoNPCs);
 
-        // ── Carro — percurso retangular ───────────────────────────────────────
-        //
-        //   A (165,684) ──[carro_cielo]──────────► B (480,684)
-        //                                           │
-        //                                       [carro2]
-        //                                           │ ▼
-        //   D (165,768) ◄──[carro_cielo flipX]── C (480,768)
-        //   │
-        //   [carro2 flipY] ▲
-        //   │
-        //   volta a A
-        //
-        // Ajuste xi/yi/xf/yf conforme o layout real do seu tilemap.
-        // Os valores abaixo foram calculados a partir da escala 1.5 aplicada
-        // ao mapa (pixel da imagem × 1.5 = coordenada do mundo de jogo).
-        //
-        this.carro = new CarroCielo(this, {
-            pausaMs:    2000,   // pausa após completar o loop inteiro
-            pausaSegMs: 150,    // pequena pausa nas esquinas (ms); use 0 para remover
-            escala:     1.2,
-            jogadorSprite: this.jogador.sprite,
-            segmentos: [
-                // ── Segmento 1: direita ──────────────────────────────────────
-                // carro_cielo normal, MU horizontal
-                {
-                    xi: 165, yi: 684,
-                    xf: 480, yf: 684,
-                    T: 3,
-                    textura: 'carro_cielo',
-                    flipX: false,
-                    flipY: false,
-                },
-                // ── Segmento 2: descida ──────────────────────────────────────
-                // carro2 normal, MUV vertical (v0y = 0, acelera para baixo)
-                {
-                    xi: 480, yi: 684,
-                    xf: 480, yf: 768,
-                    T: 2,
-                    textura: 'carro2',
-                    flipX: false,
-                    flipY: false,
-                },
-                // ── Segmento 3: esquerda ─────────────────────────────────────
-                // carro_cielo espelhado em X, MU horizontal (vx negativo)
-                {
-                    xi: 480, yi: 768,
-                    xf: 165, yf: 768,
-                    T: 3,
-                    textura: 'carro_cielo',
-                    flipX: true,
-                    flipY: false,
-                },
-                // ── Segmento 4: subida ───────────────────────────────────────
-                // carro2 espelhado em Y, MUV vertical (v0y = 0, acelera para cima)
-                {
-                    xi: 165, yi: 768,
-                    xf: 165, yf: 684,
-                    T: 2,
-                    textura: 'carro2',
-                    flipX: false,
-                    flipY: true,
-                },
-            ],
-        });
 
-        // ── Portal ────────────────────────────────────────────────────────────
+        // ── Criação do Portal ─────────────────────────────────────────────────
         this.PortalCielo = this.add.zone(540, 880, 30, 20);
         this.physics.add.existing(this.PortalCielo, true);
 
@@ -214,37 +329,45 @@ export default class CidadeCielo extends CenaMapa {
         this.cameras.main.setZoom(2.3);
         this.cameras.main.setBounds(0, 0, larguraImagem, alturaImagem);
 
-        // ── Posição inicial baseada na origem ─────────────────────────────────
+        // ── Posição Inicial baseada na origem ─────────────────────────────────
         if (this.origem === 'PraiaDosProveitos') {
             this.jogador.sprite.setPosition(540, 840);
         }
-        if (this.origem === 'CasaCidade1') {
-            this.jogador.sprite.setPosition(546, 595);
-        }
-        if (this.origem === 'CasaCidade2') {
-            this.jogador.sprite.setPosition(835, 150);
-        }
 
         // ── Câmera UI para diálogos ───────────────────────────────────────────
+        // Necessária com zoom alto (2.3) para que a caixa de diálogo apareça corretamente
         DialogoManager.configurarCameraUI(this, 2.3, [this.cielita]);
 
-        // ── HUD inicial ───────────────────────────────────────────────────────
+        // ── HUD: indicativo inicial ───────────────────────────────────────────
         if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
+
+        // Criação de todos os movimentos dos carros
+        // Carro 1 (horizontal)
+    
+        this._iniciarCadeiaCarros();
+
+
+         if (this.origem === 'CasaCidade1') {
+            this.jogador.sprite.setPosition(546, 595); 
+        }
+
+         if (this.origem === 'CasaCidade2') {
+            this.jogador.sprite.setPosition(835, 150); 
+        }
     }
+
 
     update(time, delta) {
         if (super.update()) return;
-
-        // ── Atualiza o carro (chamada ÚNICA por frame) ─────────────────────────
-        this.carro.atualizar(this.time.now);
 
         this.jogador.atualizar();
         this.miniMapa.atualizar();
 
         // ── Atualiza NPC Cielita ──────────────────────────────────────────────
         this.cielita.atualizar(this.jogador.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+
 
         // ── HUD dinâmico ──────────────────────────────────────────────────────
         if (this.cielita.dialogoAberto) {
@@ -266,9 +389,21 @@ export default class CidadeCielo extends CenaMapa {
             return;
         }
 
-        if (this.jogador.temOverlap(this.PortaLojaCidade1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
+         if (this.jogador.temOverlap(this.PortaLojaCidade1) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {
             this.trocarCena('CasaCidade2');
             return;
         }
+       
+        if (this.carro1)  this.carro1.atualizar(time);
+        if (this.carro2)  this.carro2.atualizar(time);
+        if (this.carro3)  this.carro3.atualizar(time);
+        if (this.carro4)  this.carro4.atualizar(time);
+        if (this.carro5)  this.carro5.atualizar(time);
+        if (this.carro6)  this.carro6.atualizar(time);
+        if (this.carro7)  this.carro7.atualizar(time);
+        if (this.carro8)  this.carro8.atualizar(time);
+        if (this.carro9)  this.carro9.atualizar(time);
+        if (this.carro10) this.carro10.atualizar(time);
+        if (this.carro11) this.carro11.atualizar(time);
     }
 }

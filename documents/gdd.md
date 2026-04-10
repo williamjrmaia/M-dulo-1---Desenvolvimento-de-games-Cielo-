@@ -241,15 +241,14 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 5 | Introdução narrativa | O jogo deve apresentar uma cutscene narrativa com a Cielita contextualizando o universo do jogo e o papel do jogador antes de entrar no mapa. O jogador deve apertar E para avançar cada etapa do diálogo. | Todas as falas devem ser exibidas na ordem correta; o jogador deve conseguir avançar e pular o texto com a tecla E; ao fim do diálogo o jogador deve ser redirecionado automaticamente para a Casa da Cielita.
 6 | Tutorial | O jogo deve apresentar um tutorial explicando o funcionamento das mecânicas de movimentação e interação ao entrar na Casa da Cielita pela primeira vez. | O tutorial deve aparecer automaticamente ao entrar na Casa da Cielita; deve ser acessível a qualquer momento pela tecla H; deve fechar e reabrir corretamente sem travar o jogo.
 7 | Movimentação e interação do jogador | A movimentação do personagem será realizada por meio das teclas W, A, S e D do teclado, responsáveis pelo deslocamento direcional. A tecla E será destinada à interação do jogador com NPCs e objetos presentes no mapa. | O personagem deve responder ao comando de movimentação em até 100ms; a tecla E deve iniciar o diálogo ou interação em até 1 segundo quando o jogador estiver no raio de alcance do NPC ou objeto.
-8 | Mapa geral e regiões principais | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielita sendo a região introdutória e as 4 cidades principais, sendo elas: Quebra-Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo. Cada região cobre etapas específicas do funil de vendas da Cielo. | As 5 regiões devem estar presentes e acessíveis conforme a progressão; a progressão entre regiões só deve ser liberada após o jogador concluir o desafio da região anterior; nenhuma região deve apresentar falha de carregamento ou tela preta durante a transição.
+8 | Mapa geral e regiões principais | O jogo deve conter um mapa geral com uma área introdutória e quatro regiões principais: Casa da Cielita, Quebra-Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo. Cada região cobre etapas específicas do funil de vendas da Cielo. | As 5 regiões devem estar presentes e acessíveis conforme a progressão; a progressão entre regiões só deve ser liberada após o jogador concluir o desafio da região anterior; nenhuma região deve apresentar falha de carregamento ou tela preta durante a transição.
 9 | Diálogo de transição da Cielita | Ao se aproximar da ponte de transição entre regiões, a Cielita deve apresentar um breve diálogo explicando o objetivo da próxima fase antes de o jogador avançar. | O diálogo deve ser exibido antes de cada transição de região; o jogador deve poder avançar o diálogo com a tecla E; a transição para a próxima região só deve ocorrer após o fim do diálogo.
 10 | Introdução narrativa da Cielita na Casa | A NPC Cielita deve estar presente na Casa da Cielita como guia, oferecendo diálogo de orientação ao jogador. | O diálogo deve ser iniciado ao pressionar E dentro do raio de interação da Cielita; o texto deve ser exibido com efeito typewriter; o jogador deve conseguir avançar e pular o texto com a tecla E.
 11 | Combate e progressão pelo funil de vendas | O sistema de negociação por cartas é estruturado em fases que espelham o funil de vendas da Cielo: o Quebra-Gelo aborda Abordagem e Sondagem; a Vila do Varejo aborda Abordagem, Sondagem e Demonstração de Produtos; a Praia dos Proveitos abordará os Benefícios da Cielo; e a Cidade Cielo consolida todas as etapas em um desafio completo. | Cada região deve conter apenas as cartas correspondentes às etapas do funil que ela cobre; a Cidade Cielo deve disponibilizar cartas de todas as fases anteriores; o resultado final deve ser exibido ao término da última fase de cada negociação.
 12 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface que aumenta ou diminui de acordo com as escolhas do GN durante a negociação. Os sprites do cliente mudarão conforme o estado da negociação. | A barra deve atualizar visualmente em até 400ms após cada jogada de carta; o sprite do cliente deve alternar corretamente entre os 3 estados (satisfeito, neutro, bravo) conforme o valor da barra.
 13 | Cartas | O jogo deve implementar um sistema de cartas que representam as etapas do funil de vendas, distribuídas conforme a região e fase atual da negociação. | As cartas corretas para cada fase devem ser exibidas sem repetição; a seleção de uma carta deve gerar resposta visual e alterar a barra de satisfação em até 500ms.
 14 | Acessibilidade | O jogo deve ser jogável por pessoas com diferentes níveis de familiaridade com jogos digitais. | Todos os textos devem ter tamanho mínimo de 14px e contraste suficiente para leitura; nenhuma mecânica deve exigir mais de 2 teclas simultâneas; as instruções de controle devem estar disponíveis a qualquer momento pela tecla H.
-15 | Huds Complementares | O sistema deve fornecer elementos de interface (HUD) para auxílio à navegação e progressão. Isso inclui um painel indicativo (superior central), que exibe as próximas tarefas do jogador, e um Minimapa (canto superior direito), disponível em todas as áreas urbanas. Ambos os elementos devem permitir o controle de visibilidade pelo usuário em tempo real.| O sistema deve processar a entrada da tecla O para alternar a visibilidade do HUD informativo de objetivos. O sistema deve processar a entrada da tecla M para ativar ou desativar a exibição do minimapa. Os comandos de entrada devem ser globais (acessíveis a qualquer momento do gameplay) e a transição de visibilidade deve ser imediata.  
-16 | Sistema de Insígnias e progressão | O sistema deve gerenciar a atribuição de insígnias baseada no desempenho do jogador. Ao detectar o encerramento de uma partida com o status de vitória, ao jogador deverá ser concedida uma insígnia, sendo seu indicativo de progressão. Além disso, o sistema deverá fornecer um feedback visual (pop-up) evidenciando a vitória e a insígnia recebida pelo jogador. | O sistema deve monitorar o gatilho de "Fim de Partida" e validar se os critérios de vitória foram atingidos. Mediante a confirmação da vitória, o sistema deve disparar um componente visual do tipo pop-up (notificação) celebrando a conquista. A concessão da insígnia deve atuar como um validador de progresso, permitindo que o jogador avance para as etapas subsequentes do jogo. 
+
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
 
@@ -455,8 +454,8 @@ O tempo não possui relevância no jogo.
 
 
 <div align="center">
-  <sub>Concept Art Tela Inicial</sub><br>
-  <img src="assets/ConceptTelaInicial.jpeg" width="100%" alt="Descrição breve"><br>
+  <sub>Menu Inicial</sub><br>
+  <img src="assets/tela_inicial.png" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Autoria própria</sup>
 </div>
 
@@ -486,26 +485,26 @@ Cada cenário explorável conta com trilha musical temática e sons de ambiente 
 
 ## Tabela Trilha Sonora
 
-| Título | Ocorrência | Nome da Música e Autoria | Tipo de áudio
-|---|---|---|---|
-| Música de Fundo | Menu Principal/Tela de Início/Mundo Cielita | High Tide - Laura Platt | Não diegético
-| Música Quebra-Gelo | Cena: Quebra-Gelo/Casas Quebra Gelo | Mainden Voyage - Helmut Schenker | Diegético
-| Música Vila do Varejo | Cena: Vila do Varejo/Casas Vila do Varejo | Barefoot Adventures - Adriel Fair | Diegético
-| Música Praia dos Proveitos | Cena: Praia dos Proveitos/Casas Praia dos Proveitos | Beach Goer - Frook | Diegético
-| Música Cidade Cielo | Cena: Cidade Cielo, e posteriormente Casas Cidade Cielo | slow down - Loyae | Diegético
-| Música Negociação | Cena: Negociação | The Only Way Out - Dian Shuai | Não diegético
-| Passos | Movimentação na Casa da Cielita | By Epidemic Sound | Diegético
-| Passos | Movimentação no Quebra-Gelo | By Epidemic Sound | Diegético
-| Passos | Movimentação na Vila do Varejo | By Epidemic Sound | Diegético
-| Passos | Movimentação na Praia dos Proveitos | By Epidemic Sound | Diegético
-| Passos | Movimentação no Interior das Casas | By Epidemic Sound | Diegético
-| Ambiente | Som ambiente: Quebra-Gelo | By Epidemic Sound |Diegético
-| Ambiente | Som ambiente: Vila do Varejo | By Epidemic Sound |Diegético
-| Ambiente | Som ambiente: Praia dos Proveitos | By Epidemic Sound |Diegético
-| Ambiente | Som ambiente: Cidade Cielo | By Epidemic Sound |Diegético
-| Transição | Transição entre mapas/cenas | By Epidemic Sound |Diegético
-| Botão UI | Cliques nos botões | By Epidemic Sound |Não diegético
-| Teclado | Exibição de texto nas Cutscenes | (CherryMX Red - ABS keycaps) - By Mechvibes | Não diegético
+| Título | Ocorrência | Nome da Música e Autoria |
+|---|---|---|
+| Música de Fundo | Menu Principal/Tela de Início/Mundo Cielita | High Tide - Laura Platt |
+| Música Quebra-Gelo | Cena: Quebra-Gelo/Casas Quebra Gelo | Mainden Voyage - Helmut Schenker |
+| Música Vila do Varejo | Cena: Vila do Varejo/Casas Vila do Varejo | Barefoot Adventures - Adriel Fair |
+| Música Praia dos Proveitos | Cena: Praia dos Proveitos/Casas Praia dos Proveitos | Beach Goer - Frook |
+| Música Cidade Cielo | Cena: Cidade Cielo, e posteriormente Casas Cidade Cielo | slow down - Loyae |
+| Música Negociação | Cena: Negociação | The Only Way Out - Dian Shuai |
+| Passos | Movimentação na Casa da Cielita | By Epidemic Sound |
+| Passos | Movimentação no Quebra-Gelo | By Epidemic Sound |
+| Passos | Movimentação na Vila do Varejo | By Epidemic Sound |
+| Passos | Movimentação na Praia dos Proveitos | By Epidemic Sound |
+| Passos | Movimentação no Interior das Casas | By Epidemic Sound |
+| Ambiente | Som ambiente: Quebra-Gelo | By Epidemic Sound |
+| Ambiente | Som ambiente: Vila do Varejo | By Epidemic Sound |
+| Ambiente | Som ambiente: Praia dos Proveitos | By Epidemic Sound |
+| Ambiente | Som ambiente: Cidade Cielo | By Epidemic Sound |
+| Transição | Transição entre mapas/cenas | By Epidemic Sound |
+| Botão UI | Cliques nos botões | By Epidemic Sound |
+| Teclado | Exibição de texto nas Cutscenes | (CherryMX Red - ABS keycaps) - By Mechvibes |
 
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
 
@@ -1417,7 +1416,7 @@ Traduzir o processo real de vendas em mecânica de jogo exigiu múltiplas itera�
 ## 4.5. Revisão do MVP (sprint 5)
 
 O que foi entregue como MVP
-O Cielo Verso chega ao seu MVP como um ciclo jogável completo de ponta a ponta. O jogador parte do menu inicial, atravessa quatro regiões distintas — Quebra Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo — cada uma com seu próprio mapa, NPCs, diálogos e negociação por cartas, e conclui a jornada aplicando todas as etapas do funil de vendas na Cidade Cielo. Não é um protótipo de navegação: é um produto com início, meio e fim jogáveis, narrativa personalizada e sistemas técnicos estáveis.
+O Cielo Verso chega ao seu MVP como um ciclo jogável completo de ponta a ponta. O jogador parte do menu inicial, atravessa quatro regiões distintas — Quebra Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo — cada uma com seu próprio mapa, NPCs, diálogos e negociação por cartas, e conclui a jornada enfrentando o boss final Rafael na Cidade Cielo. Não é um protótipo de navegação: é um produto com início, meio e fim jogáveis, narrativa personalizada e sistemas técnicos estáveis.
 
 Refinamentos entregues ao longo das sprints
 Sprint 1 — Estrutura e identidade visual
@@ -1450,7 +1449,7 @@ A estrutura do mapa foi pensada desde o início para incentivar a progressão en
 </div>
 
 Sprint 2 — Fluxo de aprendizado e mecânica central
-Definiu-se a divisão da experiência em duas etapas: mundo semi-aberto para exploração e descoberta de possíveis clientes, seguido do Mundo de Negociação com sistema de cartas. A barra de satisfação do cliente e a lógica de progressão por insígnias foram concebidas nessa etapa, estabelecendo a espinha dorsal da experiência de jogo. O concept art do menu inicial e do mapa de introdução também foi produzido nessa fase, definindo a linguagem visual que seria mantida até o MVP final.
+Definiu-se a divisão da experiência em duas fases: mundos de aprendizagem com minigames temáticos, seguidos do Mundo de Negociação com sistema de cartas. A barra de satisfação do cliente e a lógica de progressão por insígnias foram concebidas nessa etapa, estabelecendo a espinha dorsal da experiência de jogo. O concept art do menu inicial e do mapa de introdução também foi produzido nessa fase, definindo a linguagem visual que seria mantida até o MVP final.
 <div align="center">
   <sub>Imagem 6 — Concept art: menu inicial</sub><br>
   <img src="assets/tela_inicial.png" width="80%" alt="Concept art do menu inicial"><br>
@@ -1530,12 +1529,12 @@ Menu Principal
                 → Negociação com Julia (5 fases completas)
                     → Insígnia "Praia dos Proveitos"
               → Cidade Cielo
-                  → Aplicação de todos os elementos do funil de vendas
+                  → Negociação com Rafael (boss final — todas as competências)
                       → Insígnia "Mestre Cielo"
 Cada negociação forma um degrau progressivo de complexidade: Seu Pedro introduz o funil completo de vendas, Thainá aprofunda a coerência entre fases, Julia consolida o repertório e Rafael representa o clímax — exigindo o desempenho completo de um Gerente de Negócios Cielo.
 
-Sprint 5 - Entrega do produto.
-Na sprint 5, a equipe resolveu bugs encontrados no hitbox graças aos testes realizados, refinou o sistema de negociação e adicionou sprites de ambientação e senso de profundidade em áreas do jogo. Com isso, o MVP foi concluído, integrando todas as mecânicas centrais desenvolvidas ao longo das sprints anteriores. A equipe encerrou o ciclo com o jogo em estado jogável e estável, pronto para avaliação.
+O que permanece previsto para a sprint 5
+A tela de fim de jogo com resumo de desempenho por negociação e o sistema de métricas — tempo de conclusão e mapeamento de erros críticos por fase — não integram o MVP atual e constituem a entrega central da sprint seguinte. Dois bugs conhecidos também seguem para correção: duplicação de cartas em reinícios de negociação, reportada de forma independente por dois testadores nos playtests, e dessincronização visual do indicador de fases no topo da tela em casos específicos de progressão.
 
 # <a name="c5"></a>5. Testes
 
@@ -1758,19 +1757,43 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 
 ---
 
-#### Prioridade 1 — Implementação de indicadores visuais de navegação e objetivos
+#### Prioridade 1 — Correção do bug de re-seleção de carta na cena de negociação
 
-**Origem:** Relatado por Lucas Vinicius, Arthur Morais e Felipe Cabeza.
+**Origem:** Relatado de forma independente por Matheus Augusto e Bruno Araújo.
 
-**Descrição do problema:** O mapa não oferece indicadores suficientes fora da HUD para que o jogador saiba onde estão os objetivos ativos, quais regiões já foram concluídas e quais casas possuem conteúdo disponível. A ausência de ícones de localização obriga o jogador a explorar por tentativa e erro.
+**Descrição do problema:** Ao selecionar uma carta correta durante a negociação, navegar para outras cartas via seta lateral e retornar à carta anteriormente escolhida, o sistema a exibe novamente como disponível para seleção. Clicar nela uma segunda vez a contabiliza como uma nova resposta correta, corrompendo o estado da cena e permitindo progressão indevida.
 
-**Impacto:** Alto. Para o público-alvo real (GNs da Cielo com pouca experiência em jogos), a desorientação espacial é um dos principais fatores de abandono em jogos de mundo aberto. Se jogadores experientes já relataram dificuldade, usuários não-gamers provavelmente encontrariam uma barreira de progressão nesse ponto.
+**Impacto:** Crítico. Além de quebrar a progressão da cena de negociação, o bug compromete diretamente o objetivo pedagógico do jogo — o jogador avança sem ter tomado a decisão correta de forma consciente, esvaziando o valor de treinamento da mecânica.
 
-**Ação recomendada:** Implementar, em ordem de viabilidade: (1) ícone flutuante ou marcador de objetivo no mapa indicando o NPC-alvo da fase atual; (2) estado visual diferenciado para casas com conteúdo disponível versus casas já concluídas.
+**Ação recomendada:** Implementar controle de estado por carta após seleção, marcando-a como `selected: true` e desabilitando o evento de clique. O estado deve persistir mesmo após navegação lateral e ser reiniciado apenas ao iniciar uma nova cena de negociação. Adicionalmente, investigar o bug secundário de carregamento de imagem/descrição reportado na Vila do Varejo (Matheus Augusto), que pode compartilhar a mesma raiz de gerenciamento de estado.
 
 ---
 
-#### Prioridade 2 — Ajuste de colisões e hitboxes de interface
+#### Prioridade 2 — Implementação de indicadores visuais de navegação e objetivos
+
+**Origem:** Relatado por Lucas Vinicius, Arthur Morais e Felipe Cabeza.
+
+**Descrição do problema:** O mapa não oferece indicadores suficientes para que o jogador saiba onde estão os objetivos ativos, quais regiões já foram concluídas e quais casas possuem conteúdo disponível. A ausência de um minimapa ou de ícones de localização obriga o jogador a explorar por tentativa e erro.
+
+**Impacto:** Alto. Para o público-alvo real (GNs da Cielo com pouca experiência em jogos), a desorientação espacial é um dos principais fatores de abandono em jogos de mundo aberto. Se jogadores experientes já relataram dificuldade, usuários não-gamers provavelmente encontrariam uma barreira de progressão nesse ponto.
+
+**Ação recomendada:** Implementar, em ordem de viabilidade: (1) ícone flutuante ou marcador de objetivo no mapa indicando o NPC-alvo da fase atual; (2) estado visual diferenciado para casas com conteúdo disponível versus casas já concluídas; (3) minimap como melhoria futura de maior escopo. Adicionalmente, adicionar placas ou rótulos de nome nas regiões do mapa (sugerido por Arthur Morais).
+
+---
+
+#### Prioridade 3 — Redução da carga textual nas cenas de negociação
+
+**Origem:** Relatado por Gabriel Tavares e Lucas Vinicius.
+
+**Descrição do problema:** As cenas de negociação apresentam volume excessivo de texto por tela, o que prejudica a fluidez da leitura e pode causar fadiga cognitiva. Gabriel Tavares apontou que "tem muito texto" como principal obstáculo à experiência de combate.
+
+**Impacto:** Alto para o público-alvo real. GNs da Cielo interagem com o jogo em contexto de treinamento corporativo, onde sessões longas e densas de leitura reduzem o engajamento. O excesso de texto também entra em conflito com o princípio de aprendizado por ação, central à proposta do jogo.
+
+**Ação recomendada:** Revisar os textos das cartas e das falas de NPC com foco em concisão. Textos de carta devem comunicar a essência da técnica de negociação em no máximo 2–3 linhas. Considerar o uso de ícones ou elementos visuais para complementar a informação textual em vez de substituí-la por mais texto.
+
+---
+
+#### Prioridade 4 — Ajuste de colisões e hitboxes de interface
 
 **Origem:** Relatado por Heitor Goulart e Felipe Cabeza (colisão de cenário); Heitor Goulart (hitbox de botões).
 
@@ -1782,7 +1805,7 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 
 ---
 
-#### Prioridade 3 — Expansão e melhoria do tutorial
+#### Prioridade 5 — Expansão e melhoria do tutorial
 
 **Origem:** Relatado por Marcos Andrade e Bruno Araújo; indiretamente corroborado por Lucas Vinicius (sugestão de tutorial específico para negociação).
 
@@ -1794,15 +1817,15 @@ Com base nos resultados consolidados dos playtests realizados na sprint 5, foram
 
 ---
 
-#### Prioridade 4 — Ajustes de legibilidade, paleta e movimentação
+#### Prioridade 6 — Ajustes de legibilidade, paleta e movimentação
 
 **Origem:** Matheus Augusto e Lucas Vinicius (fonte das cartas); Felipe Cabeza (contraste de paleta e velocidade de movimentação).
 
-**Descrição do problema:** Em determinados mapas, a paleta de cores apresenta baixo contraste, dificultando a distinção de elementos do cenário. A velocidade de movimentação do personagem foi percebida como lenta em algumas áreas.
+**Descrição do problema:** O texto das cartas foi considerado difícil de ler devido ao tamanho reduzido da fonte. Em determinados mapas, a paleta de cores apresenta baixo contraste, dificultando a distinção de elementos do cenário. A velocidade de movimentação do personagem foi percebida como lenta em algumas áreas.
 
 **Impacto:** Moderado isoladamente, mas com potencial de acúmulo: um jogo que exige esforço visual constante, apresenta movimentação arrastada e tem paleta de baixo contraste comunica descuido técnico e reduz a imersão — especialmente em um produto que precisa ser percebido como profissional por seu público corporativo.
 
-**Ação recomendada:** Revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
+**Ação recomendada:** Aumentar o tamanho mínimo da fonte nos cards de carta para 13–14px e revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
 
 # <a name="c6"></a>6. Conclusões e trabalhos futuros (sprint 5)
 

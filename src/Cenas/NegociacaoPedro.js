@@ -1,7 +1,7 @@
 import CenaNegociacao from '../Classes/CenaNegociacao.js';
 import CartaAbordagem from '../Classes/FasesNegociacao/CartaAbordagem.js';
 import CartaSondagem  from '../Classes/FasesNegociacao/CartaSondagem.js';
-import Insignia       from '../Classes/Insignia.js';
+import Insignia       from '../Classes/Insignias.js';
 
 const PONTUACAO_PRODUTO = {
     CieloLioOn:  10,
@@ -32,12 +32,11 @@ export default class NegociacaoPedro extends CenaNegociacao {
         Insignia.preload(this);
     }
 
-    _getInsignia() {
-        return {
-            key:  'insignia_mapa_gelo',
-            nome: 'Mestre do Gelo',
-        };
+    _aoVencer() {
+        const insignia = new Insignia(this, 'mapa_gelo');
+        insignia.conceder();
     }
+
     _chaveVitoria() {
         return 'pedro_vencido';
     }
@@ -75,7 +74,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 key:           'Proximidade',
                 letra:         'P',
                 correta:       true,
-                dialogoAcerto: 'Bom dia, tudo bem sim.',
+                dialogoAcerto: 'Claro! Sou o Pedro, dono do estabelecimento. Me conta mais.',
                 dialogoErro:   'Não entendi o que você veio fazer aqui.',
             }),
 
@@ -84,7 +83,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 key:           'Interesse',
                 letra:         'I',
                 correta:       true,
-                dialogoAcerto: 'Eu sou o Pedro.',
+                dialogoAcerto: 'Ah, conheço sim! Boa referência.',
                 dialogoErro:   'Isso não tem nada a ver com o meu negócio.',
             }),
 
@@ -93,7 +92,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
                 key:           'Familiaridade',
                 letra:         'F',
                 correta:       true,
-                dialogoAcerto: 'Interessante, estou com alguns problemas de pagamento ultimamente.',
+                dialogoAcerto: 'Interessante, você não está aqui só pra vender. Pode continuar.',
                 dialogoErro:   'Parece que você só quer me vender algo.',
             }),
 
@@ -186,7 +185,7 @@ export default class NegociacaoPedro extends CenaNegociacao {
 
     _falaInicioFase(fase) {
         const falas = {
-            abordagem: 'Olá, Em que posso ajudar?',
+            abordagem: 'Olá, boa tarde! Em que posso ajudar?',
             sondagem:  'Tudo bem, me conta mais. O que você tem em mente?',
         };
         return falas[fase] ?? 'O que você tem a me apresentar?';

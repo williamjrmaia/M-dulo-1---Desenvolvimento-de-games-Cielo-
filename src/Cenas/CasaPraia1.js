@@ -1,6 +1,5 @@
-import Jogador        from '../Classes/Jogador.js';
-import NPC            from '../Classes/NPC.js';
-import DialogoManager from '../Classes/DialogoManager.js';
+import Jogador from '../Classes/Jogador.js';
+import NPC from '../Classes/NPC.js';
 
 export default class CasaPraia1 extends Phaser.Scene {
 
@@ -65,9 +64,6 @@ export default class CasaPraia1 extends Phaser.Scene {
 
         this.npcChefa.setScale(1.8);
 
-        // ── Colisão do jogador com o NPC (igual ao CenaCasaGelo) ─────────────
-        this.jogador.adicionarColisao(this.npcChefa);
-
         // ── Hitboxes do Tiled ─────────────────────────────────────────────────
         const mapa          = this.make.tilemap({ key: 'mapaCasaPraia1' });
         const camadaObjetos = mapa.getObjectLayer('Object Layer 1');
@@ -114,11 +110,6 @@ export default class CasaPraia1 extends Phaser.Scene {
         // ── Porta de saída ────────────────────────────────────────────────────
         this.PortaCasaPraia1 = this.add.zone(265, 380, 60, 20);
         this.physics.add.existing(this.PortaCasaPraia1, true);
-
-        // ── Câmera UI para diálogos (igual ao CenaCasaGelo) ──────────────────
-        // Deve ser chamado no final do create(), após todos os objetos criados.
-        // Corrige o problema de elementos scrollFactor(0) sumindo com zoom alto.
-        DialogoManager.configurarCameraUI(this, 2, [this.npcChefa]);
     }
 
     update() {

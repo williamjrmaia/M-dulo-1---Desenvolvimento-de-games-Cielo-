@@ -31,27 +31,20 @@ export default class Insignia {
         mapa_gelo: {
             nome:            'Mestre do Gelo',
             assetKey:        'insignia_mapa_gelo',
-            assetPath:       'assets/Insignias/InsigniaAbordagem1.png',
+            assetPath:       'assets/insignias/InsigniaAbordagem1.png',
             negociacaoChave: 'pedro_vencido',
         },
         vila_varejo: {
             nome:            'Rei do Varejo',
             assetKey:        'insignia_vila_varejo',
-            assetPath:       'assets/Insignias/InsigniaProduto1.png',
-            negociacaoChave: 'thaina_vencida',
+            assetPath:       'assets/insignias/InsigniaProduto1.png',
+            negociacaoChave: 'varejo_vencido',
         },
         praia_proveitos: {
-            nome:            'Ancião dos Proveitos',
+            nome:            'Mestre da Praia',
             assetKey:        'insignia_praia_proveitos',
-            assetPath:       'assets/Insignias/InsigniaNegociacao1.png', 
+            assetPath:       'assets/insignias/InsigniaProduto1.png', // TODO: substituir pelo asset definitivo
             negociacaoChave: 'julia_vencida',
-        },
-
-        cidade_cielo: {
-            nome:            'Mestre das Vendas',
-            assetKey:        'insignia_cidade_cielo',
-            assetPath:       'assets/Insignias/InsigniaCidadeCielo1.png', 
-            negociacaoChave: 'cidade_cielo_vencida',
         },
         // Adicione novas insígnias aqui seguindo o mesmo padrão.
     };
