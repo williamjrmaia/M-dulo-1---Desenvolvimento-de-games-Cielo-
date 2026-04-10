@@ -191,13 +191,14 @@ export default class CenaPersonagem extends Phaser.Scene {
     }
 
     _confirmar() {
-    const nome = this.nomeDigitado.trim() || 'Jogador';
+        const nome = this.nomeDigitado.trim() || 'Jogador';
         // registry garante que a opção persista durante o jogo
         this.game.registry.set('nomeJogador', nome);
         this.game.registry.set('spriteJogador', this.spriteSelecionado);
         this.game.registry.set('personagemConfigurado', true);
 
-        // transição para a primeira cena
+        // BUGFIX: estava indo direto para 'CenaCasaGelo', pulando a introdução e a CasaCielita.
+        // Fluxo correto: CenaPersonagem → CenaIntroducao → CasaCielita → MundoDaCielita → QuebraGelo
         this.cameras.main.fadeOut(600, 0, 0, 0);
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, () => {
             this.scene.start('CenaIntroducao');

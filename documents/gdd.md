@@ -38,11 +38,7 @@ Arthur Augusto Proença Gonçalves, Eric Pimentel Ferraz, Felipe Menossi Estrada
 
 ### 1.1.1. Contexto da indústria (sprint 2)
 
-A Cielo atua no setor de serviços financeiros, mais especificamente no segmento de meios eletrônicos de pagamento e adquirência. Sua atividade principal consiste em credenciar estabelecimentos comerciais para aceitar pagamentos com cartões de crédito, débito e vouchers, realizando a captura, o processamento e a liquidação das transações financeiras. Essa operação conecta três pontas do ecossistema: os estabelecimentos comerciais, as instituições financeiras emissoras (bancos) e as bandeiras de cartão, como Visa e Mastercard. A empresa fornece terminais de ponto de venda (POS), soluções de e-commerce, links de pagamento, antecipação de recebíveis, gestão de vendas e serviços integrados de tecnologia financeira, operando como intermediadora tecnológica e financeira nesse fluxo (Cielo, 2024).
-
-O mercado brasileiro de adquirência tornou-se mais competitivo após a quebra da exclusividade entre bandeiras e credenciadoras em 2010, ampliando a entrada de novos players como Stone e PagSeguro (InvestNews, 2024). Além disso, a implementação do Pix pelo Banco Central do Brasil em 2020 intensificou a transformação digital dos meios de pagamento, oferecendo transferências instantâneas com menor custo para lojistas e consumidores. Esse cenário reduziu margens no setor de terminais físicos e impactou a liderança histórica da Cielo em participação de mercado, exigindo reposicionamento estratégico diante da digitalização acelerada e da maior sensibilidade a preços (Banco Central do Brasil, 2024; Cielo, 2024).
-
-Atualmente, a Cielo adota uma estratégia focada em eficiência operacional, ampliação de soluções digitais e diversificação de serviços financeiros, buscando ir além da captura de transações. A empresa investe em tecnologia, análise de dados e integração com plataformas digitais para oferecer soluções completas de gestão financeira aos lojistas. Sua atuação possui abrangência nacional, atendendo micro, pequenas, médias e grandes empresas em todo o território brasileiro, com forte capilaridade comercial e relacionamento com grandes bancos acionistas (Cielo, 2024). Esse reposicionamento visa fortalecer a competitividade em um ambiente de pagamentos cada vez mais digital, instantâneo e orientado por inovação.
+A Cielo atua no setor de meios eletrônicos de pagamento (adquirência), conectando lojistas, bancos emissores e bandeiras (p. ex., Visa e Mastercard) no processamento de transações. O modelo de negócio baseia-se na intermediação financeira e tecnológica, com oferta de POS, e-commerce e antecipação de recebíveis. Após o fim da exclusividade em 2010, o mercado tornou-se mais competitivo, incorporando players como Stone e PagSeguro. Tendências recentes incluem digitalização, crescimento do Pix e pressão por redução de custos, intensificando a concorrência e a inovação no setor (Banco Central do Brasil, 2024; Cielo, 2024; InvestNews, 2024).
 
 
 #### 1.1.1.1. Modelo de 5 Forças de Porter (sprint 2)
@@ -239,7 +235,7 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 \# | Requisito | Explicação | Critérios de Aceitação
 --- | --- | --- | ---
 1 | Menu principal | O jogo deve apresentar uma tela inicial com os botões de Iniciar, Configurações e Sair. | O botão Iniciar deve redirecionar para a tela de seleção de personagem; o botão Configurações deve abrir a tela de configurações; o botão Sair deve fechar a aba do navegador; todos os botões devem apresentar feedback visual de hover.
-2 | Configurações e filtro de daltonismo | A tela de configurações deve permitir que o jogador ative um filtro de daltonismo que será aplicado globalmente em todo o jogo. | O filtro deve ser aplicado em todas as cenas do jogo sem exceção; a ativação e desativação do filtro deve ocorrer imediatamente, sem necessidade de reiniciar o jogo.
+2 | Configurações | A tela de configurações permite que o jogador ajuste o modo de visão (adaptando-o ao seu grau de daltonismo ou alterando o brilho da tela), a resolução do monitor e o som (trilha sonora ou música). A aba pode ser aberta a qualquer momento da gameplay pressionando a tecla P. |O menu deve abrir e fechar corretamente ao pressionar a tecla P durante a partida; as opções de daltonismo, brilho, resolução e som devem ser aplicadas imediatamente no jogo ao serem alteradas pelo jogador.
 3 | Configuração inicial do avatar | O jogo deverá disponibilizar quatro (4) opções de avatares jogáveis para seleção do jogador em uma tela específica no início da partida. Após a escolha do avatar, o jogador deverá definir o nome do personagem, que será utilizado para sua identificação ao longo da experiência. | As 4 opções de avatar devem ser exibidas simultaneamente na tela de seleção; o nome deve aceitar entre 1 e 16 caracteres; caso nenhum nome seja digitado, o valor padrão "Jogador" deve ser utilizado.
 4 | Salvamento de configuração do jogador | O jogo deve preservar o nome e o avatar escolhidos pelo jogador entre sessões utilizando localStorage. O progresso de regiões desbloqueadas não é persistido no MVP atual. | O nome e o avatar devem ser recuperados corretamente ao recarregar a página, desde que o jogador tenha concluído a tela de seleção.
 5 | Introdução narrativa | O jogo deve apresentar uma cutscene narrativa com a Cielita contextualizando o universo do jogo e o papel do jogador antes de entrar no mapa. O jogador deve apertar E para avançar cada etapa do diálogo. | Todas as falas devem ser exibidas na ordem correta; o jogador deve conseguir avançar e pular o texto com a tecla E; ao fim do diálogo o jogador deve ser redirecionado automaticamente para a Casa da Cielita.
@@ -362,9 +358,15 @@ A experiência é individual, focada no desenvolvimento estratégico e no aprend
 
 ### 2.2.5. Tempo estimado de jogo (sprint 5)
 
-*Ex. O jogo pode ser concluído em 3 horas passando por todas as fases.*
+O jogo foi projetado para ser concluído em um tempo estimado de 1 hora e 15 minutos a 1 hora e 45 minutos. Ao longo dessa jornada, o jogador percorre as 5 áreas da experiência, cada uma com seus próprios NPCs, mecânicas de negociação por cartas e um boss ao final:
 
-*Ex. cada partida dura até 15 minutos*
+- Casa da Cielita (tutorial, cutscenes e introdução narrativa): 10 a 15 minutos
+- Quebra-Gelo (abordagem e sondagem): 15 a 20 minutos
+- Vila do Varejo (demonstração de produtos): 15 a 20 minutos
+- Praia dos Proveitos (benefícios da Cielo): 15 a 20 minutos
+- Cidade Cielo (consolidação de todas as etapas, negociações mais complexas e boss final): 20 a 30 minutos
+
+Vale destacar que, por se tratar de um público com menor familiaridade com jogos digitais, sessões podem se estender até 2 horas em casos de maior dificuldade com as mecânicas de cartas.
 
 # <a name="c3"></a>3. Game Design (sprints 2 e 3)
 
@@ -446,7 +448,7 @@ Cada área só é acessada após a comprovação de competência na anterior, si
 
 ### 3.3.3. Condições climáticas e temporais (sprints 2 e 3)
 
-O tempo não possui relevância no jogo
+O tempo não possui relevância no jogo.
 
 ### 3.3.4. Concept Art (sprint 2)
 
@@ -475,18 +477,38 @@ O tempo não possui relevância no jogo
 
 ### 3.3.5. Trilha sonora (sprint 4)
 
-*Descreva a trilha sonora do jogo, indicando quais músicas serão utilizadas no mundo e nas fases. Utilize listas ou tabelas para organizar esta seção. Caso utilize material de terceiros em licença Creative Commons, não deixe de citar os autores/fontes.*
+A identidade sonora dos efeitos (SFX) foi desenvolvida para reforçar a estética RPG e assegurar uma navegação responsiva, convertendo cada interação do usuário em um feedback tátil-auditivo. No Menu Principal, a trilha temática define o tom tecnológico e introduz o jogador à experiência de aprendizado. Nas cutscenes, o aparecimento do texto é sincronizado com um efeito de digitação que direciona a atenção do jogador, assegurando que o contexto narrativo seja absorvido de maneira dinâmica. Em todas as ações de clique, "blips" sintéticos fornecem confirmação imediata de comando, mantendo o usuário engajado através de respostas sonoras breves e precisas que previnem a fadiga auditiva e consolidam a sensação de controle sobre a interface.
 
-*Exemplo de tabela*
-\# | titulo | ocorrência | autoria
---- | --- | --- | ---
-1 | tema de abertura | tela de início | própria
-2 | tema de combate | cena de combate com inimigos comuns | Hans Zimmer
-3 | ... 
+A movimentação do personagem é acompanhada por sons de passos distintos por superfície e localização, com variações dedicadas ao Mundo da Cielita, ao Quebra-Gelo, à Vila do Varejo, à Praia dos Proveitos e aos interiores das casas, assegurando que a movimentação seja sonoramente coerente com cada ambiente. A cena de negociação dispõe de uma música específica que será utilizada em todo o contato com o suposto cliente
+
+Cada cenário explorável conta com trilha musical temática e sons de ambiente particulares. O Mundo da Cielita (Área Inicial), o Quebra-Gelo (Primeira Fase), a Vila do Varejo (Segunda Fase), Praia dos Proveitos (Terceira Fase) e Cidade Cielo (Última Fase) apresentam composições que complementam a identidade visual e narrativa de cada espaço, enquanto os sons ambientes, vento das áreas nevadas, som da natureza e vila, do murmúrio do litoral, movimento urbano acabam intensificam a sensação de imersão. As transições entre mapas são indicadas por um efeito sonoro exclusivo, demarcando os espaços narrativos de forma clara e fluida.
+
+## Tabela Trilha Sonora
+
+| Título | Ocorrência | Nome da Música e Autoria |
+|---|---|---|
+| Música de Fundo | Menu Principal/Tela de Início/Mundo Cielita | High Tide - Laura Platt |
+| Música Quebra-Gelo | Cena: Quebra-Gelo/Casas Quebra Gelo | Mainden Voyage - Helmut Schenker |
+| Música Vila do Varejo | Cena: Vila do Varejo/Casas Vila do Varejo | Barefoot Adventures - Adriel Fair |
+| Música Praia dos Proveitos | Cena: Praia dos Proveitos/Casas Praia dos Proveitos | Beach Goer - Frook |
+| Música Cidade Cielo | Cena: Cidade Cielo, e posteriormente Casas Cidade Cielo | slow down - Loyae |
+| Música Negociação | Cena: Negociação | The Only Way Out - Dian Shuai |
+| Passos | Movimentação na Casa da Cielita | By Epidemic Sound |
+| Passos | Movimentação no Quebra-Gelo | By Epidemic Sound |
+| Passos | Movimentação na Vila do Varejo | By Epidemic Sound |
+| Passos | Movimentação na Praia dos Proveitos | By Epidemic Sound |
+| Passos | Movimentação no Interior das Casas | By Epidemic Sound |
+| Ambiente | Som ambiente: Quebra-Gelo | By Epidemic Sound |
+| Ambiente | Som ambiente: Vila do Varejo | By Epidemic Sound |
+| Ambiente | Som ambiente: Praia dos Proveitos | By Epidemic Sound |
+| Ambiente | Som ambiente: Cidade Cielo | By Epidemic Sound |
+| Transição | Transição entre mapas/cenas | By Epidemic Sound |
+| Botão UI | Cliques nos botões | By Epidemic Sound |
+| Teclado | Exibição de texto nas Cutscenes | (CherryMX Red - ABS keycaps) - By Mechvibes |
 
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
 
-<img src="../assets/GDD/Gameflow.jpeg">
+<img src="assets/Gameflow.jpeg">
 
 ## 3.6. Regras do jogo (sprint 3)
 
@@ -566,171 +588,214 @@ Clique do mouse | Confirmar ações ou escolhas
 
 ## 3.8. Implementação Matemática de Animação/Movimento (sprint 4)
 
-Esta seção descreve os modelos matemáticos que fundamentam os sistemas de movimentação e animação de personagens no jogo. Dois subsistemas distintos são abordados: a movimentação do jogador por entrada de teclado e a navegação autônoma dos NPCs por waypoints.
+Esta seção descreve a modelagem matemática e a implementação em código da animação do **carro que circula em loop pela rua inferior da Cidade Cielo**, último mapa do jogo. O elemento foi escolhido por enriquecer a ambientação urbana e por permitir a demonstração clara de dois tipos cinemáticos distintos operando simultaneamente.
+
+O movimento foi modelado como uma **composição bidimensional**: **Movimento Uniforme (MU)** no eixo X e **Movimento Uniformemente Variado (MUV)** no eixo Y, com velocidade inicial nula no eixo vertical. A posição do sprite é calculada a cada frame diretamente pelas equações cinemáticas — sem uso de funções de física, tweens ou qualquer função de movimento do Phaser. O corpo físico do carro é reposicionado manualmente via `body.reset()`, mantendo a colisão ativa e permitindo que o carro empurre o jogador ao colidir.
 
 
 
-### Movimentação do Jogador (Jogador.js)
+### Parâmetros do Modelo
 
-#### Fundamentos: Vetores no Plano 2D
+As coordenadas foram obtidas a partir do mapa real da Cidade Cielo (imagem original: 1405 × 1018 px; canvas do jogo: 1500 × 800 px), com a rua inferior identificada visualmente e convertida para o espaço do jogo pela razão de escala de cada eixo.
 
-Antes de descrever as fórmulas, é importante compreender o conceito de **vetor**. No contexto de um jogo 2D, um vetor é um par ordenado $(v_x, v_y)$ que representa simultaneamente uma direção e uma intensidade (magnitude). Visualmente, pode-se imaginar uma seta: ela aponta para onde algo está indo e seu comprimento indica quão rápido.
+A função recebe os seguintes parâmetros de entrada:
 
-O motor Phaser representa cada objeto no mundo por suas coordenadas $(x, y)$ no plano cartesiano. A cada quadro (*frame*) de animação, o motor atualiza a posição de cada objeto somando sua velocidade ao longo do tempo:
+| Símbolo | Parâmetro no código | Valor utilizado | Unidade | Descrição |
+|:-------:|:-------------------:|:---------------:|:-------:|-----------|
+| $x_i$ | `xi` | 165 | px | Posição inicial do elemento gráfico no eixo X |
+| $y_i$ | `yi` | 684 | px | Posição inicial do elemento gráfico no eixo Y |
+| $x_f$ | `xf` | 1335 | px | Posição final do elemento gráfico no eixo X |
+| $y_f$ | `yf` | 688 | px | Posição final do elemento gráfico no eixo Y |
+| $T$   | `T`  | 5   | s  | Duração total de cada travessia em segundos |
+| —     | `pausaMs` | 2000 | ms | Tempo de pausa entre ciclos em milissegundos |
+| —     | `escala`  | 1.2  | — | Fator de escala visual do sprite do carro |
+| —     | `jogadorSprite` | — | — | O elemento gráfico (sprite do carro) inserido na cena Phaser |
 
-$$x_{t+1} = x_t + v_x \cdot \Delta t$$
+A variável independente do modelo é o **tempo** $t \in [0, T]$, em segundos, medido a partir do primeiro frame de cada ciclo.
 
-$$y_{t+1} = y_t + v_y \cdot \Delta t$$
 
-onde:
+### Eixo X — Movimento Uniforme (MU)
 
-| Símbolo | Descrição |
-|---|---|
-| $x_t,\ y_t$ | Posição do personagem no frame $t$ (em pixels) |
-| $v_x,\ v_y$ | Componentes do vetor velocidade (em pixels por segundo) |
-| $\Delta t$ | Intervalo de tempo entre dois frames consecutivos (em segundos) |
+No eixo horizontal, o carro percorre o deslocamento $\Delta x = x_f - x_i = 1335 - 165 = 1170$ px em tempo constante $T = 5$ s, com velocidade que não varia ao longo da animação.
 
-> **Nota:** Este é o modelo de cinemática de posição com velocidade constante: a posição varia linearmente com o tempo, sem aceleração.
+#### Função da velocidade no eixo X
 
-#### Decomposição Vetorial — Teclas WASD
+A velocidade constante é obtida dividindo o deslocamento horizontal total pela duração da animação:
 
-Cada tecla pressionada define o sinal de uma das componentes do vetor velocidade, onde $V = 100$ px/s é a velocidade escalar configurada na classe `Jogador`:
+$$v_x = \frac{x_f - x_i}{T} = \frac{1335 - 165}{5} = 234{,}0 \ \text{px/s}$$
 
-| Tecla | Componente | Valor atribuído |
-|---|---|---|
-| A | $v_x$ | $-V$ (esquerda) |
-| D | $v_x$ | $+V$ (direita) |
-| W | $v_y$ | $-V$ (cima — eixo invertido) |
-| S | $v_y$ | $+V$ (baixo) |
+Como $v_x$ não depende de $t$, ela é idêntica em todos os frames. A cada frame, o código imprime esse valor via `console.log`.
 
-> **Convenção de eixos:** Em Phaser, o eixo $y$ cresce **para baixo** — diferente do plano cartesiano tradicional. Por isso, pressionar W (mover para cima na tela) resulta em $v_y = -V$.
+#### Função da posição no eixo X em função do tempo
 
-Quando apenas uma tecla é pressionada, a magnitude do vetor resultante é simplesmente $V$:
+A posição horizontal do elemento gráfico a cada instante $t$ é:
 
-$$\|\vec{v}\| = \sqrt{v_x^2 + v_y^2} = \sqrt{V^2 + 0^2} = V$$
+$$x(t) = x_i + v_x \cdot t = 165 + 234{,}0 \cdot t$$
 
-#### Movimento Diagonal com Velocidade Constante
+**Verificação nos extremos:** quando $t = 0$, tem-se $x(0) = 165 = x_i$. Quando $t = 5$, tem-se $x(5) = 165 + 234 \times 5 = 1335 = x_f$. A função é linear em $t$, confirmando o caráter uniforme do movimento.
 
-Quando dois eixos são ativados simultaneamente — por exemplo, as teclas D e W pressionadas ao mesmo tempo —, o vetor de entrada passa a ter componentes em ambos os eixos. Sem tratamento, a magnitude desse vetor cresceria:
 
-$$\|\vec{v}_{\text{diagonal}}\|_{\text{sem normalização}} = \sqrt{V^2 + V^2} = \sqrt{2} \cdot V \approx 1{,}414 \cdot V$$
 
-Para garantir que o personagem se desloque sempre à mesma velocidade escalar $V$ independentemente da direção, o sistema aplica a **normalização** do vetor de entrada antes de escaloná-lo pela velocidade desejada. Normalizar significa dividir cada componente pela magnitude total do vetor, produzindo um **vetor unitário** $\hat{v}$ de comprimento exatamente igual a 1:
+### Eixo Y — Movimento Uniformemente Variado (MUV)
 
-$$\hat{v} = \frac{\vec{v}}{\|\vec{v}\|} = \left(\frac{v_x}{\|\vec{v}\|},\ \frac{v_y}{\|\vec{v}\|}\right)$$
+No eixo vertical, o carro parte do **repouso** ($v_{0y} = 0$) e é acelerado uniformemente até atingir a posição $y_f = 688$ px ao final do intervalo $T = 5$ s.
 
-O vetor velocidade final aplicado ao personagem é então:
+#### Função da aceleração no eixo Y
 
-$$\vec{v}_{\text{final}} = V \cdot \hat{v} = \left(\frac{v_x \cdot V}{\|\vec{v}\|},\ \frac{v_y \cdot V}{\|\vec{v}\|}\right)$$
+Partindo da equação horária da posição com velocidade inicial nula:
 
-#### Verificação Formal
+$$y_f = y_i + v_{0y} \cdot T + \frac{1}{2} \cdot a_y \cdot T^2$$
 
-Para o caso diagonal onde $v_x = V$ e $v_y = -V$, demonstra-se que a magnitude resultante é sempre $V$:
+Como $v_{0y} = 0$:
 
-$$\|\vec{v}\| = \sqrt{V^2 + V^2} = V\sqrt{2}$$
+$$a_y = \frac{2 \cdot (y_f - y_i)}{T^2} = \frac{2 \cdot (688 - 684)}{5^2} = \frac{8}{25} = 0{,}32 \ \text{px/s}^2$$
 
-$$\vec{v}_{\text{final}} = \left(\frac{V}{\sqrt{2}},\ \frac{-V}{\sqrt{2}}\right)$$
+A aceleração é constante durante toda a animação. A cada frame, o código imprime esse valor via `console.log`.
 
-$$\|\vec{v}_{\text{final}}\| = \sqrt{\left(\frac{V}{\sqrt{2}}\right)^2 + \left(\frac{V}{\sqrt{2}}\right)^2} = \sqrt{\frac{V^2}{2} + \frac{V^2}{2}} = \sqrt{V^2} = V \checkmark$$
+#### Função da velocidade no eixo Y em função do tempo
 
-A magnitude é $V$ em qualquer direção — eixos ortogonais e diagonais.
+Com velocidade inicial nula e aceleração constante $a_y = 0{,}32 \ \text{px/s}^2$:
 
-A implementação correspondente em `Jogador.js`:
+$$v_y(t) = a_y \cdot t = 0{,}32 \cdot t$$
+
+A velocidade cresce linearmente com o tempo, partindo de zero. A cada frame, o código imprime o valor calculado de $v_y(t)$ via `console.log`.
+
+#### Função da posição no eixo Y em função do tempo
+
+$$y(t) = y_i + \frac{1}{2} \cdot a_y \cdot t^2 = 684 + 0{,}16 \cdot t^2$$
+
+**Verificação nos extremos:** quando $t = 0$, tem-se $y(0) = 684 = y_i$. Quando $t = 5$, tem-se $y(5) = 684 + 0{,}16 \times 25 = 684 + 4 = 688 = y_f$. A função é quadrática em $t$, confirmando o caráter uniformemente variado do movimento.
+
+---
+
+### Composição do Movimento Bidimensional
+
+O movimento resultante é a **composição simultânea** de MU no eixo X e MUV no eixo Y. A posição do carro no plano a cada instante $t$ é o par ordenado:
+
+$$P(t) = \bigl(x(t),\ y(t)\bigr) = \bigl(\ 165 + 234{,}0 \cdot t \ , \quad 684 + 0{,}16 \cdot t^2 \ \bigr)$$
+
+Como $x$ cresce **linearmente** e $y$ cresce **quadraticamente** com $t$, a trajetória resultante no plano é uma **parábola**. No contexto do jogo, isso simula um veículo que percorre a rua da cidade a velocidade constante, com um leve deslocamento vertical acelerado coerente com a perspectiva top-down do mapa pixel art.
+
+Após cada ciclo completo ($t = T = 5$ s), o carro permanece parado durante 2 000 ms e retorna à posição inicial $P(0) = (165, 684)$ para iniciar um novo ciclo — comportamento de **loop com pausa**.
+
+---
+
+### Implementação em Código
+
+A seguir está o núcleo da função de atualização implementada em `CarroCielo.js`. Todas as operações são exclusivamente **aritméticas e condicionais** — sem funções de física, tweens ou utilitários de movimento do Phaser.
+
 ```javascript
-// Vetor de entrada — leitura das teclas
-let vx = 0, vy = 0;
-if (teclas.left.isDown)  vx -= velocidade;
-if (teclas.right.isDown) vx += velocidade;
-if (teclas.up.isDown)    vy -= velocidade;
-if (teclas.down.isDown)  vy += velocidade;
+atualizar(timeNowMs) {
 
-//  garante ‖v⃗_final‖ = V em qualquer direção
-const mag = Math.sqrt(vx * vx + vy * vy);
-if (mag > 0) {
-    sprite.setVelocityX((vx / mag) * velocidade);
-    sprite.setVelocityY((vy / mag) * velocidade);
-} else {
-    sprite.setVelocity(0);
+    // Condicional: gerencia pausa entre ciclos
+    if (this._emPausa) {
+        if (timeNowMs - this._pausaInicioMs >= this._pausaMs) {
+            this._iniciarCiclo(timeNowMs);
+        }
+        this.sprite.body.setVelocity(0, 0);
+        return;
+    }
+
+    if (!this._iniciado) {
+        this._t0Ms     = timeNowMs;
+        this._iniciado = true;
+    }
+
+    // Tempo decorrido em segundos (operação aritmética elementar)
+    const t = (timeNowMs - this._t0Ms) / 1000;
+
+    // Condicional de fim de ciclo
+    if (t >= this.T) {
+        this.sprite.body.reset(this.xf, this.yf);
+        this.sprite.body.setVelocity(0, 0);
+        this._emPausa       = true;
+        this._pausaInicioMs = timeNowMs;
+        this._iniciado      = false;
+        console.log('[CarroCielo] Ciclo concluído. Pausando por', this._pausaMs, 'ms.');
+        return;
+    }
+
+    // ── MU — eixo X ──────────────────────────────────────────────────────────
+    // vx = (xf - xi) / T = (1335 - 165) / 5 = 234.0 px/s  → constante
+    // x(t) = xi + vx * t
+    const x = this.xi + this.vx * t;
+
+    console.log(
+        '[MU  X] t=' + t.toFixed(3) + 's' +
+        ' | vx=' + this.vx.toFixed(4) + ' px/s' +
+        ' | x=' + x.toFixed(2) + ' px'
+    );
+
+    // ── MUV — eixo Y ─────────────────────────────────────────────────────────
+    // v0y = 0  →  ay = 2*(yf - yi) / T² = 2*(688-684)/25 = 0.32 px/s²
+    // vy(t) = ay * t
+    // y(t)  = yi + (1/2) * ay * t²
+    const vy = this.ay * t;
+    const y  = this.yi + (0.5 * this.ay * t * t);
+
+    console.log(
+        '[MUV Y] t=' + t.toFixed(3) + 's' +
+        ' | ay=' + this.ay.toFixed(4) + ' px/s²' +
+        ' | vy=' + vy.toFixed(4) + ' px/s' +
+        ' | y=' + y.toFixed(2) + ' px'
+    );
+
+    // Posição aplicada diretamente ao corpo físico — sem setVelocity nem tween
+    this.sprite.body.reset(x, y);
 }
 ```
 
+Os parâmetros derivados $v_x$ e $a_y$ são calculados uma única vez no construtor:
 
-### Movimentação Autônoma dos NPCs — Patrulha por Waypoints (NPC.js)
-
-#### Visão Geral
-
-Os NPCs do jogo navegam autonomamente entre uma sequência de pontos predefinidos chamados **waypoints** — coordenadas absolutas no mapa que definem o caminho de patrulha. A cada frame, o sistema executa quatro etapas:
-
-1. Identificar o waypoint atual $\mathbf{w} = (w_x, w_y)$
-2. Calcular a distância euclidiana até ele
-3. Se a distância for menor que o limiar $\varepsilon = 4$ px, avançar para o próximo waypoint
-4. Caso contrário, mover o NPC em direção ao waypoint com velocidade constante $V_{\text{NPC}}$
-
-#### Distância Euclidiana
-
-A distância entre a posição atual do NPC $\mathbf{p} = (p_x, p_y)$ e o waypoint $\mathbf{w} = (w_x, w_y)$ é calculada pela **distância euclidiana**, derivada diretamente do Teorema de Pitágoras. Ela mede o comprimento do segmento de reta que conecta dois pontos no plano — a menor distância possível entre eles:
-
-$$d(\mathbf{p},\ \mathbf{w}) = \sqrt{(w_x - p_x)^2 + (w_y - p_y)^2}$$
-
-| Símbolo | Descrição |
-|---|---|
-| $\mathbf{p} = (p_x, p_y)$ | Posição atual do NPC no mundo (em pixels) |
-| $\mathbf{w} = (w_x, w_y)$ | Coordenadas do waypoint alvo (em pixels) |
-| $d(\mathbf{p}, \mathbf{w})$ | Distância euclidiana entre os dois pontos (em pixels) |
-
-#### Vetor Direção e Normalização
-
-O vetor deslocamento $\vec{d}$ aponta da posição atual do NPC até o waypoint alvo:
-
-$$\vec{d} = \mathbf{w} - \mathbf{p} = (w_x - p_x,\ w_y - p_y)$$
-
-Note que $\|\vec{d}\| = d(\mathbf{p}, \mathbf{w})$. Para que o NPC se mova com velocidade constante independentemente da distância ao alvo, normaliza-se $\vec{d}$ para obter o vetor unitário $\hat{d}$:
-
-$$\hat{d} = \frac{\vec{d}}{\|\vec{d}\|} = \left(\frac{w_x - p_x}{\|\vec{d}\|},\ \frac{w_y - p_y}{\|\vec{d}\|}\right)$$
-
-O vetor velocidade final aplicado ao NPC é:
-
-$$\vec{v}_{\text{NPC}} = V_{\text{NPC}} \cdot \hat{d} = \left(\frac{(w_x - p_x) \cdot V_{\text{NPC}}}{\|\vec{d}\|},\ \frac{(w_y - p_y) \cdot V_{\text{NPC}}}{\|\vec{d}\|}\right)$$
-
-Esta é exatamente a formulação implementada em `NPC.js`:
 ```javascript
-const dx  = alvo.x - this.x;           // componente x do vetor d⃗
-const dy  = alvo.y - this.y;           // componente y do vetor d⃗
-const mag = Math.sqrt(dx*dx + dy*dy);  // ‖d⃗‖ — distância euclidiana
+// MU  — eixo X:  vx = (xf - xi) / T = 234.0 px/s
+this.vx = (xf - xi) / T;
 
-this.setVelocityX((dx / mag) * vel);   // vₓ = (dx / ‖d⃗‖) · V
-this.setVelocityY((dy / mag) * vel);   // vᵧ = (dy / ‖d⃗‖) · V
+// MUV — eixo Y (v0y = 0):  ay = 2*(yf - yi) / T² = 0.32 px/s²
+this.ay = (2 * (yf - yi)) / (T * T);
 ```
 
-#### Condição de Chegada ao Waypoint
+#### Localização do arquivo
 
-O NPC é considerado como tendo alcançado o waypoint quando a distância euclidiana cai abaixo de um limiar $\varepsilon$:
+> **Arquivo:** `src/Classes/CarroCielo.js`
+> **Função:** método `atualizar(timeNowMs)` — linhas 95 a 140
 
-$$d(\mathbf{p},\ \mathbf{w}) < \varepsilon, \quad \varepsilon = 4 \text{ px}$$
+---
 
-O limiar $\varepsilon$ é necessário porque, com velocidade discreta frame a frame, o NPC pode nunca pousar exatamente sobre o waypoint. Ao detectar a chegada, o NPC é teleportado para a posição exata do waypoint — eliminando deriva acumulada — e o índice é avançado.
+### Verificação e Validação
 
-#### Progressão Cíclica dos Waypoints
+Abra o Console do navegador (F12 → aba "Console") durante o jogo na Cidade Cielo para verificar os logs frame a frame:
 
-A patrulha é cíclica e infinita. O índice do waypoint atual avança utilizando a operação de módulo:
+```
+=== CarroCielo: INICIALIZADO ===
+  Parâmetros de entrada:
+    xi = 165 px  |  yi = 684 px
+    xf = 1335 px |  yf = 688 px
+    T  = 5 s     |  pausa = 2000 ms
+  Parâmetros derivados:
+    [MU  eixo X] vx = 234.0000 px/s  (constante)
+    [MUV eixo Y] ay = 0.3200 px/s²  (v0y = 0)
+================================
+[MU  X] t=0.016s | vx=234.0000 px/s | x=168.74 px
+[MUV Y] t=0.016s | ay=0.3200 px/s² | vy=0.0051 px/s | y=684.00 px
+[MU  X] t=0.033s | vx=234.0000 px/s | x=172.72 px
+[MUV Y] t=0.033s | ay=0.3200 px/s² | vy=0.0106 px/s | y=684.00 px
+...
+[CarroCielo] Ciclo concluído. Pausando por 2000 ms.
+[CarroCielo] Novo ciclo iniciado.
+```
 
-$$i_{\text{próximo}} = (i_{\text{atual}} + 1) \bmod N$$
+**Critérios de validação:**
 
-| Símbolo | Descrição |
-|---|---|
-| $i_{\text{atual}}$ | Índice do waypoint que o NPC acabou de alcançar |
-| $N$ | Número total de waypoints definidos na patrulha |
-| $\bmod$ | Operação de módulo (resto da divisão inteira) |
-
-> **Nota:** A operação $\bmod\ N$ garante que, ao atingir o último waypoint (índice $N-1$), o próximo índice calculado seja $0$ — reiniciando a patrulha ciclicamente.
-
-#### Seleção de Animação por Eixo Dominante
-
-Após definir o vetor velocidade, o sistema determina qual animação reproduzir comparando os valores absolutos das componentes $d_x$ e $d_y$. O eixo com maior deslocamento absoluto é considerado o **eixo dominante**:
-
-$$\text{animação}(d_x, d_y) = \begin{cases} \textit{lado} & \text{se } |d_x| \geq |d_y| \\ \textit{costas} & \text{se } |d_x| < |d_y| \text{ e } d_y < 0 \\ \textit{frente} & \text{se } |d_x| < |d_y| \text{ e } d_y \geq 0 \end{cases}$$
-
-A condição $|d_x| \geq |d_y|$ seleciona o eixo de maior deslocamento como eixo dominante, produzindo uma animação coerente com a direção percebida pelo jogador mesmo em movimentos diagonais. Quando o eixo horizontal domina, o flip horizontal (`setFlipX`) evita a necessidade de um spritesheet separado para a direção oposta.
+| Verificação | Esperado | Como confirmar |
+|-------------|----------|----------------|
+| $v_x$ constante em todos os frames | `vx=234.0000` em todos os logs `[MU X]` | Comparar `vx` em frames consecutivos |
+| $v_y(t)$ parte de zero | `vy=0.0000` no primeiro frame | Log do frame $t \approx 0$ |
+| $x(5) = 1335$ | Posição final X no encerramento | Último log `[MU X]` antes da pausa |
+| $y(5) = 688$  | Posição final Y no encerramento | Último log `[MUV Y]` antes da pausa |
+| Pausa de 2 000 ms | Log `Pausando por 2000 ms` e carro parado | Observar no jogo e no console |
+| Reinício automático | Log `Novo ciclo iniciado` após pausa | Console após os 2 000 ms |
+| Colisão com jogador | Carro empurra o personagem ao colidir | Posicionar o jogador na trajetória |
 
 # <a name="c4"></a>4. Desenvolvimento do Jogo
 
@@ -1200,11 +1265,24 @@ MenuPrincipal
 
 A **Cena de Introdução** é um diferencial narrativo que muitos projetos não entregam: antes de o jogador ver o mapa, a Cielita o recebe com um monólogo animado que usa seu nome diretamente (`"É aí que entram os escolhidos, [nome]."`) — personalizando a experiência desde o primeiro segundo.
 
-> **[INSERIR PRINT — Cena de Introdução: balão da Cielita com texto animado e fundo escuro]**
+> <div align="center">
+  <sub>Cena de Introdução: balão da Cielita </sub><br>
+  <img src="assets/Balao_dialogo.png" width="100%" alt="Cena de Introdução: balão da Cielita "><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Tela de seleção de personagem: 4 skins com animação idle e campo de nome]**
+> <div align="center">
+  <sub>Tela de seleção de personagem: 4 skins com animação idle e campo de nome</sub><br>
+  <img src="assets/Personagens.png" width="100%" alt="Tela de seleção de personagem: 4 skins com animação idle e campo de nome"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem]**
+> <div align="center">
+  <sub>Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem</sub><br>
+  <img src="assets/CasaInternaCielita.png" width="100%" alt="Mapa Introdutório (Mundo da Cielita): visão geral do mapa com o personagem"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
 
 ---
 
@@ -1239,11 +1317,17 @@ A **barra de satisfação** vai de 0 a 100 e muda de cor e expressão do NPC em 
 - **Neutro** (34–66): cliente hesitante — barra amarela
 - **Bravo** (0–33): cliente prestes a encerrar — barra vermelha
 
-> **[INSERIR PRINT — Tela de negociação com Pedro: barra de satisfação, cartas na mão e NPC]**
+> <div align="center">
+  <sub>Tela de negociação com o NPC Pedro</sub><br>
+  <img src="assets/negociacao_pedro.png" width="100%" alt="Tela de negociação com Pedro"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Modal de detalhe de carta aberto com imagem ampliada]**
-
-> **[INSERIR PRINT — Notificação de insígnia animada no topo da tela ("INSÍGNIA CONQUISTADA! — Mestre do Gelo")]**
+> <div align="center">
+  <sub>Carta de abordagem ampliada</sub><br>
+  <img src="assets/modal.png" width="100%" alt="Carta de abordagem ampliada"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
 ---
 
@@ -1279,9 +1363,19 @@ Para eliminar a duplicação de código de transição presente nas sprints ante
 
 O HUD corre como cena paralela em todas as telas de mapa, exibindo balões de missão ("Fale com a Cielita", "Encontre o cliente") que guiam o jogador sem interromper o gameplay. A tecla **O** ativa/desativa os indicadores a qualquer momento, respeitando jogadores que preferem explorar sem assistência.
 
-> **[INSERIR PRINT — Mapa Vila do Varejo com HUD de indicação visível no topo]**
+> <div align="center">
+  <sub>Mapa Vila do Varejo com HUD de indicação</sub><br>
+  <img src="assets/hud_viladovarejo.png" width="100%" alt="Mapa Vila do Varejo com HUD de indicação"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
 
-> **[INSERIR PRINT — Menu de configurações com opções de modo daltônico]**
+
+> <div align="center">
+  <sub>Menu de configurações com opções de modo daltônico</sub><br>
+  <img src="assets/menu_daltonismo.png" width="100%" alt="Menu de configurações com opções de modo daltônico"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
 
 ---
 
@@ -1321,7 +1415,126 @@ Traduzir o processo real de vendas em mecânica de jogo exigiu múltiplas itera�
 
 ## 4.5. Revisão do MVP (sprint 5)
 
-*Descreva e ilustre aqui o desenvolvimento dos refinamentos e revisões da versão final do jogo, explicando brevemente o que foi entregue em termos de MVP. Utilize prints de tela para ilustrar.*
+O que foi entregue como MVP
+O Cielo Verso chega ao seu MVP como um ciclo jogável completo de ponta a ponta. O jogador parte do menu inicial, atravessa quatro regiões distintas — Quebra Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo — cada uma com seu próprio mapa, NPCs, diálogos e negociação por cartas, e conclui a jornada enfrentando o boss final Rafael na Cidade Cielo. Não é um protótipo de navegação: é um produto com início, meio e fim jogáveis, narrativa personalizada e sistemas técnicos estáveis.
+
+Refinamentos entregues ao longo das sprints
+Sprint 1 — Estrutura e identidade visual
+A base do jogo foi estabelecida nessa fase: movimentação por WASD, câmera com zoom dinâmico seguindo o personagem, sistema de colisão via hitbox e carregamento do mapa com suas regiões temáticas. O design do personagem principal e suas animações direcionais foram definidos — idle, frente, costas e lateral com flip horizontal —, consolidando a identidade visual do projeto em pixel art 2D.
+<div align="center">
+  <sub>Imagem 1 — Sprite do personagem jogável: estado idle</sub><br>
+  <img src="assets/sprite1principal.jpeg" width="60%" alt="Sprite idle do personagem principal"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 2 — Sprite do personagem jogável: animação lateral</sub><br>
+  <img src="assets/sprite2principal.jpeg" width="60%" alt="Sprite lateral do personagem principal"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+A estrutura do mapa foi pensada desde o início para incentivar a progressão entre regiões. As primeiras versões já definiam as áreas temáticas e os pontos de referência visuais — como a torre de negociação — que guiariam o jogador ao longo de toda a jornada.
+<div align="center">
+  <sub>Imagem 3 — Mapa introdutório: visão geral do cenário</sub><br>
+  <img src="assets/direitaCastelo.jpeg" width="80%" alt="Mapa introdutório visão geral"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 4 — Esboço da região Quebra Gelo</sub><br>
+  <img src="assets/noroeste.jpeg" width="80%" alt="Esboço da região Quebra Gelo"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 5 — Torre de negociação: primeiro ponto de referência arquitetônico do mapa</sub><br>
+  <img src="assets/frenteCastelo.jpeg" width="80%" alt="Torre de negociação"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+Sprint 2 — Fluxo de aprendizado e mecânica central
+Definiu-se a divisão da experiência em duas fases: mundos de aprendizagem com minigames temáticos, seguidos do Mundo de Negociação com sistema de cartas. A barra de satisfação do cliente e a lógica de progressão por insígnias foram concebidas nessa etapa, estabelecendo a espinha dorsal da experiência de jogo. O concept art do menu inicial e do mapa de introdução também foi produzido nessa fase, definindo a linguagem visual que seria mantida até o MVP final.
+<div align="center">
+  <sub>Imagem 6 — Concept art: menu inicial</sub><br>
+  <img src="assets/tela_inicial.png" width="80%" alt="Concept art do menu inicial"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 7 — Concept art: mapa de introdução</sub><br>
+  <img src="assets/Mapa_Introducao.jpeg" width="80%" alt="Concept art do mapa de introdução"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+<div align="center">
+  <sub>Imagem 8 — Concept art: Casa da Cielita</sub><br>
+  <img src="assets/casa_cielita.png" width="80%" alt="Concept art da Casa da Cielita"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+Sprint 3 — Sistemas técnicos integrados
+Foram implementados os sistemas que sustentam toda a experiência: transições com fadeOut/fadeIn, preservação de spawn entre cenas via init(data), diálogo com efeito typewriter pelo DialogoManager, colisões via Tiled Map Editor com suporte a polígonos e retângulos, e o núcleo da negociação por cartas com suas cinco fases. A tela de seleção de personagem com quatro skins representando diversidade de gênero e etnia, somada ao campo de input de nome, também foi entregue nessa fase, consolidando a personalização da experiência.
+
+Sprint 4 — MVP completo e refinamentos finais
+Os refinamentos mais significativos foram entregues nessa sprint. A experiência começa com uma cena de introdução narrativa personalizada: antes de ver qualquer mapa, o jogador é recebido pela Cielita em um monólogo animado que usa seu nome diretamente, estabelecendo vínculo com a narrativa desde o primeiro segundo.
+<div align="center">
+  <sub>Imagem 9 — Cena de introdução: balão de diálogo da Cielita com nome do jogador</sub><br>
+  <img src="assets/Balao_dialogo.png" width="80%" alt="Cena de introdução com balão da Cielita"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+Em seguida, o jogador escolhe entre quatro skins — homem e mulher, em duas tonalidades de pele — e digita seu nome, que será utilizado ao longo de toda a jornada. A escolha é persistida via game.registry para durar durante toda a sessão.
+<div align="center">
+  <sub>Imagem 10 — Tela de seleção de personagem: 4 skins com animação idle e campo de nome</sub><br>
+  <img src="assets/Personagens.png" width="80%" alt="Tela de seleção de personagem"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+A partir da seleção, o jogador adentra o Mapa Introdutório e começa a explorar o mundo. O primeiro ambiente interior navegável é a Casa da Cielita, onde a mentora contextualiza a jornada e instrui o jogador sobre as mecânicas básicas.
+<div align="center">
+  <sub>Imagem 11 — Casa interna da Cielita: primeiro ambiente interior navegável do jogo</sub><br>
+  <img src="assets/CasaInternaCielita.png" width="80%" alt="Interior da casa da Cielita"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+O núcleo estratégico do MVP é a negociação por cartas. A arquitetura foi consolidada com CenaNegociacao como classe-base e cada cliente como subclasse independente, eliminando duplicação de código e permitindo que cada NPC tenha suas próprias falas, cartas exigidas e curva de satisfação sem reescrever a lógica de UI. A tela de negociação posiciona o jogador frente a frente com o cliente, com a barra de satisfação e o indicador de fases visíveis em tempo real.
+<div align="center">
+  <sub>Imagem 12 — Tela de negociação com o NPC Seu Pedro: barra de satisfação, indicador de fases e mão de cartas</sub><br>
+  <img src="assets/negociacao_pedro.png" width="80%" alt="Tela de negociação com Pedro"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+Ao clicar em uma carta, um modal exibe sua imagem ampliada com os botões de voltar e selecionar, permitindo que o jogador leia o conteúdo completo antes de confirmar a jogada — decisão de UX que reduz erros acidentais e reforça a leitura das técnicas de negociação.
+<div align="center">
+  <sub>Imagem 13 — Modal de carta ampliada: visualização detalhada antes da seleção</sub><br>
+  <img src="assets/modal.png" width="80%" alt="Modal de carta ampliada"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+O HUD de indicações, ativável e desativável pela tecla O, orienta o jogador sem interromper o gameplay, exibindo balões de missão contextuais em cada região do mapa. Jogadores que preferem explorar sem assistência podem ocultá-lo a qualquer momento.
+<div align="center">
+  <sub>Imagem 14 — Mapa Vila do Varejo: HUD de indicação de missão ativo</sub><br>
+  <img src="assets/hud_viladovarejo.png" width="80%" alt="Mapa Vila do Varejo com HUD"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+Um dos refinamentos de acessibilidade mais relevantes do MVP é o suporte a três tipos de daltonismo — deuteranopia, protanopia e tritanopia — configurável diretamente no menu de opções via filtro SVG aplicado sobre todo o canvas. Essa feature posiciona o Cielo Verso como uma solução de treinamento genuinamente inclusiva para uma força de vendas nacional e diversa.
+<div align="center">
+  <sub>Imagem 15 — Menu de configurações: opções de modo daltônico</sub><br>
+  <img src="assets/menu_daltonismo.png" width="80%" alt="Menu de configurações com modo daltônico"><br>
+  <sup>Fonte: Autoria própria</sup>
+</div>
+
+Estrutura do ciclo completo entregue
+O fluxo jogável percorre as seguintes etapas em sequência:
+Menu Principal
+  → Cena de Introdução (narrativa da Cielita com nome do jogador)
+    → Seleção de Personagem (4 skins, input de nome)
+      → Mundo da Cielita (Mapa Introdutório + Casa da Cielita)
+        → Quebra Gelo
+            → Negociação com Seu Pedro (5 fases completas)
+                → Insígnia "Mestre do Gelo"
+          → Vila do Varejo
+              → Negociação com Thainá (3 fases)
+                  → Insígnia "Rei do Varejo"
+            → Praia dos Proveitos
+                → Negociação com Julia (5 fases completas)
+                    → Insígnia "Praia dos Proveitos"
+              → Cidade Cielo
+                  → Negociação com Rafael (boss final — todas as competências)
+                      → Insígnia "Mestre Cielo"
+Cada negociação forma um degrau progressivo de complexidade: Seu Pedro introduz o funil completo de vendas, Thainá aprofunda a coerência entre fases, Julia consolida o repertório e Rafael representa o clímax — exigindo o desempenho completo de um Gerente de Negócios Cielo.
+
+O que permanece previsto para a sprint 5
+A tela de fim de jogo com resumo de desempenho por negociação e o sistema de métricas — tempo de conclusão e mapeamento de erros críticos por fase — não integram o MVP atual e constituem a entrega central da sprint seguinte. Dois bugs conhecidos também seguem para correção: duplicação de cartas em reinícios de negociação, reportada de forma independente por dois testadores nos playtests, e dessincronização visual do indicador de fases no topo da tela em casos específicos de progressão.
 
 # <a name="c5"></a>5. Testes
 
@@ -1410,54 +1623,286 @@ A execução consistente dos casos de teste acima garante que o Cielo Verso perm
 
 
 
+
 ## 5.2. Testes de jogabilidade (playtests) (sprint 5)
 
-### 5.2.1 Registros de testes
+### 5.2.1. Registros de testes
 
-*Descreva nesta seção as sessões de teste/entrevista com diferentes jogadores. Registre cada teste conforme o template a seguir.*
+> **Nota metodológica:** Os playtests desta sprint foram realizados com estudantes do Inteli (turma T26), com idades entre 18 e 19 anos e perfil predominantemente gamer. Esses participantes funcionam como **proxies do público-alvo real** — Gerentes de Negócios da Cielo, com média de 44 anos e menor familiaridade com jogos digitais. As implicações dessa diferença de perfil são discutidas na seção de análise ao final deste bloco.
 
-Nome | João Jonas (use nomes fictícios)
+---
+
+Nome | Marcos Andrade 
 --- | ---
-Já possuía experiência prévia com games? | sim, é um jogador casual
-Conseguiu iniciar o jogo? | sim
-Entendeu as regras e mecânicas do jogo? | entendeu as regras, mas sobre as mecânicas, apenas as essenciais, não explorou os comandos complexos
-Conseguiu progredir no jogo? | sim, sem dificuldades  
-Apresentou dificuldades? | Não, conseguiu jogar com facilidade e afirmou ser fácil
-Que nota deu ao jogo? | 9.0
-O que gostou no jogo? | Gostou  de como o jogo vai ficando mais difícil ao longo do tempo sem deixar de ser divertido
-O que poderia melhorar no jogo? | A responsividade do personagem aos controles, disse que havia um pouco de atraso desde o momento do comando até a resposta do personagem
+Já possuía experiência prévia com games? | Sim, jogador com experiência moderada
+Conseguiu iniciar o jogo? | Sim, sem dificuldades
+Entendeu as regras e mecânicas do jogo? | Entendeu a lógica geral, mas indicou que as instruções para o jogador sobre o que fazer em cada etapa poderiam ser mais claras. Os HUDs de indicação de objetivos também foram apontados como pouco evidentes.
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade leve na interpretação dos controles, que considerou "não muito claros" à primeira vista
+Que nota deu ao jogo? | 7,5
+O que gostou no jogo? | Design visual geral, considerado muito bom; trilha sonora adequada ao contexto
+O que poderia melhorar no jogo? | Melhorar as instruções contextuais ao longo da jornada; aprimorar os HUDs de indicação de objetivos para que o jogador saiba sempre o que deve fazer a seguir
 
-### 5.2.2 Melhorias
+---
 
-*Descreva nesta seção um plano de melhorias sobre o jogo, com base nos resultados dos testes de jogabilidade*
+Nome | Lucas Vinicius 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; destacou positivamente a intuitividade da exploração, mas sugeriu a adição de ícones de localização de objetivos no mapa para facilitar a navegação
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade para localizar objetivos no mapa sem indicadores visuais de direção
+Que nota deu ao jogo? | 9,0
+O que gostou no jogo? | Boa intuitividade geral; controles considerados adequados; design e som avaliados positivamente
+O que poderia melhorar no jogo? | Aumentar o tamanho da fonte da instrução "Aperte H para o tutorial"; adicionar tutorial específico para a fase de negociação; implementar a possibilidade de retornar após selecionar uma carta; corrigir a seta de navegação entre cartas em determinada fase
+
+---
+
+Nome | Gabriel Tavares 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim, considerou as mecânicas claras, porém sinalizou que há excesso de texto nas telas de negociação, o que pode comprometer a fluidez da leitura
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Percepção de sobrecarga textual; inconsistência de estilo visual entre diferentes partes do jogo
+Que nota deu ao jogo? | 8,5
+O que gostou no jogo? | Design agradável; trilha sonora compatível com o ambiente
+O que poderia melhorar no jogo? | Reduzir a quantidade de texto nas cenas de combate; aumentar a intuitividade da mecânica de negociação; avaliar a substituição dos controles WASD por teclas de seta como opção alternativa de movimentação
+
+---
+
+Nome | Matheus Augusto 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim, as mecânicas foram consideradas claras
+Conseguiu progredir no jogo? | Sim, com ressalvas
+Apresentou dificuldades? | Identificou bug crítico: ao selecionar uma carta, retornar e acessar novamente a mesma cena, a carta anteriormente selecionada reaparecia e era contabilizada novamente como resposta correta. Também reportou falha na exibição de descrição e imagem de algumas cartas na Vila do Varejo, e dificuldade de leitura devido ao tamanho reduzido da fonte nas cartas.
+Que nota deu ao jogo? | 9,5
+O que gostou no jogo? | Mecânicas de negociação bem estruturadas; experiência geral positiva
+O que poderia melhorar no jogo? | Correção do bug de re-seleção de carta; reposicionamento do botão de fechar carta para local mais próximo ao card; ajuste do tamanho da fonte nos textos das cartas; correção da falha de carregamento de imagem/descrição de cartas na Vila do Varejo
+
+---
+
+Nome | Heitor Goulart
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim, considerou o sistema de negociação bem claro
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade pontual ao navegar entre cartas (seta lateral com falha de funcionamento); colisões imprecisas com objetos de cenário
+Que nota deu ao jogo? | 9,0
+O que gostou no jogo? | Clareza geral das mecânicas; experiência considerada fluida
+O que poderia melhorar no jogo? | Ajustar colisões de elementos decorativos do cenário; corrigir a hitbox dos botões de interface para maior precisão de clique
+
+---
+
+Nome | Bruno Araújo 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; elogiou a intuitividade do tutorial, mas identificou que é possível iniciar um diálogo de tutorial com um NPC e simplesmente se afastar, fazendo com que a missão avance sem que o conteúdo tenha sido assimilado
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Conseguiu reproduzir o bug de re-seleção de carta: ao escolher uma carta correta, navegar para outras cartas via seta e retornar, a carta correta reaparecia clicável e era contada novamente — quebrando a progressão da cena de negociação
+Que nota deu ao jogo? | 8,0
+O que gostou no jogo? | Sistema de batalha/negociação bem recebido; design do mundo aberto elogiado
+O que poderia melhorar no jogo? | Corrigir o bug de estado de cartas na cena de negociação; adicionar trava de diálogo que impeça o jogador de abandonar um NPC no meio da interação sem consequência
+
+---
+
+Nome | Arthur Morais 
+--- | ---
+Já possuía experiência prévia com games? | Sim
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; elogiou o esquema de poucos comandos, considerando-o acessível
+Conseguiu progredir no jogo? | Sim
+Apresentou dificuldades? | Dificuldade para distinguir áreas e regiões do mapa sem demarcação clara; identificou bug relacionado ao banco de dados de negociação e apontou ausência de identificação de nome dos locais
+Que nota deu ao jogo? | 9,0
+O que gostou no jogo? | Design do mundo aberto; esquema de controles simples e eficientes; trilha sonora adequada ao ambiente
+O que poderia melhorar no jogo? | Implementar minimapa ou indicadores de região; corrigir bug de persistência de dados na cena de negociação; adicionar nomes ou placas identificadoras nos locais do mapa
+
+---
+
+Nome | Felipe Cabeza / 18 anos / Eng. Comp. / T26
+--- | ---
+Já possuía experiência prévia com games? | Sim, fã declarado do estilo visual inspirado em Pokémon
+Conseguiu iniciar o jogo? | Sim
+Entendeu as regras e mecânicas do jogo? | Sim; considerou o sistema de negociação simples e coerente com o contexto
+Conseguiu progredir no jogo? | Sim, com ressalvas relacionadas à movimentação e visibilidade em alguns mapas
+Apresentou dificuldades? | Velocidade de deslocamento percebida como lenta em determinados mapas; visibilidade dificultada pela paleta de cores em certas áreas; ausência de indicador visual diferenciando casas com conteúdo das sem conteúdo
+Que nota deu ao jogo? | 8,0
+O que gostou no jogo? | Design visual inspirado em Pokémon bem recebido; trilha sonora elogiada mesmo sendo repetitiva; mecânicas de negociação claras e coerentes
+O que poderia melhorar no jogo? | Corrigir erros de colisão; adicionar trava ou estado visual em personagens cujas negociações já foram concluídas; diferenciar visualmente as cartas por categoria (cores distintas por tipo de iniciativa); indicar visualmente quais casas possuem conteúdo disponível; revisar velocidade de movimentação e paleta de cores em mapas com baixo contraste
+
+**Categorias de problemas por frequência:**
+ 
+| Categoria | Testadores afetados |
+| --- | :---: |
+| Bugs na cena de negociação (cartas) | 4/8 |
+| Falta de indicadores visuais / minimapa | 3/8 |
+| Excesso de texto | 2/8 |
+| Colisão com objetos de cenário | 2/8 |
+| Tutorial ou instrução insuficiente | 2/8 |
+| Legibilidade (tamanho de fonte) | 2/8 |
+
+---
+
+### Análise dos resultados e relação com o público-alvo
+
+Os playtests desta sprint foram conduzidos com estudantes do Inteli com idades entre 18 e 19 anos, todos com experiência prévia em jogos digitais — um perfil consideravelmente distinto do público-alvo final do projeto, composto por Gerentes de Negócios da Cielo com média de 44 anos e menor familiaridade com o universo gamer. Essa condição deve ser considerada na interpretação dos dados: os testadores funcionaram como **proxies qualificados**, capazes de identificar problemas técnicos, de usabilidade e de clareza de mecânicas com precisão, mas não necessariamente representam as dificuldades que um usuário não-gamer enfrentaria. Ainda assim, os resultados são reveladores — e, em alguns aspectos, mais preocupantes do que parecem à primeira vista. Se jogadores experientes relataram dificuldade para localizar objetivos no mapa, identificar áreas distintas, interpretar o excesso de texto nas negociações e navegar pelo sistema de cartas sem indicadores claros, é razoável supor que o público-alvo real — acostumado a ferramentas de trabalho e não a interfaces de jogo — encontraria dificuldades ainda mais acentuadas nesses mesmos pontos. Nesse sentido, os feedbacks sobre sobrecarga textual, ausência de minimapa, falta de demarcação de regiões e necessidade de tutorial expandido para a mecânica de negociação ganham peso estratégico: não são apenas melhorias de experiência para gamers, mas requisitos de acessibilidade para que o jogo cumpra sua função como ferramenta de treinamento corporativo. A nota média atribuída ao jogo pelos testadores foi **8,6**, indicando boa recepção geral — um sinal positivo que, combinado com os pontos de melhoria levantados, fornece uma base concreta para a revisão do MVP.
+
+### 5.2.2. Melhorias
+
+Com base nos resultados consolidados dos playtests realizados na sprint 5, foram identificados seis eixos de melhoria, organizados por prioridade de impacto. A classificação considera tanto a frequência de relato entre os testadores quanto a severidade do problema sobre a experiência de jogo e sobre os objetivos de aprendizado do produto.
+
+---
+
+#### Prioridade 1 — Correção do bug de re-seleção de carta na cena de negociação
+
+**Origem:** Relatado de forma independente por Matheus Augusto e Bruno Araújo.
+
+**Descrição do problema:** Ao selecionar uma carta correta durante a negociação, navegar para outras cartas via seta lateral e retornar à carta anteriormente escolhida, o sistema a exibe novamente como disponível para seleção. Clicar nela uma segunda vez a contabiliza como uma nova resposta correta, corrompendo o estado da cena e permitindo progressão indevida.
+
+**Impacto:** Crítico. Além de quebrar a progressão da cena de negociação, o bug compromete diretamente o objetivo pedagógico do jogo — o jogador avança sem ter tomado a decisão correta de forma consciente, esvaziando o valor de treinamento da mecânica.
+
+**Ação recomendada:** Implementar controle de estado por carta após seleção, marcando-a como `selected: true` e desabilitando o evento de clique. O estado deve persistir mesmo após navegação lateral e ser reiniciado apenas ao iniciar uma nova cena de negociação. Adicionalmente, investigar o bug secundário de carregamento de imagem/descrição reportado na Vila do Varejo (Matheus Augusto), que pode compartilhar a mesma raiz de gerenciamento de estado.
+
+---
+
+#### Prioridade 2 — Implementação de indicadores visuais de navegação e objetivos
+
+**Origem:** Relatado por Lucas Vinicius, Arthur Morais e Felipe Cabeza.
+
+**Descrição do problema:** O mapa não oferece indicadores suficientes para que o jogador saiba onde estão os objetivos ativos, quais regiões já foram concluídas e quais casas possuem conteúdo disponível. A ausência de um minimapa ou de ícones de localização obriga o jogador a explorar por tentativa e erro.
+
+**Impacto:** Alto. Para o público-alvo real (GNs da Cielo com pouca experiência em jogos), a desorientação espacial é um dos principais fatores de abandono em jogos de mundo aberto. Se jogadores experientes já relataram dificuldade, usuários não-gamers provavelmente encontrariam uma barreira de progressão nesse ponto.
+
+**Ação recomendada:** Implementar, em ordem de viabilidade: (1) ícone flutuante ou marcador de objetivo no mapa indicando o NPC-alvo da fase atual; (2) estado visual diferenciado para casas com conteúdo disponível versus casas já concluídas; (3) minimap como melhoria futura de maior escopo. Adicionalmente, adicionar placas ou rótulos de nome nas regiões do mapa (sugerido por Arthur Morais).
+
+---
+
+#### Prioridade 3 — Redução da carga textual nas cenas de negociação
+
+**Origem:** Relatado por Gabriel Tavares e Lucas Vinicius.
+
+**Descrição do problema:** As cenas de negociação apresentam volume excessivo de texto por tela, o que prejudica a fluidez da leitura e pode causar fadiga cognitiva. Gabriel Tavares apontou que "tem muito texto" como principal obstáculo à experiência de combate.
+
+**Impacto:** Alto para o público-alvo real. GNs da Cielo interagem com o jogo em contexto de treinamento corporativo, onde sessões longas e densas de leitura reduzem o engajamento. O excesso de texto também entra em conflito com o princípio de aprendizado por ação, central à proposta do jogo.
+
+**Ação recomendada:** Revisar os textos das cartas e das falas de NPC com foco em concisão. Textos de carta devem comunicar a essência da técnica de negociação em no máximo 2–3 linhas. Considerar o uso de ícones ou elementos visuais para complementar a informação textual em vez de substituí-la por mais texto.
+
+---
+
+#### Prioridade 4 — Ajuste de colisões e hitboxes de interface
+
+**Origem:** Relatado por Heitor Goulart e Felipe Cabeza (colisão de cenário); Heitor Goulart (hitbox de botões).
+
+**Descrição do problema:** Objetos decorativos do cenário apresentam colisão imprecisa, ora bloqueando o personagem em posições inesperadas, ora permitindo sobreposição indevida. Paralelamente, os botões de interface da cena de negociação possuem área de clique menor do que a representação visual, gerando frustração ao tentar interagir.
+
+**Impacto:** Moderado na experiência geral, mas capaz de causar interrupções abruptas no fluxo de jogo. Para usuários com menor familiaridade com jogos, esse tipo de fricção técnica é frequentemente interpretado como erro do usuário, não do sistema, podendo reduzir a autoeficácia durante o treinamento.
+
+**Ação recomendada:** Revisar e ajustar os polígonos de colisão dos objetos de cenário em todos os mapas. Para os botões de interface, garantir que a hitbox corresponda visualmente à área do elemento, com margem mínima de 8px de padding interativo.
+
+---
+
+#### Prioridade 5 — Expansão e melhoria do tutorial
+
+**Origem:** Relatado por Marcos Andrade e Bruno Araújo; indiretamente corroborado por Lucas Vinicius (sugestão de tutorial específico para negociação).
+
+**Descrição do problema:** O tutorial existente cobre as mecânicas básicas de movimentação, mas não prepara adequadamente o jogador para a mecânica de negociação por cartas — a mais complexa e central do jogo. Além disso, Bruno Araújo identificou que é possível iniciar um diálogo de tutorial com um NPC e se afastar antes do fim, avançando a missão sem ter assimilado o conteúdo.
+
+**Impacto:** Alto para o público-alvo real. A mecânica de cartas é o núcleo do treinamento; um jogador que não a compreende plenamente não extrai o valor pedagógico do jogo. A possibilidade de "pular" o tutorial por acidente agrava esse risco.
+
+**Ação recomendada:** Desenvolver um módulo de tutorial dedicado à cena de negociação, acionado antes da primeira interação com um NPC de combate. Implementar trava de proximidade que impeça o jogador de se afastar de um NPC durante um diálogo ativo de tutorial, ou exibir alerta de confirmação caso tente fazê-lo. Aumentar o tamanho da fonte da instrução "Aperte H para o tutorial" para garantir sua leitura imediata na tela inicial.
+
+---
+
+#### Prioridade 6 — Ajustes de legibilidade, paleta e movimentação
+
+**Origem:** Matheus Augusto e Lucas Vinicius (fonte das cartas); Felipe Cabeza (contraste de paleta e velocidade de movimentação).
+
+**Descrição do problema:** O texto das cartas foi considerado difícil de ler devido ao tamanho reduzido da fonte. Em determinados mapas, a paleta de cores apresenta baixo contraste, dificultando a distinção de elementos do cenário. A velocidade de movimentação do personagem foi percebida como lenta em algumas áreas.
+
+**Impacto:** Moderado isoladamente, mas com potencial de acúmulo: um jogo que exige esforço visual constante, apresenta movimentação arrastada e tem paleta de baixo contraste comunica descuido técnico e reduz a imersão — especialmente em um produto que precisa ser percebido como profissional por seu público corporativo.
+
+**Ação recomendada:** Aumentar o tamanho mínimo da fonte nos cards de carta para 13–14px e revisar o contraste de texto sobre fundo nos elementos de interface (relação mínima recomendada de 4,5:1 para acessibilidade WCAG AA). Revisar a paleta dos mapas com menor legibilidade relatada. Avaliar o ajuste de velocidade de deslocamento por mapa, com valor-base mais alto para áreas de transição e exploração livre.
 
 # <a name="c6"></a>6. Conclusões e trabalhos futuros (sprint 5)
 
-*Escreva de que formas a solução do jogo atingiu os objetivos descritos na seção 1 deste documento. Indique pontos fortes e pontos a melhorar de maneira geral.*
+De forma geral, a solução desenvolvida — o jogo Cielo Verso — atingiu os objetivos propostos na Seção 1 ao transformar o treinamento dos Gerentes de Negócios em uma experiência digital gamificada, acessível e padronizada. A proposta de eliminar barreiras geográficas foi atendida por meio de uma solução totalmente remota, permitindo que qualquer colaborador, independentemente da região, tenha acesso ao mesmo conteúdo de capacitação. Além disso, o uso de mecânicas interativas, como o sistema de cartas e simulações de negociação, contribuiu para aumentar o engajamento e a retenção do conteúdo, substituindo o modelo tradicional expositivo por uma abordagem prática e imersiva.
 
-*Relacione os pontos de melhorias evidenciados nos testes com plano de ações para serem implementadas no jogo. O grupo não precisa implementá-las, pode deixar registrado aqui o plano para futuros desenvolvimentos.*
+Outro ponto relevante é o alinhamento do jogo com o funil de vendas da Cielo, garantindo que todas as etapas — abordagem, sondagem, demonstração, benefícios e negociação — fossem trabalhadas de forma progressiva. A estrutura em fases e regiões, junto com o sistema de métricas (tempo de conclusão e mapeamento de erros), também atende ao objetivo de monitorar o desempenho dos usuários, permitindo identificar lacunas de aprendizado.
 
-*Relacione também quaisquer ideias que o grupo tenha para melhorias futuras*
+Como pontos fortes do projeto, destacam-se:
+- A estrutura escalável do jogo, que permite a adição de novos conteúdos com baixo custo técnico;
+- O alto nível de alinhamento com o contexto real de vendas, tornando o aprendizado aplicável;
+- A acessibilidade, incluindo mecânicas simples e o modo daltônico;
+- O engajamento proporcionado pela gamificação, com progressão, desafios e feedback visual.
+
+Por outro lado, alguns pontos a melhorar foram identificados:
+- Necessidade de maior polimento na interface (HUD) e consistência visual entre cenas;
+- Ajustes no balanceamento da dificuldade, especialmente no sistema de satisfação;
+- Correção de bugs técnicos, como reset de estados e sincronização de indicadores;
+- Maior clareza em alguns momentos da experiência para usuários menos familiarizados com jogos.
+
+
+Com base nos testes realizados (Seção 5), foram identificadas oportunidades de melhoria que podem ser organizadas em um plano de ação futuro:
+
+- Correção de bugs críticos: garantir o reset correto do sistema de cartas e estabilidade das mecânicas de negociação;
+- Ajuste de balanceamento: calibrar ganhos e perdas na barra de satisfação com base em dados de playtest;
+- Melhoria da interface: padronizar HUD, indicadores visuais e feedbacks ao jogador;
+- Aprimoramento da progressão: tornar mais claro o avanço entre fases e objetivos de cada etapa;
+- Testes com usuários externos: ampliar a validação com o público-alvo real para refinar a experiência.
+
+Além disso, o grupo identificou diversas ideias para melhorias futuras, que podem expandir o impacto do projeto:
+
+- Implementação de um sistema mais robusto de métricas e relatórios, permitindo análise detalhada de desempenho por usuário;
+- Criação de um sistema de recompensas e progressão, como cartas desbloqueáveis ou níveis de habilidade;
+- Expansão do jogo com novos cenários, clientes e desafios, aumentando a longevidade da plataforma;
+- Integração com sistemas corporativos da Cielo, tornando o jogo uma ferramenta oficial de treinamento;
+- Inclusão de modos colaborativos ou competitivos, incentivando interação entre usuários;
+- Aprimoramento da personalização da experiência, adaptando o conteúdo conforme o desempenho do jogador.
+
+Em síntese, o projeto atingiu com sucesso seu propósito principal como MVP, demonstrando viabilidade técnica e valor estratégico para a capacitação corporativa. As melhorias propostas indicam um caminho claro para evolução futura, com potencial de transformar o jogo em uma plataforma completa de treinamento e desenvolvimento profissional.
+
 
 # <a name="c7"></a>7. Referências (sprint 5)
 
-_Incluir as principais referências de seu projeto, para que seu parceiro possa consultar caso ele se interessar em aprofundar. Um exemplo de referência de livro e de site:_<br>
+Associação Brasileira das Empresas de Cartões de Crédito e Serviços [Abecs]. (2024). *Balanço do setor de meios eletrônicos de pagamento: Indicadores*. https://abecs.org.br/indicadores/
 
-LUCK, Heloisa. Liderança em gestão escolar. 4. ed. Petrópolis: Vozes, 2010. <br>
-SOBRENOME, Nome. Título do livro: subtítulo do livro. Edição. Cidade de publicação: Nome da editora, Ano de publicação. <br>
+Associação Brasileira das Empresas de Cartões de Crédito e Serviços [Abecs]. (2024). *Monitor Abecs: Balanço do setor de meios eletrônicos de pagamento*. https://www.abecs.org.br/monitor-abecs
 
-INTELI. Adalove. Disponível em: https://adalove.inteli.edu.br/feed. Acesso em: 1 out. 2023 <br>
-SOBRENOME, Nome. Título do site. Disponível em: link do site. Acesso em: Dia Mês Ano
+Banco Central do Brasil. (2021). *Boxe 7: A nova dinâmica da competição no SFN e no SPB*. Relatório de Economia Bancária. https://www.bcb.gov.br/content/publicacoes/boxe_relatorio_de_economia_bancaria/reb2021b7p.pdf
 
-Porter, M. E. (2008). The five competitive forces that shape strategy. Harvard Business Review.
-https://hbr.org/2008/01/the-five-competitive-forces-that-shape-strategy
+Banco Central do Brasil. (2021, 25 de março). *Resolução BCB nº 80, de 25 de março de 2021: Disciplina a constituição e o funcionamento das instituições de pagamento*. https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=80
 
-> - ABECS. *Associação Brasileira das Empresas de Cartões de Crédito e Serviços*. 2023.
-> - BANCO CENTRAL DO BRASIL. *Relatório de Estabilidade Financeira*. 2023.
-> - CIELO. *Relatório Anual*. 2023.
-> - FERNANDES, A. et al. *Planejamento estratégico*. 2015.
-> - VIAL, G. Understanding digital transformation. *Journal of Strategic Information Systems*, 2019.
+Banco Central do Brasil. (2022, 23 de setembro). *Resolução BCB nº 246, de 23 de setembro de 2022*. https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?tipo=Resolu%C3%A7%C3%A3o%20BCB&numero=246
 
+Banco Central do Brasil. (2023). *Relatório de Estabilidade Financeira* (Vol. 22, n. 1). https://www.bcb.gov.br/content/publicacoes/ref/202304/RELESTAB202304-refPub.pdf
+
+Banco Central do Brasil. (2023). *Relatório de Gestão do Pix: Concepção e primeiros anos de funcionamento 2020–2022*. Departamento de Competição e de Estrutura do Mercado Financeiro (Decem). https://www.bcb.gov.br/content/estabilidadefinanceira/pix/relatorio_de_gestao_pix/relatorio_gestao_pix_2023.pdf
+
+Banco Central do Brasil. (2024). *Estatísticas de meios de pagamentos*. Portal de Dados Abertos do Banco Central do Brasil. https://dadosabertos.bcb.gov.br/dataset/estatisticas-meios-pagamentos
+
+Banco Central do Brasil. (2024). *Pix em números: Estatísticas e informações gerais*. https://www.bcb.gov.br/estabilidadefinanceira/pix-em-numeros-estatisticas
+
+Cielo. (2024). *Relatório Anual Integrado 2023*. https://www.cielo.com.br/docs/sustentabilidade/2023/pt-br/Relatorio-Anual-Integrado-2023.pdf
+
+Cielo S.A. (2024). *Formulário de Referência 2024 (V12)*. Comissão de Valores Mobiliários. https://www.rad.cvm.gov.br/ENET/frmGerenciaPaginaFRE.aspx?NumeroSequencialDocumento=143465&CodigoTipoInstituicao=1
+
+Conselho Administrativo de Defesa Econômica [CADE]. (2019). *Cadernos do Cade: Mercado de instrumentos de pagamento*. Departamento de Estudos Econômicos. https://cdn.cade.gov.br/Portal/centrais-de-conteudo/publicacoes/estudos-economicos/cadernos-do-cade/mercado-de-instrumentos-de-pagamento-2019.pdf
+
+Conselho Administrativo de Defesa Econômica [CADE]. (2023). *Fusões conglomerais: Teorias do dano e jurisprudência do Cade entre 2012 e 2022* (Documento de Trabalho). https://cdn.cade.gov.br/Portal/centrais-de-conteudo/publicacoes/estudos-economicos/documentos-de-trabalho/2023/Documento-de-Trabalho-Fusoes-Conglomerais.pdf
+
+Estadão Conteúdo. (2024, 16 de agosto). *Cielo deixa B3 após 15 anos com menos de 20% do mercado e com desafio a controladores*. InfoMoney. https://www.infomoney.com.br/mercados/cielo-deixa-b3-apos-15-anos-com-menos-de-20-do-mercado-e-com-desafio-a-controladores/
+
+Fernandes, B. H. R., Berton, L. H., & Bezerra, C. A. (2015). *Administração estratégica: Da competência empreendedora à avaliação de desempenho*. Saraiva.
+
+Halliday, D., Resnick, R., & Walker, J. (2016). *Fundamentos de física: Vol. 1* (10ª ed.). LTC.
+
+InvestNews. (2024, 26 de junho). *Destronada nas maquininhas, Cielo luta para se manter relevante na era do Pix*. https://investnews.com.br/negocios/destronada-nas-maquininhas-cielo-luta-para-se-manter-relevante-na-era-do-pix/
+
+Vial, G. (2019). Understanding digital transformation: A review and a research agenda. *The Journal of Strategic Information Systems*, *28*(2), 118–144. https://doi.org/10.1016/j.jsis.2019.01.003
 
 
 # <a name="c8"></a>Anexos

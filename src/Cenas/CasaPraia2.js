@@ -28,7 +28,7 @@ export default class CasaPraia2 extends Phaser.Scene {
 
         // Escala aplicada ao cenário
         const escalaCenario = 1.5;
-
+        
         // CORREÇÃO: Usa a imagem correta ('CasaPraia2') ancorada no 0,0
         const cenario = this.add.image(0, 0, 'CasaPraia2').setOrigin(0, 0).setScale(escalaCenario);
         const larguraImagem = cenario.displayWidth;
@@ -36,7 +36,7 @@ export default class CasaPraia2 extends Phaser.Scene {
 
         // Limites físicos: prende o jogador dentro da área total da imagem
         this.physics.world.setBounds(0, 0, larguraImagem, alturaImagem);
-
+ 
         // ── Jogador ───────────────────────────────────────────────────────────
         this.jogador = new Jogador(this, larguraImagem / 2, 330); 
         this.jogador.sprite.setCollideWorldBounds(true);

@@ -1,7 +1,9 @@
 import Jogador        from "../Classes/Jogador.js";
 import NPC            from "../Classes/NPC.js";
 import DialogoManager from "../Classes/DialogoManager.js";
-import CenaMapa from "../Classes/CenaMapa.js";
+import CenaMapa       from "../Classes/CenaMapa.js";
+import MiniMapa       from '../Classes/MiniMapa.js';
+import Insignia       from '../Classes/Insignias.js';
 
 export default class VilaDoVarejo extends CenaMapa {
     constructor() {
@@ -84,12 +86,12 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── NPC: Cielita ─────────────────────────────────────────────────────
         // Guia de introdução ao mapa da Vila do Varejo
-        this.cielita = new NPC(this, 270, 230, 'cielitaparada', {
+        this.cielita = new NPC(this, 350, 240, 'cielitaparada', {
             velocidade: 0,
             distanciaInteracao: 60,
             grupoNPCs: this.grupoNPCs,
             animacoes: { idle: 'cielitaparada' },
-            scaleIndicador: 1.3,
+            scaleIndicador: 1.5,
             onFimDialogo: () => {
                 this.dialogoCielitaConcluido = true;
                 this.registry.set('cielita_varejo_concluido', true);
@@ -173,6 +175,9 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // ── Jogador e Física ─────────────────────────────────────────────────
         this.personagem = new Jogador(this, 400, 300, 1.5);
+        this.miniMapa = new MiniMapa(this, this.personagem.sprite);
+        this.miniMapa.registrarNPCs(this.grupoNPCs);       // pontos amarelos dos NPCs
+        this.miniMapa.definirMissao(555, 200);              // triângulo da missão
         this.personagem.superficiePasso = 'passos_viladovarejo';
         this.teclas = this.personagem.configurarTeclas();
         this.personagem.sprite.setCollideWorldBounds(true);
@@ -239,6 +244,9 @@ export default class VilaDoVarejo extends CenaMapa {
         if (!this.dialogoCielitaConcluido) {
             this.game.events.emit('atualizarBalao', { texto: 'Fale com a Cielita', visivel: true });
         }
+
+        // Concede a insígnia se o jogador já venceu a negociação com a Thaina
+        new Insignia(this, 'vila_varejo').conceder();
     }
 
     update() {
@@ -246,9 +254,10 @@ export default class VilaDoVarejo extends CenaMapa {
 
         // Atualiza o player e a lógica de movimento/diálogo dos NPCs
         this.personagem.atualizar();
-        this.eric.atualizar(this.personagem.sprite, this.teclas.interagir);
-        this.jorge.atualizar(this.personagem.sprite, this.teclas.interagir);
-        this.cielita.atualizar(this.personagem.sprite, this.teclas.interagir);
+        this.miniMapa.atualizar();
+        this.eric.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        this.jorge.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
+        this.cielita.atualizar(this.personagem.sprite, [this.teclas.interagir, this.teclas.interagir2]);
 
         // ── HUD (balão de orientação) ─────────────────────────────────────
         const distEric = Phaser.Math.Distance.Between(
@@ -282,7 +291,7 @@ export default class VilaDoVarejo extends CenaMapa {
         }
 
         if (this.personagem.temOverlap(this.portalparapraia)) {
-            this.trocarCena('PonteVV_PP');
+            this.trocarCena('PonteVV_PP', {}, 'vila_varejo');
             return;
         }
 

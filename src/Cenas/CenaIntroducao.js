@@ -33,7 +33,11 @@ export default class CenaIntroducao extends Phaser.Scene {
         this.add.rectangle(W / 2, H / 2, W, H, 0x000000);
 
         // ── Imagem de fundo da intro ──────────────────────────────────────────
-        this.add.image(W / 2, H / 2, 'IntroFundo');
+        // BUGFIX: linha removida pois 'IntroFundo' não está carregado no preload(),
+        // o que causava erro silencioso e impedia o create() de concluir,
+        // fazendo o jogo pular a CasaCielita e ir direto para o QuebraGelo.
+        // Descomente a linha abaixo (e o preload) quando tiver o asset pronto:
+        // this.add.image(W / 2, H / 2, 'IntroFundo');
 
         // ── Estado do diálogo ─────────────────────────────────────────────────
         this._falasIndex   = 0;
@@ -141,7 +145,7 @@ export default class CenaIntroducao extends Phaser.Scene {
                 charIndex++;
 
                 if(charIndex % 2 === 0 && this.cache.audio.exists('blip_teclado')) {
-                    this.sound.play('blip_teclado', { volume: 0.005 });
+                    this.sound.play('blip_teclado', { volume: 0.06 });
                 }
 
                 if (charIndex >= fala.texto.length) {
@@ -172,7 +176,7 @@ export default class CenaIntroducao extends Phaser.Scene {
             return;
         }
 
-        // ── Fim do diálogo → vai para CenaCasa ───────────────────────────────
+        // ── Fim do diálogo → vai para CasaCielita ─────────────────────────────
         this.teclaAvancar.enabled = false;
         this.cameras.main.fadeOut(800, 0, 0, 0);
         this.cameras.main.once(
