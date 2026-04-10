@@ -23,10 +23,6 @@ const CONDICAO_PARA_ASPECTO = {
     taxa:    'lucro',
 };
 
-// Dimensões dos ícones de aspecto — devem ser idênticas às de _criarIconesAspectos() na base
-const ICONE_LARGURA = 48; // iconeH (24) * 2
-const ICONE_ALTURA  = 24;
-
 
 
 export default class NegociacaoJulia extends CenaNegociacao {
@@ -220,11 +216,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
             this._condicoesReveladas = new Set();
             this._setPIFEVisivel(false);
             this._setIconeDemoVisivel(false);
-
-            // Exibe apenas os ícones de 'pessoas' e 'lucro', resetados para
-            // interrogação (cinza) com o tamanho correto. Oculta 'estoque'.
             this._resetarIconesNegociacao();
-
             this._limparCartas();
             this._distribuirCartasNegociacao();
 
@@ -241,34 +233,18 @@ export default class NegociacaoJulia extends CenaNegociacao {
     // e oculta o estoque que não participa da negociação.
 
     _resetarIconesNegociacao() {
-        // Esconde estoque — não é usado na negociação
+        // Mesma lógica da sondagem: mostra o bg e os ícones relevantes,
+        // oculta apenas o estoque. Não tenta redimensionar nem reposicionar nada.
+        const iconeH  = 24;
+        const largura = 48;
+
         const dEstoque = this._iconesAspectos['estoque'];
         if (dEstoque) dEstoque.obj.setVisible(false);
 
-        // Recalcula dimensões para exatamente 2 ícones (pessoas + lucro)
-        const espaco        = 6;
-        const pad           = 8;
-        const totalW        = ICONE_LARGURA * 2 + espaco;
-        const novaLarguraBg = totalW + pad * 2;
-
-        // Redimensiona o retângulo de fundo para caber só 2 ícones
-        if (this._bgAspectos) {
-            this._bgAspectos.setSize(novaLarguraBg, ICONE_ALTURA + pad * 2);
-            this._bgAspectos.setVisible(true);
-        }
-
-        // Reposiciona os ícones centralizados dentro do novo retângulo
-        const centroX = this._bgAspectos?.x ?? 0;
-        const startX  = centroX - totalW / 2 + ICONE_LARGURA / 2;
-        const y       = this._bgAspectos?.y ?? 0;
-
-        for (const [i, aspecto] of ['pessoas', 'lucro'].entries()) {
+        for (const aspecto of ['pessoas', 'lucro']) {
             const d     = this._iconesAspectos[aspecto];
             const chave = `sondagem_${aspecto}_interrogacao`;
             if (!d) continue;
-
-            // Reposiciona centralizado no novo fundo
-            d.obj.setPosition(startX + i * (ICONE_LARGURA + espaco), y);
 
             if (this.textures.exists(chave) && d.obj.setTexture) {
                 d.obj.setTexture(chave);
@@ -276,16 +252,13 @@ export default class NegociacaoJulia extends CenaNegociacao {
                 d.obj.setFillStyle(0x333333);
             }
 
-            // Força o tamanho de volta ao original — o tween de pulso pode
-            // ter deixado a escala em valor diferente de 1
-            if (d.obj.setDisplaySize) {
-                d.obj.setDisplaySize(ICONE_LARGURA, ICONE_ALTURA);
-            } else {
-                d.obj.setScale(1);
-            }
+            if (d.obj.setDisplaySize) d.obj.setDisplaySize(largura, iconeH);
+            else d.obj.setScale(1);
 
             d.obj.setVisible(true);
         }
+
+        this._bgAspectos?.setVisible(true);
     }
 
     // ── Revelar ícone de aspecto — sobrescreve a base para garantir o tamanho ─
@@ -303,8 +276,7 @@ export default class NegociacaoJulia extends CenaNegociacao {
 
         if (this.textures.exists(chave) && d.obj.setTexture) {
             d.obj.setTexture(chave);
-            // Reaplica o tamanho correto após trocar a textura
-            if (d.obj.setDisplaySize) d.obj.setDisplaySize(ICONE_LARGURA, ICONE_ALTURA);
+            if (d.obj.setDisplaySize) d.obj.setDisplaySize(48, 24);
         } else if (d.obj.setFillStyle) {
             d.obj.setFillStyle(0x22cc66);
         }
