@@ -101,7 +101,9 @@ export default class CenaNegociacao extends Phaser.Scene {
         this.load.image('reacao_feliz',  'assets/objetos/reacoes/reacao_feliz.png');
 
         const insignia = this._getInsignia();
-        if (insignia) this.load.image(insignia.key, insignia.path);
+        if (insignia && insignia.path) {
+            this.load.image(insignia.key, insignia.path);
+        }
     }
 
     create() {
