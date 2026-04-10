@@ -247,8 +247,9 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 11 | Combate e progressão pelo funil de vendas | O sistema de negociação por cartas é estruturado em fases que espelham o funil de vendas da Cielo: o Quebra-Gelo aborda Abordagem e Sondagem; a Vila do Varejo aborda Abordagem, Sondagem e Demonstração de Produtos; a Praia dos Proveitos abordará os Benefícios da Cielo; e a Cidade Cielo consolida todas as etapas em um desafio completo. | Cada região deve conter apenas as cartas correspondentes às etapas do funil que ela cobre; a Cidade Cielo deve disponibilizar cartas de todas as fases anteriores; o resultado final deve ser exibido ao término da última fase de cada negociação.
 12 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface que aumenta ou diminui de acordo com as escolhas do GN durante a negociação. Os sprites do cliente mudarão conforme o estado da negociação. | A barra deve atualizar visualmente em até 400ms após cada jogada de carta; o sprite do cliente deve alternar corretamente entre os 3 estados (satisfeito, neutro, bravo) conforme o valor da barra.
 13 | Cartas | O jogo deve implementar um sistema de cartas que representam as etapas do funil de vendas, distribuídas conforme a região e fase atual da negociação. | As cartas corretas para cada fase devem ser exibidas sem repetição; a seleção de uma carta deve gerar resposta visual e alterar a barra de satisfação em até 500ms.
-14 | Acessibilidade | O jogo deve ser jogável por pessoas com diferentes níveis de familiaridade com jogos digitais. | Todos os textos devem ter tamanho mínimo de 14px e contraste suficiente para leitura; nenhuma mecânica deve exigir mais de 2 teclas simultâneas; as instruções de controle devem estar disponíveis a qualquer momento pela tecla H.
-15 | Huds Complementares | Com o intuito de deixar um jogo mais intuito, tivemos a criação do sistema do hud indicativo na parte superior central da tela que informa os proximos passos que o jogador deve realizar, e a implementação de um minimapa em todas as cidades exibidas no canto superior direto. Esses huds podem ser desativados em qualquer momento do jogo pressionando a tecla O voce desativa o hud informativo e pressionando a tecla M voce desativa o minimapa.
+14 | Sistema de Insígnias | O jogo deve conceder insígnias ao jogador após a conclusão de negociações com NPCs, representando o progresso e desempenho nas interações. | Uma insígnia deve ser concedida ao final de cada negociação concluída; a insígnia deve ser exibida visualmente ao jogador após a vitória; o sistema não deve conceder insígnias em caso de falha na negociação.
+15 | Acessibilidade | O jogo deve ser jogável por pessoas com diferentes níveis de familiaridade com jogos digitais. | Todos os textos devem ter tamanho mínimo de 14px e contraste suficiente para leitura; nenhuma mecânica deve exigir mais de 2 teclas simultâneas; as instruções de controle devem estar disponíveis a qualquer momento pela tecla H.
+16 | Huds Complementares | O jogo deve apresentar um HUD indicativo na parte superior central da tela, informando os próximos passos que o jogador deve realizar, além de um minimapa exibido no canto superior direito em todas as cidades. Ambos os elementos podem ser ativados ou desativados durante a gameplay. | O HUD indicativo deve exibir corretamente os objetivos atuais do jogador; o minimapa deve estar visível em todas as cidades; ao pressionar a tecla O o HUD indicativo deve ser ativado/desativado corretamente; ao pressionar a tecla M o minimapa deve ser ativado/desativado corretamente.
 
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
@@ -455,8 +456,8 @@ O tempo não possui relevância no jogo.
 
 
 <div align="center">
-  <sub>Menu Inicial</sub><br>
-  <img src="assets/tela_inicial.png" width="100%" alt="Descrição breve"><br>
+  <sub>Concept Art do Menu Inicial</sub><br>
+  <img src="assets/ConceptTelaInicial.jpeg" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Autoria própria</sup>
 </div>
 
