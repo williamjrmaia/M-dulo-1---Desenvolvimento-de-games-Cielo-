@@ -1417,7 +1417,7 @@ Traduzir o processo real de vendas em mecânica de jogo exigiu múltiplas itera�
 ## 4.5. Revisão do MVP (sprint 5)
 
 O que foi entregue como MVP
-O Cielo Verso chega ao seu MVP como um ciclo jogável completo de ponta a ponta. O jogador parte do menu inicial, atravessa quatro regiões distintas — Quebra Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo — cada uma com seu próprio mapa, NPCs, diálogos e negociação por cartas, e conclui a jornada enfrentando o boss final Rafael na Cidade Cielo. Não é um protótipo de navegação: é um produto com início, meio e fim jogáveis, narrativa personalizada e sistemas técnicos estáveis.
+O Cielo Verso chega ao seu MVP como um ciclo jogável completo de ponta a ponta. O jogador parte do menu inicial, atravessa quatro regiões distintas — Quebra Gelo, Vila do Varejo, Praia dos Proveitos e Cidade Cielo — cada uma com seu próprio mapa, NPCs, diálogos e negociação por cartas, e conclui a jornada aplicando todas as etapas do funil de vendas na Cidade Cielo. Não é um protótipo de navegação: é um produto com início, meio e fim jogáveis, narrativa personalizada e sistemas técnicos estáveis.
 
 Refinamentos entregues ao longo das sprints
 Sprint 1 — Estrutura e identidade visual
@@ -1450,7 +1450,7 @@ A estrutura do mapa foi pensada desde o início para incentivar a progressão en
 </div>
 
 Sprint 2 — Fluxo de aprendizado e mecânica central
-Definiu-se a divisão da experiência em duas fases: mundos de aprendizagem com minigames temáticos, seguidos do Mundo de Negociação com sistema de cartas. A barra de satisfação do cliente e a lógica de progressão por insígnias foram concebidas nessa etapa, estabelecendo a espinha dorsal da experiência de jogo. O concept art do menu inicial e do mapa de introdução também foi produzido nessa fase, definindo a linguagem visual que seria mantida até o MVP final.
+Definiu-se a divisão da experiência em duas etapas: mundo semi-aberto para exploração e descoberta de possíveis clientes, seguido do Mundo de Negociação com sistema de cartas. A barra de satisfação do cliente e a lógica de progressão por insígnias foram concebidas nessa etapa, estabelecendo a espinha dorsal da experiência de jogo. O concept art do menu inicial e do mapa de introdução também foi produzido nessa fase, definindo a linguagem visual que seria mantida até o MVP final.
 <div align="center">
   <sub>Imagem 6 — Concept art: menu inicial</sub><br>
   <img src="assets/tela_inicial.png" width="80%" alt="Concept art do menu inicial"><br>
@@ -1530,12 +1530,12 @@ Menu Principal
                 → Negociação com Julia (5 fases completas)
                     → Insígnia "Praia dos Proveitos"
               → Cidade Cielo
-                  → Negociação com Rafael (boss final — todas as competências)
+                  → Aplicação de todos os elementos do funil de vendas
                       → Insígnia "Mestre Cielo"
 Cada negociação forma um degrau progressivo de complexidade: Seu Pedro introduz o funil completo de vendas, Thainá aprofunda a coerência entre fases, Julia consolida o repertório e Rafael representa o clímax — exigindo o desempenho completo de um Gerente de Negócios Cielo.
 
-O que permanece previsto para a sprint 5
-A tela de fim de jogo com resumo de desempenho por negociação e o sistema de métricas — tempo de conclusão e mapeamento de erros críticos por fase — não integram o MVP atual e constituem a entrega central da sprint seguinte. Dois bugs conhecidos também seguem para correção: duplicação de cartas em reinícios de negociação, reportada de forma independente por dois testadores nos playtests, e dessincronização visual do indicador de fases no topo da tela em casos específicos de progressão.
+Sprint 5 - Entrega do produto.
+Na sprint 5, a equipe resolveu bugs encontrados no hitbox graças aos testes realizados, refinou o sistema de negociação e adicionou sprites de ambientação e senso de profundidade em áreas do jogo. Com isso, o MVP foi concluído, integrando todas as mecânicas centrais desenvolvidas ao longo das sprints anteriores. A equipe encerrou o ciclo com o jogo em estado jogável e estável, pronto para avaliação.
 
 # <a name="c5"></a>5. Testes
 
