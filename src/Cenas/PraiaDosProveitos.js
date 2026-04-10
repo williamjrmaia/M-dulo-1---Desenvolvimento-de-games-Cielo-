@@ -310,8 +310,8 @@ this.miniMapa.atualizar();
 }
 
 if (this.personagem.temOverlap(this.PortalCielo)) {
-this.trocarCena('CidadeCielo');
-            return;
+    this.trocarCena('CidadeCielo', {}, 'praia_proveitos');
+    return;
 }
 
         if (this.personagem.temOverlap(this.PortaCasaPraia2) && Phaser.Input.Keyboard.JustDown(this.teclas.interagir)) {

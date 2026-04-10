@@ -287,7 +287,7 @@ export default class VilaDoVarejo extends CenaMapa {
         }
 
         if (this.personagem.temOverlap(this.portalparapraia)) {
-            this.trocarCena('PonteVV_PP');
+            this.trocarCena('PonteVV_PP', {}, 'vila_varejo');
             return;
         }
 

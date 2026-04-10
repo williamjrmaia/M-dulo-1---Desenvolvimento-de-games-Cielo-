@@ -890,8 +890,11 @@ export default class CenaNegociacao extends Phaser.Scene {
 
     // ── Satisfação ────────────────────────────────────────────────────────────
 
+    get satisfacao()      { return this._satisfacao ?? 0; }
+    set satisfacao(valor) { this._satisfacao = Math.max(0, Math.min(100, valor)); }
+
     _alterarSatisfacao(delta) {
-        this.satisfacao = Phaser.Math.Clamp(this.satisfacao + delta, 0, 100);
+        this.satisfacao += delta;
         this._atualizarBarraSatisfacao();
         this._atualizarSpriteCliente();
     }
