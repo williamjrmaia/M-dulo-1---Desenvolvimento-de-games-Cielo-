@@ -248,8 +248,8 @@ Abaixo estão os requisitos trabalhados na sprint 1 e 2:
 12 | Barra de satisfação e sprites | O jogo deve apresentar o nível de satisfação dos clientes por meio de uma barra de interface que aumenta ou diminui de acordo com as escolhas do GN durante a negociação. Os sprites do cliente mudarão conforme o estado da negociação. | A barra deve atualizar visualmente em até 400ms após cada jogada de carta; o sprite do cliente deve alternar corretamente entre os 3 estados (satisfeito, neutro, bravo) conforme o valor da barra.
 13 | Cartas | O jogo deve implementar um sistema de cartas que representam as etapas do funil de vendas, distribuídas conforme a região e fase atual da negociação. | As cartas corretas para cada fase devem ser exibidas sem repetição; a seleção de uma carta deve gerar resposta visual e alterar a barra de satisfação em até 500ms.
 14 | Acessibilidade | O jogo deve ser jogável por pessoas com diferentes níveis de familiaridade com jogos digitais. | Todos os textos devem ter tamanho mínimo de 14px e contraste suficiente para leitura; nenhuma mecânica deve exigir mais de 2 teclas simultâneas; as instruções de controle devem estar disponíveis a qualquer momento pela tecla H.
-15 | Huds Complementares | Com o intuito de deixar um jogo mais intuito, tivemos a criação do sistema do hud indicativo na parte superior central da tela que informa os proximos passos que o jogador deve realizar, e a implementação de um minimapa em todas as cidades exibidas no canto superior direto. Esses huds podem ser desativados em qualquer momento do jogo pressionando a tecla O voce desativa o hud informativo e pressionando a tecla M voce desativa o minimapa.
-
+15 | Huds Complementares | O sistema deve fornecer elementos de interface (HUD) para auxílio à navegação e progressão. Isso inclui um painel indicativo (superior central), que exibe as próximas tarefas do jogador, e um Minimapa (canto superior direito), disponível em todas as áreas urbanas. Ambos os elementos devem permitir o controle de visibilidade pelo usuário em tempo real.| O sistema deve processar a entrada da tecla O para alternar a visibilidade do HUD informativo de objetivos. O sistema deve processar a entrada da tecla M para ativar ou desativar a exibição do minimapa. Os comandos de entrada devem ser globais (acessíveis a qualquer momento do gameplay) e a transição de visibilidade deve ser imediata.  
+16 | Sistema de Insígnias e progressão | O sistema deve gerenciar a atribuição de insígnias baseada no desempenho do jogador. Ao detectar o encerramento de uma partida com o status de vitória, ao jogador deverá ser concedida uma insígnia, sendo seu indicativo de progressão. Além disso, o sistema deverá fornecer um feedback visual (pop-up) evidenciando a vitória e a insígnia recebida pelo jogador. | O sistema deve monitorar o gatilho de "Fim de Partida" e validar se os critérios de vitória foram atingidos. Mediante a confirmação da vitória, o sistema deve disparar um componente visual do tipo pop-up (notificação) celebrando a conquista. A concessão da insígnia deve atuar como um validador de progresso, permitindo que o jogador avance para as etapas subsequentes do jogo. 
 
 ## 1.3. Público-alvo do Projeto (sprint 2)
 
@@ -486,26 +486,26 @@ Cada cenário explorável conta com trilha musical temática e sons de ambiente 
 
 ## Tabela Trilha Sonora
 
-| Título | Ocorrência | Nome da Música e Autoria |
-|---|---|---|
-| Música de Fundo | Menu Principal/Tela de Início/Mundo Cielita | High Tide - Laura Platt |
-| Música Quebra-Gelo | Cena: Quebra-Gelo/Casas Quebra Gelo | Mainden Voyage - Helmut Schenker |
-| Música Vila do Varejo | Cena: Vila do Varejo/Casas Vila do Varejo | Barefoot Adventures - Adriel Fair |
-| Música Praia dos Proveitos | Cena: Praia dos Proveitos/Casas Praia dos Proveitos | Beach Goer - Frook |
-| Música Cidade Cielo | Cena: Cidade Cielo, e posteriormente Casas Cidade Cielo | slow down - Loyae |
-| Música Negociação | Cena: Negociação | The Only Way Out - Dian Shuai |
-| Passos | Movimentação na Casa da Cielita | By Epidemic Sound |
-| Passos | Movimentação no Quebra-Gelo | By Epidemic Sound |
-| Passos | Movimentação na Vila do Varejo | By Epidemic Sound |
-| Passos | Movimentação na Praia dos Proveitos | By Epidemic Sound |
-| Passos | Movimentação no Interior das Casas | By Epidemic Sound |
-| Ambiente | Som ambiente: Quebra-Gelo | By Epidemic Sound |
-| Ambiente | Som ambiente: Vila do Varejo | By Epidemic Sound |
-| Ambiente | Som ambiente: Praia dos Proveitos | By Epidemic Sound |
-| Ambiente | Som ambiente: Cidade Cielo | By Epidemic Sound |
-| Transição | Transição entre mapas/cenas | By Epidemic Sound |
-| Botão UI | Cliques nos botões | By Epidemic Sound |
-| Teclado | Exibição de texto nas Cutscenes | (CherryMX Red - ABS keycaps) - By Mechvibes |
+| Título | Ocorrência | Nome da Música e Autoria | Tipo de áudio
+|---|---|---|---|
+| Música de Fundo | Menu Principal/Tela de Início/Mundo Cielita | High Tide - Laura Platt | Não diegético
+| Música Quebra-Gelo | Cena: Quebra-Gelo/Casas Quebra Gelo | Mainden Voyage - Helmut Schenker | Diegético
+| Música Vila do Varejo | Cena: Vila do Varejo/Casas Vila do Varejo | Barefoot Adventures - Adriel Fair | Diegético
+| Música Praia dos Proveitos | Cena: Praia dos Proveitos/Casas Praia dos Proveitos | Beach Goer - Frook | Diegético
+| Música Cidade Cielo | Cena: Cidade Cielo, e posteriormente Casas Cidade Cielo | slow down - Loyae | Diegético
+| Música Negociação | Cena: Negociação | The Only Way Out - Dian Shuai | Não diegético
+| Passos | Movimentação na Casa da Cielita | By Epidemic Sound | Diegético
+| Passos | Movimentação no Quebra-Gelo | By Epidemic Sound | Diegético
+| Passos | Movimentação na Vila do Varejo | By Epidemic Sound | Diegético
+| Passos | Movimentação na Praia dos Proveitos | By Epidemic Sound | Diegético
+| Passos | Movimentação no Interior das Casas | By Epidemic Sound | Diegético
+| Ambiente | Som ambiente: Quebra-Gelo | By Epidemic Sound |Diegético
+| Ambiente | Som ambiente: Vila do Varejo | By Epidemic Sound |Diegético
+| Ambiente | Som ambiente: Praia dos Proveitos | By Epidemic Sound |Diegético
+| Ambiente | Som ambiente: Cidade Cielo | By Epidemic Sound |Diegético
+| Transição | Transição entre mapas/cenas | By Epidemic Sound |Diegético
+| Botão UI | Cliques nos botões | By Epidemic Sound |Não diegético
+| Teclado | Exibição de texto nas Cutscenes | (CherryMX Red - ABS keycaps) - By Mechvibes | Não diegético
 
 ## 3.5. Gameflow (Diagrama de cenas) (sprint 2)
 
