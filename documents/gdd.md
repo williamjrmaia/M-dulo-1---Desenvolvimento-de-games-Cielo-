@@ -455,8 +455,8 @@ O tempo não possui relevância no jogo.
 
 
 <div align="center">
-  <sub>Menu Inicial</sub><br>
-  <img src="assets/tela_inicial.png" width="100%" alt="Descrição breve"><br>
+  <sub>Concept Art Tela Inicial</sub><br>
+  <img src="assets/ConceptTelaInicial.jpeg" width="100%" alt="Descrição breve"><br>
   <sup>Fonte: Autoria própria</sup>
 </div>
 
